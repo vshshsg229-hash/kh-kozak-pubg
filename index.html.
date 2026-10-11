@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KH么Kozak PUBG</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101410;
+      color: white;
+    }
+    header {
+      background: #202820;
+      padding: 28px 16px;
+      text-align: center;
+      border-bottom: 3px solid #a5d62e;
+    }
+    header h1 { color: #b9ed43; }
+    nav { padding: 14px; text-align: center; }
+    nav a {
+      color: #c9f36a;
+      margin: 8px;
+      text-decoration: none;
+    }
+    main { max-width: 850px; margin: auto; padding: 16px; }
+    section {
+      background: #1d241d;
+      margin: 18px 0;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    h2 { color: #c9f36a; }
+    .stat { font-size: 18px; margin: 12px 0; }
+    footer { text-align: center; padding: 25px; color: #aaa; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>👑 KH么Kozak PUBG</h1>
+    <p>Мій світ PUBG Mobile</p>
+  </header>
+
+  <nav>
+    <a href="#news">Новини</a>
+    <a href="#videos">Відео</a>
+    <a href="#stats">Статистика</a>
+  </nav>
+
+  <main>
+    <section id="news">
+      <h2>📰 Новини PUBG Mobile</h2>
+      <article>
+        <h3>Новини та оновлення</h3>
+        <p>Тут будуть новини гри, події та цікаві оновлення PUBG Mobile.</p>
+      </article>
+    </section>
+
+    <section id="videos">
+      <h2>🎬 Мої відео</h2>
+      <p>Тут публікуватимемо твої найкращі моменти та відео з TikTok.</p>
+      <p>Посилання на відео додамо пізніше.</p>
+    </section>
+
+    <section id="stats">
+      <h2>📊 Моя статистика</h2>
+      <div class="stat">🎮 Гра: PUBG Mobile</div>
+      <div class="stat">👑 Нік: KH么Kozak</div>
+      <div class="stat">🏆 Досягнення: додамо пізніше</div>
+    </section>
+  </main>
+
+  <footer>© KH么Kozak PUBG</footer>
+</body>
+</html>
