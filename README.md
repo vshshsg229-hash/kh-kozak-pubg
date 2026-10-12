@@ -1,4 +1,6 @@
-# KH么Kozak — Gaming Hub
+# KH么Kozak: Гра • Музика
+
+Преміальний чорно-золотий мобільний ігровий простір із музикою та профілем.
 
 Personal PUBG Mobile blogger/player website. Built as a static site for GitHub Pages.
 
@@ -13,6 +15,9 @@ Personal PUBG Mobile blogger/player website. Built as a static site for GitHub P
 - Kozak AI helper (local scripted site guide; not an LLM service).
 - KH Hub navigation, PWA install prompt, and progress backup/restore.
 - Service-worker offline shell cache.
+- Black-and-gold application icon and navigation for Game, Music, and My Profile.
+- Public privacy policy at `privacy.html`.
+- Google Play preparation notes in `play-store/STORE_LISTING.md` and `android/README.md`.
 
 ## Local data and limitations
 - Coins, XP, cosmetics, settings, and progress are stored in the current browser's localStorage. The JSON backup can help move this local progress to another browser/device.
