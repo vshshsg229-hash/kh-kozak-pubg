@@ -16,7 +16,7 @@
   "theme_color": "#090c09",
   "icons": [
     {
-      "src": "./favicon.svg",
+      "src": "./app-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
