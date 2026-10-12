@@ -9,3 +9,23 @@ document.querySelectorAll('.launch-pubg').forEach(link=>link.addEventListener('c
  const intent='intent://#Intent;package=com.tencent.ig;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;S.browser_fallback_url='+encodeURIComponent(fallback)+';end';
  window.location.href=intent;
 }));
+
+
+/* Shared KH Arcade progression: browser-local, reused by homepage and mini-games. */
+(()=>{'use strict';
+const $=s=>document.querySelector(s);
+const key='khkozak:rewards-v1';
+const defaults={coins:0,xp:0,games:0,aimHits:0,memoryWins:0,reactionBest:0,daily:'',claimed:[],owned:['rookie'],equipped:'rookie',missions:{}};
+let state;try{state={...defaults,...JSON.parse(localStorage.getItem(key)||'{}')};}catch{state={...defaults};}
+state.missions=state.missions&&typeof state.missions==='object'?state.missions:{};
+const today=new Date().toISOString().slice(0,10);
+const save=()=>{try{localStorage.setItem(key,JSON.stringify(state));}catch{}};
+const missions=[{id:'videos',path:'videos.html',label:'hub-mission-videos'},{id:'avatars',path:'avatars.html',label:'hub-mission-avatars'},{id:'games',path:'minigames.html',label:'hub-mission-games'}];
+const current=location.pathname.split('/').pop()||'index.html';
+const match=missions.find(m=>m.path===current);
+if(match&&state.missions[match.id]!==today){state.missions[match.id]=today;state.coins=(Number(state.coins)||0)+10;state.xp=(Number(state.xp)||0)+5;save();const toast=$('#toast');if(toast){toast.textContent='Щоденну місію виконано: +10 🪙 · +5 XP';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);}}
+const titles=[{id:'rookie',title:'🌱 Новачок'},{id:'quick',title:'⚡ Реактивний'},{id:'sharpshooter',title:'🎯 Точний стрілець'},{id:'memory',title:'🧠 Майстер пам’яті'},{id:'arcade',title:'👑 Король аркади'},{id:'legend',title:'🔥 Легенда KH'}];
+const render=()=>{const xp=Number(state.xp)||0,level=Math.floor(xp/100)+1,currentXp=xp%100;const put=(id,value)=>{const el=$('#'+id);if(el)el.textContent=value;};put('hub-coins',(Number(state.coins)||0).toLocaleString('uk-UA'));put('hub-level','Рівень '+level+' · '+(level>=10?'Легенда':level>=5?'Ветеран':level>=3?'Боєць':'Новачок'));put('hub-xp-label',currentXp+' / 100 XP до наступного рівня');const fill=$('#hub-xp-fill');if(fill)fill.style.width=currentXp+'%';put('hub-title',(titles.find(t=>t.id===state.equipped)||titles[0]).title);const claimed=state.daily===today,btn=$('#hub-daily-claim');if(btn){btn.disabled=claimed;btn.textContent=claimed?'Нагороду отримано ✓':'Забрати нагороду';}put('hub-daily-status',claimed?'Сьогоднішній бонус уже отримано.':'Нагорода доступна раз на день.');let done=0;missions.forEach(m=>{const el=$('#'+m.label),isDone=state.missions[m.id]===today;if(isDone)done++;if(el){el.classList.toggle('done',isDone);if(!el.dataset.base)el.dataset.base=el.textContent;el.textContent=(isDone?'✓ ':'')+el.dataset.base;}});put('hub-mission-status','Виконано '+done+' з 3 місій сьогодні.');};
+$('#hub-daily-claim')?.addEventListener('click',()=>{if(state.daily===today)return;state.daily=today;state.coins=(Number(state.coins)||0)+25;state.xp=(Number(state.xp)||0)+5;save();render();const toast=$('#toast');if(toast){toast.textContent='Щоденний бонус: +25 🪙 · +5 XP';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2400);}});
+render();
+})();
