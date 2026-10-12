@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const links=[['index.html','⌂ Головна'],['music.html','♫ Музика'],['minigames.html','🎮 Мініігри'],['videos.html','▶ Відео'],['avatars.html','▧ Аватарки'],['locker.html','🛡 Магазин'],['battlehub.html','⚡ Battle Hub']];
+const links=[['index.html','⌂ Головна'],['music.html','♫ Музика'],['minigames.html','🎮 Мініігри'],['videos.html','▶ Відео'],['avatars.html','▧ Аватарки'],['locker.html','🛡 Магазин'],['battlehub.html','⚡ Battle Hub'],['assistant.html','🤖 KH Assistant']];
 const path=location.pathname.split('/').pop()||'index.html';
 const nav=document.querySelector('.site-header .nav');
 if(nav){nav.setAttribute('aria-label','Навігація KH Gaming Hub');nav.innerHTML=links.map(([href,label])=>'<a href="'+href+'"'+(path===href?' aria-current="page"':'')+'>'+label+'</a>').join('');}
