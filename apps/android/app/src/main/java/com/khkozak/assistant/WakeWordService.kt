@@ -108,12 +108,12 @@ class WakeWordService : Service(), RecognitionListener {
         }
 
         when {
-            "налаштуван" in command -> {
-                try {
-                    startActivity(Intent(android.provider.Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                } catch (_: Exception) {
-                    Toast.makeText(this, "Не вдалося відкрити налаштування.", Toast.LENGTH_LONG).show()
-                }
+            "календар" in command || "подію" in command -> {
+                launchAppCategory(Intent.CATEGORY_APP_CALENDAR, "календар")
+                return
+            }
+            "будильник" in command || "таймер" in command || "годинник" in command -> {
+                launchAppCategory(Intent.CATEGORY_APP_CLOCK, "годинник")
                 return
             }
             "калькулятор" in command -> {
@@ -121,15 +121,55 @@ class WakeWordService : Service(), RecognitionListener {
                 return
             }
             "камера" in command || "фото" in command -> {
-                try {
-                    startActivity(Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                } catch (_: Exception) {
-                    Toast.makeText(this, "Не знайшов застосунок камери.", Toast.LENGTH_LONG).show()
+                launchSystemIntent(Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE), "камеру")
+                return
+            }
+            "контакт" in command || "телефон" in command -> {
+                launchAppCategory(Intent.CATEGORY_APP_CONTACTS, "контакти")
+                return
+            }
+            "повідомлен" in command || "смс" in command -> {
+                launchSystemIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MESSAGING), "повідомлення")
+                return
+            }
+            "файли" in command || "провідник" in command || "завантаження" in command -> {
+                launchSystemIntent(Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE), "вибір файлів")
+                return
+            }
+            "wi-fi" in command || "вайфай" in command || "вай фай" in command || "блютуз" in command || "bluetooth" in command -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    launchSystemIntent(Intent(android.provider.Settings.Panel.ACTION_INTERNET_CONNECTIVITY), "панель мережі")
+                } else {
+                    launchSystemIntent(Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), "налаштування мережі")
                 }
+                return
+            }
+            "батаре" in command || "акумулятор" in command -> {
+                launchSystemIntent(Intent(android.provider.Settings.ACTION_BATTERY_SAVER_SETTINGS), "налаштування батареї")
+                return
+            }
+            "гучність" in command || "звук" in command -> {
+                launchSystemIntent(Intent(android.provider.Settings.ACTION_SOUND_SETTINGS), "налаштування звуку")
+                return
+            }
+            "екран" in command || "дисплей" in command -> {
+                launchSystemIntent(Intent(android.provider.Settings.ACTION_DISPLAY_SETTINGS), "налаштування екрана")
+                return
+            }
+            "налаштуван" in command -> {
+                launchSystemIntent(Intent(android.provider.Settings.ACTION_SETTINGS), "налаштування")
                 return
             }
             "браузер" in command || "інтернет" in command -> {
                 openExternalUrl("https://www.google.com", "відкриваю браузер")
+                return
+            }
+            "вимкни слухання" in command || "зупини слухання" in command || "вимкни помічника" in command -> {
+                stopSelf()
+                return
+            }
+            "вимкни пристрій" in command || "вимкни телефон" in command || "перезавантаж пристрій" in command || "перезавантаж телефон" in command -> {
+                Toast.makeText(this, "Android не дозволяє звичайному додатку вимикати або перезавантажувати пристрій напряму. Скористайся фізичною кнопкою живлення.", Toast.LENGTH_LONG).show()
                 return
             }
         }
@@ -147,7 +187,7 @@ class WakeWordService : Service(), RecognitionListener {
         if (target != null) {
             openExternalUrl(target, "відкриваю посилання")
         } else {
-            Toast.makeText(this, "Не знаю цієї команди. Скажи: «Козак, знайди ...», «відкрий калькулятор», YouTube, Telegram або PUBG.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Не знаю цієї команди. Спробуй календар, будильник, калькулятор, камеру, контакти, файли, налаштування, Wi‑Fi, звук або команду «знайди ...». Вимкнення пристрою напряму недоступне.", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -157,6 +197,20 @@ class WakeWordService : Service(), RecognitionListener {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         } catch (_: Exception) {
             Toast.makeText(this, "Не вдалося відкрити посилання. Перевір інтернет або браузер.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun launchSystemIntent(intent: Intent, label: String) {
+        try {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            if (intent.resolveActivity(packageManager) == null) {
+                Toast.makeText(this, "Не знайшов застосунок для дії: $label.", Toast.LENGTH_LONG).show()
+                return
+            }
+            startActivity(intent)
+            Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не вдалося відкрити: $label.", Toast.LENGTH_LONG).show()
         }
     }
 
