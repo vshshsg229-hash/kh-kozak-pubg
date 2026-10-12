@@ -20,7 +20,7 @@ function renderGear(){const s=wallet(),set=(id,v)=>{const el=document.getElement
 set('vg-helmet','Рівень '+gear.helmet);set('vg-armor','Рівень '+gear.armor);
 set('vg-weapon',(gear.weapon>=4?'Groza':gear.weapon===3?'Beryl M762':gear.weapon===2?'AKM':'M416')+' · рів. '+gear.weapon);
 set('vg-backpack','Рівень '+gear.backpack);set('vg-medkits',gear.medkits);set('vg-supplies',gear.supplies);
-set('vg-coins',Number(s.coins||0).toLocaleString('uk-UA'));set('vg-record',records[mode]||0);set('vg-wave',wave);}
+set('vg-coins',Number(s.coins||0).toLocaleString('uk-UA'));set('vg-record',records[mode]||0);set('vg-wave',wave);const total=Object.values(records).reduce((a,v)=>a+(Number(v)||0),0);const rank=total>=50?'Легенда':total>=30?'Золото':total>=15?'Срібло':total>=5?'Бронза':'Рекрут';set('vg-rank',rank);const perk=document.getElementById('vg-rank-perks');if(perk)perk.textContent=rank==='Легенда'?'👑 Легенда: +12 🪙 за перемогу та +10% XP у бойових режимах.':rank==='Золото'?'🥇 Золото: +8 🪙 за перемогу та +5% XP.':rank==='Срібло'?'🥈 Срібло: +5 🪙 за перемогу.':rank==='Бронза'?'🥉 Бронза: +2 🪙 за перемогу.':'🎖️ Рекрут: збирай лут і встановлюй рекорди, щоб відкрити бонуси.';}
 function addRewardCoins(amount){changeCoins(amount);}
 function spawnPickup(x=rand(50,W-50),y=rand(50,H-50),type){const types=['ammo','medkit','armor','weapon','coins','backpack'];pickups.push({x,y,type:type||types[Math.floor(Math.random()*types.length)],life:22});}
 function pickUp(p){gear.supplies++;if(p.type==='ammo'){gear.supplies++;addRewardCoins(3);noteGear('Зібрано набої та +3 🪙.');}
