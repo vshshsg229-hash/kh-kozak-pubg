@@ -26,3 +26,15 @@ body{background-color:#090b10!important;background-image:radial-gradient(ellipse
 .site-v4-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(214,255,87,.22);background:rgba(214,255,87,.07);color:var(--hub-lime);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:800;letter-spacing:.06em}
 @media(max-width:980px){.site-header .header-inner{flex-wrap:wrap;padding-block:10px}.site-header .nav{order:3;width:100%;overflow-x:auto;padding:2px 0 5px;scrollbar-width:thin}.site-header .nav a{flex:0 0 auto}.site-header .header-tools{margin-left:auto}}
 @media(max-width:560px){.site-header .header-inner{gap:8px}.site-header .brand{font-size:.9rem}.site-header .brand-mark{width:34px;height:34px}.site-header .header-tools .launch-pubg{padding:9px 10px;font-size:.75rem}.site-header .icon-btn{min-width:35px;padding:7px}.footer{gap:14px}}
+
+/* 4.0 visual system across legacy/classic content pages */
+:root{--acid:var(--hub-lime)!important;--line:var(--hub-line)!important;--glow:rgba(255,77,66,.10)!important;--panel:#11151d!important;--panel2:#171d27!important;--ink:var(--hub-ink)!important;--muted:var(--hub-muted)!important}
+body:before{opacity:.055!important;background-image:linear-gradient(rgba(255,255,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px)!important}
+h1 span,h2 span,.accent,.eyebrow{color:var(--hub-red)}
+.btn-primary,.launch-pubg{background:var(--hub-red)!important;border-color:var(--hub-red)!important;color:#fff!important}
+.btn:not(.btn-primary),.icon-btn,.tab-search-panel,.quick-tool,.quick-tool-card{border-color:var(--hub-line)!important}
+.victor-game,.feature,.tool-card,.quick-tool,.challenge-card,.squad-panel,.ai-helper-panel,.locker-item,.avatar-card,.video-card,.music-card,.game-card,.minigame-card,.stat,.reaction-card,.arcade-panel,.challenge-box{border-color:var(--hub-line)!important}
+.victor-game,.feature,.tool-card,.quick-tool,.challenge-card,.squad-panel,.ai-helper-panel,.locker-item,.avatar-card,.video-card,.music-card,.game-card,.minigame-card,.stat{box-shadow:0 16px 42px rgba(0,0,0,.16)}
+.victor-game button,.vg-mode-switch button,.quick-tool button,.game-card button,.minigame-card button{border-radius:11px}
+.site-header .brand .v3-brand-badge{font-size:.62rem!important}
+@media(max-width:650px){.site-header .nav{scrollbar-color:#ff4d42 #11151d}.site-header .nav a{white-space:nowrap}}
