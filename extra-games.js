@@ -13,7 +13,7 @@ const anchor=$('#rewards')||$('.rewards-section')||$('#game-grid');
 if(anchor)anchor.parentNode.insertBefore(section,anchor);
 let crateCoins=Number(store.get('extra-crate-coins'))||0,crateBest=Number(store.get('extra-crate-best'))||0,rounds=0;
 const coinEl=$('#crate-coins'),bestEl=$('#crate-best'),crateStatus=$('#crate-status');
-function showCrates(){if(coinEl)coinEl.textContent=crateCoins;if(bestEl)bestEl.textContent=crateBest;document.querySelectorAll('[data-crate]').forEach(b=>{b.disabled=false;b.textContent=['📦','🧰','🎒'][Number(b.dataset.crate)];const s=document.createElement('small');s.textContent='Ящик '+(Number(b.dataset.crate)+1);b.appendChild(s)})}
+function showCrates(){if(coinEl)coinEl.textContent=crateCoins;if(bestEl)bestEl.textContent=crateBest}
 document.querySelectorAll('[data-crate]').forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;rounds++;const prizes=[0,5,10,20,35,50];const prize=prizes[Math.floor(Math.random()*prizes.length)];crateCoins+=prize;crateBest=Math.max(crateBest,crateCoins);store.set('extra-crate-coins',crateCoins);store.set('extra-crate-best',crateBest);document.querySelectorAll('[data-crate]').forEach(x=>x.disabled=true);b.textContent=prize>=35?'💎':prize>=20?'🪙':prize>0?'🎉':'🪨';const sm=document.createElement('small');sm.textContent=prize?'+'+prize+' монет':'Порожньо';b.appendChild(sm);if(crateStatus)crateStatus.textContent=prize?'Знайдено '+prize+' ігрових монет!':'Цього разу порожньо — спробуй ще.';showCrates()}));
 $('#crate-reset')?.addEventListener('click',()=>{document.querySelectorAll('[data-crate]').forEach((b,i)=>{b.disabled=false;b.innerHTML=['📦','🧰','🎒'][i]+'<small>Ящик '+(i+1)+'</small>'});if(crateStatus)crateStatus.textContent='Обери ящик і перевір свою удачу.'});
 showCrates();
