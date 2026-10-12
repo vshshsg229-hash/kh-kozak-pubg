@@ -11,6 +11,8 @@ async function askRemote(question){
  messages.append(typing);messages.scrollTop=messages.scrollHeight;
  try{
   const recent=history.slice(-14).map(m=>({role:m.role==='user'?'user':'assistant',content:m.text}));
+  if(!recent.length||recent[recent.length-1].role!=='user'||recent[recent.length-1].content!==question)recent.push({role:'user',content:question});
+  while(recent.length>14)recent.shift();
   const response=await fetch(aiEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:recent,language:en()?'en':'uk',page:location.pathname})});
   if(!response.ok)throw new Error('AI service returned '+response.status);
   const data=await response.json();const reply=String(data.reply||data.output_text||data.message||'').trim();
