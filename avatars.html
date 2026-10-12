@@ -17,7 +17,7 @@
     header { height:90px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
     .wordmark { display:flex; align-items:center; gap:12px; text-decoration:none; font-size:14px; font-weight:750; letter-spacing:.02em; }
     .sigil { width:28px; height:28px; display:grid; place-items:center; border:1px solid var(--cyan); border-radius:50%; color:var(--cyan); font-size:13px; }
-    .pubg-banner { min-height:clamp(150px,18vw,198px); margin:18px 0 26px; padding:21px 26px; display:flex; align-items:center; justify-content:space-between; gap:20px; position:relative; overflow:hidden; border:1px solid rgba(85,215,255,.3); background:linear-gradient(90deg,rgba(5,8,14,.95) 0%,rgba(5,8,14,.72) 45%,rgba(5,8,14,.2) 100%),url("avatars/avatar-02.jpg") center 40%/cover; }
+    .pubg-banner { min-height:clamp(150px,18vw,198px); margin:18px 0 26px; padding:21px 26px; display:flex; align-items:center; justify-content:space-between; gap:20px; position:relative; overflow:hidden; border:1px solid rgba(85,215,255,.3); background:linear-gradient(90deg,rgba(5,8,14,.95) 0%,rgba(5,8,14,.72) 45%,rgba(5,8,14,.2) 100%),url("avatar-02.jpg") center 40%/cover; }
     .pubg-banner::after { position:absolute; inset:0; content:""; pointer-events:none; opacity:.32; background:linear-gradient(118deg,transparent 0 64%,rgba(85,215,255,.22) 64.1% 64.4%,transparent 64.5%),repeating-linear-gradient(135deg,transparent 0 18px,rgba(255,255,255,.035) 19px 20px,transparent 21px 38px); }
     .banner-copy,.banner-action { position:relative; z-index:1; }
     .banner-kicker { margin:0 0 9px; color:var(--cyan); font-size:9px; font-weight:800; letter-spacing:.22em; text-transform:uppercase; }
@@ -83,7 +83,7 @@
       .footer { font-size:8px; }
     }
     /* Mobile battle lobby treatment */
-    body { background-image:linear-gradient(180deg,rgba(5,8,14,.68),rgba(5,8,14,.9) 52%,rgba(5,8,14,.97)),radial-gradient(ellipse at 78% 36%,rgba(67,155,255,.14),transparent 38%),url("avatars/avatar-06.jpg"); background-position:center,center,center 20%; background-size:cover,cover,cover; background-attachment:fixed,fixed,fixed; background-repeat:no-repeat; }
+    body { background-image:linear-gradient(180deg,rgba(5,8,14,.68),rgba(5,8,14,.9) 52%,rgba(5,8,14,.97)),radial-gradient(ellipse at 78% 36%,rgba(67,155,255,.14),transparent 38%),url("avatar-06.jpg"); background-position:center,center,center 20%; background-size:cover,cover,cover; background-attachment:fixed,fixed,fixed; background-repeat:no-repeat; }
     .page::before { animation:map-drift 34s linear infinite; }
     header { animation:combat-enter .65s ease-out both; }
     .pubg-banner { isolation:isolate; box-shadow:inset 0 0 36px rgba(0,0,0,.3),0 12px 42px rgba(0,0,0,.22); animation:combat-enter .72s ease-out both,banner-pulse 7s ease-in-out infinite; }
@@ -155,21 +155,12 @@
         </div>
 
         <section class="gallery" aria-label="Аватарки KH Kozak">
-          <button class="avatar-card" type="button" data-style="blue gold" data-full="avatars/avatar-01.jpg" data-title="Варіант 01"><img src="avatars/avatar-01.jpg" alt="Аватар KH么Kozak у стилі PUBG з контактами TikTok і Telegram" loading="lazy"><span class="avatar-label">Варіант 01</span></button>
-          <button class="avatar-card" type="button" data-style="blue" data-full="avatars/avatar-02.jpg" data-title="Варіант 02"><img src="avatars/avatar-02.jpg" alt="Синій аватар PUBG Mobile з написом KH Kozak" loading="lazy"><span class="avatar-label">Варіант 02</span></button>
-          <button class="avatar-card" type="button" data-style="red" data-full="avatars/avatar-03.jpg" data-title="Варіант 03"><img src="avatars/avatar-03.jpg" alt="Темний кінематографічний PUBG-арт" loading="lazy"><span class="avatar-label">Варіант 03</span></button>
-          <button class="avatar-card" type="button" data-style="blue red" data-full="avatars/avatar-04.jpg" data-title="Варіант 04"><img src="avatars/avatar-04.jpg" alt="Драматичний PUBG-арт із нічною та вечірньою сценою" loading="lazy"><span class="avatar-label">Варіант 04</span></button>
-          <button class="avatar-card" type="button" data-style="blue" data-full="avatars/avatar-05.jpg" data-title="Варіант 05"><img src="avatars/avatar-05.jpg" alt="Крижаний аватар PUBG Mobile з написом KH Kozak" loading="lazy"><span class="avatar-label">Варіант 05</span></button>
-          <button class="avatar-card" type="button" data-style="red" data-full="avatars/avatar-06.jpg" data-title="Варіант 06"><img src="avatars/avatar-06.jpg" alt="Червоний темний аватар у стилі PUBG" loading="lazy"><span class="avatar-label">Варіант 06</span></button>
-          <button class="avatar-card" type="button" data-style="blue purple gold" data-full="avatars/avatar-07.jpg" data-title="Варіант 07"><img src="avatars/avatar-07.jpg" alt="Колаж KH Kozak у стилі PUBG та різних ігрових режимів" loading="lazy"><span class="avatar-label">Варіант 07</span></button>
-          <button class="avatar-card" type="button" data-style="blue" data-full="avatars/avatar-08.jpg" data-title="Варіант 08"><img src="avatars/avatar-08.jpg" alt="Синій неоновий образ гравця за комп’ютером" loading="lazy"><span class="avatar-label">Варіант 08</span></button>
-          <button class="avatar-card" type="button" data-style="blue" data-full="avatars/avatar-09.jpg" data-title="Варіант 09"><img src="avatars/avatar-09.jpg" alt="PUBG-арт із гравцем у шоломі та синім світлом" loading="lazy"><span class="avatar-label">Варіант 09</span></button>
-          <button class="avatar-card" type="button" data-style="purple" data-full="avatars/avatar-10.jpg" data-title="Варіант 10"><img src="avatars/avatar-10.jpg" alt="Рожевий неоновий PUBG Mobile-арт KH Kozak" loading="lazy"><span class="avatar-label">Варіант 10</span></button>
-          <button class="avatar-card" type="button" data-style="purple" data-full="avatars/avatar-11.jpg" data-title="Варіант 11"><img src="avatars/avatar-11.jpg" alt="Фіолетовий PUBG Mobile-арт KH Kozak" loading="lazy"><span class="avatar-label">Варіант 11</span></button>
-          <button class="avatar-card" type="button" data-style="purple" data-full="avatars/avatar-12.jpg" data-title="Варіант 12"><img src="avatars/avatar-12.jpg" alt="Фіолетова неонова PUBG-ілюстрація KH Kozak" loading="lazy"><span class="avatar-label">Варіант 12</span></button>
-          <button class="avatar-card" type="button" data-style="purple" data-full="avatars/avatar-13.jpg" data-title="Варіант 13"><img src="avatars/avatar-13.jpg" alt="Фіолетовий PUBG Mobile-арт із написом KH Kozak" loading="lazy"><span class="avatar-label">Варіант 13</span></button>
-          <button class="avatar-card" type="button" data-style="purple" data-full="avatars/avatar-14.jpg" data-title="Варіант 14"><img src="avatars/avatar-14.jpg" alt="Фіолетова PUBG Mobile-ілюстрація KH Kozak" loading="lazy"><span class="avatar-label">Варіант 14</span></button>
-          <button class="avatar-card" type="button" data-style="blue purple" data-full="avatars/avatar-15.jpg" data-title="Варіант 15"><img src="avatars/avatar-15.jpg" alt="Синьо-фіолетовий ігровий арт із персонажами PUBG" loading="lazy"><span class="avatar-label">Варіант 15</span></button>
+          <button class="avatar-card" type="button" data-style="blue gold" data-full="avatar-01.jpg" data-title="Варіант 01"><img src="avatar-01.jpg" alt="Аватар KH么Kozak у стилі PUBG з контактами TikTok і Telegram" loading="lazy"><span class="avatar-label">Варіант 01</span></button>
+          <button class="avatar-card" type="button" data-style="blue" data-full="avatar-02.jpg" data-title="Варіант 02"><img src="avatar-02.jpg" alt="Синій аватар PUBG Mobile з написом KH Kozak" loading="lazy"><span class="avatar-label">Варіант 02</span></button>
+          <button class="avatar-card" type="button" data-style="red" data-full="avatar-03.jpg" data-title="Варіант 03"><img src="avatar-03.jpg" alt="Темний кінематографічний PUBG-арт" loading="lazy"><span class="avatar-label">Варіант 03</span></button>
+          <button class="avatar-card" type="button" data-style="red" data-full="avatar-06.jpg" data-title="Варіант 06"><img src="avatar-06.jpg" alt="Червоний темний аватар у стилі PUBG" loading="lazy"><span class="avatar-label">Варіант 06</span></button>
+          <button class="avatar-card" type="button" data-style="purple" data-full="avatar-13.jpg" data-title="Варіант 13"><img src="avatar-13.jpg" alt="Фіолетовий PUBG Mobile-арт із написом KH Kozak" loading="lazy"><span class="avatar-label">Варіант 13</span></button>
+          <button class="avatar-card" type="button" data-style="purple" data-full="avatar-14.jpg" data-title="Варіант 14"><img src="avatar-14.jpg" alt="Фіолетова PUBG Mobile-ілюстрація KH Kozak" loading="lazy"><span class="avatar-label">Варіант 14</span></button>
         </section>
 
         <footer class="footer"><span>KH么Kozak · аватарки</span><a href="index.html">До профілю ↗</a></footer>
