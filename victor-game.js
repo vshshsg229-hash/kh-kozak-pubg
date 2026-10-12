@@ -87,6 +87,10 @@ if(!running&&!overlay.classList.contains('hidden')){ctx.fillStyle='#fff8';ctx.fo
 function frame(now){if(!last)last=now;const dt=Math.min(.035,(now-last)/1000);last=now;if(running)update(dt);draw();requestAnimationFrame(frame);}
 startBtn.addEventListener('click',()=>{reset();overlay.classList.add('hidden');running=true;last=performance.now();$('#vg-message').textContent='Бій почався!';});
 $('#vg-restart').addEventListener('click',reset);
+const expandBtn=$('#vg-expand-toggle'),fieldScreen=$('.vg-screen'),gameRoot=$('.victor-game');
+function toggleExpanded(){const on=!fieldScreen.classList.contains('vg-expanded');fieldScreen.classList.toggle('vg-expanded',on);gameRoot.classList.toggle('vg-playing-expanded',on);expandBtn.setAttribute('aria-pressed',String(on));expandBtn.textContent=on?'⤢ Згорнути поле':'⛶ Збільшити поле';}
+expandBtn.addEventListener('click',toggleExpanded);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&fieldScreen.classList.contains('vg-expanded'))toggleExpanded();});
 document.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();keys.add(k);});
 document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));
 canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*W;pointer.y=(e.clientY-r.top)/r.height*H;});
