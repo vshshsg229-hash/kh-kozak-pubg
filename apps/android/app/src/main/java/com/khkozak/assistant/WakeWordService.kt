@@ -5,6 +5,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -108,6 +111,22 @@ class WakeWordService : Service(), RecognitionListener {
         }
 
         when {
+            "ліхтарик" in command || "фонарик" in command -> {
+                setFlashlight(!(command.contains("вимк") || command.contains("виключ") || command.contains("off")))
+                return
+            }
+            "галерея" in command || "фотографії" in command || "зображення" in command -> {
+                launchSystemIntent(Intent(Intent.ACTION_VIEW).setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"), "галерею")
+                return
+            }
+            "карти" in command || "мапи" in command || "навігац" in command -> {
+                openExternalUrl("https://maps.google.com", "відкриваю карти")
+                return
+            }
+            "дзвони" in command || "зателефонуй" in command || "набір номера" in command -> {
+                launchSystemIntent(Intent(Intent.ACTION_DIAL), "набір номера")
+                return
+            }
             "календар" in command || "подію" in command -> {
                 launchAppCategory(Intent.CATEGORY_APP_CALENDAR, "календар")
                 return
@@ -187,7 +206,7 @@ class WakeWordService : Service(), RecognitionListener {
         if (target != null) {
             openExternalUrl(target, "відкриваю посилання")
         } else {
-            Toast.makeText(this, "Не знаю цієї команди. Спробуй календар, будильник, калькулятор, камеру, контакти, файли, налаштування, Wi‑Fi, звук або команду «знайди ...». Вимкнення пристрою напряму недоступне.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Не знаю цієї команди. Спробуй календар, будильник, калькулятор, камеру, ліхтарик, галерею, карти, дзвінки, контакти, файли або налаштування. Вимкнення пристрою напряму недоступне.", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -197,6 +216,27 @@ class WakeWordService : Service(), RecognitionListener {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         } catch (_: Exception) {
             Toast.makeText(this, "Не вдалося відкрити посилання. Перевір інтернет або браузер.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun setFlashlight(enabled: Boolean) {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Дозволь доступ до камери в налаштуваннях KH Assistant, щоб керувати ліхтариком.", Toast.LENGTH_LONG).show()
+            return
+        }
+        try {
+            val manager = getSystemService(CameraManager::class.java)
+            val cameraId = manager.cameraIdList.firstOrNull { id ->
+                manager.getCameraCharacteristics(id).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+            }
+            if (cameraId == null) {
+                Toast.makeText(this, "На пристрої немає доступного ліхтарика.", Toast.LENGTH_LONG).show()
+                return
+            }
+            manager.setTorchMode(cameraId, enabled)
+            Toast.makeText(this, if (enabled) "Ліхтарик увімкнено." else "Ліхтарик вимкнено.", Toast.LENGTH_SHORT).show()
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не вдалося перемкнути ліхтарик. Перевір дозвіл камери або закрий застосунок, який використовує камеру.", Toast.LENGTH_LONG).show()
         }
     }
 
