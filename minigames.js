@@ -275,4 +275,18 @@ if(shop){shop.innerHTML='';titleItems.forEach(item=>{const owned=rewardState.own
 $('#daily-claim')?.addEventListener('click',()=>{const today=new Date().toISOString().slice(0,10);if(rewardState.daily===today)return;const dailyExtra=rewardState.equipped==='legend'?5:0;rewardState.daily=today;rewardState.coins+=25+dailyExtra;rewardState.xp+=5;saveRewardState();renderRewards();toast('Щоденна нагорода: +'+(25+dailyExtra)+' 🪙');});
 renderRewards();
 
+
+/* Classic / Metro Royale visual mode and extraction mini-game. */
+const modeRoot=$('#game-grid');
+const modeDescription=$('#game-mode-description');
+const modeButtons=[...document.querySelectorAll('[data-game-mode]')];
+const modeCopy={classic:'Тренуй реакцію та точність, наче перед класичним матчем.',metro:'Metro Royale: лутайся, оцінюй ризик і вчасно евакуюйся. Увімкнено темнішу тактичну тему та спеціальний рейд.'};
+modeButtons.forEach(btn=>btn.addEventListener('click',()=>{const mode=btn.dataset.gameMode;modeButtons.forEach(b=>{const active=b===btn;b.classList.toggle('active',active);b.querySelector('b').textContent=active?'Обрано ✓':'Обрати режим →'});if(modeRoot)modeRoot.dataset.mode=mode;if(modeDescription)modeDescription.textContent=modeCopy[mode];if(mode==='metro'&&challengeEl)challengeEl.textContent='Metro Royale: знайди цінний лут і евакуюйся живим.';}));
+let metroLoot=0,metroTurns=0,metroEnded=false;
+const metroLootEl=$('#metro-loot'),metroTurnsEl=$('#metro-turns'),metroResult=$('#metro-result'),metroSearch=$('#metro-search'),metroExtract=$('#metro-extract');
+function renderMetro(){if(metroLootEl)metroLootEl.textContent=String(metroLoot);if(metroTurnsEl)metroTurnsEl.textContent=String(metroTurns);if(metroSearch)metroSearch.disabled=metroEnded||metroTurns>=5;if(metroExtract)metroExtract.disabled=metroEnded||metroLoot<=0;}
+function resetMetro(){metroLoot=0;metroTurns=0;metroEnded=false;if(metroResult)metroResult.textContent='Ти на вході до метро. Шукай лут, але стеж за ризиком!';renderMetro();}
+metroSearch?.addEventListener('click',()=>{if(metroEnded||metroTurns>=5)return;metroTurns++;const roll=Math.random();if(roll<.2){metroLoot=0;metroEnded=true;if(metroResult)metroResult.textContent='Засідка! Лут втрачено, рейд завершено. Спробуй ще раз.';toast('Рейд провалено — наступного разу обережніше.');}else{const found=roll>.82?100:roll>.58?55:25;metroLoot+=found;if(metroResult)metroResult.textContent='Знайдено '+found+' монет вартості луту. '+(metroTurns>=5?'Шлях далі закритий — час евакуюватися!':'Продовжити пошук чи забрати лут?');if(metroTurns>=5)metroEnded=true;}renderMetro();});
+metroExtract?.addEventListener('click',()=>{if(metroEnded||metroLoot<=0)return;const earned=Math.max(5,Math.floor(metroLoot/5));rewardGame('metro',earned,10,'Metro Royale: успішна евакуація');metroEnded=true;if(metroResult)metroResult.textContent='Евакуація успішна! Ти забрав '+metroLoot+' вартості луту та отримав '+earned+' 🪙 на сайті.';toast('Евакуація успішна!');renderMetro();});
+$('#metro-reset')?.addEventListener('click',resetMetro);renderMetro();
 })();
