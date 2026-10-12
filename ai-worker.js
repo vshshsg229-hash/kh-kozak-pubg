@@ -1,11 +1,11 @@
 /**
  * Kozak AI secure backend for Cloudflare Workers.
  * Required secret: OPENAI_API_KEY
- * Optional vars: OPENAI_MODEL (default: gpt-4.1-mini), ALLOWED_ORIGIN (your GitHub Pages origin)
+ * Required variable: ALLOWED_ORIGIN (your exact GitHub Pages origin). Optional: OPENAI_MODEL (default: gpt-4.1-mini)
  *
  * Deploy this file as a Cloudflare Worker. Keep OPENAI_API_KEY in Worker Secrets,
  * never in website JavaScript. Then send /ai-endpoint https://YOUR-WORKER.workers.dev/chat
- * inside Kozak AI. Configure rate limiting before sharing publicly.
+ * inside Kozak AI. Set ALLOWED_ORIGIN to the exact GitHub Pages origin and configure rate limiting before sharing publicly.
  */
 const SYSTEM_PROMPT = `You are Kozak AI, the friendly assistant for the KH么Kozak 3.1 PUBG Mobile blogger website.
 Speak Ukrainian by default and English when requested or when the user writes in English. Be warm, kind, lightly playful, and respectful; use occasional hearts/emojis naturally without overdoing it.
@@ -17,8 +17,8 @@ Do not request or expose API keys, passwords, or private account credentials. Be
 export default {
  async fetch(request, env) {
   const origin = request.headers.get('Origin') || '';
-  const allowedOrigin = env.ALLOWED_ORIGIN || '*';
-  const corsOrigin = allowedOrigin === '*' || origin === allowedOrigin ? (allowedOrigin === '*' ? '*' : origin) : 'null';
+  const allowedOrigin = env.ALLOWED_ORIGIN || '';
+  const corsOrigin = allowedOrigin && origin === allowedOrigin ? origin : 'null';
   const headers = {
    'Access-Control-Allow-Origin': corsOrigin,
    'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -26,6 +26,7 @@ export default {
    'Access-Control-Max-Age': '86400',
    'Vary': 'Origin'
   };
+  if (!allowedOrigin) return Response.json({error:'Set the ALLOWED_ORIGIN variable to your exact GitHub Pages origin before using this Worker'}, {status:503,headers});
   if (request.method === 'OPTIONS') return new Response(null, {status: 204, headers});
   if (request.method !== 'POST') return Response.json({error:'Use POST'}, {status:405,headers});
   if (corsOrigin === 'null') return Response.json({error:'Origin not allowed'}, {status:403,headers});
