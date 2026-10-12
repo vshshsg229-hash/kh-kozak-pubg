@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090b10"><meta name="description" content="KH Assistant — голосовий помічник для сайту KH么Kozak на телефоні, планшеті та ПК.">
 <title>KH Assistant · KH么Kozak</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="assistant-manifest.webmanifest">
 <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="site-v4.css?v=7"><link rel="stylesheet" href="assistant.css?v=1">
 </head>
 <body><a class="skip-link" href="#main">До вмісту</a>
@@ -14,8 +14,8 @@
 <div class="kha-device-row"><span>📱 Телефон</span><span>▣ Планшет</span><span>⌨️ ПК</span></div></section>
 <section class="kha-console" aria-label="Голосовий помічник">
 <div class="kha-orb-wrap"><div class="kha-orb" id="assistant-orb"><span>KH</span><small>么</small></div></div>
-<div class="kha-state" id="assistant-state" aria-live="polite">Помічник готовий</div><p class="kha-hint" id="assistant-hint">Натисни мікрофон і скажи: «Козак, відкрий мініігри».</p>
-<div class="kha-actions"><button class="btn btn-primary kha-mic" id="assistant-mic" type="button"><span>🎙️</span> Увімкнути голос</button><button class="btn btn-glass" id="assistant-stop" type="button" disabled>■ Зупинити</button><button class="btn btn-glass" id="assistant-speak-toggle" type="button" aria-pressed="true">🔊 Голос: увімкнено</button></div>
+<div class="kha-state" id="assistant-state" aria-live="polite">Помічник готовий</div><p class="kha-hint" id="assistant-hint">Натисни мікрофон, щоб активувати прослуховування у відкритій вкладці, потім скажи: «Козак, відкрий мініігри».</p>
+<div class="kha-actions"><button class="btn btn-primary kha-mic" id="assistant-mic" type="button"><span>🎙️</span> Увімкнути «Козак»</button><button class="btn btn-glass" id="assistant-stop" type="button" disabled>■ Зупинити</button><button class="btn btn-glass" id="assistant-speak-toggle" type="button" aria-pressed="true">🔊 Голос: увімкнено</button></div>
 <div class="kha-input-row"><label for="assistant-command">Або напиши команду</label><form id="assistant-form"><input id="assistant-command" name="command" autocomplete="off" placeholder="Наприклад: відкрий YouTube" maxlength="180"><button class="btn btn-primary" type="submit">Виконати ↗</button></form></div>
 <div class="kha-response" id="assistant-response" role="status" aria-live="polite"><strong>KH:</strong> Привіт! Я готовий допомогти з командами сайту.</div>
 <div class="kha-history"><div class="kha-section-head"><h2>Останні команди</h2><button class="kha-clear" id="assistant-clear" type="button">Очистити</button></div><ol id="assistant-history"><li>Тут з’являться твої команди.</li></ol></div>
