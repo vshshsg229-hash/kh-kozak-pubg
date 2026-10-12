@@ -1,13 +1,17 @@
 {
-  "id": "./",
-  "name": "KH么Kozak — PUBG Mobile",
+  "id": "./minigames.html?app=1",
+  "name": "KH么Kozak Gaming App",
   "short_name": "KH Kozak",
-  "description": "Особистий PUBG Mobile блог: кліпи, аватарки, мініігри та щоденні нагороди.",
+  "description": "Ігровий застосунок KH么Kozak: арена, Metro Royale, мініігри та щоденні нагороди.",
   "lang": "uk",
-  "start_url": "./index.html",
+  "start_url": "./minigames.html?app=1",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
   "background_color": "#090c09",
   "theme_color": "#090c09",
   "icons": [
