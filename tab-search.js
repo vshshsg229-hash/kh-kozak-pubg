@@ -10,8 +10,7 @@ const tabs=[
  {name:'Аватарки',icon:'▧',url:'avatars.html',keys:'аватарки фото картинки'},
  {name:'Мініігри',icon:'🎮',url:'minigames.html',keys:'мініігри ігри гра тир реакція'},
  {name:'Гардероб',icon:'👕',url:'locker.html',keys:'гардероб одяг скіни речі магазин'},
- {name:'Персонажі',icon:'🧍',url:'battlehub.html',keys:'персонажі бійці віктор'},
- {name:'Музика · KH Radio',icon:'🎵',url:'music.html',keys:'музика пісні плейлист радіо radio'}
+  {name:'Музика · KH Radio',icon:'🎵',url:'music.html',keys:'музика пісні плейлист радіо radio'}
 ];
 function render(){
  const q=input.value.trim().toLocaleLowerCase('uk');
