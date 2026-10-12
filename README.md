@@ -24,3 +24,17 @@ Personal PUBG Mobile blogger/player website. Built as a static site for GitHub P
 
 ## Deploy
 Publish the repository's main branch with GitHub Pages. The public Pages URL depends on the repository owner and Pages settings.
+
+
+## Kozak AI: підключення справжньої AI-моделі
+
+Віджет працює у двох режимах: локальні підказки (без сервера) і генеративний AI (після налаштування бекенду). API-ключ не можна додавати в `ai-helper.js` або інші публічні файли сайту.
+
+1. Створи Cloudflare Worker і встав код із `ai-worker.js`.
+2. У налаштуваннях Worker додай Secret `OPENAI_API_KEY` зі своїм ключем. Не надсилай ключ у чат і не публікуй його.
+3. За бажанням задай змінну `ALLOWED_ORIGIN` рівно на адресу GitHub Pages, наприклад `https://vshshsg229-hash.github.io`, і перевір обмеження частоти запитів перед публічним використанням.
+4. Опублікуй Worker та скопіюй його URL.
+5. Відкрий Kozak AI на сайті й надішли команду `/ai-endpoint https://YOUR-WORKER.workers.dev/chat`.
+6. Для відключення введи `/ai-off`. Команда `/forget` очищає локальну історію чату.
+
+Адреса Worker зберігається лише в локальному сховищі браузера цього пристрою. Для роботи на іншому пристрої команду потрібно повторити. Генеративний AI потребує окремого API-ключа та може створювати витрати залежно від використання.
