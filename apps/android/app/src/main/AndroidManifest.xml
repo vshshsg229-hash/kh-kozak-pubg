@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_CALCULATOR" />
+        </intent>
+        <package android:name="com.google.android.calculator" />
+        <package android:name="com.android.calculator2" />
+        <package android:name="com.transsion.calculator" />
+        <package android:name="com.transsion.calculator2" />
+        <package android:name="com.miui.calculator" />
+        <package android:name="com.sec.android.app.popupcalculator" />
+        <package android:name="com.coloros.calculator" />
+        <package android:name="com.oplus.calculator" />
+        <package android:name="com.vivo.calculator" />
+    </queries>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
