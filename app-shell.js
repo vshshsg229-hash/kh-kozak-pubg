@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const views={home:['#kh-app-dashboard'],arena:['#victor-game'],modes:['#kh-app-modes-panel'],games:['.mode-select','.game-grid','.arcade-plus'],gifts:['#rewards']};
-function setTab(name){Object.entries(views).forEach(([key,selectors])=>selectors.forEach(sel=>{const el=$(sel);if(el)el.classList.toggle('kh-app-hidden',key!==name)}));$$('[data-app-tab]').forEach(b=>{const active=b.dataset.appTab===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false')});document.body.dataset.appView=name;window.scrollTo({top:0,behavior:'smooth'});if(name==='arena')window.dispatchEvent(new Event('resize'));}
+function setTab(name){if(name!=='arena'&&$('.vg-screen')?.classList.contains('vg-expanded'))$('#vg-expand-toggle')?.click();Object.entries(views).forEach(([key,selectors])=>selectors.forEach(sel=>{const el=$(sel);if(el)el.classList.toggle('kh-app-hidden',key!==name)}));$$('[data-app-tab]').forEach(b=>{const active=b.dataset.appTab===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false')});document.body.dataset.appView=name;window.scrollTo({top:0,behavior:'smooth'});if(name==='arena')window.dispatchEvent(new Event('resize'));}
 $$('[data-app-tab]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.appTab)));
 $$('[data-app-go]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.appGo)));
 const modeSwitch=$('.victor-game-head .vg-mode-switch'),slot=$('#kh-app-mode-slot');if(modeSwitch&&slot)slot.appendChild(modeSwitch);
