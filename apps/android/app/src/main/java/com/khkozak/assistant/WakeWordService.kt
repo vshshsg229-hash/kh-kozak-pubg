@@ -96,32 +96,74 @@ class WakeWordService : Service(), RecognitionListener {
     }
 
     private fun runCommand(raw: String) {
-        val command = raw.lowercase(Locale.forLanguageTag("uk-UA"))
+        val command = raw.lowercase(Locale.forLanguageTag("uk-UA")).trim()
+        val searchMatch = Regex("^(знайди|пошукай|погугли|пошук)\\s+(.+)$").find(command)
+        if (searchMatch != null) {
+            val query = searchMatch.groupValues[2].trim()
+            openExternalUrl("https://www.google.com/search?q=" + Uri.encode(query), "Шукаю в інтернеті: $query")
+            return
+        }
+
+        when {
+            "налаштуван" in command -> {
+                try {
+                    startActivity(Intent(android.provider.Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } catch (_: Exception) {
+                    Toast.makeText(this, "Не вдалося відкрити налаштування.", Toast.LENGTH_LONG).show()
+                }
+                return
+            }
+            "калькулятор" in command -> {
+                launchAppCategory(Intent.CATEGORY_APP_CALCULATOR, "калькулятор")
+                return
+            }
+            "камера" in command || "фото" in command -> {
+                try {
+                    startActivity(Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } catch (_: Exception) {
+                    Toast.makeText(this, "Не знайшов застосунок камери.", Toast.LENGTH_LONG).show()
+                }
+                return
+            }
+            "браузер" in command || "інтернет" in command -> {
+                openExternalUrl("https://www.google.com", "відкриваю браузер")
+                return
+            }
+        }
+
         val target = when {
             "youtube" in command || "ютуб" in command -> "https://www.youtube.com"
-            "гугл" in command || "google" in command || "пошук" in command -> "https://www.google.com"
+            "гугл" in command || "google" in command -> "https://www.google.com"
             "телеграм" in command || "telegram" in command -> "https://t.me/tt_KH_Kozak"
-            "тікток" in command || "tiktok" in command || "тік ток" in command -> "https://www.tiktok.com/@khkozak4"
+            "тікток" in command || "tiktok" in command || "тік ток" in command -> "https://www.tiktok.com/"
             "pubg" in command || "пабг" in command -> "https://play.google.com/store/apps/details?id=com.tencent.ig"
             "музик" in command -> "https://vshshsg229-hash.github.io/kh-kozak-pubg/music.html"
             "мінігр" in command || "ігри" in command -> "https://vshshsg229-hash.github.io/kh-kozak-pubg/minigames.html"
             else -> null
         }
         if (target != null) {
-            if ("тікток" in command || "tiktok" in command || "тік ток" in command) {
-                val profile = Uri.parse("https://www.tiktok.com/@khkozak4")
-                val appIntent = Intent(Intent.ACTION_VIEW, profile).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage("com.zhiliaoapp.musically")
-                try {
-                    startActivity(appIntent)
-                    return
-                } catch (_: Exception) {
-                    // TikTok is not installed or does not handle this profile link; open the web profile instead.
-                }
-            }
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(target)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            try { startActivity(intent) } catch (_: Exception) {
-                try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@khkozak4")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } catch (_: Exception) { }
-            }
+            openExternalUrl(target, "відкриваю посилання")
+        } else {
+            Toast.makeText(this, "Не знаю цієї команди. Скажи: «Козак, знайди ...», «відкрий калькулятор», YouTube, Telegram або PUBG.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun openExternalUrl(url: String, message: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не вдалося відкрити посилання. Перевір інтернет або браузер.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun launchAppCategory(category: String, label: String) {
+        try {
+            val intent = Intent(Intent.ACTION_MAIN).addCategory(category).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не знайшов застосунок: $label.", Toast.LENGTH_LONG).show()
         }
     }
 
