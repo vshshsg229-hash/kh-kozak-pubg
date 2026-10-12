@@ -1,17 +1,21 @@
 'use strict';
-const CACHE = 'kh-kozak-shell-v1';
+const CACHE = 'kh-kozak-shell-v2';
 const CORE = [
   './',
   './index.html',
   './avatars.html',
   './videos.html',
-  './community.html',
   './minigames.html',
   './style.css',
   './minigames.css',
   './script.js',
-  './community.js',
   './minigames.js',
+  './ai-helper.css',
+  './ai-helper.js',
+  './squad-lab.css',
+  './squad-lab.js',
+  './quick-tools.css',
+  './quick-tools.js',
   './favicon.svg',
   './manifest.webmanifest',
   './kozak-pubg.jpg',
