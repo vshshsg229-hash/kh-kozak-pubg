@@ -116,7 +116,7 @@ class WakeWordService : Service(), RecognitionListener {
                 return
             }
             "галерея" in command || "фотографії" in command || "зображення" in command -> {
-                launchSystemIntent(Intent(Intent.ACTION_VIEW).setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"), "галерею")
+                launchSystemIntent(Intent(Intent.ACTION_GET_CONTENT).setType("image/*").addCategory(Intent.CATEGORY_OPENABLE), "вибір фотографії")
                 return
             }
             "карти" in command || "мапи" in command || "навігац" in command -> {
