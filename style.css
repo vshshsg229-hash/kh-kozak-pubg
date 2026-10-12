@@ -19,3 +19,13 @@
 .game-stats span{padding:8px 10px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:.82rem}
 .game-stats b{color:var(--ink)}
 @media(max-width:700px){.game-grid{grid-template-columns:1fr}.launch-pubg{font-size:.72rem;padding:7px 9px}.aim-arena{height:230px}.memory-card{min-height:58px}}
+
+/* Squad centre */
+.squad-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.map-votes{display:grid;gap:9px;margin:16px 0}
+.map-vote{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:13px;background:var(--bg);color:var(--ink);text-align:left;font-weight:850}
+.map-vote b{display:grid;place-items:center;min-width:30px;height:30px;border-radius:10px;background:var(--panel2)}
+.map-vote[aria-pressed=true]{border-color:var(--acid);background:var(--glow)}
+.map-vote[aria-pressed=true] b{background:var(--acid);color:#111}
+.squad-grid .game-panel h2{font-size:1.7rem}
+@media(max-width:760px){.squad-grid{grid-template-columns:1fr}}
