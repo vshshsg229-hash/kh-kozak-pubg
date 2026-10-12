@@ -1,4 +1,4 @@
-# KH么Kozak — Version 3.1
+# KH么Kozak — Gaming Hub
 
 Personal PUBG Mobile blogger/player website. Built as a static site for GitHub Pages.
 
@@ -11,7 +11,7 @@ Personal PUBG Mobile blogger/player website. Built as a static site for GitHub P
 - Random match loadout/challenge generator and KH Squad Lab.
 - KH Radio music page with YouTube-based playback/search.
 - Kozak AI helper (local scripted site guide; not an LLM service).
-- KH Hub 3.1 on every page: quick links, PWA install prompt, progress backup/restore.
+- KH Hub navigation, PWA install prompt, and progress backup/restore.
 - Service-worker offline shell cache.
 
 ## Local data and limitations
