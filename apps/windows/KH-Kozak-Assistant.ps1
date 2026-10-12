@@ -59,6 +59,12 @@ function Invoke-KHCommand([string]$Text) {
     Start-Process ("https://www.google.com/search?q=" + [System.Uri]::EscapeDataString($query))
     return ("Шукаю в інтернеті: " + $query)
   }
+  if ($t -match 'що ти вмієш|що ти можеш|які твої можливості|які команди|допомога|що можна робити') {
+    return "Я можу відкривати програми та ігри, які є в меню Пуск, запускати калькулятор, камеру, Провідник, налаштування, браузер і сайти, шукати в інтернеті, керувати режимом сну та після окремого підтвердження вимикати або перезапускати Windows. Я не можу обійти дозволи, гарантувати запуск програм, яких немає на комп'ютері, керувати будь-якою грою всередині неї або слухати команди, коли ПК повністю вимкнений."
+  }
+  if ($t -match 'що ти не можеш|чого ти не можеш|твої обмеження|що недоступно') {
+    return "Я не можу працювати, коли комп'ютер повністю вимкнений, обходити системні дозволи, встановлювати програми без підтвердження або гарантувати керування функціями сторонніх ігор. Для голосу потрібні мікрофон і встановлене українське розпізнавання мовлення Windows. Якщо програма не встановлена або не відображається в меню Пуск, я можу не знайти її."
+  }
   if ($t -match 'календар|подію') { Start-Process "ms-calendar:"; return "Відкриваю календар, якщо він установлений." }
   if ($t -match 'калькулятор') { Start-Process "calc.exe"; return "Відкриваю калькулятор." }
   if ($t -match 'камера|фотоапарат') { Start-Process "microsoft.windows.camera:"; return "Відкриваю камеру Windows." }
@@ -83,6 +89,45 @@ function Invoke-KHCommand([string]$Text) {
   if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю TikTok @khkozak4." }
   if ($t -match 'пабг|pubg') { Start-Process "https://play.google.com/store/apps/details?id=com.tencent.ig"; return "Відкриваю сторінку PUBG Mobile." }
   if ($t -match 'браузер|відкрий інтернет') { Start-Process "https://www.google.com"; return "Відкриваю браузер." }
+  if ($t -match '^(відкрий|запусти|відкрити|запустити|зайди в|зайди у)\\s+(.+)
+}
+$recognizer.add_SpeechRecognized({
+  param($sender, $eventArgs)
+  $heard = $eventArgs.Result.Text
+  Write-Host ("Почув: " + $heard) -ForegroundColor Gray
+  if ($heard -match '(?i)\bкозак(е|о)?\b') {
+    $command = ($heard -replace '(?i)\bкозак(е|о)?\b','').Trim(' ', ',', '.', '!', '?')
+    if (-not $command) { $script:armed = $true; Write-Host "Так, слухаю команду…" -ForegroundColor Green; return }
+    $script:armed = $false
+    $answer = Invoke-KHCommand $command
+    Write-Host ("KH: " + $answer) -ForegroundColor Green
+    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
+    return
+  }
+  if ($script:armed) {
+    $script:armed = $false
+    $answer = Invoke-KHCommand $heard
+    Write-Host ("KH: " + $answer) -ForegroundColor Green
+    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
+  }
+})
+$recognizer.RecognizeAsync([System.Speech.Recognition.RecognizeMode]::Multiple)
+while ($true) { Start-Sleep -Seconds 1 }
+) {
+    $requested = $Matches[2].Trim()
+    $startApps = Get-StartApps
+    $app = $startApps | Where-Object { $_.Name -eq $requested } | Select-Object -First 1
+    if (-not $app -and $requested.Length -ge 3) {
+      $app = $startApps | Where-Object { $_.Name -like ("*" + $requested + "*") } | Select-Object -First 1
+    }
+    if ($app) {
+      try {
+        Start-Process "explorer.exe" -ArgumentList ("shell:AppsFolder\\" + $app.AppID)
+        return ("Відкриваю " + $app.Name + ".")
+      } catch { return ("Знайшов " + $app.Name + ", але Windows не вдалося його запустити.") }
+    }
+    return ("Не знайшов програму або гру «" + $requested + "» у меню Пуск. Перевір назву або встанови її.")
+  }
   return "Не знаю цієї команди. Спробуй календар, калькулятор, камеру, галерею, карти, файли, звук, мережу або «знайди ...»."
 }
 $recognizer.add_SpeechRecognized({
