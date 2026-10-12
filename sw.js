@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'kh-kozak-shell-v2';
+const CACHE = 'kh-kozak-shell-v3';
 const CORE = [
   './',
   './index.html',
