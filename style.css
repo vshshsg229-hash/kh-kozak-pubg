@@ -46,3 +46,110 @@
 .tab-search-result:hover,.tab-search-result:focus{border-color:var(--line);background:var(--glow);outline:none}
 .tab-search-empty{padding:12px;color:var(--muted);font-size:.88rem}
 @media(max-width:720px){.tab-search-panel{right:-4px}.header-inner{gap:8px}.header-tools{gap:5px}.header-tools .launch-pubg{padding:9px 11px;min-height:38px}}
+
+
+/* ===== KH KOZAK · INTERFACE REDESIGN 2026 ===== */
+:root{
+ --bg:#080b10;--panel:#101720;--panel2:#151f2a;--ink:#f3f7fb;--muted:#9aa8b8;
+ --acid:#c8ff3d;--line:rgba(197,218,238,.13);--glow:rgba(200,255,61,.12);
+ --radius:20px;--shadow:0 24px 70px rgba(0,0,0,.38)
+}
+html[data-theme="light"]{
+ --bg:#f1f5f7;--panel:#fff;--panel2:#e7edf0;--ink:#17222c;--muted:#5f6f7d;
+ --acid:#557d00;--line:rgba(31,54,70,.15);--glow:rgba(114,160,0,.12);--shadow:0 22px 60px rgba(29,50,64,.12)
+}
+body{
+ background:radial-gradient(ellipse at 12% 0%,rgba(76,110,151,.16),transparent 35%),
+ radial-gradient(ellipse at 90% 20%,var(--glow),transparent 28%),var(--bg);
+ letter-spacing:.005em
+}
+body:before{opacity:.045;background-size:44px 44px}
+::selection{background:var(--acid);color:#111}
+:focus-visible{outline:2px solid var(--acid);outline-offset:3px}
+.site-header{background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom-color:var(--line);box-shadow:0 8px 35px rgba(0,0,0,.12)}
+.header-inner{min-height:78px;gap:20px}
+.brand{font-size:1.16rem;letter-spacing:-.055em}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:var(--glow);box-shadow:0 0 0 5px color-mix(in srgb,var(--glow) 50%,transparent);font-size:1.05rem}
+.nav{gap:5px}
+.nav a{padding:10px 12px;border:1px solid transparent;font-size:.82rem;font-weight:750;white-space:nowrap;transition:background .18s,border-color .18s,color .18s}
+.nav a:hover,.nav a[aria-current=page]{border-color:var(--line);background:var(--panel2);color:var(--ink)}
+.nav a[aria-current=page]{box-shadow:inset 0 -2px 0 var(--acid)}
+.header-tools{gap:8px}
+.icon-btn{min-width:40px;height:40px;border-radius:13px;background:var(--panel2);border-color:var(--line)}
+.icon-btn:hover{background:var(--glow)}
+.btn{min-height:46px;padding:12px 18px;border-radius:13px;background:var(--panel);border-color:var(--line);font-weight:800;transition:transform .18s,box-shadow .18s,border-color .18s,background .18s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.16)}
+.btn-primary{background:var(--acid);border-color:var(--acid);color:#11170b;box-shadow:0 6px 22px color-mix(in srgb,var(--acid) 17%,transparent)}
+.btn-primary:hover{color:#11170b;box-shadow:0 9px 28px color-mix(in srgb,var(--acid) 24%,transparent)}
+.launch-pubg{border-radius:12px}
+.hero{gap:clamp(24px,4vw,56px);padding-top:clamp(42px,6vw,78px);padding-bottom:48px}
+h1{font-size:clamp(3.25rem,7.5vw,6.8rem);letter-spacing:-.085em;line-height:.9}
+h1 span,.accent{color:var(--acid)}
+.lead{font-size:1.04rem;line-height:1.85;color:var(--muted);max-width:620px}
+.hero-art{min-height:clamp(350px,42vw,520px);border-radius:26px;border-color:var(--line);box-shadow:0 30px 80px rgba(0,0,0,.28)}
+.hero-art:after{content:"";position:absolute;inset:12px;border:1px solid rgba(255,255,255,.13);border-radius:18px;pointer-events:none}
+.art-caption{left:28px;right:28px;bottom:28px}
+.tag{border-radius:9px;backdrop-filter:blur(12px)}
+.stats{gap:10px}
+.stat{padding:16px;border-radius:16px;background:linear-gradient(145deg,var(--panel2),var(--panel));border-color:var(--line)}
+.stat b{font-size:1.12rem}
+.section{padding:clamp(34px,5vw,62px) 0}
+.section-head{margin-bottom:26px;gap:28px}
+.section-head p{font-size:.95rem}
+.kicker,.eyebrow{letter-spacing:.14em}
+.cards{gap:16px}
+.card,.hub-card,.game-panel,.challenge,.social-link{
+ border-color:var(--line);box-shadow:0 8px 30px rgba(0,0,0,.07)
+}
+.card{position:relative;padding:24px;border-radius:20px;background:linear-gradient(145deg,color-mix(in srgb,var(--panel2) 86%,transparent),var(--panel))}
+.card:before{content:"";position:absolute;top:0;left:22px;right:22px;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--acid) 60%,var(--line));box-shadow:0 22px 50px rgba(0,0,0,.2)}
+.card-icon{width:48px;height:48px;border-radius:15px;background:var(--glow);border:1px solid color-mix(in srgb,var(--acid) 16%,transparent)}
+.card h3{font-size:1.14rem}
+.card p{line-height:1.75}
+.card-link{display:inline-flex;align-items:center;gap:8px}
+.challenge{padding:clamp(22px,4vw,36px);border-radius:22px;background:linear-gradient(110deg,var(--glow),var(--panel) 68%)}
+.player-hub-grid{gap:16px}
+.hub-card{border-radius:20px;background:linear-gradient(150deg,var(--panel2),var(--panel))}
+.hub-progress{background:color-mix(in srgb,var(--line) 80%,transparent)}
+.social-link{border-radius:16px;background:linear-gradient(120deg,var(--panel2),var(--panel))}
+.footer{padding-top:24px;padding-bottom:30px;border-top:1px solid var(--line);color:var(--muted)}
+.toast{border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(18px)}
+.tab-search-panel{border-radius:18px;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(22px)}
+.tab-search-panel input{border-radius:12px}
+.tab-search-result{border-radius:12px}
+.victor-game{border-radius:24px;overflow:hidden}
+@media(max-width:1080px){
+ .header-inner{gap:12px}.nav a{padding:9px 9px;font-size:.78rem}.brand{font-size:1rem}
+}
+@media(max-width:850px){
+ .header-inner{flex-wrap:wrap;justify-content:space-between;padding-top:12px;padding-bottom:10px;gap:10px}
+ .header-inner>.brand{order:0}.header-tools{order:1;margin-left:auto}
+ .header-inner>.nav{order:2;flex:0 0 100%;width:100%;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding:2px 0 5px;scrollbar-width:none}
+ .header-inner>.nav::-webkit-scrollbar{display:none}
+ .nav a{flex:0 0 auto}
+ .tab-search-panel{top:calc(100% + 4px)}
+ .hero{grid-template-columns:1fr;padding-top:38px}
+ .hero-art{min-height:390px}
+}
+@media(max-width:560px){
+ .wrap{width:min(100% - 28px,1160px)}
+ .header-inner{min-height:0}
+ .brand-mark{width:34px;height:34px}
+ .header-tools{gap:5px}
+ .header-tools .launch-pubg{min-height:38px;padding:8px 10px}
+ .icon-btn{min-width:37px;height:37px;padding:0 9px}
+ .hero{gap:22px;padding-top:30px;padding-bottom:25px}
+ h1{font-size:clamp(3rem,15vw,4.5rem)}
+ .hero-art{min-height:320px;border-radius:20px}
+ .art-caption{left:20px;right:20px;bottom:20px}
+ .stats{gap:7px}.stat{padding:11px;border-radius:13px}.stat b{font-size:.95rem}.stat small{font-size:.7rem}
+ .actions .btn{flex:1 1 auto}
+ .section{padding:32px 0}
+ .section-head{margin-bottom:18px}
+ .cards{gap:12px}
+ .card{padding:19px;border-radius:17px}
+ .tab-search-panel{right:-3px;width:min(390px,calc(100vw - 24px))}
+ .challenge{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){.card:hover,.btn:hover{transform:none}}
