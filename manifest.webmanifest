@@ -2,7 +2,7 @@
   "id": "./minigames.html?app=1",
   "name": "KH么Kozak: Гра • Музика",
   "short_name": "KH Kozak",
-  "description": "Гра, українська музика та твій профіль в одному преміальному чорно-золотому застосунку.",
+  "description": "Гра, українська музика та твій профіль в одному Gaming Hub 4.0 із темним дизайном, червоними та лаймовими акцентами.",
   "lang": "uk",
   "start_url": "./minigames.html?app=1",
   "scope": "./",
@@ -12,8 +12,8 @@
     "minimal-ui"
   ],
   "orientation": "any",
-  "background_color": "#090909",
-  "theme_color": "#090909",
+  "background_color": "#090b10",
+  "theme_color": "#090b10",
   "icons": [
     {
       "src": "./app-icon.svg",
