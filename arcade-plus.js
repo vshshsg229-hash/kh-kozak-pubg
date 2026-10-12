@@ -36,6 +36,16 @@ function xoFinish(w){xoDone=true;if(w==='X'){ $('xo-status').textContent='Ти �
 function xoPlay(i){if(xoBoard[i]||xoDone)return;xoBoard[i]='X';let w=xoWinner(xoBoard);if(w){xoFinish(w);return;}xoTurn='O';xoRender();const empties=xoBoard.map((v,j)=>v?null:j).filter(v=>v!==null);if(empties.length){const move=xoFindMove('O')??xoFindMove('X')??empties[Math.floor(Math.random()*empties.length)];xoBoard[move]='O';w=xoWinner(xoBoard);if(w){xoFinish(w);return;}}xoTurn='X';xoRender();}
 function xoReset(){xoBoard=Array(9).fill('');xoTurn='X';xoDone=false;$('xo-status').textContent='Ти граєш X, комп’ютер — O.';xoRender();}
 $('xo-reset')?.addEventListener('click',xoReset);xoReset();
-/* Online leaderboard requires a trusted API/server. */
-$('arcade-submit-score')?.addEventListener('click',async()=>{const status=$('arcade-global-status'),api=window.KH_LEADERBOARD_API;if(!api){status.textContent='Щоб опублікувати рекорд для всіх, спочатку підключи сервер/API або базу даних. Поточні рекорди збережені на цьому пристрої.';return;}const nickname=($('arcade-nickname')?.value||'KH么Kozak').trim().slice(0,24)||'Гравець';const keys={aim:'aim-best',run:'arcade-best-run',music:'arcade-best-music',memory:'memory-best',wheel:'arcade-best-wheel',xo:'arcade-best-xo'};const scores=Object.entries(keys).map(([game,key])=>({nickname,game,score:Number(get(key,'0'))||0}));try{const res=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scores})});if(!res.ok)throw new Error('HTTP '+res.status);status.textContent='Результати надіслано до API.';}catch(e){status.textContent='Не вдалося надіслати результати. Перевір endpoint і доступ до API.';}});
+/* Publish best local records to Firebase when configured; API fallback remains available. */
+$('arcade-submit-score')?.addEventListener('click',async()=>{
+ const status=$('arcade-global-status'),nickname=($('arcade-nickname')?.value||'KH么Kozak').trim().slice(0,24)||'Гравець';
+ const keys={aim:'aim-best',run:'arcade-best-run',music:'arcade-best-music',memory:'memory-best',wheel:'arcade-best-wheel',xo:'arcade-best-xo'};
+ const scores=Object.entries(keys).map(([game,key])=>({game,score:Number(get(key,'0'))||0})).filter(x=>x.score>0);
+ const memory=scores.find(x=>x.game==='memory');if(memory)memory.score=Math.max(1,1000-Math.min(999,memory.score));
+ const board=window.KH_FIREBASE_LEADERBOARD;
+ if(board){try{await board.publishScores(scores,nickname);return;}catch(e){status.textContent=e.message||'Не вдалося опублікувати рекорди. Перевір Firebase setup.';return;}}
+ const api=window.KH_LEADERBOARD_API;
+ if(!api){status.textContent='Для спільних онлайн-рекордів налаштуй Firebase за інструкцією FIREBASE_SETUP.md.';return;}
+ try{const res=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nickname,scores})});if(!res.ok)throw new Error('HTTP '+res.status);status.textContent='Результати надіслано до API.';}catch(e){status.textContent='Не вдалося надіслати результати. Перевір endpoint і доступ до API.';}
+});
 })();
