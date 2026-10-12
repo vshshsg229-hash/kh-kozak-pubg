@@ -6,7 +6,7 @@ const CORE = [
  './squad-lab.css','./squad-lab.js','./ai-helper.css','./ai-helper.js','./kh-v3.css','./kh-v3.js',
  './site-i18n.css','./site-i18n.js','./lucky-drop.css','./lucky-drop.js',
  './minigames.css','./minigames.js','./arcade-plus.css','./arcade-plus.js','./firebase-config.js','./firebase-leaderboard.js','./database.rules.json','./locker.css','./locker.js','./music.css','./music.js','./battlehub.css',
- './manifest.webmanifest','./favicon.svg','./app-shell.css','./app-shell.js',
+ './manifest.webmanifest','./favicon.svg','./app-shell.css','./app-shell.js','./app-shell.css?v=1','./app-shell.js?v=1',
  './avatar-15.svg','./avatar-16.svg','./avatar-17.svg','./avatar-18.svg','./avatar-19.svg','./avatar-20.svg',
  './avatar-21.svg','./avatar-22.svg','./avatar-23.svg','./avatar-24.svg','./avatar-25.svg','./avatar-26.svg'
 ];
