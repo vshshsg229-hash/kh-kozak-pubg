@@ -1,0 +1,20 @@
+/* KH Kozak AI helper — responsive floating site assistant */
+#kh-ai-launcher{position:fixed;right:18px;bottom:18px;z-index:80;display:flex;align-items:center;gap:10px;padding:11px 16px 11px 11px;border:1px solid var(--acid,#d8ff45);border-radius:999px;background:var(--panel,#121711);color:var(--ink,#f5f7ef);box-shadow:0 12px 36px #0008;font-weight:850;cursor:pointer;transition:transform .2s,border-color .2s}
+#kh-ai-launcher:hover{transform:translateY(-3px);border-color:var(--acid,#d8ff45)}
+.kh-ai-avatar{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:13px;background:var(--acid,#d8ff45);color:#10140b;font-size:.82rem;font-weight:1000;letter-spacing:-.06em;box-shadow:0 0 20px var(--glow,rgba(216,255,69,.13))}
+.kh-ai-launcher-label{display:grid;gap:2px;text-align:left;line-height:1.1}.kh-ai-launcher-label strong{font-size:.83rem}.kh-ai-launcher-label small{font-size:.67rem;color:var(--muted,#a4ad9d);font-weight:650}
+#kh-ai-panel{position:fixed;right:18px;bottom:82px;z-index:81;width:min(390px,calc(100vw - 24px));max-height:min(590px,calc(100dvh - 110px));display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line,rgba(245,248,230,.14));border-radius:23px;background:var(--panel,#121711);color:var(--ink,#f5f7ef);box-shadow:0 24px 80px #000b;transform-origin:bottom right;animation:kh-ai-in .18s ease}
+#kh-ai-panel[hidden]{display:none}
+@keyframes kh-ai-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.kh-ai-head{display:flex;align-items:center;gap:11px;padding:15px;border-bottom:1px solid var(--line,rgba(245,248,230,.14));background:linear-gradient(120deg,var(--glow,rgba(216,255,69,.13)),transparent 80%)}
+.kh-ai-head-copy{min-width:0;flex:1}.kh-ai-head-copy strong{display:block;font-size:.95rem}.kh-ai-head-copy small{display:block;margin-top:4px;color:var(--muted,#a4ad9d);font-size:.72rem}
+.kh-ai-close{width:34px;height:34px;border:1px solid var(--line,rgba(245,248,230,.14));border-radius:50%;background:transparent;color:var(--ink,#f5f7ef);font-size:1.2rem;cursor:pointer}
+.kh-ai-messages{display:flex;flex-direction:column;gap:10px;padding:15px;overflow-y:auto;min-height:150px;max-height:290px;scrollbar-width:thin}
+.kh-ai-message{max-width:94%;padding:11px 12px;border:1px solid var(--line,rgba(245,248,230,.14));border-radius:14px;background:var(--panel2,#171e15);font-size:.85rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.kh-ai-message.user{align-self:flex-end;background:var(--glow,rgba(216,255,69,.13));border-color:color-mix(in srgb,var(--acid,#d8ff45) 40%,transparent)}
+.kh-ai-message.bot{align-self:flex-start}.kh-ai-message a{color:var(--acid,#d8ff45);text-decoration:underline;text-underline-offset:3px}
+.kh-ai-quick{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}.kh-ai-quick button{border:1px solid var(--line,rgba(245,248,230,.14));border-radius:999px;padding:8px 10px;background:transparent;color:var(--ink,#f5f7ef);font-size:.73rem;font-weight:750;cursor:pointer}.kh-ai-quick button:hover{border-color:var(--acid,#d8ff45);color:var(--acid,#d8ff45)}
+.kh-ai-form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line,rgba(245,248,230,.14));background:var(--bg,#090c09)}.kh-ai-form input{min-width:0;flex:1;border:1px solid var(--line,rgba(245,248,230,.14));border-radius:13px;background:var(--panel,#121711);color:var(--ink,#f5f7ef);padding:11px 12px;font-size:.85rem;outline:none}.kh-ai-form input:focus{border-color:var(--acid,#d8ff45)}.kh-ai-form button{border:0;border-radius:13px;padding:0 15px;background:var(--acid,#d8ff45);color:#10140b;font-weight:900;cursor:pointer}
+.kh-ai-note{margin:0;padding:0 14px 12px;color:var(--muted,#a4ad9d);font-size:.67rem;line-height:1.45}
+@media(max-width:480px){#kh-ai-launcher{right:12px;bottom:12px;padding:8px}.kh-ai-launcher-label{display:none}#kh-ai-panel{right:8px;bottom:68px;width:calc(100vw - 16px);max-height:calc(100dvh - 84px)}.kh-ai-messages{max-height:34dvh}}
+@media(prefers-reduced-motion:reduce){#kh-ai-panel{animation:none}#kh-ai-launcher{transition:none}}
