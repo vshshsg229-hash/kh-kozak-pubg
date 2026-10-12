@@ -3,6 +3,22 @@ if(document.getElementById('kh-ai-launcher'))return;
 const el=(tag,attrs={},text='')=>{const n=document.createElement(tag);Object.entries(attrs).forEach(([k,v])=>{if(k==='class')n.className=v;else n.setAttribute(k,v)});if(text)n.textContent=text;return n};
 const mkLink=(label,href)=>{const a=el('a',{href});a.textContent=label;return a};
 const KEY='khkozak:assistant-history-v2',MAX=24;
+const ENDPOINT_KEY='khkozak:ai-endpoint';
+let aiEndpoint='';try{aiEndpoint=localStorage.getItem(ENDPOINT_KEY)||''}catch{}
+async function askRemote(question){
+ if(!aiEndpoint)return false;
+ const typing=el('div',{class:'kh-ai-message bot kh-ai-typing'},en()?'Thinking…':'Думаю…');
+ messages.append(typing);messages.scrollTop=messages.scrollHeight;
+ try{
+  const recent=history.slice(-14).map(m=>({role:m.role==='user'?'user':'assistant',content:m.text}));
+  const response=await fetch(aiEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:recent,language:en()?'en':'uk',page:location.pathname})});
+  if(!response.ok)throw new Error('AI service returned '+response.status);
+  const data=await response.json();const reply=String(data.reply||data.output_text||data.message||'').trim();
+  if(!reply)throw new Error('Empty AI response');
+  typing.remove();say(reply);return true;
+ }catch(err){typing.remove();note.textContent=en()?'AI connection failed; using local helper. Check the endpoint and server setup.':'Не вдалося під’єднати AI — використаю локальні підказки. Перевір адресу сервера та його налаштування.';return false}
+}
+
 let lastIntent='',lastTopic='',history=[];
 try{history=JSON.parse(localStorage.getItem(KEY)||'[]').slice(-MAX)}catch{}
 const launcher=el('button',{id:'kh-ai-launcher',type:'button','aria-controls':'kh-ai-panel','aria-expanded':'false','aria-label':'Відкрити Kozak AI'});
@@ -19,7 +35,7 @@ quickItems.forEach(([label,q])=>{const b=el('button',{type:'button'},label);b.ad
 const form=el('form',{class:'kh-ai-form'});const input=el('input',{type:'text',placeholder:'Напиши, чим допомогти…','aria-label':'Повідомлення помічниці',maxlength:'500',autocomplete:'off',required:''});const send=el('button',{type:'submit'},'➤');form.append(input,send);
 const note=el('p',{class:'kh-ai-note'});panel.append(head,messages,quick,form,note);document.body.append(launcher,panel);
 const en=()=>document.documentElement.lang==='en';
-function refreshUi(){const e=en();launcher.setAttribute('aria-label',e?'Open Kozak AI assistant':'Відкрити Kozak AI');ll.querySelector('small').textContent=e?'Smart site assistant':'Розумна помічниця';hc.querySelector('strong').textContent=e?'Kozak AI · Assistant':'Kozak AI · Помічниця';hc.querySelector('small').textContent=e?'Ask me about the site, PUBG, or your next match 💚':'Питай про сайт, PUBG або наступний матч 💚';close.setAttribute('aria-label',e?'Close assistant':'Закрити');input.placeholder=e?'Ask a question…':'Напиши, чим допомогти…';input.setAttribute('aria-label',e?'Message the assistant':'Повідомлення помічниці');send.textContent=e?'Send':'➤';note.textContent=e?'Smart local assistant: it remembers recent chat on this device and understands common follow-ups. A real generative AI still needs a secure server; no API key is exposed here.':'Розумніша локальна помічниця: пам’ятає недавню розмову на цьому пристрої та розуміє типові уточнення. Для справжнього генеративного AI потрібен захищений сервер; ключ API тут не відкривається.';quickItems.forEach((it,i)=>quick.children[i].textContent=(e?['🎮 Mini-games','🛒 Shop','🎯 Match tip','🧭 Explore site']:quickItems.map(x=>x[0]))[i])}
+function refreshUi(){const e=en();launcher.setAttribute('aria-label',e?'Open Kozak AI assistant':'Відкрити Kozak AI');ll.querySelector('small').textContent=e?'Smart site assistant':'Розумна помічниця';hc.querySelector('strong').textContent=e?'Kozak AI · Assistant':'Kozak AI · Помічниця';hc.querySelector('small').textContent=e?'Ask me about the site, PUBG, or your next match 💚':'Питай про сайт, PUBG або наступний матч 💚';close.setAttribute('aria-label',e?'Close assistant':'Закрити');input.placeholder=e?'Ask a question…':'Напиши, чим допомогти…';input.setAttribute('aria-label',e?'Message the assistant':'Повідомлення помічниці');send.textContent=e?'Send':'➤';note.textContent=e?'Connect a secure AI server with /ai-endpoint URL in chat. Local tips remain available without a server; the model API key stays server-side.':'AI-підключення можна налаштувати командою /ai-endpoint URL у чаті. Без сервера працюють локальні підказки; ключ моделі зберігається лише на сервері.';quickItems.forEach((it,i)=>quick.children[i].textContent=(e?['🎮 Mini-games','🛒 Shop','🎯 Match tip','🧭 Explore site']:quickItems.map(x=>x[0]))[i])}
 refreshUi();document.getElementById('language-toggle')?.addEventListener('click',()=>setTimeout(refreshUi,0));
 function addMessage(text,who='bot',links=[]){const m=el('div',{class:'kh-ai-message '+who});m.textContent=text;if(links.length){const wrap=el('div',{class:'kh-ai-links'});links.forEach(([label,url])=>{wrap.append(document.createTextNode(' '),mkLink(label,url))});m.append(document.createElement('br'),wrap)}messages.append(m);messages.scrollTop=messages.scrollHeight}
 function save(role,text){history.push({role,text:String(text).slice(0,500),at:Date.now()});history=history.slice(-MAX);try{localStorage.setItem(KEY,JSON.stringify(history))}catch{}}
@@ -41,7 +57,17 @@ help:{keys:['допом','help','привіт','hello','hi','хто ти','ти 
 };
 function matchIntent(s){let best=null,score=0;for(const [id,r] of Object.entries(routes)){let n=0;r.keys.forEach(k=>{if(s.includes(k))n+=k.length>5?2:1});if(n>score){score=n;best=id}}return best}
 function currentPage(){const p=location.pathname.toLowerCase();return p.includes('minigames')?'games':p.includes('locker')?'shop':p.includes('music')?'music':p.includes('avatars')?'avatars':p.includes('videos')?'videos':'home'}
-function answer(raw,fromQuick=false){const q=String(raw||'').trim();if(!q)return;if(!fromQuick){addMessage(q,'user');save('user',q)}input.value='';const s=q.toLowerCase();const follow=/^(а як|а де|як це|детальніше|ще|і що|чому|як саме|поясни|розкажи більше|а далі|what about|how do i|and then|why|more)$/i.test(s);
+function answer(raw,fromQuick=false){const q=String(raw||'').trim();if(!q)return;if(!fromQuick){addMessage(q,'user');save('user',q)}input.value='';const s=q.toLowerCase();
+if(/^\/ai-endpoint\s+https?:\/\//i.test(q)){
+ aiEndpoint=q.replace(/^\/ai-endpoint\s+/i,'').trim().replace(/\/$/,'');
+ try{localStorage.setItem(ENDPOINT_KEY,aiEndpoint)}catch{}
+ say(en()?'AI server address saved on this device. Send a message to test it.':'Адресу AI-сервера збережено на цьому пристрої. Напиши повідомлення, щоб перевірити підключення.');
+ note.textContent=en()?'Endpoint is saved locally. Never paste an API secret here.':'Адреса збережена локально. Ніколи не вставляй сюди секретний API-ключ.';
+ return;
+}
+if(/^\/ai-off$/i.test(q)){aiEndpoint='';try{localStorage.removeItem(ENDPOINT_KEY)}catch{}say(en()?'AI server disconnected. Local tips are active.':'AI-сервер від’єднано. Працюють локальні підказки.');return}
+if(/^\/forget$/i.test(q)){history=[];try{localStorage.removeItem(KEY)}catch{}messages.replaceChildren();say(en()?'Chat history cleared on this device.':'Історію чату на цьому пристрої очищено.');return}
+if(aiEndpoint){askRemote(q).then(ok=>{if(!ok)answer(q,true)});return}const follow=/^(а як|а де|як це|детальніше|ще|і що|чому|як саме|поясни|розкажи більше|а далі|what about|how do i|and then|why|more)$/i.test(s);
 let intent=matchIntent(s);if(!intent&&follow)intent=lastIntent;
 if(/що є на сайті|розділ|sections|website map|що вмієш/.test(s)){say(en()?'KH么Kozak includes the home page with loadout tools and daily rewards, mini-games, a shop, avatars, videos, music, and KH Squad Lab.':'На KH么Kozak є головна з генератором наборів і щоденною нагородою, мініігри, магазин, аватарки, відео, музика та KH Squad Lab.',[['Головна','index.html'],['Мініігри','minigames.html'],['Магазин','locker.html'],['Аватарки','avatars.html'],['Відео','videos.html'],['Музика','music.html']]);lastIntent='help';return}
 if(/порада.*матч|як грати|покращити|краще грати|win|перемог|матч|rank|ранг/.test(s)){const tips=[['Позиція','Обирай укриття до перестрілки, не після.'],['Прицілювання','10 хвилин тиру перед матчем: короткі черги й контроль віддачі.'],['Ротація','Рухайся до безпечної зони раніше та уникай відкритих полів.'],['Командна гра','Домовтеся про ролі й короткі голосові команди до висадки.'],['Після матчу','Згадай одну помилку й одну вдалу дію — тренуй по одному аспекту.']];const t=tips[Math.floor(Math.random()*tips.length)];say(en()?t[0]+': '+({'Позиція':'Choose cover before the fight, not after.','Прицілювання':'Warm up for 10 minutes in the range; practise short bursts and recoil control.','Ротація':'Rotate early and avoid crossing open ground.','Командна гра':'Agree on roles and short callouts before landing.','Після матчу':'Review one mistake and one good decision after each match.'}[t[0]]):t[0]+': '+t[1],[['Мініігри','minigames.html']]);lastIntent='challenge';return}
