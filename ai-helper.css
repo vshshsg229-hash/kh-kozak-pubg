@@ -18,3 +18,6 @@
 .kh-ai-note{margin:0;padding:0 14px 12px;color:var(--muted,#a4ad9d);font-size:.67rem;line-height:1.45}
 @media(max-width:480px){#kh-ai-launcher{right:12px;bottom:12px;padding:8px}.kh-ai-launcher-label{display:none}#kh-ai-panel{right:8px;bottom:68px;width:calc(100vw - 16px);max-height:calc(100dvh - 84px)}.kh-ai-messages{max-height:34dvh}}
 @media(prefers-reduced-motion:reduce){#kh-ai-panel{animation:none}#kh-ai-launcher{transition:none}}
+.kh-ai-typing{opacity:.72;font-style:italic;animation:kh-ai-pulse 1.1s ease-in-out infinite alternate}
+@keyframes kh-ai-pulse{from{opacity:.45}to{opacity:.95}}
+@media(prefers-reduced-motion:reduce){.kh-ai-typing{animation:none}}
