@@ -1,0 +1,40 @@
+(()=>{'use strict';
+const $=s=>document.querySelector(s);
+const state=$('#assistant-state'),hint=$('#assistant-hint'),response=$('#assistant-response'),orb=$('#assistant-orb'),mic=$('#assistant-mic'),stop=$('#assistant-stop'),speakToggle=$('#assistant-speak-toggle'),form=$('#assistant-form'),input=$('#assistant-command'),history=$('#assistant-history');
+let recognition=null,listening=false,speechEnabled=true,restartTimer=null;
+const routes=[
+{keys:['головн','на головну','домівк'],name:'головну сторінку',url:'index.html'},
+{keys:['мінігр','ігри','аркад','рейтинг','подарунк','нагород'],name:'мініігри та нагороди',url:'minigames.html#rewards'},
+{keys:['музик','радіо','плейлист'],name:'KH Radio',url:'music.html'},
+{keys:['відео','кліп','тікток відео'],name:'відео',url:'videos.html'},
+{keys:['аватар'],name:'галерею аватарок',url:'avatars.html'},
+{keys:['магазин','гардероб','споряджен'],name:'магазин спорядження',url:'locker.html'},
+{keys:['battle hub','батл хаб','персонаж','режим метро'],name:'Battle Hub',url:'battlehub.html'},
+{keys:['профіл'],name:'профіль',url:'index-v3.html'},
+{keys:['помічник','асистент'],name:'KH Assistant',url:'assistant.html'}
+];
+function speak(text){if(!speechEnabled||!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='uk-UA';u.rate=1;window.speechSynthesis.speak(u)}
+function say(text,voice=true){response.innerHTML='';const strong=document.createElement('strong');strong.textContent='KH: ';response.append(strong,document.createTextNode(text));if(voice)speak(text)}
+function addHistory(command,result){const empty=history.querySelector('li');if(empty&&empty.textContent.includes('Тут з’являться'))history.innerHTML='';const li=document.createElement('li');li.textContent='«'+command+'» — '+result;history.prepend(li);while(history.children.length>6)history.lastElementChild.remove()}
+function openUrl(url,label){say('Відкриваю '+label+'.');addHistory(lastCommand,'відкриваю '+label);window.setTimeout(()=>{location.href=url},350)}
+let lastCommand='';
+function normalize(s){return s.toLocaleLowerCase('uk-UA').replace(/[.,!?;:]/g,' ').replace(/\s+/g,' ').trim()}
+function handleCommand(raw){const original=String(raw||'').trim();if(!original)return;lastCommand=original;let command=normalize(original).replace(/^(будь ласка\s+)?(козак[ео]?\s*)/,'').trim();command=command.replace(/^(будь ласка\s+)?(а ну\s+)?/,'').trim();if(!command){say('Я слухаю. Скажи, що потрібно відкрити.');return}
+if(/^(стоп|зупинись|замовкни|досить)$/.test(command)){stopListening();say('Голосове прослуховування вимкнено.');addHistory(original,'зупинено');return}
+if(command.includes('допомог')||command.includes('що ти вмієш')||command.includes('команд')){const t='Я відкриваю розділи сайту, YouTube, Google, Telegram, TikTok і сторінку PUBG у Play Маркеті. Скажи, наприклад, Козак, відкрий музику.';say(t);addHistory(original,'довідка');return}
+if(command.includes('час')||command.includes('котра година')){const t='Зараз '+new Intl.DateTimeFormat('uk-UA',{hour:'2-digit',minute:'2-digit'}).format(new Date());say(t);addHistory(original,t);return}
+if(command.includes('пошук')||command.startsWith('знайди ')||command.startsWith('погугли ')){const q=command.replace(/^(зроби )?пошук( в гуглі)?|^(знайди|погугли)\s*/,'').trim();if(q){openUrl('https://www.google.com/search?q='+encodeURIComponent(q),'пошук Google за запитом '+q);return}}
+if(command.includes('youtube')||command.includes('ютуб')){openUrl('https://www.youtube.com/','YouTube');return}
+if(command.includes('google')||command.includes('гугл')){openUrl('https://www.google.com/','Google');return}
+if(command.includes('telegram')||command.includes('телеграм')){openUrl('https://t.me/tt_KH_Kozak','Telegram');return}
+if(command.includes('tiktok')||command.includes('тікток')||command.includes('тік ток')){openUrl('https://www.tiktok.com/@khkozak4','TikTok');return}
+if(command.includes('pubg')||command.includes('пабг')){openUrl('https://play.google.com/store/apps/details?id=com.tencent.ig','PUBG Mobile у Play Маркеті');return}
+if(command.includes('налаштуван')){const t='Я не можу змінювати системні налаштування через вебсайт. Відкрий налаштування пристрою вручну.';say(t);addHistory(original,'обмеження браузера');return}
+const route=routes.find(r=>r.keys.some(k=>command.includes(k)));if(route){openUrl(route.url,route.name);return}
+if(command.includes('відкрий ')||command.startsWith('запусти ')){const t='Поки що я не маю системного доступу до всіх програм. Спробуй YouTube, Google, Telegram, TikTok, PUBG або розділи KH么Kozak.';say(t);addHistory(original,'команду не знайдено');return}
+const t='Не впізнав команду. Скажи «Козак, відкрий мініігри», «відкрий YouTube» або натисни одну з карток нижче.';say(t);addHistory(original,'потрібне уточнення')}
+function setListening(on){listening=on;mic.disabled=on;stop.disabled=!on;mic.innerHTML=on?'<span>🎙️</span> Слухаю…':'<span>🎙️</span> Увімкнути голос';orb.classList.toggle('is-listening',on);state.textContent=on?'Слухаю голосові команди':'Помічник готовий';hint.textContent=on?'Скажи «Козак, відкрий музику» або назву розділу. Для завершення скажи «Козак, стоп».':'Натисни мікрофон і скажи: «Козак, відкрий мініігри».'}
+function stopListening(){listening=false;if(restartTimer)clearTimeout(restartTimer);if(recognition){try{recognition.stop()}catch(_){}}setListening(false)}
+function startListening(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){say('Цей браузер не підтримує голосове розпізнавання. Спробуй Chrome або введи команду текстом.');return}if(listening)return;try{recognition=new SR();recognition.lang='uk-UA';recognition.continuous=true;recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onstart=()=>setListening(true);recognition.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal){const text=e.results[i][0].transcript.trim();if(text)handleCommand(text)}}};recognition.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){stopListening();say('Немає дозволу на мікрофон. Дозволь його в налаштуваннях сайту браузера.');}else if(e.error==='network'){state.textContent='Проблема мережі';hint.textContent='Перевір інтернет і спробуй ще раз.'}};recognition.onend=()=>{if(listening){restartTimer=setTimeout(()=>{if(listening&&recognition){try{recognition.start()}catch(_){}}},500)}else setListening(false)};recognition.start();say('Я слухаю. Можеш сказати «Козак» перед командою.',false)}catch(_){stopListening();say('Не вдалося ввімкнути мікрофон. Перезавантаж сторінку та перевір дозвіл браузера.')}}
+mic.addEventListener('click',startListening);stop.addEventListener('click',()=>{stopListening();say('Добре, більше не слухаю.',false)});speakToggle.addEventListener('click',()=>{speechEnabled=!speechEnabled;speakToggle.setAttribute('aria-pressed',String(speechEnabled));speakToggle.textContent=speechEnabled?'🔊 Голос: увімкнено':'🔇 Голос: вимкнено';if(!speechEnabled&&'speechSynthesis'in window)window.speechSynthesis.cancel();else speak('Голосова відповідь увімкнена')});form.addEventListener('submit',e=>{e.preventDefault();handleCommand(input.value);input.value=''});document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>handleCommand(b.dataset.command)));$('#assistant-clear').addEventListener('click',()=>{history.innerHTML='<li>Історію очищено.</li>'});window.addEventListener('pagehide',()=>{if(recognition){try{recognition.stop()}catch(_){}}if('speechSynthesis'in window)window.speechSynthesis.cancel()});
+})();
