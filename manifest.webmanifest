@@ -1,8 +1,8 @@
 {
   "id": "./minigames.html?app=1",
-  "name": "KH么Kozak Gaming App",
+  "name": "KH么Kozak: Гра • Музика",
   "short_name": "KH Kozak",
-  "description": "Ігровий застосунок KH么Kozak: арена, Metro Royale, мініігри та щоденні нагороди.",
+  "description": "Гра, українська музика та твій профіль в одному преміальному чорно-золотому застосунку.",
   "lang": "uk",
   "start_url": "./minigames.html?app=1",
   "scope": "./",
@@ -17,7 +17,7 @@
   "icons": [
     {
       "src": "./app-icon.svg",
-      "sizes": "any",
+      "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
