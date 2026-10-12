@@ -1,0 +1,52 @@
+name: Build and publish KH Kozak APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "android-wrapper/**"
+      - ".github/workflows/android-apk.yml"
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build APK
+        working-directory: android-wrapper
+        run: gradle assembleDebug
+
+      - name: Publish downloadable APK release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-v1.0.${{ github.run_number }}
+          name: KH么Kozak Android APK v1.0.${{ github.run_number }}
+          body: |
+            Безкоштовна Android-версія KH么Kozak.
+            Завантажте файл APK на Android-пристрій і відкрийте його для встановлення.
+            Якщо Android попросить дозвіл, дозвольте встановлення з цього джерела лише якщо довіряєте файлу.
+            Це тестова збірка для прямого розповсюдження, не публікація в Google Play.
+          files: android-wrapper/app/build/outputs/apk/debug/app-debug.apk
+          fail_on_unmatched_files: true
+          make_latest: true
