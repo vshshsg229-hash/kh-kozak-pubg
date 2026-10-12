@@ -1,0 +1,28 @@
+/* KH么Kozak Gaming Hub 4.0 — shared interior-page polish */
+:root{--hub-red:#ff4d42;--hub-lime:#d6ff57;--hub-ink:#f3f6fc;--hub-muted:#a0a9b7;--hub-line:rgba(255,255,255,.11)}
+html{scroll-behavior:smooth}
+body{background-color:#090b10!important;background-image:radial-gradient(ellipse at 90% 0%,rgba(255,77,66,.09),transparent 35%),radial-gradient(ellipse at 0% 45%,rgba(214,255,87,.045),transparent 28%)!important;color:var(--hub-ink)}
+.site-header{position:sticky!important;top:0;z-index:100!important;background:rgba(9,11,16,.92)!important;border-bottom:1px solid var(--hub-line)!important;backdrop-filter:blur(18px)}
+.site-header .header-inner{gap:14px!important;min-height:76px}
+.site-header .brand{font-weight:900!important;letter-spacing:-.035em!important;white-space:nowrap}
+.site-header .brand-mark{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--hub-red),#a51d1d);color:white;box-shadow:0 8px 24px #ff4d4230}
+.v3-brand-badge{font-size:.62rem!important;letter-spacing:.08em!important;padding:4px 7px!important;border-radius:7px!important;background:rgba(214,255,87,.12)!important;color:var(--hub-lime)!important;border:1px solid rgba(214,255,87,.22)!important}
+.site-header .nav{gap:4px!important;flex-wrap:nowrap}
+.site-header .nav a{border-radius:10px!important;padding:10px 11px!important;color:#a0a9b7!important;font-size:.82rem!important;transition:background .2s,color .2s}
+.site-header .nav a:hover,.site-header .nav a[aria-current=page]{background:rgba(255,255,255,.075)!important;color:#fff!important}
+.site-header .nav a[aria-current=page]{box-shadow:inset 0 -2px var(--hub-red)}
+.btn,.icon-btn{transition:transform .18s ease,border-color .18s ease,filter .18s ease}
+.btn:hover,.icon-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.btn-primary,.launch-pubg{background:var(--hub-red)!important;border-color:var(--hub-red)!important;color:#fff!important}
+.accent,.music-hero .accent{color:var(--hub-red)!important}
+.page-intro,.music-hero{padding-top:clamp(28px,5vw,58px)!important}
+.page-intro h1,.music-hero h1{letter-spacing:-.055em}
+.site-header .header-tools{gap:8px}
+.footer{border-top:1px solid var(--hub-line)!important;margin-top:44px!important;padding-top:22px!important;padding-bottom:30px!important;color:var(--hub-muted)}
+.footer a{color:var(--hub-ink)}
+.site-v4-footer-nav{display:flex;gap:8px 14px;flex-wrap:wrap;margin-top:12px}
+.site-v4-footer-nav a{font-size:.82rem;color:var(--hub-muted);text-decoration:none}
+.site-v4-footer-nav a:hover{color:var(--hub-lime)}
+.site-v4-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(214,255,87,.22);background:rgba(214,255,87,.07);color:var(--hub-lime);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:800;letter-spacing:.06em}
+@media(max-width:980px){.site-header .header-inner{flex-wrap:wrap;padding-block:10px}.site-header .nav{order:3;width:100%;overflow-x:auto;padding:2px 0 5px;scrollbar-width:thin}.site-header .nav a{flex:0 0 auto}.site-header .header-tools{margin-left:auto}}
+@media(max-width:560px){.site-header .header-inner{gap:8px}.site-header .brand{font-size:.9rem}.site-header .brand-mark{width:34px;height:34px}.site-header .header-tools .launch-pubg{padding:9px 10px;font-size:.75rem}.site-header .icon-btn{min-width:35px;padding:7px}.footer{gap:14px}}
