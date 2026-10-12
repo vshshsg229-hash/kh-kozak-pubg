@@ -1,7 +1,7 @@
 'use strict';
-const CACHE = 'kh-kozak-shell-v31';
+const CACHE = 'kh-kozak-shell-v40';
 const CORE = [
- './','./index.html','./avatars.html','./videos.html','./minigames.html','./locker.html','./music.html','./battlehub.html',
+ './','./index.html','./index-v3.html','./avatars.html','./videos.html','./minigames.html','./locker.html','./music.html','./battlehub.html',
  './style.css','./script.js','./tab-search.js','./new-home.css','./new-home.js','./site-v4.css','./site-v4.js','./extra-games.css','./extra-games.js','./victor-game.css','./victor-game.js','./quick-tools.css','./quick-tools.js',
  './squad-lab.css','./squad-lab.js','./ai-helper.css','./ai-helper.js','./kh-v3.css','./kh-v3.js',
  './site-i18n.css','./site-i18n.js','./lucky-drop.css','./lucky-drop.js',
