@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "KH么Kozak — PUBG Mobile",
+  "short_name": "KH Kozak",
+  "description": "Особистий PUBG Mobile блог: кліпи, аватарки, мініігри та щоденні нагороди.",
+  "lang": "uk",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#090c09",
+  "theme_color": "#090c09",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
