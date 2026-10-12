@@ -28,12 +28,15 @@ class WakeWordService : Service(), RecognitionListener {
         super.onCreate()
         createChannel()
         val openApp = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val stopService = Intent(this, WakeWordService::class.java).setAction("STOP")
+        val stopAction = PendingIntent.getService(this, 1, stopService, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val notification: Notification = if (Build.VERSION.SDK_INT >= 26) {
             Notification.Builder(this, channelId)
                 .setContentTitle("KH Assistant слухає")
-                .setContentText("Скажи «Козак», щоб дати команду. Натисни, щоб відкрити помічника.")
+                .setContentText("Скажи «Козак», щоб дати команду. Натисни «Зупинити», щоб вимкнути мікрофон.")
                 .setSmallIcon(android.R.drawable.ic_btn_speak_now)
                 .setContentIntent(openApp)
+                .addAction(Notification.Action.Builder(null, "Зупинити слухання", stopAction).build())
                 .setOngoing(true)
                 .build()
         } else {
@@ -135,7 +138,7 @@ class WakeWordService : Service(), RecognitionListener {
             "youtube" in command || "ютуб" in command -> "https://www.youtube.com"
             "гугл" in command || "google" in command -> "https://www.google.com"
             "телеграм" in command || "telegram" in command -> "https://t.me/tt_KH_Kozak"
-            "тікток" in command || "tiktok" in command || "тік ток" in command -> "https://www.tiktok.com/"
+            "тікток" in command || "tiktok" in command || "тік ток" in command -> "https://www.tiktok.com/@khkozak4"
             "pubg" in command || "пабг" in command -> "https://play.google.com/store/apps/details?id=com.tencent.ig"
             "музик" in command -> "https://vshshsg229-hash.github.io/kh-kozak-pubg/music.html"
             "мінігр" in command || "ігри" in command -> "https://vshshsg229-hash.github.io/kh-kozak-pubg/minigames.html"
