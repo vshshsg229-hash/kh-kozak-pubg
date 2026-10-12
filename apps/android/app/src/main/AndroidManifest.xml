@@ -5,6 +5,10 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.APP_CALCULATOR" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
         <package android:name="com.google.android.calculator" />
         <package android:name="com.android.calculator2" />
         <package android:name="com.transsion.calculator" />
