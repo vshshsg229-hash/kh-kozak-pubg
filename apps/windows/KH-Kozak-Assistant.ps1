@@ -12,7 +12,7 @@ if (-not $installed) {
   Write-Host "Після встановлення запусти скрипт ще раз."
   exit 1
 }
-$recognizer = New-Object System.Speech.Recognition.SpeechRecognitionEngine($installed)
+$recognizer = New-Object -TypeName System.Speech.Recognition.SpeechRecognitionEngine -ArgumentList $installed
 $recognizer.LoadGrammar((New-Object System.Speech.Recognition.DictationGrammar))
 $recognizer.SetInputToDefaultAudioDevice()
 $armed = $false
