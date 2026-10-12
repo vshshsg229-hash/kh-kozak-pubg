@@ -10,7 +10,9 @@ import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.content.Intent
 import android.net.Uri
+import android.provider.AlarmClock
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -132,7 +134,7 @@ class WakeWordService : Service(), RecognitionListener {
                 return
             }
             "будильник" in command || "таймер" in command || "годинник" in command -> {
-                launchAppCategory(Intent.CATEGORY_APP_CLOCK, "годинник")
+                launchSystemIntent(Intent(AlarmClock.ACTION_SHOW_ALARMS), "годинник")
                 return
             }
             "калькулятор" in command -> {
