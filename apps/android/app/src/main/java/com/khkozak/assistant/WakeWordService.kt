@@ -195,12 +195,30 @@ class WakeWordService : Service(), RecognitionListener {
             }
         }
 
+        if (command.matches(Regex(".*\\b(що ти вмієш|що ти можеш|які твої можливості|допомога|які команди|що можна робити)\\b.*"))) {
+            speakOrShow("Я можу відкривати встановлені програми та ігри, запускати камеру, калькулятор, карти, галерею, годинник і налаштування; керувати ліхтариком; відкривати сайти та шукати в інтернеті. Скажи: «Козак, відкрий YouTube» або «Козак, запусти Minecraft». Якщо програми немає, спробую знайти її в Play Маркеті. Я не можу обійти системні дозволи, встановлювати програми без підтвердження, гарантовано керувати будь-якою грою всередині неї чи вимикати телефон напряму.")
+            return
+        }
+        if (command.matches(Regex(".*\\b(чого ти не можеш|що ти не можеш|твої обмеження|що недоступно)\\b.*"))) {
+            speakOrShow("Я не можу виконувати дії, заборонені Android, обходити блокування чи дозволи, або керувати всіма функціями сторонніх програм. Для мікрофона, камери та ліхтарика потрібні дозволи; деякі програми мають бути встановлені. Я скажу, якщо дію не вдалося виконати.")
+            return
+        }
+        if (command.matches(Regex("^(відкрий|запусти|відкрити|запустити|зайди в|зайди у)\\s+.+$"))) {
+            val appPhrase = command.replace(Regex("^(відкрий|запусти|відкрити|запустити|зайди в|зайди у)\\s+"), "")
+                .replace(Regex("^(гру|застосунок|додаток|програму)\\s+"), "")
+                .trim()
+            if (appPhrase.isNotBlank() && launchInstalledAppByName(appPhrase)) return
+        }
+
         val target = when {
             "youtube" in command || "ютуб" in command -> "https://www.youtube.com"
             "гугл" in command || "google" in command -> "https://www.google.com"
             "телеграм" in command || "telegram" in command -> "https://t.me/tt_KH_Kozak"
             "тікток" in command || "tiktok" in command || "тік ток" in command -> "https://www.tiktok.com/@khkozak4"
-            "pubg" in command || "пабг" in command -> "https://play.google.com/store/apps/details?id=com.tencent.ig"
+            "pubg" in command || "пабг" in command -> {
+                if (launchPackage("com.tencent.ig", "PUBG Mobile")) null
+                else "https://play.google.com/store/apps/details?id=com.tencent.ig"
+            }
             "музик" in command -> "https://vshshsg229-hash.github.io/kh-kozak-pubg/music.html"
             "мінігр" in command || "ігри" in command -> "https://vshshsg229-hash.github.io/kh-kozak-pubg/minigames.html"
             else -> null
@@ -254,7 +272,53 @@ class WakeWordService : Service(), RecognitionListener {
         } catch (_: Exception) {
             Toast.makeText(this, "Не вдалося відкрити: $label.", Toast.LENGTH_LONG).show()
         }
-    }    private fun launchCalculator() {
+    }    private fun speakOrShow(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun launchPackage(packageName: String, label: String): Boolean {
+        return try {
+            val appIntent = packageManager.getLaunchIntentForPackage(packageName) ?: return false
+            appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(appIntent)
+            Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    private fun launchInstalledAppByName(requestedName: String): Boolean {
+        return try {
+            val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+            val apps = packageManager.queryIntentActivities(launcherIntent, 0)
+            val normalizedRequest = requestedName.lowercase(Locale.ROOT)
+                .replace(Regex("[^\\p{L}\\p{N} ]"), " ")
+                .replace(Regex("\\s+"), " ").trim()
+            val match = apps.firstOrNull { info ->
+                val label = info.loadLabel(packageManager).toString().lowercase(Locale.ROOT)
+                    .replace(Regex("[^\\p{L}\\p{N} ]"), " ")
+                    .replace(Regex("\\s+"), " ").trim()
+                label == normalizedRequest || (normalizedRequest.length >= 3 && label.contains(normalizedRequest))
+            }
+            if (match != null) {
+                val intent = packageManager.getLaunchIntentForPackage(match.activityInfo.packageName)
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    Toast.makeText(this, "Відкриваю " + match.loadLabel(packageManager) + ".", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+            }
+            openExternalUrl("https://play.google.com/store/search?q=" + Uri.encode(requestedName) + "&c=apps", "Не знайшов установлену програму «" + requestedName + "». Шукаю її в Play Маркеті.")
+            true
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не вдалося знайти або відкрити «" + requestedName + "».", Toast.LENGTH_LONG).show()
+            true
+        }
+    }
+
+    private fun launchCalculator() {
         // Android calculator package names differ between manufacturers.
         val packages = listOf(
             "com.google.android.calculator",
