@@ -137,8 +137,8 @@ class WakeWordService : Service(), RecognitionListener {
                 launchSystemIntent(Intent(AlarmClock.ACTION_SHOW_ALARMS), "годинник")
                 return
             }
-            "калькулятор" in command -> {
-                launchAppCategory(Intent.CATEGORY_APP_CALCULATOR, "калькулятор")
+            "калькулятор" in command || "порахуй" in command || "обчисли" in command -> {
+                launchCalculator()
                 return
             }
             "камера" in command || "фото" in command -> {
@@ -254,17 +254,61 @@ class WakeWordService : Service(), RecognitionListener {
         } catch (_: Exception) {
             Toast.makeText(this, "Не вдалося відкрити: $label.", Toast.LENGTH_LONG).show()
         }
+    }    private fun launchCalculator() {
+        // Android calculator package names differ between manufacturers.
+        val packages = listOf(
+            "com.google.android.calculator",
+            "com.android.calculator2",
+            "com.transsion.calculator",
+            "com.transsion.calculator2",
+            "com.miui.calculator",
+            "com.sec.android.app.popupcalculator",
+            "com.coloros.calculator",
+            "com.oplus.calculator",
+            "com.vivo.calculator"
+        )
+        for (packageName in packages) {
+            try {
+                val appIntent = packageManager.getLaunchIntentForPackage(packageName)
+                if (appIntent != null) {
+                    appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(appIntent)
+                    Toast.makeText(this, "Відкриваю калькулятор.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+            } catch (_: Exception) {
+                // Try another known calculator package.
+            }
+        }
+        try {
+            val categoryIntent = Intent(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_APP_CALCULATOR)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            if (categoryIntent.resolveActivity(packageManager) != null) {
+                startActivity(categoryIntent)
+                Toast.makeText(this, "Відкриваю калькулятор.", Toast.LENGTH_SHORT).show()
+                return
+            }
+        } catch (_: Exception) {
+            // Use Play Store search if no calculator app can be launched.
+        }
+        openExternalUrl("https://play.google.com/store/search?q=calculator&c=apps", "Не знайшов калькулятор на телефоні. Відкриваю пошук у Play Маркеті.")
     }
 
     private fun launchAppCategory(category: String, label: String) {
         try {
             val intent = Intent(Intent.ACTION_MAIN).addCategory(category).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            if (intent.resolveActivity(packageManager) == null) {
+                Toast.makeText(this, "Не знайшов застосунок: $label.", Toast.LENGTH_LONG).show()
+                return
+            }
             startActivity(intent)
             Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
         } catch (_: Exception) {
             Toast.makeText(this, "Не знайшов застосунок: $label.", Toast.LENGTH_LONG).show()
         }
     }
+}
 
     override fun onReadyForSpeech(params: Bundle?) {}
     override fun onBeginningOfSpeech() {}
