@@ -38,3 +38,13 @@ h1 span,h2 span,.accent,.eyebrow{color:var(--hub-red)}
 .victor-game button,.vg-mode-switch button,.quick-tool button,.game-card button,.minigame-card button{border-radius:11px}
 .site-header .brand .v3-brand-badge{font-size:.62rem!important}
 @media(max-width:650px){.site-header .nav{scrollbar-color:#ff4d42 #11151d}.site-header .nav a{white-space:nowrap}}
+
+/* 4.0 finish: align the install/app shell with the same visual language */
+.kh-appbar{background:rgba(9,11,16,.94)!important;border-bottom:1px solid var(--hub-line)!important;color:var(--hub-ink)!important;backdrop-filter:blur(18px)}
+.kh-app-brand strong{color:var(--hub-ink)!important;letter-spacing:-.03em}
+.kh-app-brand small{color:var(--hub-muted)!important;letter-spacing:.09em}
+.kh-app-mark{border-radius:13px!important;box-shadow:0 8px 24px rgba(255,77,66,.2)}
+.kh-install-btn{background:var(--hub-red)!important;border-color:var(--hub-red)!important;color:#fff!important;border-radius:11px!important;font-weight:800}
+.avatar-contact-link{transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.avatar-contact-link:hover{transform:translateY(-2px);border-color:#229ed9!important;background:rgba(34,158,217,.16)!important}
+:focus-visible{outline:2px solid var(--hub-lime)!important;outline-offset:3px}
