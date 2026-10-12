@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Emerald Ranger gamer avatar">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071c16"/><stop offset="1" stop-color="#102f25"/></linearGradient>
+ <linearGradient id="metal" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#dce3e8"/><stop offset=".35" stop-color="#596873"/><stop offset="1" stop-color="#202a32"/></linearGradient>
+ <linearGradient id="visor" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#52ff9a" stop-opacity=".35"/><stop offset=".5" stop-color="#b8ffd7"/><stop offset="1" stop-color="#52ff9a" stop-opacity=".45"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#52ff9a" stop-opacity=".32"/><stop offset="1" stop-color="#52ff9a" stop-opacity="0"/></radialGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>
+</defs>
+<rect width="512" height="512" rx="70" fill="url(#bg)"/>
+<circle cx="256" cy="240" r="210" fill="url(#glow)"/>
+<circle cx="256" cy="256" r="205" fill="none" stroke="#52ff9a" stroke-opacity=".45" stroke-width="2"/>
+<circle cx="256" cy="256" r="184" fill="none" stroke="#b8ffd7" stroke-opacity=".15" stroke-width="1.5" stroke-dasharray="12 8"/>
+<path d="M38 92L144 130M474 88L368 130M40 420L150 380M472 420L360 380" stroke="#52ff9a" stroke-opacity=".4" stroke-width="3"/>
+<path d="M0 160H85L112 187M512 160H427L400 187M0 352H84L112 325M512 352H428L400 325" fill="none" stroke="#52ff9a" stroke-opacity=".32" stroke-width="3"/>
+<circle cx="256" cy="203" r="100" fill="#52ff9a" opacity=".22" filter="url(#shadow)"/>
+<!-- tactical shoulders and vest -->
+<path d="M96 512Q104 391 178 358L216 339H296L334 358Q408 391 416 512Z" fill="url(#metal)" stroke="#52ff9a" stroke-width="4"/>
+<path d="M154 401L205 376L225 512H143Z" fill="#102f25" stroke="#52ff9a" stroke-opacity=".6" stroke-width="3"/>
+<path d="M358 401L307 376L287 512H369Z" fill="#102f25" stroke="#52ff9a" stroke-opacity=".6" stroke-width="3"/>
+<path d="M225 365H287L305 512H207Z" fill="#171f27" stroke="#b8ffd7" stroke-opacity=".4" stroke-width="3"/>
+<path d="M238 393H274V419H238ZM238 433H274V459H238ZM238 473H274V499H238Z" fill="#52ff9a" opacity=".85"/>
+<path d="M111 431L155 418L168 456L121 471ZM401 431L357 418L344 456L391 471Z" fill="#102f25" stroke="#52ff9a" stroke-width="3"/>
+<!-- neck -->
+<path d="M219 319H293V370Q256 400 219 370Z" fill="#7d8991"/>
+<!-- helmet silhouette -->
+<path d="M146 223Q137 102 256 83Q375 102 366 223L340 259L172 259Z" fill="url(#metal)" stroke="#52ff9a" stroke-width="5"/>
+<path d="M145 211Q256 177 367 211L355 244Q256 222 157 244Z" fill="#111820" stroke="#b8ffd7" stroke-opacity=".7" stroke-width="3"/>
+<path d="M170 145Q256 91 342 145L323 171Q256 145 189 171Z" fill="#102f25" stroke="#52ff9a" stroke-width="3"/>
+<path d="M188 206L220 196L213 233L180 239ZM324 206L292 196L299 233L332 239Z" fill="#52ff9a" opacity=".55"/>
+<!-- mask -->
+<path d="M174 244Q256 223 338 244L321 307Q256 350 191 307Z" fill="#202a32" stroke="#b8ffd7" stroke-width="3"/>
+<path d="M198 260L239 252L235 273L202 282ZM314 260L273 252L277 273L310 282Z" fill="url(#visor)"/>
+<path d="M244 270L256 262L268 270L264 302H248Z" fill="#52ff9a" opacity=".85"/>
+<path d="M211 312L256 323L301 312" fill="none" stroke="#b8ffd7" stroke-opacity=".6" stroke-width="4"/>
+<!-- side comms -->
+<circle cx="157" cy="254" r="19" fill="#102f25" stroke="#52ff9a" stroke-width="4"/><circle cx="355" cy="254" r="19" fill="#102f25" stroke="#52ff9a" stroke-width="4"/>
+<circle cx="157" cy="254" r="6" fill="#b8ffd7"/><circle cx="355" cy="254" r="6" fill="#b8ffd7"/>
+<!-- unique insignia -->
+<path d="M256 24L270 48L298 52L278 71L283 98L256 85L229 98L234 71L214 52L242 48Z" fill="#52ff9a" fill-opacity=".85" stroke="#b8ffd7" stroke-width="2"/>
+<text x="256" y="489" text-anchor="middle" fill="#b8ffd7" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="4">15 / KH SQUAD</text>
+</svg>
