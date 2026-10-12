@@ -63,7 +63,7 @@ else if(Math.hypot(player.x-b.x,player.y-b.y)<player.r+b.r){bullets.splice(i,1);
 for(const e of enemies){const a=Math.atan2(player.y-e.y,player.x-e.x),d=Math.hypot(player.x-e.x,player.y-e.y);if(d>player.r+e.r-2){e.x+=Math.cos(a)*e.speed*dt;e.y+=Math.sin(a)*e.speed*dt;}else if(player.invuln<=0){hp-=Math.max(4,12-gear.armor*2);player.invuln=.55;}
 e.shoot-=dt;if(mode==='metro'&&e.shoot<=0&&d<260){e.shoot=rand(1.4,2.2);bullets.push({x:e.x,y:e.y,vx:Math.cos(a)*190,vy:Math.sin(a)*190,r:4,life:1.7,enemy:true});}e.flash=Math.max(0,e.flash-dt);}
 if(mode==='metro'){for(const c of crates){if(!c.got&&Math.hypot(c.x-player.x,c.y-player.y)<26){c.got=true;loot++;gear.supplies++;saveGear();noteGear('Ящик Metro Royale: '+loot+'/5.');$('#vg-message').textContent='Лут зібрано: '+loot+'/5';}}
-if(loot>=5&&Math.hypot(player.x-(W-72),player.y-72)<36){finish(true,'Успішна евакуація! Винесено '+loot+' ящиків і знищено '+kills+' ворогів.');return;}}
+if(loot>=5){$('#vg-message').textContent='✅ 5/5 ящиків зібрано! Іди до великого зеленого ВИХОДУ / EVAC у правому верхньому куті й зайди всередину кола.';if(Math.hypot(player.x-(W-72),player.y-72)<43){finish(true,'Успішна евакуація! Винесено '+loot+' ящиків і знищено '+kills+' ворогів.');return;}}}
 for(let i=pickups.length-1;i>=0;i--){const p=pickups[i];p.life-=dt;if(p.life<=0){pickups.splice(i,1);continue;}if(Math.hypot(p.x-player.x,p.y-player.y)<27){pickUp(p);pickups.splice(i,1);}}
 if(mode==='zombie'&&kills>=20){finish(true,'Хвилю зомбі відбито! Фрагів: '+kills+'. Ти отримав бонус за виживання.');return;}
 for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1);}
@@ -74,7 +74,23 @@ else{ctx.fillStyle=flash?'#fff':mode==='zombie'?'#527b43':'#7e4130';ctx.beginPat
 function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle=mode==='metro'?'#161915':mode==='zombie'?'#1c211b':'#1c2719';ctx.fillRect(0,0,W,H);ctx.strokeStyle=mode==='metro'?'#b3a06c12':mode==='zombie'?'#a7e35a12':'#c5f4a00d';ctx.lineWidth=1;
 for(let x=0;x<W;x+=36){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=36){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 for(let i=0;i<12;i++){const x=(i*173+55)%W,y=(i*97+25)%H;ctx.fillStyle=mode==='metro'?'#33372a':mode==='zombie'?'#263225':'#293923';ctx.fillRect(x,y,34,22);ctx.strokeStyle='#77805a55';ctx.strokeRect(x,y,34,22);}
-if(mode==='metro'){ctx.fillStyle='#b5ff4a22';ctx.beginPath();ctx.arc(W-72,72,36,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#b5ff4a';ctx.lineWidth=3;ctx.beginPath();ctx.arc(W-72,72,28,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#dfffad';ctx.font='bold 12px sans-serif';ctx.fillText('EVAC',W-92,76);}
+if(mode==='metro'){
+const ex=W-72,ey=72,pulse=1+Math.sin(elapsed*4)*.08;
+ctx.save();
+ctx.strokeStyle='#b5ff4a';ctx.lineWidth=2;ctx.setLineDash([8,7]);ctx.globalAlpha=.7;
+ctx.beginPath();ctx.moveTo(player.x,player.y);ctx.lineTo(ex,ey);ctx.stroke();ctx.setLineDash([]);
+ctx.globalAlpha=1;
+ctx.fillStyle='#b5ff4a18';ctx.beginPath();ctx.arc(ex,ey,57*pulse,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#b5ff4a35';ctx.beginPath();ctx.arc(ex,ey,43,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle='#b5ff4a';ctx.lineWidth=5;ctx.beginPath();ctx.arc(ex,ey,38,0,Math.PI*2);ctx.stroke();
+ctx.strokeStyle='#eaffd0';ctx.lineWidth=2;ctx.beginPath();ctx.arc(ex,ey,27,0,Math.PI*2);ctx.stroke();
+ctx.fillStyle='#b5ff4a';ctx.fillRect(ex-5,ey-19,10,38);ctx.fillRect(ex-19,ey-5,38,10);
+ctx.fillStyle='#091006';ctx.fillRect(ex-46,ey-61,92,22);
+ctx.strokeStyle='#b5ff4a';ctx.lineWidth=1.5;ctx.strokeRect(ex-46,ey-61,92,22);
+ctx.fillStyle='#eaffd0';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText('ВИХІД / EVAC',ex,ey-46);
+ctx.fillStyle='#fff';ctx.font='bold 11px sans-serif';ctx.fillText(loot>=5?'ЗАЙДИ В КОЛО':'СПОЧАТКУ 5 ЯЩИКІВ',ex,ey+58);
+ctx.textAlign='left';ctx.restore();
+}
 for(const c of crates){if(c.got)continue;ctx.fillStyle='#d5a04a';ctx.fillRect(c.x-10,c.y-10,20,20);ctx.strokeStyle='#ffe2a1';ctx.lineWidth=2;ctx.strokeRect(c.x-10,c.y-10,20,20);ctx.fillStyle='#352818';ctx.fillRect(c.x-2,c.y-9,4,18);}
 const colors={ammo:'#d7dce6',medkit:'#ff6262',armor:'#8ed3ff',weapon:'#ffca64',coins:'#ffe35b',backpack:'#c59cff'},marks={ammo:'A',medkit:'+',armor:'B',weapon:'W',coins:'$',backpack:'R'};
 for(const p of pickups){ctx.fillStyle=colors[p.type]||'#fff';ctx.globalAlpha=.65+.35*Math.sin(elapsed*7+p.x);ctx.beginPath();ctx.arc(p.x,p.y,12,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#111';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText(marks[p.type]||'?',p.x,p.y+4);ctx.textAlign='left';}
