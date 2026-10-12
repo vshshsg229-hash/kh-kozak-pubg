@@ -33,3 +33,16 @@
 /* KH Arcade player hub */
 .player-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}.hub-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,var(--panel),var(--panel2));min-width:0}.hub-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;font-weight:800}.hub-card-top strong{font-size:1.7rem;color:var(--acid)}.hub-level{font-weight:800}.hub-progress{width:100%;height:9px;border-radius:99px;overflow:hidden;background:var(--line)}.hub-progress span{display:block;width:0;height:100%;background:var(--acid);border-radius:inherit;transition:width .25s}.hub-card small{color:var(--muted);line-height:1.5}.hub-title-line{font-size:.92rem}.hub-title-line strong{color:var(--acid)}.hub-pill{font-size:.78rem;padding:6px 9px;border-radius:999px;background:var(--glow);white-space:nowrap}.hub-missions{list-style:none;padding:0;margin:0;width:100%;display:grid;gap:9px}.hub-missions li{padding:9px 10px;border-radius:11px;background:var(--bg);border:1px solid var(--line);font-size:.9rem}.hub-missions li.done{border-color:var(--acid);color:var(--acid)}.hub-card .btn{margin-top:auto}.hub-card button:disabled{opacity:.65;cursor:default}
 @media(max-width:900px){.player-hub-grid{grid-template-columns:1fr 1fr}.hub-wallet{grid-column:1/-1}}@media(max-width:560px){.player-hub-grid{grid-template-columns:1fr}.hub-wallet{grid-column:auto}.hub-card{padding:18px}}
+
+/* Search site tabs */
+.header-inner{position:relative}
+.tab-search-panel{position:absolute;right:0;top:calc(100% + 10px);z-index:35;width:min(390px,calc(100vw - 28px));padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
+.tab-search-panel[hidden]{display:none}
+.tab-search-panel label{display:block;margin-bottom:8px;color:var(--muted);font-size:.8rem;font-weight:850}
+.tab-search-panel input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;outline:none;background:var(--bg);color:var(--ink)}
+.tab-search-panel input:focus{border-color:var(--acid);box-shadow:0 0 0 3px var(--glow)}
+.tab-search-results{display:grid;gap:5px;margin-top:10px}
+.tab-search-result{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--ink);text-align:left}
+.tab-search-result:hover,.tab-search-result:focus{border-color:var(--line);background:var(--glow);outline:none}
+.tab-search-empty{padding:12px;color:var(--muted);font-size:.88rem}
+@media(max-width:720px){.tab-search-panel{right:-4px}.header-inner{gap:8px}.header-tools{gap:5px}.header-tools .launch-pubg{padding:9px 11px;min-height:38px}}
