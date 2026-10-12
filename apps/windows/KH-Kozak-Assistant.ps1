@@ -22,7 +22,7 @@ function Invoke-KHCommand([string]$Text) {
   if ($t -match 'ютуб|youtube') { Start-Process "https://www.youtube.com"; return "Відкриваю YouTube" }
   if ($t -match 'гугл|google|пошук') { Start-Process "https://www.google.com"; return "Відкриваю Google" }
   if ($t -match 'телеграм|telegram') { Start-Process "https://t.me/tt_KH_Kozak"; return "Відкриваю Telegram" }
-  if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю TikTok" }
+  if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю профіль TikTok @khkozak4" }
   if ($t -match 'пабг|pubg') { Start-Process "https://play.google.com/store/apps/details?id=com.tencent.ig"; return "Відкриваю сторінку PUBG Mobile" }
   if ($t -match 'калькулятор') { Start-Process "calc.exe"; return "Відкриваю калькулятор" }
   if ($t -match 'блокнот|нотатки') { Start-Process "notepad.exe"; return "Відкриваю блокнот" }
