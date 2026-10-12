@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#090c09"/><path d="M12 10h10v18L39 10h13L33 29l20 25H40L26 36l-4 4v14H12z" fill="#d8ff45"/><path d="M42 10h10v10H42z" fill="#f5f7ef"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b4"/><stop offset="1" stop-color="#a87527"/></linearGradient></defs>
+<rect width="64" height="64" rx="15" fill="#0a0a0c"/><path d="M32 5 39 12 49 10 52 20 60 25 56 34 60 42 51 48 49 57 39 55 32 62 25 55 15 57 12 48 4 42 8 34 4 25 12 20 15 10 25 12Z" fill="#d9b15a" fill-opacity=".13" stroke="url(#g)" stroke-width="1.8"/>
+<path d="M18 28c-4 0-6 4-7 8l-3 9c-1 4 3 7 7 4l6-5h22l6 5c4 3 8 0 7-4l-3-9c-1-4-3-8-7-8z" fill="url(#g)"/><path d="M17 32v8m-4-4h8" stroke="#17120a" stroke-width="2.4" stroke-linecap="round"/><circle cx="45" cy="34" r="1.7" fill="#17120a"/><circle cx="49" cy="38" r="1.7" fill="#17120a"/><path d="M30 13v12c-2-2-6-1-7 2-1 2 1 4 4 3 2-1 3-2 3-5V17l7-2v7c-2-2-6-1-7 2-1 2 1 4 4 3 2-1 3-2 3-5V12z" fill="url(#g)"/>
+</svg>
