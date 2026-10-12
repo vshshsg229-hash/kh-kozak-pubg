@@ -194,6 +194,16 @@
     @media (max-width:420px) { .drop-grid { grid-template-columns:1fr; } .drop-card { min-height:110px; } }
     @media (max-width:720px) { body { background-attachment:scroll,scroll,scroll; background-position:center,center,center top; } .pubg-banner::before { width:42%; } }
     @media (prefers-reduced-motion:reduce) { .page::before,.pubg-banner,.pubg-banner::before,.pubg-banner::after { animation:none !important; } }
+  
+    .challenge-card { margin:0 0 28px; padding:22px; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:18px; border:1px solid rgba(213,255,69,.3); background:linear-gradient(120deg,rgba(213,255,69,.07),rgba(255,255,255,.018)); }
+    .challenge-card h2 { margin:8px 0; font-size:clamp(24px,4vw,34px); letter-spacing:-.05em; }
+    .challenge-card p { margin:0; color:#c3c4b9; font-size:13px; line-height:1.6; }
+    .challenge-action { display:flex; flex-direction:column; align-items:flex-start; gap:10px; }
+    .challenge-button { padding:12px 15px; border:1px solid rgba(213,255,69,.65); background:rgba(213,255,69,.08); color:var(--acid); font:800 10px/1.2 inherit; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .challenge-button:hover,.challenge-button:focus-visible { background:rgba(213,255,69,.16); }
+    .challenge-count { color:var(--muted); font-size:10px; }
+    @media(max-width:560px) { .challenge-card { grid-template-columns:1fr; padding:17px; } }
+
   </style>
 </head>
 <body>
@@ -280,6 +290,18 @@
           <img src="kozak-pubg.jpg" alt="Скриншот PUBG Mobile: 13 знищень, 1782 шкоди та 25 хвилин виживання">
         </figure>
       </section>
+
+      <section class="challenge-card" aria-labelledby="challenge-title">
+        <div>
+          <p class="eyebrow">Тренування гравця</p>
+          <h2 id="challenge-title">Челендж на сьогодні</h2>
+          <p id="challenge-text" aria-live="polite">Виграй матч, використовуючи лише зброю, яку знайдеш першою.</p>
+        </div>
+        <div class="challenge-action">
+          <button class="challenge-button" id="new-challenge" type="button">Інший челендж ↻</button>
+          <span class="challenge-count" id="challenge-count">Обери власний виклик</span>
+        </div>
+      </section>
       <section class="drop-menu" aria-labelledby="drop-menu-title">
         <div class="drop-head">
           <div>
@@ -299,6 +321,31 @@
     </div>
   </div>
   <script>
+
+    const challengeList = [
+      "Виграй матч, використовуючи лише зброю, яку знайдеш першою.",
+      "Зроби 3 влучні постріли з далекої дистанції.",
+      "Зіграйте з другом і допоможіть одне одному дійти до топ-10.",
+      "Спробуй матч без транспорту — тільки пішки.",
+      "Використовуй у матчі лише один тип зброї.",
+      "Зроби щонайменше 5 фрагів і не забувай про укриття.",
+      "Приземлись у незвичному місці та виживи до топ-10.",
+      "Проведи матч із командною грою: позначай ворогів і ділись лутом.",
+      "Спробуй виграти перестрілку, змінивши позицію після кожної черги.",
+      "Зіграй обережно: виживи якомога довше й обирай вигідні позиції."
+    ];
+    const challengeButton = document.querySelector("#new-challenge");
+    if (challengeButton) {
+      let lastChallenge = 0;
+      challengeButton.addEventListener("click", () => {
+        let next = Math.floor(Math.random() * challengeList.length);
+        if (challengeList.length > 1 && next === lastChallenge) next = (next + 1) % challengeList.length;
+        lastChallenge = next;
+        document.querySelector("#challenge-text").textContent = challengeList[next];
+        document.querySelector("#challenge-count").textContent = "Челендж " + (next + 1) + " / " + challengeList.length;
+      });
+    }
+
     const copyIdButton = document.querySelector(".copy-id");
     const copyStatus = document.querySelector("#copy-status");
     copyIdButton.addEventListener("click", async () => {
