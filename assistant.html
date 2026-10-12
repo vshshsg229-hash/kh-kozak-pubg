@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b10"><meta name="description" content="KH Assistant — голосовий помічник для сайту KH么Kozak на телефоні, планшеті та ПК.">
+<title>KH Assistant · KH么Kozak</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="site-v4.css?v=7"><link rel="stylesheet" href="assistant.css?v=1">
+</head>
+<body><a class="skip-link" href="#main">До вмісту</a>
+<header class="site-header"><div class="wrap header-inner"><a class="brand" href="index.html"><span class="brand-mark">K</span>KH么Kozak</a><nav class="nav" aria-label="Навігація"><a href="index.html">Головна</a><a href="music.html">Музика</a><a href="minigames.html">Мініігри</a><a href="videos.html">Відео</a><a href="avatars.html">Аватарки</a><a href="locker.html">Магазин</a><a href="battlehub.html">Battle Hub</a></nav><div class="header-tools"><button class="icon-btn" id="language-toggle" type="button" aria-label="Switch language">EN</button><button class="icon-btn" id="theme-toggle" type="button" aria-label="Перемкнути тему">☀</button></div></div></header>
+<main id="main" class="wrap kha-main">
+<section class="kha-hero"><div class="kha-eyebrow"><span class="kha-pulse"></span> KH ASSISTANT · VOICE CONTROL</div><h1>Твій голос.<br><span>Твій помічник.</span></h1><p>Керуй розділами KH么Kozak голосом або текстом. Працює у відкритій вкладці браузера на телефоні, планшеті та комп’ютері.</p>
+<div class="kha-device-row"><span>📱 Телефон</span><span>▣ Планшет</span><span>⌨️ ПК</span></div></section>
+<section class="kha-console" aria-label="Голосовий помічник">
+<div class="kha-orb-wrap"><div class="kha-orb" id="assistant-orb"><span>KH</span><small>么</small></div></div>
+<div class="kha-state" id="assistant-state" aria-live="polite">Помічник готовий</div><p class="kha-hint" id="assistant-hint">Натисни мікрофон і скажи: «Козак, відкрий мініігри».</p>
+<div class="kha-actions"><button class="btn btn-primary kha-mic" id="assistant-mic" type="button"><span>🎙️</span> Увімкнути голос</button><button class="btn btn-glass" id="assistant-stop" type="button" disabled>■ Зупинити</button><button class="btn btn-glass" id="assistant-speak-toggle" type="button" aria-pressed="true">🔊 Голос: увімкнено</button></div>
+<div class="kha-input-row"><label for="assistant-command">Або напиши команду</label><form id="assistant-form"><input id="assistant-command" name="command" autocomplete="off" placeholder="Наприклад: відкрий YouTube" maxlength="180"><button class="btn btn-primary" type="submit">Виконати ↗</button></form></div>
+<div class="kha-response" id="assistant-response" role="status" aria-live="polite"><strong>KH:</strong> Привіт! Я готовий допомогти з командами сайту.</div>
+<div class="kha-history"><div class="kha-section-head"><h2>Останні команди</h2><button class="kha-clear" id="assistant-clear" type="button">Очистити</button></div><ol id="assistant-history"><li>Тут з’являться твої команди.</li></ol></div>
+</section>
+<section class="kha-commands"><div class="kha-section-head"><div><span class="kha-eyebrow">COMMAND DECK</span><h2>Що я вмію</h2></div></div><div class="kha-command-grid">
+<button type="button" data-command="відкрий мініігри"><span>🎮</span><strong>Відкрий мініігри</strong><small>Ігри, рейтинг і подарунки</small></button>
+<button type="button" data-command="відкрий музику"><span>🎵</span><strong>Відкрий музику</strong><small>KH Radio</small></button>
+<button type="button" data-command="відкрий відео"><span>▶️</span><strong>Відкрий відео</strong><small>Кліпи та моменти</small></button>
+<button type="button" data-command="відкрий аватарки"><span>🖼️</span><strong>Відкрий аватарки</strong><small>Галерея</small></button>
+<button type="button" data-command="відкрий магазин"><span>🛡️</span><strong>Відкрий магазин</strong><small>Титули й спорядження</small></button>
+<button type="button" data-command="відкрий телеграм"><span>✈️</span><strong>Відкрий Telegram</strong><small>Зв’язок з KH么Kozak</small></button>
+<button type="button" data-command="відкрий TikTok"><span>♪</span><strong>Відкрий TikTok</strong><small>@khkozak4</small></button>
+<button type="button" data-command="відкрий PUBG"><span>🎯</span><strong>Відкрий PUBG</strong><small>Сторінка гри в Play Маркеті</small></button>
+</div></section>
+<section class="kha-limit"><strong>🔐 Чесно про доступ до програм</strong><p>Сайт може відкривати свої сторінки, посилання та підтримувані застосунками посилання. Браузер не дозволяє вебсторінці самостійно керувати всіма програмами ПК/телефона, змінювати системні налаштування або слухати постійно після закриття вкладки. Для повного системного керування потрібен окремий застосунок-компаньйон з дозволами для кожної платформи.</p><p>Голосове розпізнавання залежить від браузера та дозволу на мікрофон; найкраще перевіряти у Chrome через HTTPS.</p></section>
+</main>
+<footer class="wrap footer"><span>© 2026 <strong>KH么Kozak</strong> · KH Assistant</span><a href="index.html">На головну ↗</a></footer>
+<script src="script.js"></script><script src="site-i18n.js"></script><script src="site-v4.js?v=7"></script><script src="assistant.js?v=1"></script>
+</body></html>
