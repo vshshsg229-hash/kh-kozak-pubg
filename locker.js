@@ -66,7 +66,7 @@ $('#claim-crate').addEventListener('click',()=>{const today=new Date().toISOStri
 $('#claim-missions').addEventListener('click',()=>{if(missions.done.length<4||missions.claimed)return;missions.claimed=true;rewards.coins+=60;rewards.xp+=20;save();renderAll();notify('Завдання виконано: +60 🪙 та +20 XP')});
 $('#export-save').addEventListener('click',()=>{const payload=JSON.stringify({rewards,locker:state,missions},null,2);const blob=new Blob([payload],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='kh-kozak-save.json';a.click();URL.revokeObjectURL(url);notify('Збереження експортовано')});
 $('#next-tip').addEventListener('click',()=>{const tip=tips[Math.floor(Math.random()*tips.length)];$('#field-tip-title').textContent=tip[0];$('#field-tip').textContent=tip[1]});
-$('#share-page')?.addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:'KH么Kozak — Персонаж',url:location.href});else{await navigator.clipboard.writeText(location.href);notify('Посилання скопійовано')}}catch{}});
+// Загальну кнопку поширення обробляє script.js.
 if(missions.day!==new Date().toISOString().slice(0,10))missions={day:new Date().toISOString().slice(0,10),done:[],claimed:false};
 renderAll();
 })();
