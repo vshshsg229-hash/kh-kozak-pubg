@@ -66,6 +66,7 @@ class MainActivity : Activity() {
         root.addView(chooseFile)
         root.addView(fileStatus)
         setContentView(root)
+        restoreSelectedFile()
     }
 
     private fun chooseFileForAccess() {
@@ -93,9 +94,16 @@ class MainActivity : Activity() {
         } catch (_: SecurityException) {
             // Some document providers grant only temporary access; keep the current selection usable.
         }
+        getSharedPreferences("kh_assistant_files", MODE_PRIVATE).edit().putString("selected_uri", uri.toString()).apply()
         val displayName = queryDisplayName(uri) ?: uri.lastPathSegment ?: "Вибраний файл"
         fileStatus.text = "Доступ надано до: $displayName"
         Toast.makeText(this, "Файл вибрано. Додаток має доступ лише до цього файлу.", Toast.LENGTH_LONG).show()
+    }
+
+    private fun restoreSelectedFile() {
+        val saved = getSharedPreferences("kh_assistant_files", MODE_PRIVATE).getString("selected_uri", null) ?: return
+        val uri = Uri.parse(saved)
+        fileStatus.text = "Раніше вибраний файл: " + (queryDisplayName(uri) ?: uri.lastPathSegment ?: "Вибраний файл")
     }
 
     private fun queryDisplayName(uri: Uri): String? {
