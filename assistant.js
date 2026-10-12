@@ -27,7 +27,7 @@ if(command.includes('пошук')||command.startsWith('знайди ')||command.
 if(command.includes('youtube')||command.includes('ютуб')){openUrl('https://www.youtube.com/','YouTube');return}
 if(command.includes('google')||command.includes('гугл')){openUrl('https://www.google.com/','Google');return}
 if(command.includes('telegram')||command.includes('телеграм')){openUrl('https://t.me/tt_KH_Kozak','Telegram');return}
-if(command.includes('tiktok')||command.includes('тікток')||command.includes('тік ток')){openUrl('https://www.tiktok.com/@khkozak4','TikTok');return}
+if(command.includes('tiktok')||command.includes('тікток')||command.includes('тік ток')){openUrl('https://www.tiktok.com/@khkozak4','TikTok @khkozak4');return}
 if(command.includes('pubg')||command.includes('пабг')){openUrl('https://play.google.com/store/apps/details?id=com.tencent.ig','PUBG Mobile у Play Маркеті');return}
 if(command.includes('налаштуван')){const t='Я не можу змінювати системні налаштування через вебсайт. Відкрий налаштування пристрою вручну.';say(t);addHistory(original,'обмеження браузера');return}
 const route=routes.find(r=>r.keys.some(k=>command.includes(k)));if(route){openUrl(route.url,route.name);return}
