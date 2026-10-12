@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'kh-kozak-shell-v15';
+const CACHE = 'kh-kozak-shell-v16';
 const CORE = [
  './','./index.html','./avatars.html','./videos.html','./minigames.html','./locker.html','./music.html',
  './style.css','./script.js','./tab-search.js','./victor-game.css','./victor-game.js','./quick-tools.css','./quick-tools.js',
