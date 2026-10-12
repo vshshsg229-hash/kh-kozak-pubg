@@ -108,8 +108,20 @@ class WakeWordService : Service(), RecognitionListener {
             else -> null
         }
         if (target != null) {
+            if ("тікток" in command || "tiktok" in command || "тік ток" in command) {
+                val profile = Uri.parse("https://www.tiktok.com/@khkozak4")
+                val appIntent = Intent(Intent.ACTION_VIEW, profile).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage("com.zhiliaoapp.musically")
+                try {
+                    startActivity(appIntent)
+                    return
+                } catch (_: Exception) {
+                    // TikTok is not installed or does not handle this profile link; open the web profile instead.
+                }
+            }
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(target)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            try { startActivity(intent) } catch (_: Exception) { }
+            try { startActivity(intent) } catch (_: Exception) {
+                try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@khkozak4")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } catch (_: Exception) { }
+            }
         }
     }
 
