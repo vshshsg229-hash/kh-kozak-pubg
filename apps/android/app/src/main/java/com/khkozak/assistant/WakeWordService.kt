@@ -19,6 +19,7 @@ import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import java.util.Locale
 
@@ -26,12 +27,18 @@ class WakeWordService : Service(), RecognitionListener {
     private val channelId = "kh_assistant_voice"
     private val handler = Handler(Looper.getMainLooper())
     private var recognizer: SpeechRecognizer? = null
+    private var textToSpeech: TextToSpeech? = null
     private var armed = false
     private var running = false
 
     override fun onCreate() {
         super.onCreate()
         createChannel()
+        textToSpeech = TextToSpeech(this) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech?.language = Locale("uk", "UA")
+            }
+        }
         val openApp = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val stopService = Intent(this, WakeWordService::class.java).setAction("STOP")
         val stopAction = PendingIntent.getService(this, 1, stopService, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -274,6 +281,7 @@ class WakeWordService : Service(), RecognitionListener {
         }
     }    private fun speakOrShow(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        textToSpeech?.speak(message, TextToSpeech.QUEUE_FLUSH, null, "kh_assistant_reply")
     }
 
     private fun launchPackage(packageName: String, label: String): Boolean {
@@ -372,7 +380,6 @@ class WakeWordService : Service(), RecognitionListener {
             Toast.makeText(this, "Не знайшов застосунок: $label.", Toast.LENGTH_LONG).show()
         }
     }
-}
 
     override fun onReadyForSpeech(params: Bundle?) {}
     override fun onBeginningOfSpeech() {}
@@ -390,6 +397,9 @@ class WakeWordService : Service(), RecognitionListener {
         handler.removeCallbacksAndMessages(null)
         recognizer?.destroy()
         recognizer = null
+        textToSpeech?.stop()
+        textToSpeech?.shutdown()
+        textToSpeech = null
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
     }
