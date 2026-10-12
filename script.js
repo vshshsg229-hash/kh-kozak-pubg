@@ -29,3 +29,8 @@ const render=()=>{const xp=Number(state.xp)||0,level=Math.floor(xp/100)+1,curren
 $('#hub-daily-claim')?.addEventListener('click',()=>{if(state.daily===today)return;state.daily=today;state.coins=(Number(state.coins)||0)+25;state.xp=(Number(state.xp)||0)+5;save();render();const toast=$('#toast');if(toast){toast.textContent='Щоденний бонус: +25 🪙 · +5 XP';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2400);}});
 render();
 })();
+
+/* Progressive Web App: install prompt support and offline shell. */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
