@@ -14,5 +14,5 @@ window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();ins
 installBtn?.addEventListener('click',async()=>{if(installPrompt){installPrompt.prompt();try{const choice=await installPrompt.userChoice;installBtn.textContent=choice.outcome==='accepted'?'✓ Встановлено':'⬇ Встановити';}catch{}installPrompt=null;return;}if(window.matchMedia('(display-mode: standalone)').matches){installBtn.textContent='✓ Застосунок встановлено';return;}alert('Щоб встановити KH Kozak: відкрий меню браузера ⋮ і вибери «Додати на головний екран» або «Встановити застосунок».');});
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 if(new URLSearchParams(location.search).get('app')==='1'){setTimeout(()=>{const daily=$('#daily-claim');if(daily&&!daily.disabled)daily.click();},800);}
-setTab('home');
+setTab(location.hash==='#rewards'?'gifts':'home');
 })();
