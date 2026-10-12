@@ -39,17 +39,17 @@ function Invoke-KHCommand([string]$Text) {
     try { Start-Process "$env:SystemRoot\System32\shutdown.exe" -ArgumentList "/a" -ErrorAction Stop; return "Якщо таймер був активний, його скасовано." }
     catch { return "Не вдалося скасувати таймер. Можливо, запланованої дії немає." }
   }
-  if ($t -match 'вимкни комп.?ютер|вимкни пк|вимкнути комп.?ютер|вимкнути пк') {
+  if ($t -match 'вимкни комп.?ютер|вимкни пк|вимкни пристрій|вимкни віндовс|вимкнути комп.?ютер|вимкнути пк') {
     $script:pendingPowerAction = "shutdown"
     return "Ти справді хочеш вимкнути комп'ютер? Скажи «підтверджую вимкнення» або «скасувати»."
   }
-  if ($t -match 'перезавантаж комп.?ютер|перезапусти комп.?ютер|перезавантаж пк|перезапусти пк') {
+  if ($t -match 'перезавантаж комп.?ютер|перезапусти комп.?ютер|перезавантаж пк|перезапусти пк|перезавантаж систему') {
     $script:pendingPowerAction = "restart"
     return "Ти справді хочеш перезавантажити комп'ютер? Скажи «підтверджую перезапуск» або «скасувати»."
   }
   if ($t -match 'режим сну|приспати комп.?ютер|відправ у сон') {
     try {
-      Add-Type -TypeDefinition '[System.Runtime.InteropServices.DllImport("PowrProf.dll", SetLastError=true)] public static extern bool SetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent);' -Name KHPower -Namespace KHAssistant -ErrorAction SilentlyContinue
+      Add-Type -MemberDefinition '[System.Runtime.InteropServices.DllImport("PowrProf.dll", SetLastError=true)] public static extern bool SetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent);' -Name KHPower -Namespace KHAssistant -ErrorAction SilentlyContinue
       [KHAssistant.KHPower]::SetSuspendState($false, $false, $false) | Out-Null
       return "Надіслано команду переходу в режим сну. Пробудження залежить від Windows та обладнання."
     } catch { return "Не вдалося перейти в режим сну. Перевір налаштування живлення Windows." }
