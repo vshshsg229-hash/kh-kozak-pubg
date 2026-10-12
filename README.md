@@ -32,7 +32,7 @@ Publish the repository's main branch with GitHub Pages. The public Pages URL dep
 
 1. Створи Cloudflare Worker і встав код із `ai-worker.js`.
 2. У налаштуваннях Worker додай Secret `OPENAI_API_KEY` зі своїм ключем. Не надсилай ключ у чат і не публікуй його.
-3. За бажанням задай змінну `ALLOWED_ORIGIN` рівно на адресу GitHub Pages, наприклад `https://vshshsg229-hash.github.io`, і перевір обмеження частоти запитів перед публічним використанням.
+3. Обов’язково задай змінну `ALLOWED_ORIGIN` рівно на origin GitHub Pages, наприклад `https://vshshsg229.github.io` (використай фактичний домен свого опублікованого сайту). Без неї Worker відхилятиме запити. Налаштуй обмеження частоти запитів перед публічним використанням.
 4. Опублікуй Worker та скопіюй його URL.
 5. Відкрий Kozak AI на сайті й надішли команду `/ai-endpoint https://YOUR-WORKER.workers.dev/chat`.
 6. Для відключення введи `/ai-off`. Команда `/forget` очищає локальну історію чату.
