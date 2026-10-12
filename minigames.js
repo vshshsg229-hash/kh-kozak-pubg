@@ -237,12 +237,12 @@ const rewardKey='rewards-v1';
 const defaultRewardState={coins:0,xp:0,games:0,aimHits:0,memoryWins:0,reactionBest:0,daily:'',claimed:[],owned:['rookie'],equipped:'rookie'};
 let rewardState; try{rewardState={...defaultRewardState,...JSON.parse(store.get(rewardKey,'{}'))};}catch{rewardState={...defaultRewardState};}
 const titleItems=[
-{id:'rookie',title:'🌱 Новачок',cost:0,desc:'Перший крок у KH Arcade.'},
-{id:'quick',title:'⚡ Реактивний',cost:100,desc:'Для тих, хто натискає блискавично.'},
-{id:'sharpshooter',title:'🎯 Точний стрілець',cost:150,desc:'Точність — твоя сильна сторона.'},
-{id:'memory',title:'🧠 Майстер пам’яті',cost:180,desc:'Ніщо не вислизає з пам’яті.'},
-{id:'arcade',title:'👑 Король аркади',cost:300,desc:'Ти керуєш цією аркадою.'},
-{id:'legend',title:'🔥 Легенда KH',cost:500,desc:'Елітний титул для справжніх гриндерів.'}];
+{id:'rookie',title:'🌱 Новачок',cost:0,desc:'Базовий титул для старту.',perks:['Стартовий титул','Доступ до всіх мініігор'],perk:{coins:0,xp:0,bonus:0}},
+{id:'quick',title:'⚡ Реактивний',cost:100,desc:'Бонус за швидкість і реакцію.',perks:['+2 🪙 за тест реакції','+5% XP у мінііграх'],perk:{coins:2,xp:5,bonus:0}},
+{id:'sharpshooter',title:'🎯 Точний стрілець',cost:150,desc:'Підтримка для майстрів прицілу.',perks:['+5 🪙 за завершення тиру','+10% XP у мінііграх'],perk:{coins:5,xp:10,bonus:0}},
+{id:'memory',title:'🧠 Майстер пам’яті',cost:180,desc:'Бонус за зосередженість.',perks:['+5 🪙 за перемогу в пам’яті','+10% XP у мінііграх'],perk:{coins:5,xp:10,bonus:0}},
+{id:'arcade',title:'👑 Король аркади',cost:300,desc:'Більше нагород за кожну гру.',perks:['+3 🪙 за будь-яку мінігру','+15% XP у мінііграх','Особливий стиль титулу'],perk:{coins:3,xp:15,bonus:0}},
+{id:'legend',title:'🔥 Легенда KH',cost:500,desc:'Найвищий статус KH Arcade.',perks:['+5 🪙 за будь-яку мінігру','+25% XP у мінііграх','+5 🪙 до щоденного бонусу','Ексклюзивний стиль титулу'],perk:{coins:5,xp:25,bonus:5}}];
 const achievements=[
 {id:'first',icon:'🎮',title:'Перший запуск',desc:'Заверши будь-яку мінігру.',reward:15,test:s=>s.games>=1},
 {id:'five',icon:'🕹️',title:'У розігріві',desc:'Заверши 5 мініігор.',reward:25,test:s=>s.games>=5},
@@ -254,7 +254,7 @@ function saveRewardState(){store.set(rewardKey,JSON.stringify(rewardState));}
 function levelInfo(xp){return{level:Math.floor(xp/100)+1,current:xp%100};}
 function checkAchievements(){let changed=false;achievements.forEach(a=>{if(!rewardState.claimed.includes(a.id)&&a.test(rewardState)){rewardState.claimed.push(a.id);rewardState.coins+=a.reward;changed=true;toast('Досягнення: '+a.title+' · +'+a.reward+' 🪙');}});if(changed)saveRewardState();}
 function addStat(key,amount){rewardState[key]=(Number(rewardState[key])||0)+amount;saveRewardState();renderRewards();}
-function rewardGame(type,coins,xp,message){rewardState.games+=1;rewardState.coins+=coins;rewardState.xp+=xp;saveRewardState();toast('+'+coins+' 🪙 · +'+xp+' XP');renderRewards();}
+function rewardGame(type,coins,xp,message){const title=titleItems.find(t=>t.id===rewardState.equipped)||titleItems[0];let extraCoins=title.perk.coins||0;if(title.id==='quick'&&type!=='reaction')extraCoins=0;if(title.id==='sharpshooter'&&type!=='aim')extraCoins=0;if(title.id==='memory'&&type!=='memory')extraCoins=0;const earnedCoins=coins+extraCoins+(title.id==='arcade'?3:title.id==='legend'?5:0);const earnedXp=Math.round(xp*(1+(title.perk.xp||0)/100));rewardState.games+=1;rewardState.coins+=earnedCoins;rewardState.xp+=earnedXp;saveRewardState();toast('+'+earnedCoins+' 🪙 · +'+earnedXp+' XP');renderRewards();}
 function renderRewards(){
 checkAchievements();
 const info=levelInfo(rewardState.xp);
@@ -270,9 +270,9 @@ if(daily&&dailyStatus){const claimed=rewardState.daily===today;daily.disabled=cl
 const ach=$('#achievement-list');
 if(ach){ach.innerHTML='';achievements.forEach(a=>{const done=rewardState.claimed.includes(a.id),card=document.createElement('div');card.className='achievement'+(done?' complete':'');const icon=document.createElement('span');icon.className='achievement-icon';icon.textContent=a.icon;const copy=document.createElement('span');copy.className='achievement-copy';const strong=document.createElement('strong');strong.textContent=a.title;const small=document.createElement('small');small.textContent=a.desc;copy.append(strong,small);const reward=document.createElement('span');reward.className='achievement-reward';reward.textContent=done?'✓ Отримано':'+'+a.reward+' 🪙';card.append(icon,copy,reward);ach.appendChild(card);});}
 const shop=$('#title-shop');
-if(shop){shop.innerHTML='';titleItems.forEach(item=>{const owned=rewardState.owned.includes(item.id),isEquipped=rewardState.equipped===item.id,card=document.createElement('div');card.className='title-item'+(isEquipped?' is-equipped':'');const title=document.createElement('strong');title.textContent=item.title;const desc=document.createElement('small');desc.textContent=item.desc;const cost=document.createElement('span');cost.className='title-cost';cost.textContent=item.cost?'🪙 '+item.cost:'Безкоштовно';const btn=document.createElement('button');btn.type='button';btn.className='btn'+(isEquipped?'':' btn-primary');btn.textContent=isEquipped?'Обрано ✓':owned?'Одягнути титул':'Купити';btn.disabled=isEquipped||(!owned&&rewardState.coins<item.cost);btn.addEventListener('click',()=>{if(!rewardState.owned.includes(item.id)){if(rewardState.coins<item.cost)return;rewardState.coins-=item.cost;rewardState.owned.push(item.id);}rewardState.equipped=item.id;saveRewardState();renderRewards();toast('Титул активовано!');});card.append(title,desc,cost,btn);shop.appendChild(card);});}
+if(shop){shop.innerHTML='';titleItems.forEach(item=>{const owned=rewardState.owned.includes(item.id),isEquipped=rewardState.equipped===item.id,card=document.createElement('div');card.className='title-item'+(isEquipped?' is-equipped':'');const title=document.createElement('strong');title.textContent=item.title;const desc=document.createElement('small');desc.textContent=item.desc;const perks=document.createElement('ul');perks.className='title-perks';item.perks.forEach(perk=>{const li=document.createElement('li');li.textContent=perk;perks.appendChild(li);});const cost=document.createElement('span');cost.className='title-cost';cost.textContent=item.cost?'🪙 '+item.cost:'Безкоштовно';const btn=document.createElement('button');btn.type='button';btn.className='btn'+(isEquipped?'':' btn-primary');btn.textContent=isEquipped?'Обрано ✓':owned?'Одягнути титул':'Купити';btn.disabled=isEquipped||(!owned&&rewardState.coins<item.cost);btn.addEventListener('click',()=>{if(!rewardState.owned.includes(item.id)){if(rewardState.coins<item.cost)return;rewardState.coins-=item.cost;rewardState.owned.push(item.id);}rewardState.equipped=item.id;saveRewardState();renderRewards();toast('Титул активовано!');});card.append(title,desc,perks,cost,btn);shop.appendChild(card);});}
 }
-$('#daily-claim')?.addEventListener('click',()=>{const today=new Date().toISOString().slice(0,10);if(rewardState.daily===today)return;rewardState.daily=today;rewardState.coins+=25;rewardState.xp+=5;saveRewardState();renderRewards();toast('Щоденна нагорода: +25 🪙');});
+$('#daily-claim')?.addEventListener('click',()=>{const today=new Date().toISOString().slice(0,10);if(rewardState.daily===today)return;const dailyExtra=rewardState.equipped==='legend'?5:0;rewardState.daily=today;rewardState.coins+=25+dailyExtra;rewardState.xp+=5;saveRewardState();renderRewards();toast('Щоденна нагорода: +'+(25+dailyExtra)+' 🪙');});
 renderRewards();
 
 })();
