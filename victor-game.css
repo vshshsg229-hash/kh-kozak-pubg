@@ -7,3 +7,20 @@
 @media(max-width:720px){.vg-gear-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.vg-loadout-head{align-items:flex-start}.vg-loadout-head p{font-size:.78rem}.vg-mode-switch{width:100%}.vg-mode-switch button{flex:1;padding:10px 8px;font-size:.76rem}.vg-upgrade-actions .btn{flex:1 1 100%}.vg-inventory-note{flex-basis:100%}}
 
 .vg-record-board{margin:10px 0;padding:11px 12px;border:1px solid #ffffff16;border-radius:12px;background:#ffffff04}.vg-record-board>strong{display:block;font-size:.78rem;color:#dbe8d2;margin-bottom:8px}.vg-record-board>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.vg-record-board span{display:flex;justify-content:space-between;gap:6px;color:#9eaa98;font-size:.76rem}.vg-record-board b{color:#dfffad}@media(max-width:520px){.vg-record-board>div{grid-template-columns:1fr}.vg-record-board span{padding:5px 0;border-bottom:1px solid #ffffff0b}}
+
+/* Larger, more comfortable battlefield */
+.vg-field-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 8px;color:#dff2d1;font-size:.9rem;font-weight:850}
+.vg-expand-toggle{min-height:42px;padding:10px 14px!important;border:1px solid #b5ff4a55!important;background:#b5ff4a12!important;color:#dfffad!important;font-weight:850}
+.vg-screen{height:clamp(390px,66vh,760px);min-height:390px;border-radius:18px}
+.vg-screen canvas{width:100%;height:100%;aspect-ratio:auto;object-fit:fill;touch-action:none}
+.vg-screen.vg-expanded{position:fixed;inset:8px 8px 104px;z-index:9998;height:auto;min-height:0;border:2px solid #b5ff4a80;border-radius:18px;box-shadow:0 0 0 100vmax #020402ef}
+.vg-screen.vg-expanded canvas{width:100%;height:100%}
+.victor-game.vg-playing-expanded .vg-controls{position:fixed;z-index:9999;left:12px;right:12px;bottom:8px;margin:0;padding:9px 12px;border:1px solid #b5ff4a45;border-radius:18px;background:#0b110eef;backdrop-filter:blur(10px)}
+.victor-game.vg-playing-expanded .vg-help{max-width:none}
+.victor-game.vg-playing-expanded .vg-bottom-actions{position:fixed;z-index:10000;top:12px;right:16px;margin:0}
+.victor-game.vg-playing-expanded #vg-message{display:none}
+.victor-game.vg-playing-expanded #vg-restart{padding:8px 11px}
+.victor-game.vg-playing-expanded .vg-field-toolbar{position:fixed;z-index:10000;top:10px;left:18px;margin:0}
+.victor-game.vg-playing-expanded .vg-field-toolbar>span{display:none}
+@media(max-width:650px){.vg-screen{height:clamp(390px,61vh,650px);min-height:390px}.vg-screen.vg-expanded{inset:6px 6px 154px}.victor-game.vg-playing-expanded .vg-controls{left:6px;right:6px;bottom:6px;padding:8px;gap:6px}.victor-game.vg-playing-expanded .vg-help{display:none}.victor-game.vg-playing-expanded .vg-move>button,.victor-game.vg-playing-expanded .vg-move div button{width:48px;height:44px}.victor-game.vg-playing-expanded .vg-fire{width:76px;height:76px}.victor-game.vg-playing-expanded .vg-field-toolbar{top:10px;left:10px}.victor-game.vg-playing-expanded .vg-bottom-actions{top:auto;bottom:112px;right:12px}}
+@media(min-width:900px){.vg-screen{height:min(72vh,820px)}}
