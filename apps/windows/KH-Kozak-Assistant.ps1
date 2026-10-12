@@ -1,84 +1,90 @@
 # KH么Kozak Assistant for Windows PowerShell 5.1
-# Start it manually; while running, it listens for the Ukrainian wake word "Козак".
-# Uses Windows Speech Recognition. Recognition language must be installed in Windows.
+# Ukrainian Windows speech recognition must be installed.
 $ErrorActionPreference = "Stop"
 Add-Type -AssemblyName System.Speech
-$culture = [System.Globalization.CultureInfo]::GetCultureInfo("uk-UA")
 $installed = [System.Speech.Recognition.SpeechRecognitionEngine]::InstalledRecognizers() | Where-Object { $_.Culture.Name -eq "uk-UA" } | Select-Object -First 1
 if (-not $installed) {
-  Write-Host "Не знайдено мовний пакет розпізнавання української мови Windows." -ForegroundColor Yellow
-  Write-Host "Установи українську мову/мовлення в Параметри Windows > Час і мова > Мова та регіон."
-  Write-Host "Після встановлення запусти скрипт ще раз."
+  Write-Host "Не знайдено розпізнавання української мови Windows." -ForegroundColor Yellow
+  Write-Host "Установи українську мову та мовлення: Параметри > Час і мова > Мова та регіон."
   exit 1
 }
 $recognizer = New-Object -TypeName System.Speech.Recognition.SpeechRecognitionEngine -ArgumentList $installed
 $recognizer.LoadGrammar((New-Object System.Speech.Recognition.DictationGrammar))
 $recognizer.SetInputToDefaultAudioDevice()
-$armed = $false
+$script:armed = $false
+$script:pendingPowerAction = $null
 Write-Host "KH么Kozak працює. Скажи «Козак», потім команду. Ctrl+C — вихід." -ForegroundColor Cyan
+Write-Host "Вимкнення/перезапуск потребують окремого підтвердження." -ForegroundColor Yellow
 
 function Invoke-KHCommand([string]$Text) {
   $t = $Text.ToLowerInvariant().Trim()
-  if ($t -match '^(знайди|пошукай|погугли|пошук)(\s+в\s+(інтернеті|гуглі|google))?\s+(.+)
-    $encoded = [System.Uri]::EscapeDataString($query)
-    Start-Process ("https://www.google.com/search?q=" + $encoded)
-    return ("Шукаю в інтернеті: " + $query)
+  if ($script:pendingPowerAction) {
+    if (($script:pendingPowerAction -eq "shutdown") -and ($t -match '^(підтверджую вимкнення|так вимкни)$')) {
+      $script:pendingPowerAction = $null
+      Start-Process "$env:SystemRoot\System32\shutdown.exe" -ArgumentList '/s /t 30 /c "KH Assistant: підтверджене вимкнення"'
+      return "Підтверджено. Комп'ютер вимкнеться через 30 секунд. Скажи «Козак, скасувати вимкнення», щоб скасувати."
+    }
+    if (($script:pendingPowerAction -eq "restart") -and ($t -match '^(підтверджую перезапуск|так перезавантаж)$')) {
+      $script:pendingPowerAction = $null
+      Start-Process "$env:SystemRoot\System32\shutdown.exe" -ArgumentList '/r /t 30 /c "KH Assistant: підтверджений перезапуск"'
+      return "Підтверджено. Комп'ютер перезавантажиться через 30 секунд. Скажи «Козак, скасувати вимкнення», щоб скасувати."
+    }
+    if ($t -match '^(ні|скасувати|скасуй|відміна)$') {
+      $script:pendingPowerAction = $null
+      return "Добре, дію скасовано."
+    }
   }
-  if ($t -match 'ютуб|youtube') { Start-Process "https://www.youtube.com"; return "Відкриваю YouTube" }
-  if ($t -match 'гугл|google') { Start-Process "https://www.google.com"; return "Відкриваю Google" }
-  if ($t -match 'телеграм|telegram') { Start-Process "https://t.me/tt_KH_Kozak"; return "Відкриваю Telegram" }
-  if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю профіль TikTok @khkozak4" }
-  if ($t -match 'пабг|pubg') { Start-Process "https://play.google.com/store/apps/details?id=com.tencent.ig"; return "Відкриваю сторінку PUBG Mobile" }
-  if ($t -match 'калькулятор') { Start-Process "calc.exe"; return "Відкриваю калькулятор" }
-  if ($t -match 'камера|фото') { Start-Process "microsoft.windows.camera:"; return "Відкриваю камеру Windows" }
-  if ($t -match 'блокнот|нотатки') { Start-Process "notepad.exe"; return "Відкриваю блокнот" }
-  if ($t -match 'провідник|файли') { Start-Process "explorer.exe"; return "Відкриваю Провідник" }
-  if ($t -match 'налаштування') { Start-Process "ms-settings:"; return "Відкриваю налаштування Windows" }
-  if ($t -match 'браузер|інтернет') { Start-Process "https://www.google.com"; return "Відкриваю браузер" }
-  return "Не знаю такої команди. Скажи «знайди ...» для пошуку в інтернеті або спробуй YouTube, Google, Telegram, калькулятор, блокнот чи Провідник."
-}
-
-$recognizer.add_SpeechRecognized({
-  param($sender, $eventArgs)
-  $heard = $eventArgs.Result.Text
-  Write-Host ("Почув: " + $heard) -ForegroundColor Gray
-  if ($heard -match '(?i)\bкозак(е|о)?\b') {
-    $command = ($heard -replace '(?i)\bкозак(е|о)?\b','').Trim(' ', ',', '.', '!', '?')
-    if (-not $command) { $script:armed = $true; Write-Host "Так, слухаю команду…" -ForegroundColor Green; return }
-    $script:armed = $false
-    $answer = Invoke-KHCommand $command
-    Write-Host ("KH: " + $answer) -ForegroundColor Green
-    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
-    return
+  if ($t -match 'скасуй вимкнення|скасувати вимкнення|скасуй перезавантаження|скасувати перезапуск') {
+    $script:pendingPowerAction = $null
+    try { Start-Process "$env:SystemRoot\System32\shutdown.exe" -ArgumentList "/a" -ErrorAction Stop; return "Якщо таймер був активний, його скасовано." }
+    catch { return "Не вдалося скасувати таймер. Можливо, запланованої дії немає." }
   }
-  if ($script:armed) {
-    $script:armed = $false
-    $answer = Invoke-KHCommand $heard
-    Write-Host ("KH: " + $answer) -ForegroundColor Green
-    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
+  if ($t -match 'вимкни комп.?ютер|вимкни пк|вимкнути комп.?ютер|вимкнути пк') {
+    $script:pendingPowerAction = "shutdown"
+    return "Ти справді хочеш вимкнути комп'ютер? Скажи «підтверджую вимкнення» або «скасувати»."
   }
-})
-$recognizer.RecognizeAsync([System.Speech.Recognition.RecognizeMode]::Multiple)
-while ($true) { Start-Sleep -Seconds 1 }
-) {
+  if ($t -match 'перезавантаж комп.?ютер|перезапусти комп.?ютер|перезавантаж пк|перезапусти пк') {
+    $script:pendingPowerAction = "restart"
+    return "Ти справді хочеш перезавантажити комп'ютер? Скажи «підтверджую перезапуск» або «скасувати»."
+  }
+  if ($t -match 'режим сну|приспати комп.?ютер|відправ у сон') {
+    try {
+      Add-Type -TypeDefinition '[System.Runtime.InteropServices.DllImport("PowrProf.dll", SetLastError=true)] public static extern bool SetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent);' -Name KHPower -Namespace KHAssistant -ErrorAction SilentlyContinue
+      [KHAssistant.KHPower]::SetSuspendState($false, $false, $false) | Out-Null
+      return "Надіслано команду переходу в режим сну. Пробудження залежить від Windows та обладнання."
+    } catch { return "Не вдалося перейти в режим сну. Перевір налаштування живлення Windows." }
+  }
+  if ($t -match '^(знайди|пошукай|погугли|пошук)(\s+в\s+(інтернеті|гуглі|google))?\s+(.+)$') {
     $query = $Matches[4].Trim()
-    $encoded = [System.Uri]::EscapeDataString($query)
-    Start-Process ("https://www.google.com/search?q=" + $encoded)
+    Start-Process ("https://www.google.com/search?q=" + [System.Uri]::EscapeDataString($query))
     return ("Шукаю в інтернеті: " + $query)
   }
-  if ($t -match 'ютуб|youtube') { Start-Process "https://www.youtube.com"; return "Відкриваю YouTube" }
-  if ($t -match 'гугл|google') { Start-Process "https://www.google.com"; return "Відкриваю Google" }
-  if ($t -match 'телеграм|telegram') { Start-Process "https://t.me/tt_KH_Kozak"; return "Відкриваю Telegram" }
-  if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю профіль TikTok @khkozak4" }
-  if ($t -match 'пабг|pubg') { Start-Process "https://play.google.com/store/apps/details?id=com.tencent.ig"; return "Відкриваю сторінку PUBG Mobile" }
-  if ($t -match 'калькулятор') { Start-Process "calc.exe"; return "Відкриваю калькулятор" }
-  if ($t -match 'блокнот|нотатки') { Start-Process "notepad.exe"; return "Відкриваю блокнот" }
-  if ($t -match 'провідник|файли') { Start-Process "explorer.exe"; return "Відкриваю Провідник" }
-  if ($t -match 'налаштування') { Start-Process "ms-settings:"; return "Відкриваю налаштування Windows" }
-  if ($t -match 'браузер|інтернет') { Start-Process "https://www.google.com"; return "Відкриваю браузер" }
-  return "Не знаю такої команди. Скажи «знайди ...» для пошуку в інтернеті або спробуй YouTube, Google, Telegram, калькулятор, блокнот чи Провідник."
+  if ($t -match 'календар|подію') { Start-Process "ms-calendar:"; return "Відкриваю календар, якщо він установлений." }
+  if ($t -match 'калькулятор') { Start-Process "calc.exe"; return "Відкриваю калькулятор." }
+  if ($t -match 'камера|фотоапарат') { Start-Process "microsoft.windows.camera:"; return "Відкриваю камеру Windows." }
+  if ($t -match 'галерея|фотографії|зображення') { Start-Process "explorer.exe" -ArgumentList ([Environment]::GetFolderPath("MyPictures")); return "Відкриваю папку зображень." }
+  if ($t -match 'карти|мапи|навігація') { Start-Process "https://maps.google.com"; return "Відкриваю карти." }
+  if ($t -match 'телефон|дзвінки|phone link') { Start-Process "ms-settings:mobile-devices"; return "Відкриваю налаштування мобільних пристроїв." }
+  if ($t -match 'ліхтарик|фонарик') { return "На більшості ПК немає керованого системного ліхтарика; це залежить від обладнання та драйверів." }
+  if ($t -match 'будильник|годинник|таймер') { Start-Process "ms-clock:"; return "Відкриваю годинник, якщо застосунок установлений." }
+  if ($t -match 'контакти') { Start-Process "ms-people:"; return "Відкриваю контакти, якщо застосунок підтримується." }
+  if ($t -match 'повідомлення|смс') { Start-Process "ms-settings:messaging"; return "Відкриваю доступні налаштування повідомлень." }
+  if ($t -match 'завантаження') { Start-Process "explorer.exe" -ArgumentList (Join-Path ([Environment]::GetFolderPath("UserProfile")) "Downloads"); return "Відкриваю Завантаження." }
+  if ($t -match 'файли|провідник|папку') { Start-Process "explorer.exe"; return "Відкриваю Провідник." }
+  if ($t -match 'wi.?fi|вай.?фай|мережа') { Start-Process "ms-settings:network"; return "Відкриваю налаштування мережі." }
+  if ($t -match 'bluetooth|блютуз') { Start-Process "ms-settings:bluetooth"; return "Відкриваю налаштування Bluetooth." }
+  if ($t -match 'гучність|звук') { Start-Process "sndvol.exe"; return "Відкриваю мікшер гучності." }
+  if ($t -match 'екран|дисплей') { Start-Process "ms-settings:display"; return "Відкриваю налаштування екрана." }
+  if ($t -match 'батарея|акумулятор|живлення') { Start-Process "ms-settings:powersleep"; return "Відкриваю параметри живлення." }
+  if ($t -match 'налаштування') { Start-Process "ms-settings:"; return "Відкриваю налаштування Windows." }
+  if ($t -match 'ютуб|youtube') { Start-Process "https://www.youtube.com"; return "Відкриваю YouTube." }
+  if ($t -match 'гугл|google') { Start-Process "https://www.google.com"; return "Відкриваю Google." }
+  if ($t -match 'телеграм|telegram') { Start-Process "https://t.me/tt_KH_Kozak"; return "Відкриваю Telegram." }
+  if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю TikTok @khkozak4." }
+  if ($t -match 'пабг|pubg') { Start-Process "https://play.google.com/store/apps/details?id=com.tencent.ig"; return "Відкриваю сторінку PUBG Mobile." }
+  if ($t -match 'браузер|відкрий інтернет') { Start-Process "https://www.google.com"; return "Відкриваю браузер." }
+  return "Не знаю цієї команди. Спробуй календар, калькулятор, камеру, галерею, карти, файли, звук, мережу або «знайди ...»."
 }
-
 $recognizer.add_SpeechRecognized({
   param($sender, $eventArgs)
   $heard = $eventArgs.Result.Text
