@@ -89,32 +89,9 @@ function Invoke-KHCommand([string]$Text) {
   if ($t -match 'тікток|tiktok|тік ток') { Start-Process "https://www.tiktok.com/@khkozak4"; return "Відкриваю TikTok @khkozak4." }
   if ($t -match 'пабг|pubg') { Start-Process "https://play.google.com/store/apps/details?id=com.tencent.ig"; return "Відкриваю сторінку PUBG Mobile." }
   if ($t -match 'браузер|відкрий інтернет') { Start-Process "https://www.google.com"; return "Відкриваю браузер." }
-  if ($t -match '^(відкрий|запусти|відкрити|запустити|зайди в|зайди у)\\s+(.+)
-}
-$recognizer.add_SpeechRecognized({
-  param($sender, $eventArgs)
-  $heard = $eventArgs.Result.Text
-  Write-Host ("Почув: " + $heard) -ForegroundColor Gray
-  if ($heard -match '(?i)\bкозак(е|о)?\b') {
-    $command = ($heard -replace '(?i)\bкозак(е|о)?\b','').Trim(' ', ',', '.', '!', '?')
-    if (-not $command) { $script:armed = $true; Write-Host "Так, слухаю команду…" -ForegroundColor Green; return }
-    $script:armed = $false
-    $answer = Invoke-KHCommand $command
-    Write-Host ("KH: " + $answer) -ForegroundColor Green
-    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
-    return
-  }
-  if ($script:armed) {
-    $script:armed = $false
-    $answer = Invoke-KHCommand $heard
-    Write-Host ("KH: " + $answer) -ForegroundColor Green
-    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
-  }
-})
-$recognizer.RecognizeAsync([System.Speech.Recognition.RecognizeMode]::Multiple)
-while ($true) { Start-Sleep -Seconds 1 }
-) {
+  if ($t -match '^(відкрий|запусти|відкрити|запустити|зайди в|зайди у)\s+(.+)$') {
     $requested = $Matches[2].Trim()
+    $requested = $requested -replace '^(гру|застосунок|додаток|програму)\s+', ''
     $startApps = Get-StartApps
     $app = $startApps | Where-Object { $_.Name -eq $requested } | Select-Object -First 1
     if (-not $app -and $requested.Length -ge 3) {
@@ -130,6 +107,7 @@ while ($true) { Start-Sleep -Seconds 1 }
   }
   return "Не знаю цієї команди. Спробуй календар, калькулятор, камеру, галерею, карти, файли, звук, мережу або «знайди ...»."
 }
+$voice = New-Object System.Speech.Synthesis.SpeechSynthesizer
 $recognizer.add_SpeechRecognized({
   param($sender, $eventArgs)
   $heard = $eventArgs.Result.Text
@@ -140,14 +118,14 @@ $recognizer.add_SpeechRecognized({
     $script:armed = $false
     $answer = Invoke-KHCommand $command
     Write-Host ("KH: " + $answer) -ForegroundColor Green
-    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
+    try { $voice.SpeakAsyncCancelAll(); $voice.SpeakAsync($answer) | Out-Null } catch {}
     return
   }
   if ($script:armed) {
     $script:armed = $false
     $answer = Invoke-KHCommand $heard
     Write-Host ("KH: " + $answer) -ForegroundColor Green
-    try { $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer; $voice.SpeakAsync($answer) | Out-Null } catch {}
+    try { $voice.SpeakAsyncCancelAll(); $voice.SpeakAsync($answer) | Out-Null } catch {}
   }
 })
 $recognizer.RecognizeAsync([System.Speech.Recognition.RecognizeMode]::Multiple)
