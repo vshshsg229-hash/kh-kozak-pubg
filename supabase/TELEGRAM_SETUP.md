@@ -1,0 +1,61 @@
+# KH么Kozak Telegram integration setup
+
+The Telegram code is implemented in `supabase/functions/hub-api/index.ts`. It will not become live until the database migration, Edge Function deployment, and Telegram webhook are configured.
+
+## 1. Apply the database changes
+
+Open Supabase Dashboard → SQL Editor and run the complete current `supabase/schema.sql` file. It creates the Telegram link-code/link tables and the atomic daily reward function. Re-running it is intended to be safe.
+
+## 2. Configure Edge Function secrets
+
+In Supabase Dashboard → Edge Functions → `hub-api` → Secrets (or project secrets), set:
+
+- `SUPABASE_URL` — the project URL.
+- `SUPABASE_ANON_KEY` — the public anon/publishable key used by the function's auth client.
+- `SUPABASE_SERVICE_ROLE_KEY` — server-only service role key; never place this in the website.
+- `TELEGRAM_BOT_TOKEN` — token from @BotFather; keep it secret.
+- `TELEGRAM_WEBHOOK_SECRET` — a random 32+ character string using only A–Z, a–z, 0–9, underscore or hyphen.
+- `ADMIN_USER_IDS` — comma-separated Supabase Auth user UUIDs allowed into the admin panel. This is **not** a Telegram username or email.
+
+Redeploy the `hub-api` Edge Function after updating the code/secrets.
+
+## 3. Register Telegram webhook
+
+Set these environment variables in a trusted terminal (do not commit them or send the token in chat):
+
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_WEBHOOK_SECRET`
+- `SUPABASE_URL` — the project URL such as `https://PROJECT_REF.supabase.co`
+
+Then run:
+
+```sh
+curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+  -H "Content-Type: application/json" \
+  --data "$(printf '{"url":"%s/functions/v1/hub-api/api/telegram/webhook","secret_token":"%s","allowed_updates":["message"]}' "$SUPABASE_URL" "$TELEGRAM_WEBHOOK_SECRET")"
+```
+
+Check the result for `"ok":true`, then inspect:
+
+```sh
+curl -sS "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo"
+```
+
+The webhook URL must be HTTPS and reachable. Telegram documents `setWebhook`, the secret header, and `sendMessage` in the [Bot API documentation](https://core.telegram.org/bots/api).
+
+## 4. Link and test
+
+1. Open the published Battle Hub and sign into an online account.
+2. Open **Telegram і бот** and press **Створити код зв’язування**.
+3. Open the bot's private chat and send `/link 12345678` with the generated code instead of the example.
+4. Test `/profile`, `/daily`, `/top`, and `/help`.
+5. Finish a mini-game while logged in; the bot should notify the linked Telegram chat if the notification send succeeds.
+6. The admin panel appears only for an account whose Supabase Auth UUID is included in `ADMIN_USER_IDS`. It can show hub counts and broadcast a message to linked chats.
+
+## Important limits
+
+- A user must start a private chat with the bot before Telegram can message them.
+- Link codes are one-time and expire after ten minutes.
+- `/daily` is one claim per account per database date; its award is committed by a SQL function.
+- Bot API failures do not roll back a game reward; they are logged by the Edge Function.
+- The GitHub Pages static site cannot hold the bot token or service-role key.
