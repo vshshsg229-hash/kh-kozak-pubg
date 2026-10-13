@@ -25,7 +25,7 @@
   const KEY_RE = /^(kh|kozak|pubg|game|player|arcade)[\w:.-]*$/i;
   const EXCLUDE_RE = /(auth|session|token|secret|api.?key|endpoint|assistant.?chat|ai.?chat|conversation)/i;
   let syncing = false;
-  let queued = false;
+  let applyingCloud = false;
   let timer = null;
   let lastMessage = 'Очікуємо вхід в акаунт.';
 
@@ -43,11 +43,16 @@
   }
   function applyProgress(data) {
     if (!data || typeof data !== 'object' || Array.isArray(data)) return;
-    Object.entries(data).forEach(([key, value]) => {
-      if (!isProgressKey(key)) return;
-      try { localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value)); }
-      catch (_) { /* Keep the current page usable if storage is full. */ }
-    });
+    applyingCloud = true;
+    try {
+      Object.entries(data).forEach(([key, value]) => {
+        if (!isProgressKey(key)) return;
+        try { localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value)); }
+        catch (_) { /* Keep the current page usable if storage is full. */ }
+      });
+    } finally {
+      applyingCloud = false;
+    }
   }
   async function currentUser() {
     const { data, error } = await client.auth.getUser();
@@ -101,7 +106,7 @@
   const originalSetItem = Storage.prototype.setItem;
   Storage.prototype.setItem = function(key, value) {
     originalSetItem.call(this, key, value);
-    if (this === window.localStorage && isProgressKey(String(key))) scheduleSync();
+    if (this === window.localStorage && !applyingCloud && isProgressKey(String(key))) scheduleSync();
   };
   window.addEventListener('storage', event => {
     if (event.storageArea === localStorage && isProgressKey(event.key)) scheduleSync();
