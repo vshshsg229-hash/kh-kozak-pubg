@@ -39,3 +39,24 @@ a,button,.feature,.card,.game-card,.minigame-card,.avatar-tile,.video-card,.musi
 .kh-app-mode .kh5-page-progress{display:none!important}
 @media(max-width:760px){.site-header .nav{display:none!important}.site-header .header-inner{flex-wrap:nowrap!important}.kh-app-mode{padding-bottom:calc(86px + env(safe-area-inset-bottom))!important}}
 @media(prefers-reduced-motion:reduce){.kh5-leaving{opacity:1!important;transform:none!important}}
+
+/* Premium app palette alignment: purple first, PUBG red as the highlight */
+.kh-app-mode .kh-app-mark{background:linear-gradient(145deg,#c7aaff,#7d4ce0)!important;box-shadow:0 0 28px rgba(155,109,255,.25)!important}
+.kh-app-mode .kh-install-btn{border-color:rgba(180,145,255,.55)!important;background:rgba(155,109,255,.13)!important;color:#e4d6ff!important}
+.kh-app-mode .kh-app-dashboard,.kh-app-mode .kh-app-modes-panel{border-color:rgba(180,145,255,.25)!important;background:linear-gradient(145deg,#191326,#0e0c14 68%)!important}
+.kh-app-mode .kh-app-section-kicker,.kh-app-mode .kh-app-dashboard .kh-app-section-kicker,.kh-app-mode .kh-premium-brand,.kh-app-mode .kh-premium-kicker{color:#c7aaff!important}
+.kh-app-mode .kh-primary-action,.kh-app-mode .btn-primary{background:linear-gradient(135deg,#c7aaff,#8b5cf6)!important;color:#160d26!important;border-color:#c7aaff!important;box-shadow:0 7px 24px rgba(155,109,255,.22)!important}
+.kh-app-mode .kh-app-shortcuts button,.kh-app-mode .kh-library-link,.kh-app-mode .kh-premium-tile{border-color:rgba(180,145,255,.22)!important;background:linear-gradient(145deg,#1b1726,#11101a)!important}
+.kh-app-mode .kh-app-shortcuts button>span,.kh-app-mode .kh-library-icon,.kh-app-mode .kh-premium-tile-icon{color:#c7aaff!important}
+.kh-app-mode .kh-app-status>div,.kh-app-mode .vg-loadout,.kh-app-mode .vg-screen,.kh-app-mode .game-panel,.kh-app-mode .ap-game,.kh-app-mode .rewards-section{border-color:rgba(180,145,255,.2)!important}
+.kh-app-mode .vg-mode-switch button.active{background:linear-gradient(135deg,#c7aaff,#8b5cf6)!important;color:#160d26!important;border-color:#c7aaff!important}
+.kh-app-mode .vg-hud b,.kh-app-mode .vg-record-board b,.kh-app-mode .vg-loadout strong,.kh-app-mode .vg-wallet,.kh-app-mode .vg-rank-perks{color:#e2d3ff!important}
+.kh-app-mode .vg-wallet,.kh-app-mode .vg-rank-perks,.kh-app-mode .vg-expand-toggle{border-color:rgba(180,145,255,.42)!important;background:rgba(155,109,255,.12)!important}
+.kh-app-mode .kh-bottom-nav button.active{color:#c7aaff!important}
+.kh-app-mode .kh-bottom-nav button.active:before{background:linear-gradient(90deg,#9b6dff,#ff4655)!important;box-shadow:0 0 16px rgba(155,109,255,.55)!important}
+.kh-premium-hub{border-color:rgba(180,145,255,.28)!important;background:linear-gradient(145deg,#20162e,#100d17 65%)!important}
+.kh-premium-level,.kh-premium-chip{border-color:rgba(180,145,255,.4)!important;color:#e2d3ff!important;background:rgba(155,109,255,.1)!important}
+.kh-premium-tile-icon{background:rgba(155,109,255,.14)!important;color:#c7aaff!important}
+.kh-premium-modal{background:rgba(3,2,8,.78)!important}
+.kh-premium-sheet{border-color:rgba(180,145,255,.4)!important;background:linear-gradient(155deg,#20162e,#0d0b13 65%)!important}
+.kh-premium-close{border-color:rgba(180,145,255,.4)!important;color:#e2d3ff!important}
