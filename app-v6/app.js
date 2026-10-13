@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const KEY='khkozak_hub_v6';
-const defaultState={name:'KH么Kozak',coins:0,points:0,xp:0,passXp:0,passSeason:'',played:0,bestReaction:null,owned:[],completed:[],dailyClaimDate:'',dailyStreak:0,lastDailyDate:'',passClaimed:[],equippedTitle:'',equippedFrame:'',equippedAvatar:'',equippedTheme:'',equippedBadge:'',equippedBanner:'',botUsername:'',games:{reaction:0,aim:0,quiz:0,memory:0,loot:0,pubg:0,metro:0,classic:0}};
+const defaultState={name:'KH么Kozak',coins:0,points:0,xp:0,passXp:0,passSeason:'',played:0,bestReaction:null,owned:[],completed:[],dailyClaimDate:'',dailyStreak:0,lastDailyDate:'',passClaimed:[],equippedTitle:'',equippedFrame:'',equippedAvatar:'',equippedTheme:'',equippedBadge:'',equippedBanner:'',botUsername:'',funClaimDate:'',games:{reaction:0,aim:0,quiz:0,memory:0,loot:0,pubg:0,metro:0,classic:0}};
 let state;try{state={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')};state.games={...defaultState.games,...(state.games||{})};state.owned=state.owned||[];state.completed=state.completed||[];state.passClaimed=state.passClaimed||[];state.equippedTitle=state.equippedTitle||'';state.equippedFrame=state.equippedFrame||'';state.equippedTheme=state.equippedTheme||'';state.equippedBadge=state.equippedBadge||'';state.equippedBanner=state.equippedBanner||'';state.owned=state.owned.map(id=>({frame:'frame_steel',title:'title_raider',camo:'frame_neon'}[id]||id))}catch(e){state={...defaultState,owned:[],completed:[],games:{...defaultState.games}}}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 function currentSeasonKey(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
@@ -143,5 +143,63 @@ $$('[data-prompt]').forEach(b=>b.addEventListener('click',()=>sendAssistant(b.da
 function startMemory(){title.textContent='КОД ДОСТУПУ';desc.textContent='Запам’ятай символи, потім повтори їх у тому самому порядку.';eyebrow.textContent='04 / MEMORY OPS';let sequence=[],step=0;const symbols=['▲','◆','●','■','✦','⬟'];const intro=document.createElement('button');intro.className='game-start';intro.textContent='ПОЧАТИ ТРЕНУВАННЯ';area.appendChild(intro);intro.addEventListener('click',()=>{sequence=Array.from({length:4},()=>symbols[Math.floor(Math.random()*symbols.length)]);area.innerHTML='<div class="memory-sequence">'+sequence.map(s=>'<span>'+s+'</span>').join(' ')+'</div><p class="memory-note">Запам’ятай код. Він зникне за 2 секунди…</p>';setTimeout(()=>{area.innerHTML='<p class="memory-note">Обери символи у правильній послідовності</p><div class="memory-options">'+symbols.map(s=>'<button data-memory="'+s+'">'+s+'</button>').join('')+'</div>';area.querySelectorAll('[data-memory]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.memory!==sequence[step]){message.textContent='Код не збігся. Спробуй ще раз!';const again=document.createElement('button');again.className='game-start';again.textContent='ПОВТОРИТИ';again.onclick=()=>openModal('memory');area.appendChild(again);area.querySelectorAll('[data-memory]').forEach(x=>x.disabled=true);return}step++;b.disabled=true;if(step===sequence.length){message.textContent='Ідеально! Код підтверджено.';finishGame('memory',18,30,25)}}))},2000)})}
 function startLoot(){title.textContent='ПОЛЮВАННЯ ЗА ЛУТОМ';desc.textContent='За 12 секунд збери аптечки й боєприпаси. Уникай пасток.';eyebrow.textContent='05 / LOOT RUN';const start=document.createElement('button');start.className='game-start';start.textContent='ПОЧАТИ РЕЙД';area.appendChild(start);start.addEventListener('click',()=>{area.innerHTML='<div class="loot-board"><div class="loot-score">ЗІБРАНО: <b id="lootScore">0</b></div><div class="loot-timer">12 СЕКУНД</div><div class="loot-items" id="lootItems"></div></div>';let score=0,done=false,remaining=12;const scoreEl=$('#lootScore'),timerEl=area.querySelector('.loot-timer'),items=$('#lootItems');const spawn=()=>{if(done)return;items.innerHTML='';for(let i=0;i<6;i++){const good=Math.random()>.32;const b=document.createElement('button');b.className='loot-item '+(good?'good':'trap');b.textContent=good?['✚','▣','◈'][Math.floor(Math.random()*3)]:'⚠';b.setAttribute('aria-label',good?'Корисний лут':'Пастка');b.addEventListener('click',()=>{if(done)return;score+=good?1:-1;score=Math.max(0,score);scoreEl.textContent=score;b.disabled=true;b.style.opacity='.3'});items.appendChild(b)}};spawn();const interval=setInterval(()=>{remaining--;timerEl.textContent=remaining+' СЕКУНД';if(remaining<=0){done=true;clearInterval(interval);items.innerHTML='';message.textContent='Рейд завершено. Зібрано предметів: '+score;finishGame('loot',15+Math.min(score,10),25+Math.max(0,score)*2,20+Math.max(0,score))}else spawn()},1000);cleanups.push(()=>clearInterval(interval))})}
 
+
+const weaponLoadouts={
+ rush:[
+  {name:'UZI + M416',desc:'UZI для ближнього бою, M416 для середньої дистанції.',tip:'Першим займай укриття, не біжи через відкриту місцевість.'},
+  {name:'AKM + UMP45',desc:'Висока шкода зблизька та контрольований запасний варіант.',tip:'Стріляй короткими чергами й не забувай перезаряджатися за укриттям.'},
+  {name:'M762 + DBS',desc:'Агресивний набір для будинків і швидких сутичок.',tip:'Перед входом у будівлю перевір кути та домовся з командою про вхід.'}],
+ balanced:[
+  {name:'M416 + Mini14',desc:'Універсальна штурмова гвинтівка плюс напівавтоматична DMR.',tip:'M416 залиш для ближньої/середньої дистанції, Mini14 — для відкритих позицій.'},
+  {name:'SCAR-L + SLR',desc:'Зручний набір для середньої та дальньої дистанції.',tip:'Тримай запас набоїв до обох типів зброї та не відкривайся довго на одному місці.'},
+  {name:'AUG + M24',desc:'Сильна універсальна пара, якщо знайдеш потрібне спорядження.',tip:'Після пострілу зі снайперки зміни позицію, щоб тебе не засікли.'}],
+ sniper:[
+  {name:'M24 + M416',desc:'Снайперська гвинтівка для дальніх цілей і штурмова на випадок зближення.',tip:'Не витрачай постріли навмання: чекай моменту, коли ворог зупиниться.'},
+  {name:'Kar98k + UMP45',desc:'Класична снайперська пара з простішою зброєю для ближнього бою.',tip:'Якщо загін тисне на тебе — відійди до укриття, а не намагайся перезарядити під вогнем.'},
+  {name:'Mini14 + Beryl M762',desc:'Швидкі постріли здалеку та потужна зброя для ближньої дистанції.',tip:'Використовуй одиночні постріли на дальній відстані та контроль віддачі зблизька.'}],
+ support:[
+  {name:'M416 + Smoke Grenades',desc:'Гнучка штурмова зброя та дим для порятунку команди.',tip:'Носи димові гранати й прикривай союзника, коли він піднімає нокнутого гравця.'},
+  {name:'DP-28 + M416',desc:'Стабільна підтримка вогнем і запасний варіант для переміщення.',tip:'Тримай кут і прикривай ротацію загону, не відривайся від команди.'},
+  {name:'UMP45 + Mini14',desc:'Легкий ближній бій та дистанційна підтримка.',tip:'Перед ротацією повідомляй загін про ворогів і залишай запас лікування.'}]
+};
+const funChallenges=[
+'Матч без скарг: після кожного програшу назви одну річ, яку можна зробити краще.',
+'Командний режим: кожен гравець обирає союзнику маршрут висадки.',
+'Лут-лотерея: після першого знайденого набору не міняй основну зброю до наступного кола.',
+'Рятівник загону: пріоритет — дим, укриття та допомога союзникам.',
+'Тиха операція: до першого контакту з ворогом рухайтесь разом і не розбігайтесь.',
+'Снайперський виклик: зроби кілька точних пострілів з укриття, не залишаючись на місці.',
+'Без паніки: після першої перестрілки вся команда перегруповується перед наступним боєм.',
+'Капітан маршруту: один гравець відповідає за карту, а команда голосує за безпечну ротацію.',
+'Позитивний загін: за кожну помилку — одна корисна підказка товаришу, без токсичності.',
+'Випробування аптечки: стеж за лікуванням і завчасно поповнюй запаси перед ротацією.'
+];
+const dailyFunMissions=[
+'Використай димову гранату, щоб допомогти собі або союзнику змінити позицію.',
+'Перед наступною перестрілкою перевір броню, аптечки та запас набоїв.',
+'Зроби ротацію до безпечної зони до того, як почне завдавати шкоди синя зона.',
+'Допоможи союзнику: прикрий його під час лікування або підняття.',
+'Знайди вигідне укриття й виграй перестрілку, не стоячи на відкритому місці.',
+'Спробуй зброю, якою зазвичай не граєш, і оціни її після матчу.',
+'Після контакту з ворогом зміни позицію, замість того щоб залишатися на тому самому місці.',
+'У загоні домовтесь про маршрут і тримайтеся на відстані підтримки один від одного.'
+];
+const funTactics=[
+'Правило 10 секунд: після бою швидко перевір здобич, аптечки та маршрут — не затримуйся в небезпечній зоні.',
+'Виграє не лише приціл: перед входом у будівлю домовся, хто перевіряє лівий і правий кут.',
+'Не всі бої треба приймати. Якщо зона далеко або позиція погана — перегрупуйся.',
+'Після пострілу зі снайперки зміни позицію. Повторний постріл з того самого місця може видати тебе.',
+'Перед фінальною зоною збережи димові гранати й аптечки — вони можуть вирішити останню сутичку.',
+'Під час перестрілки не всі мають стріляти в одну ціль: один прикриває, інший шукає фланг.'
+];
+let currentFunChallenge='';
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function renderFunMission(){const el=$('#funDailyMission');if(!el)return;const day=localDateKey();const idx=(new Date(day+'T12:00:00').getDate()+new Date(day+'T12:00:00').getMonth()*3)%dailyFunMissions.length;el.innerHTML='<b>'+dailyFunMissions[idx]+'</b><small>Місія оновлюється щодня. Виконуй її в самій PUBG Mobile.</small>';const b=$('#claimFunMission');if(b){const claimed=state.funClaimDate===day;b.disabled=claimed;b.textContent=claimed?'НАГОРОДУ ВЖЕ ЗАБРАНО ✓':'ЗАБРАТИ НАГОРОДУ';}}
+function runFunAction(action){if(action==='weapon'){const style=$('#weaponStyle')?.value||'any',group=style==='any'?pick(Object.keys(weaponLoadouts)):style,item=pick(weaponLoadouts[group]);const labels={rush:'АГРЕСИВНИЙ РАШ',balanced:'УНІВЕРСАЛЬНИЙ',sniper:'ДАЛЬНЯ ДИСТАНЦІЯ',support:'ПІДТРИМКА ЗАГОНУ'};$('#weaponResult').innerHTML='<b>'+item.name+'</b><small>'+item.desc+'</small><small><strong>ПОРАДА KH:</strong> '+item.tip+'</small><small class="fun-chip">'+labels[group]+'</small>';return}if(action==='challenge'){currentFunChallenge=pick(funChallenges);$('#challengeResult').innerHTML='<b>'+currentFunChallenge+'</b><small>Збережи правило для наступного матчу й перевір, як впорається загін.</small>';return}if(action==='copyChallenge'){const txt=currentFunChallenge||'Генеруй челендж у вкладці «Приколи та рандом».';if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>showToast('Челендж скопійовано!')).catch(()=>showToast(txt))}else showToast(txt);return}if(action==='tactic'){const t=pick(funTactics);$('#tacticResult').innerHTML='<b>'+t+'</b>';return}}
+
+$('[data-fun]').forEach(b=>b.addEventListener('click',()=>runFunAction(b.dataset.fun)));
+$('#claimFunMission')?.addEventListener('click',()=>{const today=localDateKey();if(state.funClaimDate===today)return;state.funClaimDate=today;state.coins+=20;state.points+=25;addXP(20);save();render();renderFunMission();showToast('Місію дня виконано: +20 монет, +25 очок, +20 XP!')});
+renderFunMission();
+$('#tacticResult')&&($('#tacticResult').innerHTML='<b>'+pick(funTactics)+'</b>');
 render();
 })();
