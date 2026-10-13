@@ -3,7 +3,7 @@ const modal=$('#game-modal'), stage=$('#game-stage'), modalTitle=$('#modal-title
 /* App tab navigation */
 const tabLinks=$('.app-nav [data-tab]');
 function activateTab(name,updateHash=true){
- const valid=['home','profile','games','rewards','tiktok','music'];
+ const valid=['home','profile','games','rewards','tiktok','music','account'];
  if(!valid.includes(name))name='home';
  $('.app-view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
  tabLinks.forEach(a=>a.classList.toggle('active',a.dataset.tab===name));
