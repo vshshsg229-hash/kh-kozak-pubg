@@ -30,7 +30,64 @@ function mat(T,color,roughness=.8){return new T.MeshStandardMaterial({color,roug
 function box(T,x,y,z,sx,sy,sz,color){const o=new T.Mesh(new T.BoxGeometry(sx,sy,sz),mat(T,color));o.position.set(x,y,z);scene.add(o);return o}
 function startGame(){if(!window.THREE||!$('#kh3dCanvas'))return;$('#kh3dGameShell .kh3d-result')?.remove();clearGame();score=0;hp=100;ammo=30;reloading=false;if(reloadTimer!==null){clearTimeout(reloadTimer);reloadTimer=null}seconds=(mode==='range'||mode==='sniper')?60:mode==='parkour'?75:90;round=1;earned=false;keys={};driveSpeed=0;$('#kh3dModeLabel').textContent=modes.find(m=>m.id===mode).name;$('#kh3dAction').textContent=mode==='drive'?'BOOST':mode==='parkour'?'RUN':'FIRE';$('#kh3dReload').style.display=mode==='drive'||mode==='parkour'?'none':'';$('#kh3dStatus').textContent='Режим активний. Удачі, боєць!';const T=window.THREE,canvas=$('#kh3dCanvas');scene=new T.Scene();scene.background=new T.Color(mode==='drive'?0x9eb7c4:0x8799a0);scene.fog=new T.Fog(0x8799a0,32,100);camera=new T.PerspectiveCamera(65,1,.1,160);renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;clock=new T.Clock();scene.add(new T.HemisphereLight(0xe0f0ff,0x39412d,2));const sun=new T.DirectionalLight(0xffe4aa,2.2);sun.position.set(12,20,8);sun.castShadow=true;scene.add(sun);const ground=new T.Mesh(new T.PlaneGeometry(110,110),mat(T,mode==='drive'?0x657a49:0x3e5144));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);const grid=new T.GridHelper(100,50,0xe7c44a,0x5d7062);grid.position.y=.02;grid.material.opacity=.22;grid.material.transparent=true;scene.add(grid);
 for(let i=0;i<28;i++){const x=(Math.random()-.5)*75,z=(Math.random()-.5)*75;if(Math.abs(x)<6&&Math.abs(z)<6)continue;if(mode==='drive'){const trunk=box(T,x,1.2,z,.5,2.4,.5,0x574333);const crown=new T.Mesh(new T.ConeGeometry(1.8,4,7),mat(T,0x31583d));crown.position.set(x,3.6,z);scene.add(crown);obstacles.push({mesh:trunk,r:1.3})}else{const o=box(T,x,.7,z,1.8,1.4,1.8,[0x4a5961,0x59684c,0x71624d][i%3]);o.castShadow=true;obstacles.push({mesh:o,r:1.5})}}
-if(mode==='drive'){player=new T.Group();const body=new T.Mesh(new T.BoxGeometry(1.8,.7,3),mat(T,0xd4a92e));body.position.y=.7;player.add(body);const cabin=new T.Mesh(new T.BoxGeometry(1.2,.7,1.3),mat(T,0x243a4b));cabin.position.set(0,1.25,-.15);player.add(cabin);for(const x of [-.95,.95])for(const z of [-.95,.95]){const w=new T.Mesh(new T.CylinderGeometry(.28,.28,.18,12),mat(T,0x151719));w.rotation.z=Math.PI/2;w.position.set(x,.35,z);player.add(w)}scene.add(player);player.position.set(0,0,0)}else{player=new T.Group();const torso=new T.Mesh(new T.CapsuleGeometry(.42,.8,4,8),mat(T,0xd2a63b));torso.position.y=1.05;player.add(torso);const head=new T.Mesh(new T.SphereGeometry(.28,12,10),mat(T,0xd7b49b));head.position.y=1.78;player.add(head);const gun=new T.Mesh(new T.BoxGeometry(.16,.16,1.15),mat(T,0x24282b));gun.position.set(.38,1.15,-.65);player.add(gun);scene.add(player)}
+if(mode==='drive'){player=new T.Group();const body=new T.Mesh(new T.BoxGeometry(1.8,.7,3),mat(T,0xd4a92e));body.position.y=.7;player.add(body);const cabin=new T.Mesh(new T.BoxGeometry(1.2,.7,1.3),mat(T,0x243a4b));cabin.position.set(0,1.25,-.15);player.add(cabin);for(const x of [-.95,.95])for(const z of [-.95,.95]){const w=new T.Mesh(new T.CylinderGeometry(.28,.28,.18,12),mat(T,0x151719));w.rotation.z=Math.PI/2;w.position.set(x,.35,z);player.add(w)}scene.add(player);player.position.set(0,0,0)}else{
+player=new T.Group();
+const part=(geometry,color,x,y,z,rx=0,ry=0,rz=0,rough=.86)=>{const mesh=new T.Mesh(geometry,mat(T,color,rough));mesh.position.set(x,y,z);mesh.rotation.set(rx,ry,rz);mesh.castShadow=true;mesh.receiveShadow=true;player.add(mesh);return mesh};
+const uniform=0x454b35,uniformLight=0x62654a,armor=0x242b2b,armorEdge=0x414747,skin=0xb98768,metal=0x171c20;
+// Boots and articulated legs
+for(const side of [-1,1]){
+part(new T.CapsuleGeometry(.145,.62,5,10),uniform,side*.22,.57,0,0,0,side*.035);
+part(new T.BoxGeometry(.29,.17,.46),0x171a19,side*.22,.16,-.09);
+part(new T.BoxGeometry(.32,.11,.49),0x292c29,side*.22,.095,-.09);
+part(new T.CapsuleGeometry(.16,.22,4,8),uniformLight,side*.22,.99,0);
+}
+// Torso, shoulder pads, tactical vest and segmented pouches
+part(new T.CapsuleGeometry(.34,.66,6,12),uniform,0,1.35,0);
+part(new T.BoxGeometry(.76,.72,.27),armor,0,1.39,-.12);
+part(new T.BoxGeometry(.79,.12,.3),armorEdge,0,1.69,-.12);
+part(new T.BoxGeometry(.59,.28,.08),0x555744,0,1.47,-.275);
+part(new T.BoxGeometry(.18,.27,.11),0x343a32,-.24,1.22,-.29);
+part(new T.BoxGeometry(.18,.27,.11),0x343a32,0,1.22,-.29);
+part(new T.BoxGeometry(.18,.27,.11),0x343a32,.24,1.22,-.29);
+part(new T.BoxGeometry(.15,.16,.1),0x5b5542,-.23,1.55,-.29);
+part(new T.BoxGeometry(.15,.16,.1),0x5b5542,.23,1.55,-.29);
+part(new T.BoxGeometry(.12,.42,.12),0x252a27,0,1.34,-.3);
+part(new T.BoxGeometry(.12,.12,.07),0xb49b62,0,1.35,-.37);
+// Arms with sleeves, gloves, elbow pads
+for(const side of [-1,1]){
+part(new T.CapsuleGeometry(.14,.39,5,9),uniformLight,side*.48,1.39,-.015,0,0,side*.27);
+part(new T.SphereGeometry(.155,12,10),uniform,side*.57,1.16,-.12);
+part(new T.CapsuleGeometry(.105,.25,4,8),uniform,side*.63,1.13,-.2,0,0,side*.14);
+part(new T.BoxGeometry(.17,.13,.16),armor,side*.64,1.03,-.28);
+part(new T.BoxGeometry(.15,.12,.13),0x292c29,side*.64,1.02,-.35);
+}
+// Neck, face, balaclava, helmet, goggles
+part(new T.CylinderGeometry(.105,.12,.16,12),skin,0,1.82,0);
+part(new T.SphereGeometry(.225,18,16),skin,0,2.02,-.015);
+part(new T.SphereGeometry(.218,16,12),0x333b31,0,2.08,.015);
+part(new T.BoxGeometry(.34,.12,.22),0x30372f,0,1.96,-.12);
+part(new T.BoxGeometry(.29,.075,.055),0x151d20,0,2.065,-.207);
+for(const side of [-1,1])part(new T.BoxGeometry(.105,.065,.035),0x5e8b8b,side*.073,2.07,-.239);
+part(new T.SphereGeometry(.265,18,12,0,Math.PI*2,0,Math.PI*.57),0x3c4939,0,2.16,0);
+part(new T.CylinderGeometry(.267,.267,.045,20),0x283128,0,2.12,-.015,0,0,0);
+part(new T.BoxGeometry(.17,.075,.16),0x4c5941,0,2.25,-.015);
+// Radio and field backpack behind the soldier
+part(new T.BoxGeometry(.48,.63,.25),0x343c32,0,1.38,.25);
+part(new T.BoxGeometry(.38,.24,.12),0x4a503d,0,1.56,.405);
+part(new T.BoxGeometry(.15,.23,.1),0x282f2a,-.15,1.28,.405);
+part(new T.BoxGeometry(.15,.23,.1),0x282f2a,.15,1.28,.405);
+part(new T.CylinderGeometry(.018,.018,.48,7),0x202722,-.17,1.78,.31,0,0,-.12);
+// Rifle: stock, receiver, handguard, barrel, grip, magazine and sight
+part(new T.BoxGeometry(.13,.13,.38),0x202522,.32,1.42,-.36);
+part(new T.BoxGeometry(.15,.16,.46),0x292f2e,.32,1.43,-.68);
+part(new T.BoxGeometry(.11,.12,.35),0x3a403b,.32,1.43,-1.06);
+part(new T.CylinderGeometry(.027,.027,.42,8),metal,.32,1.44,-1.39,Math.PI/2,0,0);
+part(new T.BoxGeometry(.09,.2,.13),0x202522,.32,1.29,-.67,.22);
+part(new T.BoxGeometry(.08,.22,.14),0x202522,.32,1.27,-.84,-.12);
+part(new T.BoxGeometry(.07,.06,.2),0x111514,.32,1.55,-.68);
+part(new T.BoxGeometry(.09,.07,.08),0x121716,.32,1.57,-.66);
+scene.add(player);player.position.set(0,0,0)
+}
 if(['survival','zombie','boss'].includes(mode)){const count=mode==='boss'?1:mode==='zombie'?10:7;for(let i=0;i<count;i++){const e=new T.Group(),isBoss=mode==='boss',isZombie=mode==='zombie';const body=new T.Mesh(new T.BoxGeometry(isBoss?2.2:.9,isBoss?2.7:1.4,isBoss?1.5:.6),mat(T,isBoss?0x54215f:isZombie?0x4a9b43:[0xa44a39,0x8b3740,0x9e7542][i%3]));body.position.y=isBoss?1.45:.8;e.add(body);const head=new T.Mesh(new T.SphereGeometry(isBoss?.58:.3,12,10),mat(T,isZombie?0x75c85c:isBoss?0x9d4bc2:0xb99378));head.position.y=isBoss?3:1.75;e.add(head);e.position.set((Math.random()-.5)*(isBoss?0:42),0,(Math.random()-.5)*38-12);scene.add(e);enemies.push({mesh:e,hp:isBoss?18:isZombie?3:2,hit:0})}}else if(mode==='range'||mode==='sniper'){const count=mode==='sniper'?7:12;for(let i=0;i<count;i++){const g=new T.Group(),rad=mode==='sniper'?.48:.7;const plate=new T.Mesh(new T.CylinderGeometry(rad,rad,.16,24),mat(T,i%3===0?0xf2c341:0xd54c3f));plate.rotation.x=Math.PI/2;g.add(plate);const post=new T.Mesh(new T.CylinderGeometry(.08,.08,1.6,8),mat(T,0x555e63));post.position.y=-.9;g.add(post);g.position.set((Math.random()-.5)*(mode==='sniper'?42:30),2+Math.random()*2,-10-Math.random()*(mode==='sniper'?48:35));scene.add(g);targets.push({mesh:g,alive:true})}}else{for(let i=0;i<(mode==='parkour'?10:8);i++){const ring=new T.Mesh(new T.TorusGeometry(mode==='parkour'?1.15:1.8,.18,8,24),mat(T,0xf2c341));ring.rotation.x=Math.PI/2;ring.position.set((Math.random()-.5)*(mode==='parkour'?38:45),.2,(Math.random()-.5)*(mode==='parkour'?38:45));scene.add(ring);targets.push({mesh:ring,alive:true})}}
 active=true;resize();const onResize=()=>resize();window.addEventListener('resize',onResize);gameCleanup.push(()=>window.removeEventListener('resize',onResize));let elapsed=0;function tick(){if(!active)return;raf=requestAnimationFrame(tick);const dt=Math.min(clock.getDelta(),.05);elapsed+=dt;if(elapsed>=1){seconds--;elapsed=0;updateHud();if(seconds<=0){endGame();return}}updatePlayer(dt);updateEnemies(dt);if(mode==='range'||mode==='sniper')targets.forEach(t=>{if(t.alive)t.mesh.rotation.y+=dt*.5});const desired=new T.Vector3(player.position.x,player.position.y+(mode==='drive'?4:3.4),player.position.z+(mode==='drive'?7:7));camera.position.lerp(desired,.12);camera.lookAt(player.position.x,player.position.y+1,player.position.z-2);renderer.render(scene,camera)}tick()}
 function resize(){if(!renderer||!camera)return;const c=$('#kh3dCanvas');const w=c.clientWidth||640,h=c.clientHeight||420;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
