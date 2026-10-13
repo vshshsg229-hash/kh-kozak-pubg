@@ -20,9 +20,18 @@ Set these custom function secrets:
 
 Redeploy the `hub-api` Edge Function after updating the code/secrets. A manual GitHub Actions workflow is available at **Actions → Deploy Supabase Hub API**. Before using it, add repository Actions secrets `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` (this project's ref is `xacqretciujzrcqjvvgz`) in GitHub Settings → Secrets and variables → Actions, then run the workflow with its confirmation checkbox enabled. Apply the SQL schema first; the workflow only deploys the Edge Function.
 
-## 3. Register Telegram webhook
+## 3. Authorize the admin account
 
-Set these environment variables in a trusted terminal (do not commit them or send the token in chat):
+1. Create an online account in Battle Hub and sign in.
+2. In Supabase Dashboard → SQL Editor, run `select id, email from auth.users order by created_at desc;` and copy the UUID (`id`) for your account.
+3. Put that UUID in the Edge Function secret `ADMIN_USER_IDS`. Never put a Telegram ID or email in that variable.
+4. Redeploy `hub-api` after changing secrets.
+
+## 4. Register Telegram webhook
+
+**Recommended:** open Battle Hub, sign in as the authorized admin, open **Адмін-панель**, and press **НАЛАШТУВАТИ** in the Telegram Webhook section. The server registers the webhook using the secrets without exposing the bot token to the browser.
+
+Alternatively, set these environment variables in a trusted terminal (do not commit them or send the token in chat):
 
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_WEBHOOK_SECRET`
@@ -44,7 +53,7 @@ curl -sS "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo"
 
 The webhook URL must be HTTPS and reachable. Telegram documents `setWebhook`, the secret header, and `sendMessage` in the [Bot API documentation](https://core.telegram.org/bots/api).
 
-## 4. Link and test
+## 5. Link and test
 
 1. Open the published Battle Hub and sign into an online account.
 2. Open **Telegram і бот** and press **Створити код зв’язування**.
