@@ -98,6 +98,18 @@ Deno.serve(async (req: Request) => {
       return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 201, origin);
     }
 
+    if (req.method === "POST" && path === "/api/auth/refresh") {
+      const body = await req.json().catch(() => ({}));
+      const refreshToken = typeof body.refreshToken === "string" ? body.refreshToken : "";
+      if (!refreshToken) return response({ error: "Сесія завершилася. Увійди знову." }, 401, origin);
+      const auth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+      const { data, error } = await auth.auth.refreshSession({ refresh_token: refreshToken });
+      if (error || !data.session || !data.user) return response({ error: "Сесія завершилася. Увійди знову." }, 401, origin);
+      const profile = await getProfile(data.user.id);
+      if (!profile) return response({ error: "Профіль не знайдено." }, 404, origin);
+      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 200, origin);
+    }
+
     if (req.method === "POST" && path === "/api/auth/login") {
       const body = await req.json().catch(() => ({}));
       const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
