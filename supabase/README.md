@@ -1,6 +1,6 @@
 # KH么Kozak Battle Hub — Supabase backend
 
-This is the primary server option for Battle Hub. Supabase provides PostgreSQL + Auth; an Edge Function handles account endpoints, online game rewards and the shared leaderboard. The GitHub Pages frontend stays where it is.
+This is the primary server option for Battle Hub. Supabase provides PostgreSQL + Auth; an Edge Function handles account endpoints, atomic online game rewards and the shared leaderboard. Refresh tokens are rotated through the function so signed-in sessions can renew. The GitHub Pages frontend stays where it is.
 
 ## 1. Create the Supabase project
 1. Open https://supabase.com/dashboard and create a project.
@@ -37,7 +37,7 @@ If Supabase email confirmation is enabled, register first, confirm the email, th
 - Supabase Auth accounts and password handling (Supabase manages password hashes).
 - PostgreSQL user profiles and shared coins/points/XP/game counts.
 - Shared leaderboard.
-- Server-defined game rewards, duplicate event IDs, and a daily reward limit.
+- Server-defined game rewards in a single PostgreSQL transaction, duplicate event IDs, and a daily reward limit.
 - Server health check and restricted CORS origin.
 
 The daily shop, cosmetic inventory, secret-code redemption and some achievements remain browser-local for now; this release does not claim those are synced online. Game outcomes are still initiated by the browser, so this is a practical server-backed reward system for the current minigames, not a tamper-proof competitive anti-cheat system.
