@@ -121,3 +121,23 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .game2d-actions button small{font-size:9px;letter-spacing:.4px;white-space:nowrap}
 .game2d-actions .g2-fire{background:#70412e;border-color:#a66c4d}
 @media(max-width:520px){.game2d-hud{gap:4px}.game2d-hud span{padding:8px 3px;font-size:10px}.game2d-hud b{font-size:12px}.game2d-controls{gap:8px;padding:8px}.game2d-controls button{min-width:40px;min-height:42px}.game2d-actions{gap:4px}.game2d-actions button{min-width:51px;padding:5px 3px;font-size:17px}.game2d-actions button small{font-size:8px}.game2d-hint{font-size:11px}}
+
+/* Fun Zone / random loadout and daily side quests */
+.fun-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
+.fun-card{padding:22px;min-width:0;overflow:hidden}
+.fun-kicker{font-size:10px;font-weight:800;letter-spacing:1.3px;color:var(--yellow);margin-bottom:12px}
+.fun-icon{font-size:34px;margin:4px 0 10px}
+.fun-card h2{font-size:23px;margin:0 0 8px}
+.fun-card>p{color:var(--muted);line-height:1.6;min-height:42px}
+.fun-label{display:block;color:#d7ddd9;font-size:12px;font-weight:700;margin:14px 0 7px}
+.fun-select{display:block;width:100%;padding:12px;background:#10161b;border:1px solid #35404a;border-radius:9px;color:var(--text);font:inherit;margin-bottom:12px}
+.fun-result{margin-top:14px;padding:15px;border:1px solid #34413a;border-radius:10px;background:linear-gradient(135deg,rgba(114,223,156,.08),rgba(245,195,66,.04));min-height:100px;display:flex;flex-direction:column;justify-content:center;gap:8px;line-height:1.5;overflow-wrap:anywhere}
+.fun-result b{font-size:16px;color:#f4f5f6}
+.fun-result small{font-size:12px;color:#aeb9b2;line-height:1.55}
+.fun-result small strong{color:#f5c342}
+.fun-chip{align-self:flex-start;border:1px solid #6c6340;border-radius:999px;padding:4px 8px;color:#f5d780!important}
+.fun-copy{margin-top:12px}
+.fun-reward-line{display:flex;flex-direction:column;gap:7px;margin:12px 0;color:var(--muted);font-size:10px;letter-spacing:1px}
+.fun-reward-line strong{color:var(--green);font-size:12px;letter-spacing:0}
+#claimFunMission:disabled{opacity:.65;cursor:default}
+@media(max-width:720px){.fun-grid{grid-template-columns:1fr;gap:12px}.fun-card{padding:17px}.fun-card h2{font-size:21px}.fun-card>p{min-height:0}}
