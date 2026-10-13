@@ -227,3 +227,39 @@ const copyPubgButton=$('#copy-pubg-id');
 if(copyPubgButton)copyPubgButton.addEventListener('click',async()=>{const id=$('#pubg-id').textContent.trim();try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(id)}else{const field=document.createElement('textarea');field.value=id;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();const copied=document.execCommand('copy');field.remove();if(!copied)throw new Error('copy failed')}$('#copy-status').textContent='PUBG ID скопійовано ✓';copyPubgButton.textContent='Скопійовано ✓'}catch(_){$('#copy-status').textContent='Твій PUBG ID: '+id;copyPubgButton.textContent='ID: '+id}setTimeout(()=>{copyPubgButton.textContent='Скопіювати ID'},2200)});
 
 applyProfile();
+
+
+/* KH KOZAK ACCOUNT LOCAL MODE
+   Browser-local demo only. Do not treat this as server authentication. */
+(()=>{
+ const form=document.getElementById('account-form');
+ if(!form)return;
+ const userInput=document.getElementById('account-username');
+ const passInput=document.getElementById('account-password');
+ const submit=document.getElementById('account-submit');
+ const toggle=document.getElementById('account-toggle');
+ const status=document.getElementById('account-status');
+ const heading=document.getElementById('account-heading');
+ const description=document.getElementById('account-description');
+ const session=document.getElementById('account-session');
+ const welcome=document.getElementById('account-welcome');
+ const logout=document.getElementById('account-logout');
+ const USERS='kh-kozak-local-users-v1',ACTIVE='kh-kozak-local-session-v1';
+ let mode='register';
+ const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch(_){return fallback}};
+ const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}};
+ const clean=s=>String(s||'').trim().toLowerCase();
+ function setMode(next){mode=next;heading.textContent=mode==='register'?'Створи свій акаунт':'З поверненням!';description.textContent=mode==='register'?'Створи локальний профіль для цього браузера.':'Увійди в акаунт, створений у цьому браузері.';submit.textContent=mode==='register'?'Створити акаунт':'Увійти';toggle.textContent=mode==='register'?'Уже маю акаунт':'Створити новий акаунт';passInput.autocomplete=mode==='register'?'new-password':'current-password';status.textContent='Локальний режим: дані не синхронізуються між пристроями.'}
+ function showSession(){const active=read(ACTIVE,null);form.hidden=!!active;session.hidden=!active;if(active){welcome.textContent='Вітаємо, '+active.username+'!';heading.textContent='Ти увійшов';description.textContent='Поточний акаунт збережено в цьому браузері.'}else setMode(mode)}
+ toggle.addEventListener('click',()=>setMode(mode==='register'?'login':'register'));
+ form.addEventListener('submit',async e=>{e.preventDefault();const username=userInput.value.trim(),key=clean(username),password=passInput.value;if(username.length<3||password.length<6){status.textContent='Вкажи нікнейм від 3 символів і пароль від 6 символів.';return}
+ let users=read(USERS,{});if(mode==='register'&&users[key]){status.textContent='Такий нікнейм уже зареєстрований у цьому браузері. Увійди в акаунт.';return}
+ if(mode==='login'&&!users[key]){status.textContent='Акаунт не знайдено в цьому браузері. Перевір нікнейм або створи акаунт.';return}
+ let digest='';try{const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(password));digest=[...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('')}catch(_){status.textContent='Браузер не підтримує безпечне хешування пароля. Онови браузер і спробуй знову.';return}
+ if(mode==='register'){users[key]={username,digest,createdAt:new Date().toISOString()};if(!write(USERS,users)){status.textContent='Не вдалося зберегти акаунт. Перевір налаштування браузера.';return}}
+ else if(users[key].digest!==digest){status.textContent='Неправильний пароль.';return}
+ write(ACTIVE,{username,key});passInput.value='';status.textContent='Готово!';showSession();
+ });
+ logout.addEventListener('click',()=>{try{localStorage.removeItem(ACTIVE)}catch(_){}showSession();status.textContent='Ти вийшов з акаунта.'});
+ showSession();
+})();
