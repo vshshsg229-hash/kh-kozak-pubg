@@ -80,6 +80,11 @@ jobs:
               `Game launch control exists: ${game}`);
           }
 
+          const gameEngine = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+          assert(gameEngine.includes('function startZombie()'), 'Zombie survival mode is implemented');
+          assert(gameEngine.includes('if(zombie&&enemies.every(e=>e.hp<=0))'), 'Zombie mode advances through waves');
+          assert(html.includes('mode-shortcuts') && html.includes('data-game="zombie"'), 'Featured modes are easy to find');
+
           const threeD = fs.readFileSync(path.join(root, 'games-3d.js'), 'utf8');
           for (const mode of ['BATTLE SURVIVAL 3D', 'OFFROAD DRIVE 3D', 'TACTICAL RANGE 3D']) {
             assert(threeD.includes(mode), '3D mode exists: ' + mode);
