@@ -135,7 +135,6 @@ async function telegramWebhook(req: Request, origin: string | null) {
           }, { onConflict: "user_id" });
           if (linkError) throw linkError;
           await telegramSend(chat.id, "Готово! Telegram прив’язано до твого KH么Kozak акаунта. Тепер працюють /profile, /daily і /top.");
-          await notifyTelegram(pending.user_id, "🔗 Telegram успішно прив’язано до твого акаунта KH么Kozak Battle Hub.");
         }
       }
     } else if (command === "/profile" || command === "/daily") {
@@ -154,7 +153,6 @@ async function telegramWebhook(req: Request, origin: string | null) {
         else if (claim?.error === "profile_not_found") await telegramSend(chat.id, "Профіль не знайдено. Увійди на сайт і повтори.");
         else {
           await telegramSend(chat.id, "🎁 Щоденна нагорода отримана! +25 монет · +20 очок · +20 XP.");
-          await notifyTelegram(link.user_id, "🎁 Telegram daily: +25 монет, +20 очок і +20 XP додано до твого акаунта.");
         }
       }
     } else if (command === "/top") {
