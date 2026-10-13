@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "KH么Kozak Battle Hub",
+  "short_name": "KH Kozak",
+  "description": "Ігровий хаб KH么Kozak: мініігри, місії, монети та нагороди.",
+  "lang": "uk",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b0e12",
+  "theme_color": "#11151a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
