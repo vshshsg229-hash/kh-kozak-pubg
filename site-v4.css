@@ -1,12 +1,12 @@
 /* KH么Kozak Gaming Hub 4.0 — shared interior-page polish */
-:root{--hub-red:#ff4d42;--hub-lime:#d6ff57;--hub-ink:#f3f6fc;--hub-muted:#a0a9b7;--hub-line:rgba(255,255,255,.11)}
+:root{--hub-red:#f4c542;--hub-lime:#ffdf78;--hub-ink:#f3f6fc;--hub-muted:#a0a9b7;--hub-line:rgba(255,255,255,.11)}
 html{scroll-behavior:smooth}
-body{background-color:#090b10!important;background-image:radial-gradient(ellipse at 90% 0%,rgba(255,77,66,.09),transparent 35%),radial-gradient(ellipse at 0% 45%,rgba(214,255,87,.045),transparent 28%)!important;color:var(--hub-ink)}
+body{background-color:#090b10!important;background-image:radial-gradient(ellipse at 90% 0%,rgba(244,197,66,.09),transparent 35%),radial-gradient(ellipse at 0% 45%,rgba(244,197,66,.045),transparent 28%)!important;color:var(--hub-ink)}
 .site-header{position:sticky!important;top:0;z-index:100!important;background:rgba(9,11,16,.92)!important;border-bottom:1px solid var(--hub-line)!important;backdrop-filter:blur(18px)}
 .site-header .header-inner{gap:14px!important;min-height:76px}
 .site-header .brand{font-weight:900!important;letter-spacing:-.035em!important;white-space:nowrap}
-.site-header .brand-mark{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--hub-red),#a51d1d);color:white;box-shadow:0 8px 24px #ff4d4230}
-.v3-brand-badge{font-size:.62rem!important;letter-spacing:.08em!important;padding:4px 7px!important;border-radius:7px!important;background:rgba(214,255,87,.12)!important;color:var(--hub-lime)!important;border:1px solid rgba(214,255,87,.22)!important}
+.site-header .brand-mark{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--hub-red),#80651c);color:white;box-shadow:0 8px 24px #f4c54230}
+.v3-brand-badge{font-size:.62rem!important;letter-spacing:.08em!important;padding:4px 7px!important;border-radius:7px!important;background:rgba(244,197,66,.12)!important;color:var(--hub-lime)!important;border:1px solid rgba(244,197,66,.22)!important}
 .site-header .nav{gap:4px!important;flex-wrap:nowrap}
 .site-header .nav a{border-radius:10px!important;padding:10px 11px!important;color:#a0a9b7!important;font-size:.82rem!important;transition:background .2s,color .2s}
 .site-header .nav a:hover,.site-header .nav a[aria-current=page]{background:rgba(255,255,255,.075)!important;color:#fff!important}
@@ -23,12 +23,12 @@ body{background-color:#090b10!important;background-image:radial-gradient(ellipse
 .site-v4-footer-nav{display:flex;gap:8px 14px;flex-wrap:wrap;margin-top:12px}
 .site-v4-footer-nav a{font-size:.82rem;color:var(--hub-muted);text-decoration:none}
 .site-v4-footer-nav a:hover{color:var(--hub-lime)}
-.site-v4-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(214,255,87,.22);background:rgba(214,255,87,.07);color:var(--hub-lime);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:800;letter-spacing:.06em}
+.site-v4-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(244,197,66,.22);background:rgba(244,197,66,.07);color:var(--hub-lime);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:800;letter-spacing:.06em}
 @media(max-width:980px){.site-header .header-inner{flex-wrap:wrap;padding-block:10px}.site-header .nav{order:3;width:100%;overflow-x:auto;padding:2px 0 5px;scrollbar-width:thin}.site-header .nav a{flex:0 0 auto}.site-header .header-tools{margin-left:auto}}
 @media(max-width:560px){.site-header .header-inner{gap:8px}.site-header .brand{font-size:.9rem}.site-header .brand-mark{width:34px;height:34px}.site-header .header-tools .launch-pubg{padding:9px 10px;font-size:.75rem}.site-header .icon-btn{min-width:35px;padding:7px}.footer{gap:14px}}
 
 /* 4.0 visual system across legacy/classic content pages */
-:root{--acid:var(--hub-lime)!important;--line:var(--hub-line)!important;--glow:rgba(255,77,66,.10)!important;--panel:#11151d!important;--panel2:#171d27!important;--ink:var(--hub-ink)!important;--muted:var(--hub-muted)!important}
+:root{--acid:var(--hub-lime)!important;--line:var(--hub-line)!important;--glow:rgba(244,197,66,.10)!important;--panel:#11151d!important;--panel2:#171d27!important;--ink:var(--hub-ink)!important;--muted:var(--hub-muted)!important}
 body:before{opacity:.055!important;background-image:linear-gradient(rgba(255,255,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px)!important}
 h1 span,h2 span,.accent,.eyebrow{color:var(--hub-red)}
 .btn-primary,.launch-pubg{background:var(--hub-red)!important;border-color:var(--hub-red)!important;color:#fff!important}
@@ -37,14 +37,22 @@ h1 span,h2 span,.accent,.eyebrow{color:var(--hub-red)}
 .victor-game,.feature,.tool-card,.quick-tool,.challenge-card,.squad-panel,.ai-helper-panel,.locker-item,.avatar-card,.video-card,.music-card,.game-card,.minigame-card,.stat{box-shadow:0 16px 42px rgba(0,0,0,.16)}
 .victor-game button,.vg-mode-switch button,.quick-tool button,.game-card button,.minigame-card button{border-radius:11px}
 .site-header .brand .v3-brand-badge{font-size:.62rem!important}
-@media(max-width:650px){.site-header .nav{scrollbar-color:#ff4d42 #11151d}.site-header .nav a{white-space:nowrap}}
+@media(max-width:650px){.site-header .nav{scrollbar-color:#f4c542 #11151d}.site-header .nav a{white-space:nowrap}}
 
 /* 4.0 finish: align the install/app shell with the same visual language */
 .kh-appbar{background:rgba(9,11,16,.94)!important;border-bottom:1px solid var(--hub-line)!important;color:var(--hub-ink)!important;backdrop-filter:blur(18px)}
 .kh-app-brand strong{color:var(--hub-ink)!important;letter-spacing:-.03em}
 .kh-app-brand small{color:var(--hub-muted)!important;letter-spacing:.09em}
-.kh-app-mark{border-radius:13px!important;box-shadow:0 8px 24px rgba(255,77,66,.2)}
+.kh-app-mark{border-radius:13px!important;box-shadow:0 8px 24px rgba(244,197,66,.2)}
 .kh-install-btn{background:var(--hub-red)!important;border-color:var(--hub-red)!important;color:#fff!important;border-radius:11px!important;font-weight:800}
 .avatar-contact-link{transition:transform .18s ease,border-color .18s ease,background .18s ease}
 .avatar-contact-link:hover{transform:translateY(-2px);border-color:#229ed9!important;background:rgba(34,158,217,.16)!important}
 :focus-visible{outline:2px solid var(--hub-lime)!important;outline-offset:3px}
+
+
+/* 4.1 PUBG black-and-gold visual refresh */
+:root{--hub-red:#f4c542;--hub-lime:#ffdf78;--glow:rgba(244,197,66,.12)!important}
+.site-header .brand-mark,.kh-app-mark{background:linear-gradient(135deg,#f4c542,#8a6a17)!important;color:#15130a!important;box-shadow:0 8px 24px rgba(244,197,66,.18)!important}
+.site-header .nav a[aria-current=page]{box-shadow:inset 0 -2px #f4c542!important}
+.site-v4-pill{border-color:#f4c54244!important;background:#f4c54012!important;color:#ffdf78!important}
+:focus-visible{outline-color:#ffdf78!important}
