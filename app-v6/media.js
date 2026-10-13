@@ -83,6 +83,33 @@ renderMusic();
 const khPlaylist=[
  ['Murder In My Mind','Kordhell'],['METAMORPHOSIS','INTERWORLD'],['NEON BLADE','MoonDeity'],['Close Eyes','DVRST'],['RAVE','Dxrk ダーク'],['Override','KSLV Noh'],['Scopin','Kordhell'],['Live Another Day','The Score'],['Enemy','Imagine Dragons'],['The Search','NF'],['Legends Never Die','Against The Current'],['Invincible','NEFFEX'],['Spectre','Alan Walker'],['Faded','Alan Walker'],['The Nights','Avicii'],['Animals','Martin Garrix'],['Tremor','Dimitri Vegas & Like Mike'],['Numb','Linkin Park'],['Believer','Imagine Dragons'],['Силуети','SadSvit']
 ];
+const khUkrainianTracks=[
+ ['Stefania','Kalush Orchestra','Z8Z51no1TD0'],
+ ['Хай пишуть','DOROFEEVA','ApIqVddaw-c'],
+ ['Обійми','Океан Ельзи','--Wokwe4-i0'],
+ ['Погляд (AFRO VERSION)','YAKTAK feat. SOBOL','AzRIN1DZ8PY']
+];
+const khUkrainianList=$('#khUkrainianTracks');
+function renderUkrainianTracks(){
+ if(!khUkrainianList)return;
+ khUkrainianList.innerHTML='';
+ khUkrainianTracks.forEach((track,i)=>{
+  const row=document.createElement('div');row.className='kh-playlist-track';
+  const n=document.createElement('span');n.className='music-track-number';n.textContent=String(i+1).padStart(2,'0');
+  const info=document.createElement('div');info.className='music-track-info';
+  const title=document.createElement('b');title.textContent=track[0];
+  const artist=document.createElement('small');artist.textContent=track[1]+' · Українська музика';
+  info.append(title,artist);
+  const btn=document.createElement('button');btn.type='button';btn.className='music-play-btn';btn.textContent='▶ СЛУХАТИ';
+  btn.addEventListener('click',()=>{
+   const input=$('#youtubeUrl');
+   if(input)input.value='https://www.youtube.com/watch?v='+track[2];
+   playYouTube('https://www.youtube.com/watch?v='+track[2]);
+   $('#youtubeFrameWrap')?.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  row.append(n,info,btn);khUkrainianList.append(row);
+ });
+}
 const khPlaylistTracks=$('#khPlaylistTracks');
 function renderKhPlaylist(){
  if(!khPlaylistTracks)return;
@@ -103,6 +130,7 @@ $('#shuffleKhPlaylist')?.addEventListener('click',()=>{
  if(track)window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(track[1]+' '+track[0]+' official audio'),'_blank','noopener');
 });
 renderKhPlaylist();
+renderUkrainianTracks();
 
 })();,'Skrillex','The Prodigy','Hans Zimmer','Rammstein','The Chainsmokers','Oxxxymiron','Skofka','Kavabanga Depo Kolibri'];
 const musicMoods=['best songs','hits mix','remix','slowed reverb','sped up','live performance','official music video','lyrics','night drive mix','workout mix','chill mix','best of','popular tracks','instrumental','bass boosted','2026 mix','classic hits','dark mix','epic mix','playlist'];
