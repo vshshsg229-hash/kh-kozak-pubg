@@ -23,6 +23,9 @@ try{
  window.KozakCommunity.user=user;
  // Start cross-device progress sync only after Supabase config, SDK and guest session are ready.
  try { await loadScript('cloud-sync.js?v=1',()=>!!window.KozakCloudSync); if(window.KozakCloudSync?.syncNow) window.KozakCloudSync.syncNow().catch(()=>{}); } catch (_) { /* The shared community remains usable if optional progress sync is unavailable. */ }
+ // Keep a shared presence heartbeat from every page, not only the mini-games screen.
+ const pulseGlobalPresence=async()=>{try{const areaMap={'index.html':'Головна','minigames.html':'Мініігри','community.html':'Спільнота','videos.html':'Відео','account.html':'Акаунт','music.html':'Музика'};const page=location.pathname.split('/').pop()||'index.html';const nick=String(localStorage.getItem('khkozak:community-nickname')||user.user_metadata?.nickname||('Kozak-'+user.id.slice(0,5))).trim().slice(0,24)||'Гравець';await client.from('kozak_global_presence').upsert({user_id:user.id,nickname:nick,current_area:areaMap[page]||'Gaming Hub',last_seen:new Date().toISOString()},{onConflict:'user_id'});}catch(_){/* Online presence activates after online-server-v46.sql is applied. */}};
+ pulseGlobalPresence();setInterval(pulseGlobalPresence,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)pulseGlobalPresence();});
  const authStatus=$('community-auth-status');
  if(authStatus){authStatus.textContent=user.is_anonymous?'Гостьовий профіль активний ✓ · Прив’яжи email в акаунті, щоб не втратити доступ.':'Ти увійшов у свій акаунт ✓';authStatus.dataset.state='success';}
  const savedNickname=localStorage.getItem('khkozak:community-nickname')||user.user_metadata?.nickname||('Kozak-'+user.id.slice(0,5));
