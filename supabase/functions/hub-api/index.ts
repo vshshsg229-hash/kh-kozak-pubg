@@ -107,11 +107,11 @@ async function telegramWebhook(req: Request, origin: string | null) {
   const from = message?.from;
   const text = typeof message?.text === "string" ? message.text.trim() : "";
   if (!chat?.id || !from?.id || !text || chat.type !== "private") return response({ ok: true }, 200, origin);
-  const command = text.split(/\\s+/)[0].split("@")[0].toLowerCase();
-  const args = text.split(/\\s+/).slice(1);
+  const command = text.split(/\s+/)[0].split("@")[0].toLowerCase();
+  const args = text.split(/\s+/).slice(1);
   try {
     if (command === "/start" || command === "/help") {
-      await telegramSend(chat.id, "Вітаю в KH么Kozak Battle Hub! Команди:\\n/link КОД — зв’язати Telegram з акаунтом на сайті\\n/profile — твоя статистика\\n/daily — щоденна нагорода (+25 монет, +20 очок, +20 XP)\\n/top — топ гравців\\n/help — допомога\\n\\nСпочатку увійди на сайті, відкрий вкладку Telegram і створи код зв’язування.");
+      await telegramSend(chat.id, "Вітаю в KH么Kozak Battle Hub! Команди:\n/link КОД — зв’язати Telegram з акаунтом на сайті\n/profile — твоя статистика\n/daily — щоденна нагорода (+25 монет, +20 очок, +20 XP)\n/top — топ гравців\n/help — допомога\n\nСпочатку увійди на сайті, відкрий вкладку Telegram і створи код зв’язування.");
     } else if (command === "/link") {
       const code = (args[0] ?? "").toUpperCase();
       if (!/^[0-9]{8}$/.test(code)) {
@@ -141,7 +141,7 @@ async function telegramWebhook(req: Request, origin: string | null) {
       } else if (command === "/profile") {
         const profile = await getProfile(link.user_id);
         if (!profile) await telegramSend(chat.id, "Профіль не знайдено. Увійди на сайті та спробуй знову.");
-        else await telegramSend(chat.id, `🎮 KH么Kozak — ${profile.username}\\n◈ Монети: ${profile.coins}\\n✧ Очки: ${profile.points}\\n⚡ XP: ${profile.xp}\\n🏆 Ігор зіграно: ${profile.played}`);
+        else await telegramSend(chat.id, `🎮 KH么Kozak — ${profile.username}\n◈ Монети: ${profile.coins}\n✧ Очки: ${profile.points}\n⚡ XP: ${profile.xp}\n🏆 Ігор зіграно: ${profile.played}`);
       } else {
         const { data: claim, error } = await admin.rpc("hub_claim_telegram_daily", { p_user_id: link.user_id });
         if (error) throw error;
@@ -156,7 +156,7 @@ async function telegramWebhook(req: Request, origin: string | null) {
       const { data, error } = await admin.from("hub_profiles").select("username,points,xp").order("points", { ascending: false }).order("xp", { ascending: false }).limit(5);
       if (error) throw error;
       const lines = (data ?? []).map((p, i) => `${i + 1}. ${p.username} — ${p.points} очок · ${p.xp} XP`);
-      await telegramSend(chat.id, lines.length ? "🏆 ТОП KH么Kozak\\n" + lines.join("\\n") : "Поки немає гравців у рейтингу.");
+      await telegramSend(chat.id, lines.length ? "🏆 ТОП KH么Kozak\n" + lines.join("\n") : "Поки немає гравців у рейтингу.");
     } else {
       await telegramSend(chat.id, "Не знаю такої команди. Напиши /help.");
     }
@@ -226,7 +226,7 @@ Deno.serve(async (req: Request) => {
       if (error) throw error;
       let sent = 0, failed = 0;
       for (const recipient of recipients ?? []) {
-        try { await telegramSend(recipient.chat_id, "📣 KH么Kozak Battle Hub\\n\\n" + message); sent++; }
+        try { await telegramSend(recipient.chat_id, "📣 KH么Kozak Battle Hub\n\n" + message); sent++; }
         catch { failed++; }
       }
       return response({ sent, failed, total: (recipients ?? []).length }, 200, origin);
