@@ -152,3 +152,34 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .wheel-pointer{position:absolute;top:0;z-index:2;color:#f5c342;font-size:25px;text-shadow:0 2px 4px #000}
 .lucky-wheel.spinning{transform:rotate(1440deg)}
 #spinWheel:disabled{opacity:.65;cursor:default}
+
+
+/* Battle Hub 8.3 — ranks, daily shop, secret codes and Survival Arena */
+.rank-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-width:0;padding:24px;background:radial-gradient(circle at 50% 0,#f2b9301c,transparent 58%),linear-gradient(145deg,#24271d,#171a15);border:1px solid #5b5230;border-radius:8px}
+.rank-emblem{display:grid;place-items:center;width:86px;height:86px;margin:14px 0;border:2px solid #d3ad43;border-radius:50%;background:radial-gradient(circle,#4a4224,#191d16 72%);color:#f6d66d;font-size:39px;box-shadow:0 0 0 6px #d3ad431c,0 8px 22px #0005}
+.rank-name{font-size:24px;font-weight:1000;letter-spacing:2px;color:#f4cc58}
+.rank-panel p{font-size:12px;color:#b3bcaa;line-height:1.55}
+.rank-track{width:100%;height:8px;margin:12px 0 8px;background:#0e130e;border:1px solid #424831;border-radius:99px;overflow:hidden}
+.rank-track i{display:block;width:0;height:100%;background:linear-gradient(90deg,#9c792b,#f8d66a);transition:width .25s ease}
+.rank-panel>small{color:#aab39f;font-size:10px}
+.daily-shop{margin:20px 0;padding:20px}
+.daily-shop-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px}
+.daily-shop-head h2{font-size:24px;margin:5px 0}
+.daily-shop-head p{margin:0;color:#aeb8a4;font-size:12px;line-height:1.5}
+.daily-shop-badge{flex:0 0 auto;padding:8px 10px;border:1px solid #6f602f;background:#39321c;color:#f5d46b;font-size:12px;font-weight:1000;letter-spacing:1px}
+.daily-shop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.daily-shop-item{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0;padding:13px;border:1px solid #3b4330;border-radius:6px;background:linear-gradient(155deg,#24271e,#171a15)}
+.daily-shop-art{display:grid;place-items:center;width:100%;height:70px;background:#121710;border:1px solid #424831;color:#f4ca51;font-size:32px}
+.daily-shop-copy{display:flex;flex-direction:column;gap:5px;min-height:44px}
+.daily-shop-copy b{font-size:13px;line-height:1.35}
+.daily-shop-copy small{font-size:10px;color:#a8b29e}
+.daily-shop-copy small strong{color:#f4cf60;font-size:13px}
+.daily-shop-item button{width:100%;margin-top:auto;padding:10px 8px;background:#f2c449;border:1px solid #f2c449;border-radius:3px;color:#181a14;font-size:9px;font-weight:1000;letter-spacing:.5px;cursor:pointer}
+.daily-shop-item button:disabled{background:#20271e;border-color:#424831;color:#8e9a83;cursor:default}
+.visual-arena{background:radial-gradient(circle at 50% 40%,#a65335,#3a3026 48%,#151914);border-bottom:2px solid #d6a94b}
+.visual-arena span{color:#ffd36b;text-shadow:0 0 18px #f2b93077}
+.arena-scene{background:radial-gradient(circle at 50% 40%,#674332,#2d3328 60%,#121914);border-color:#79513a}
+.arena-scene .survival-ring{border-color:#e5a64c88;box-shadow:0 0 22px #c75d2b44}
+.fun-secret .fun-select{margin-bottom:12px}
+#redeemSecretCode:disabled{opacity:.6;cursor:default}
+@media(max-width:760px){.daily-shop-grid{grid-template-columns:1fr}.daily-shop-item{display:grid;grid-template-columns:58px minmax(0,1fr);align-items:center}.daily-shop-art{height:58px}.daily-shop-item button{grid-column:1/-1}.rank-panel{padding:18px}.daily-shop{padding:15px}}
