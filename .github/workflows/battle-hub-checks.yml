@@ -36,6 +36,8 @@ jobs:
           node --check app-v6/app.js
           node --check app-v6/i18n.js
           node --check app-v6/media.js
+          node --check app-v6/arcade-100.js
+          node --check app-v6/games-3d.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
@@ -67,7 +69,7 @@ jobs:
           }
 
           for (const id of ['tab-home', 'tab-games', 'tab-missions', 'tab-rewards',
-            'tab-profile', 'tab-pass', 'tab-telegram', 'tab-admin', 'tab-assistant',
+            'tab-profile', 'tab-pass', 'tab-telegram', 'tab-admin', 'tab-assistant', 'tab-3d',
             'gameModal', 'installPwa', 'checkInstall']) {
             assert(html.includes(`id="${id}"`), `Required interface element exists: ${id}`);
           }
@@ -77,6 +79,16 @@ jobs:
             assert(html.includes(`data-game="${game}"`),
               `Game launch control exists: ${game}`);
           }
+
+          const threeD = fs.readFileSync(path.join(root, 'games-3d.js'), 'utf8');
+          for (const mode of ['BATTLE SURVIVAL 3D', 'OFFROAD DRIVE 3D', 'TACTICAL RANGE 3D']) {
+            assert(threeD.includes(mode), '3D mode exists: ' + mode);
+          }
+          for (const control of ['kh3dCanvas', 'kh3dAction', 'kh3dRestart', 'kh3d-finished']) {
+            assert(threeD.includes(control), '3D control/reward hook exists: ' + control);
+          }
+          assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
+          assert(html.includes('games-3d.js?v=1.0.2'), 'HTML loads current 3D engine version');
 
           console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
