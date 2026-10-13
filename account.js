@@ -9,6 +9,7 @@
   const submit = $('account-submit');
   let mode = 'signup';
   let client = null;
+  let currentUser = null;
 
   function show(message, state = '') {
     status.textContent = message;
@@ -30,6 +31,9 @@
     return message;
   }
   function showUser(user) {
+    currentUser = user || null;
+    const tiktokPanel = $('account-tiktok-panel');
+    if (tiktokPanel) tiktokPanel.hidden = !user;
     if (!user) {
       profile.hidden = true;
       form.hidden = false;
@@ -44,7 +48,57 @@
     $('account-userid').textContent = 'ID гравця: ' + user.id + (user.is_anonymous ? ' · гість — прив’яжи email, щоб зберегти доступ' : '');
     if (user.is_anonymous) { showMode('signup'); show('Гостьовий профіль уже створено автоматично. Додай email і пароль, щоб перетворити його на постійний акаунт.'); }
     syncButton.disabled = false;
+    loadTikTokProfile(user);
   }
+  function normalizeTikTok(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    let handle = raw;
+    if (/^https:\/\//i.test(raw)) {
+      let u; try { u = new URL(raw); } catch (_) { throw new Error('Посилання виглядає некоректно.'); }
+      if (!['tiktok.com','www.tiktok.com'].includes(u.hostname.toLowerCase()) || u.protocol !== 'https:') throw new Error('Додай посилання саме на tiktok.com.');
+      const match = u.pathname.match(/^\/@([A-Za-z0-9._]{2,24})\/?$/);
+      if (!match) throw new Error('Посилання має вести прямо на профіль виду tiktok.com/@username.');
+      handle = match[1];
+    } else {
+      handle = raw.replace(/^@/, '');
+      if (!/^[A-Za-z0-9._]{2,24}$/.test(handle)) throw new Error('Введи TikTok-нік від 2 до 24 символів або посилання на профіль.');
+    }
+    return 'https://www.tiktok.com/@' + handle;
+  }
+  function tiktokStatus(message, state='') { const el=$('account-tiktok-status'); if(el){el.textContent=message;el.dataset.state=state;} }
+  async function loadTikTokProfile(user) {
+    if(!client||!user||!$('account-tiktok-form')) return;
+    const input=$('account-tiktok-url'),open=$('account-tiktok-open');
+    tiktokStatus('Завантажуємо налаштування профілю…');
+    try {
+      const {data,error}=await client.from('kozak_player_profiles').select('nickname,tiktok_url').eq('user_id',user.id).maybeSingle();
+      if(error) throw error;
+      const url=data?.tiktok_url||'';
+      if(input) input.value=url;
+      if(open){open.href=url||'#';open.hidden=!url;}
+      tiktokStatus(url?'TikTok прив’язано до твого акаунта KH么Kozak ✓':'Додай @нік або посилання на свій TikTok-профіль.');
+    } catch(error) {
+      tiktokStatus('Таблиця профілів ще не налаштована. Виконай оновлений video-community-schema.sql у Supabase.','warning');
+    }
+  }
+  async function saveTikTokProfile(value) {
+    if(!client||!currentUser) return;
+    const button=$('account-tiktok-save');button.disabled=true;
+    try {
+      const url=normalizeTikTok(value);
+      const nickname=String(localStorage.getItem('khkozak:community-nickname')||currentUser.user_metadata?.nickname||'Гравець').trim().slice(0,24)||'Гравець';
+      const {error}=await client.from('kozak_player_profiles').upsert({user_id:currentUser.id,nickname,tiktok_url:url||null,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+      if(error) throw error;
+      $('account-tiktok-url').value=url;
+      const open=$('account-tiktok-open');if(open){open.href=url||'#';open.hidden=!url;}
+      await client.auth.updateUser({data:{tiktok_url:url||null}}).catch(()=>{});
+      tiktokStatus(url?'TikTok успішно прив’язано! Посилання видно у твоїх кліпах спільноти ✓':'TikTok відв’язано від профілю KH么Kozak.','success');
+    } catch(error) { tiktokStatus(error.message||'Не вдалося зберегти TikTok-профіль.','error'); }
+    finally {button.disabled=false;}
+  }
+  $('account-tiktok-form')?.addEventListener('submit',event=>{event.preventDefault();saveTikTokProfile($('account-tiktok-url').value);});
+  $('account-tiktok-remove')?.addEventListener('click',()=>{ $('account-tiktok-url').value='';saveTikTokProfile(''); });
   async function refreshSession() {
     if (!client) return;
     const { data, error } = await client.auth.getSession();
