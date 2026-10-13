@@ -183,3 +183,24 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .fun-secret .fun-select{margin-bottom:12px}
 #redeemSecretCode:disabled{opacity:.6;cursor:default}
 @media(max-width:760px){.daily-shop-grid{grid-template-columns:1fr}.daily-shop-item{display:grid;grid-template-columns:58px minmax(0,1fr);align-items:center}.daily-shop-art{height:58px}.daily-shop-item button{grid-column:1/-1}.rank-panel{padding:18px}.daily-shop{padding:15px}}
+
+/* Online account + shared leaderboard */
+.online-panel{margin:0 0 22px;grid-column:1/-1}
+.online-help{color:var(--muted,#9aa4b2);font-size:.9rem;line-height:1.6;margin:0 0 16px}
+.online-panel label{display:block;margin:12px 0 6px;font-size:.8rem;font-weight:700;color:var(--muted,#aab3c0)}
+.online-panel input{width:100%;box-sizing:border-box;border:1px solid var(--line,#343b46);border-radius:8px;padding:12px 13px;background:var(--surface-2,#11161d);color:var(--text,#f4f6f8);font:inherit}
+.online-panel input:focus{outline:2px solid rgba(255,195,60,.6);outline-offset:1px}
+.online-auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.online-auth-actions .btn{flex:1;min-width:140px}
+.online-auth-actions button[hidden]{display:none}
+#connectOnlineApi{margin-top:10px}
+.online-ready{background:rgba(55,190,120,.14)!important;color:#67e5a0!important;border-color:rgba(55,190,120,.3)!important}
+#onlineAccountMessage{margin-top:10px;line-height:1.5}
+#onlineAccountMessage.error{color:#ff9b9b}
+.online-leaderboard{display:grid;gap:8px;margin-top:12px}
+.online-player{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 12px;background:rgba(255,255,255,.025);border:1px solid var(--line,#343b46);border-radius:8px}
+.online-place{color:var(--accent,#ffc43d);font-weight:900}
+.online-player b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.online-player span:last-child{color:var(--muted,#aab3c0);font-size:.82rem}
+.online-empty{margin:0;padding:12px;color:var(--muted,#aab3c0);font-size:.9rem}
+@media(max-width:560px){.online-player{grid-template-columns:32px minmax(0,1fr);gap:8px}.online-player span:last-child{grid-column:2}.online-auth-actions{display:grid;grid-template-columns:1fr}.online-auth-actions .btn{width:100%}}
