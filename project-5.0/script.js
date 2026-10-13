@@ -3,7 +3,7 @@ const modal=$('#game-modal'), stage=$('#game-stage'), modalTitle=$('#modal-title
 /* App tab navigation */
 const tabLinks=$('.app-nav [data-tab]');
 function activateTab(name,updateHash=true){
- const valid=['home','profile','games','rewards','tiktok','music','account'];
+ const valid=['home','profile','games','rewards','tiktok','music','account','missions','loadout','leaderboard','community'];
  if(!valid.includes(name))name='home';
  $('.app-view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
  tabLinks.forEach(a=>a.classList.toggle('active',a.dataset.tab===name));
@@ -262,4 +262,34 @@ applyProfile();
  });
  logout.addEventListener('click',()=>{try{localStorage.removeItem(ACTIVE)}catch(_){}showSession();status.textContent='Ти вийшов з акаунта.'});
  showSession();
+})();
+
+/* BATTLEGROUNDS HUB interactions: daily missions, saved loadout, local leaderboard */
+(()=>{
+ const $=s=>document.querySelector(s);
+ const today=()=>new Date().toISOString().slice(0,10);
+ const missionKey='kh-kozak-missions-v1';
+ let missions={day:today(),claimed:[]};
+ try{missions={...missions,...JSON.parse(localStorage.getItem(missionKey)||'{}')}}catch(_){}
+ if(missions.day!==today())missions={day:today(),claimed:[]};
+ function saveMissions(){try{localStorage.setItem(missionKey,JSON.stringify(missions))}catch(_){}}
+ function renderMissions(){document.querySelectorAll('[data-mission]').forEach(b=>{const done=missions.claimed.includes(b.dataset.mission);b.disabled=done;b.textContent=done?'✓ Виконано сьогодні':'Забрати нагороду'});}
+ document.querySelectorAll('[data-mission]').forEach(b=>b.addEventListener('click',()=>{
+  const id=b.dataset.mission;if(missions.claimed.includes(id))return;
+  const prizes={play:{coins:30,xp:20,points:10},aim:{coins:25,xp:15,points:15},music:{coins:15,xp:10,points:5}}[id];
+  if(!prizes)return;
+  missions.claimed.push(id);saveMissions();
+  if(typeof reward!=='undefined'){reward.coins+=prizes.coins;reward.xp+=prizes.xp;reward.points+=prizes.points;reward.claimed=true;saveReward();}
+  const msg=$('#mission-status');if(msg)msg.textContent='Місію виконано! +'+prizes.coins+' монет, +'+prizes.xp+' XP і +'+prizes.points+' очок.';
+  renderMissions();
+ }));
+ renderMissions();
+ const role=$('#loadout-role'),weapon=$('#loadout-weapon'),map=$('#loadout-map'),style=$('#loadout-style');
+ const roleNames={assault:'Штурмовик',scout:'Розвідник',support:'Підтримка',survivor:'Виживальник'};
+ function renderLoadout(){const r=roleNames[role.value]||'Польовий боєць';const name=$('#loadout-name'),summary=$('#loadout-summary');if(name)name.textContent=r;if(summary)summary.textContent=weapon.value+' • '+map.value+' • '+style.value;}
+ try{const saved=JSON.parse(localStorage.getItem('kh-kozak-loadout-v1')||'null');if(saved){if(saved.role)role.value=saved.role;if(saved.weapon)weapon.value=saved.weapon;if(saved.map)map.value=saved.map;if(saved.style)style.value=saved.style}}catch(_){}
+ [role,weapon,map,style].forEach(el=>el.addEventListener('change',renderLoadout));renderLoadout();
+ $('#save-loadout')?.addEventListener('click',()=>{const data={role:role.value,weapon:weapon.value,map:map.value,style:style.value};try{localStorage.setItem('kh-kozak-loadout-v1',JSON.stringify(data));$('#loadout-status').textContent='Комплект збережено! '+(roleNames[data.role]||data.role)+' / '+data.weapon+' / '+data.map+'.'}catch(_){$('#loadout-status').textContent='Не вдалося зберегти комплект у браузері.'}});
+ function renderLeaderboard(){const table=$('#leaderboard-table');if(!table)return;const labels={memory:'Знайди пару — ходи',reaction:'Реакція — мс',clicker:'Клік-челендж',ttt:'Хрестики-нулики',numbers:'Пам’ять чисел',snake:'Неонова змійка',aim:'Тренер прицілювання',challenge:'Випробування',run:'Kozak Run',musicquiz:'Music Challenge',wheel:'Колесо удачі',crates:'Лутбокси',code:'Кодова пам’ять',dodge:'Швидкі цілі',metro:'Метро: евакуація',classic:'Classic Survival'};let rows=[];try{const rec=JSON.parse(localStorage.getItem('kh-kozak-records-v5')||'{}');Object.keys(labels).forEach(k=>{const v=rec[k];if(v!==null&&v!==undefined&&v!==0&&v!=='')rows.push({name:labels[k],value:v,score:Number(v)||0})})}catch(_){}rows.sort((a,b)=>b.score-a.score);table.innerHTML='<div class="leaderboard-row leaderboard-head"><span>#</span><span>Випробування</span><span>Результат</span></div>'+(rows.length?rows.map((r,i)=>'<div class="leaderboard-row"><strong>'+(i+1)+'</strong><span>'+r.name+'</span><strong>'+r.value+'</strong></div>').join(''):'<div class="leaderboard-row"><span>—</span><span>Поки немає рекордів. Зіграй у мінігру!</span><span>—</span></div>');}
+ $('#refresh-leaderboard')?.addEventListener('click',renderLeaderboard);renderLeaderboard();
 })();
