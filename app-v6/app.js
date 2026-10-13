@@ -454,6 +454,7 @@ progressFile?.addEventListener('change',async()=>{
 });
 window.addEventListener('kh100-finished',e=>{const d=e.detail||{};finishGame('aim',Math.max(10,Number(d.coins)||10),Math.max(15,Number(d.points)||15),Math.max(20,Number(d.xp)||20));});
 window.addEventListener('kh3d-finished',e=>{const d=e.detail||{};finishGame('arena',Math.max(20,Number(d.coins)||20),Math.max(30,Number(d.points)||30),Math.max(25,Number(d.xp)||25));const status=document.querySelector('#kh3dStatus');if(status)status.textContent='Запит на нарахування нагороди надіслано. Перевір баланс у профілі.';});
+window.addEventListener('khkozak-bunker-update',()=>{try{const fresh=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...fresh,games:{...defaultState.games,...(fresh.games||{})};state.owned=Array.isArray(state.owned)?state.owned:[];state.completed=Array.isArray(state.completed)?state.completed:[];render();showToast('Прогрес бункера синхронізовано з профілем.')}catch(e){}});
 render();
 loadTelegramStatus();refreshAdminData();
 })();
