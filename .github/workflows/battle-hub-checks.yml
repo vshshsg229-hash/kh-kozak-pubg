@@ -75,7 +75,7 @@ jobs:
           }
 
           for (const game of ['reaction', 'aim', 'quiz', 'memory', 'loot', 'pubg',
-            'classic', 'metro', 'arena']) {
+            'classic', 'metro', 'arena', 'zombie']) {
             assert(html.includes(`data-game="${game}"`),
               `Game launch control exists: ${game}`);
           }
