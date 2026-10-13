@@ -251,22 +251,22 @@ class WakeWordService : Service(), RecognitionListener {
         if (target != null) {
             openExternalUrl(target, "відкриваю посилання")
         } else {
-            Toast.makeText(this, "Не знаю цієї команди. Спробуй календар, будильник, калькулятор, камеру, ліхтарик, галерею, карти, дзвінки, контакти, файли або налаштування. Вимкнення пристрою напряму недоступне.", Toast.LENGTH_LONG).show()
+            speakOrShow("Не знаю цієї команди. Спробуй календар, будильник, калькулятор, камеру, ліхтарик, галерею, карти, дзвінки, контакти, файли або налаштування. Вимкнення пристрою напряму недоступне.")
         }
     }
 
     private fun openExternalUrl(url: String, message: String) {
         try {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            speakOrShow(message)
         } catch (_: Exception) {
-            Toast.makeText(this, "Не вдалося відкрити посилання. Перевір інтернет або браузер.", Toast.LENGTH_LONG).show()
+            speakOrShow("Не вдалося відкрити посилання. Перевір інтернет або браузер.")
         }
     }
 
     private fun setFlashlight(enabled: Boolean) {
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Дозволь доступ до камери в налаштуваннях KH Assistant, щоб керувати ліхтариком.", Toast.LENGTH_LONG).show()
+            speakOrShow("Дозволь доступ до камери в налаштуваннях KH Assistant, щоб керувати ліхтариком.")
             return
         }
         try {
@@ -275,13 +275,13 @@ class WakeWordService : Service(), RecognitionListener {
                 manager.getCameraCharacteristics(id).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
             }
             if (cameraId == null) {
-                Toast.makeText(this, "На пристрої немає доступного ліхтарика.", Toast.LENGTH_LONG).show()
+                speakOrShow("На пристрої немає доступного ліхтарика.")
                 return
             }
             manager.setTorchMode(cameraId, enabled)
-            Toast.makeText(this, if (enabled) "Ліхтарик увімкнено." else "Ліхтарик вимкнено.", Toast.LENGTH_SHORT).show()
+            speakOrShow(if (enabled) "Ліхтарик увімкнено." else "Ліхтарик вимкнено.")
         } catch (_: Exception) {
-            Toast.makeText(this, "Не вдалося перемкнути ліхтарик. Перевір дозвіл камери або закрий застосунок, який використовує камеру.", Toast.LENGTH_LONG).show()
+            speakOrShow("Не вдалося перемкнути ліхтарик. Перевір дозвіл камери або закрий застосунок, який використовує камеру.")
         }
     }
 
@@ -289,13 +289,13 @@ class WakeWordService : Service(), RecognitionListener {
         try {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             if (intent.resolveActivity(packageManager) == null) {
-                Toast.makeText(this, "Не знайшов застосунок для дії: $label.", Toast.LENGTH_LONG).show()
+                speakOrShow("Не знайшов застосунок для дії: $label.")
                 return
             }
             startActivity(intent)
-            Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
+            speakOrShow("Відкриваю $label.")
         } catch (_: Exception) {
-            Toast.makeText(this, "Не вдалося відкрити: $label.", Toast.LENGTH_LONG).show()
+            speakOrShow("Не вдалося відкрити: $label.")
         }
     }    private fun speakOrShow(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -307,7 +307,7 @@ class WakeWordService : Service(), RecognitionListener {
             val appIntent = packageManager.getLaunchIntentForPackage(packageName) ?: return false
             appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(appIntent)
-            Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
+            speakOrShow("Відкриваю $label.")
             true
         } catch (_: Exception) {
             false
@@ -332,14 +332,14 @@ class WakeWordService : Service(), RecognitionListener {
                 if (intent != null) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
-                    Toast.makeText(this, "Відкриваю " + match.loadLabel(packageManager) + ".", Toast.LENGTH_SHORT).show()
+                    speakOrShow("Відкриваю " + match.loadLabel(packageManager) + ".")
                     return true
                 }
             }
             openExternalUrl("https://play.google.com/store/search?q=" + Uri.encode(requestedName) + "&c=apps", "Не знайшов установлену програму «" + requestedName + "». Шукаю її в Play Маркеті.")
             true
         } catch (_: Exception) {
-            Toast.makeText(this, "Не вдалося знайти або відкрити «" + requestedName + "».", Toast.LENGTH_LONG).show()
+            speakOrShow("Не вдалося знайти або відкрити «" + requestedName + "».")
             true
         }
     }
@@ -363,7 +363,7 @@ class WakeWordService : Service(), RecognitionListener {
                 if (appIntent != null) {
                     appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(appIntent)
-                    Toast.makeText(this, "Відкриваю калькулятор.", Toast.LENGTH_SHORT).show()
+                    speakOrShow("Відкриваю калькулятор.")
                     return
                 }
             } catch (_: Exception) {
@@ -376,7 +376,7 @@ class WakeWordService : Service(), RecognitionListener {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             if (categoryIntent.resolveActivity(packageManager) != null) {
                 startActivity(categoryIntent)
-                Toast.makeText(this, "Відкриваю калькулятор.", Toast.LENGTH_SHORT).show()
+                speakOrShow("Відкриваю калькулятор.")
                 return
             }
         } catch (_: Exception) {
@@ -389,13 +389,13 @@ class WakeWordService : Service(), RecognitionListener {
         try {
             val intent = Intent(Intent.ACTION_MAIN).addCategory(category).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             if (intent.resolveActivity(packageManager) == null) {
-                Toast.makeText(this, "Не знайшов застосунок: $label.", Toast.LENGTH_LONG).show()
+                speakOrShow("Не знайшов застосунок: $label.")
                 return
             }
             startActivity(intent)
-            Toast.makeText(this, "Відкриваю $label.", Toast.LENGTH_SHORT).show()
+            speakOrShow("Відкриваю $label.")
         } catch (_: Exception) {
-            Toast.makeText(this, "Не знайшов застосунок: $label.", Toast.LENGTH_LONG).show()
+            speakOrShow("Не знайшов застосунок: $label.")
         }
     }
 
