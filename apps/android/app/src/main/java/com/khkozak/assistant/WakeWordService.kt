@@ -21,6 +21,10 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.widget.Toast
+import org.json.JSONArray
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.Locale
 
 class WakeWordService : Service(), RecognitionListener {
@@ -258,8 +262,45 @@ class WakeWordService : Service(), RecognitionListener {
         if (target != null) {
             openExternalUrl(target, "відкриваю посилання")
         } else {
-            speakOrShow("Не знаю цієї команди. Спробуй календар, будильник, калькулятор, камеру, ліхтарик, галерею, карти, дзвінки, контакти, файли або налаштування. Вимкнення пристрою напряму недоступне.")
+            askAiAssistant(raw)
         }
+    }
+
+    private fun askAiAssistant(question: String) {
+        val endpoint = getSharedPreferences("kh_assistant_ai", MODE_PRIVATE).getString("endpoint", "").orEmpty().trim()
+        if (endpoint.isBlank()) {
+            speakOrShow("Я можу виконувати команди та озвучувати відповіді. Щоб вільно спілкуватися як AI-чат, додай HTTPS-адресу захищеного AI-сервера в розділі «Розумні відповіді AI».")
+            return
+        }
+        Thread {
+            var connection: HttpURLConnection? = null
+            try {
+                connection = (URL(endpoint).openConnection() as HttpURLConnection).apply {
+                    requestMethod = "POST"
+                    connectTimeout = 12000
+                    readTimeout = 25000
+                    doOutput = true
+                    setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                }
+                val messages = JSONArray().put(JSONObject().put("role", "user").put("content", question.take(3000)))
+                val body = JSONObject()
+                    .put("messages", messages)
+                    .put("language", "uk")
+                    .put("page", "android-app")
+                connection.outputStream.use { it.write(body.toString().toByteArray(Charsets.UTF_8)) }
+                val code = connection.responseCode
+                val stream = if (code in 200..299) connection.inputStream else connection.errorStream
+                val responseText = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }.orEmpty()
+                if (code !in 200..299) throw IllegalStateException("AI server returned HTTP $code")
+                val reply = JSONObject(responseText).optString("reply").trim()
+                if (reply.isBlank()) throw IllegalStateException("Empty AI reply")
+                handler.post { speakOrShow(reply.take(4500)) }
+            } catch (_: Exception) {
+                handler.post { speakOrShow("Не вдалося отримати AI-відповідь. Перевір адресу сервера, інтернет і налаштування Cloudflare Worker.") }
+            } finally {
+                connection?.disconnect()
+            }
+        }.start()
     }
 
     private fun openExternalUrl(url: String, message: String) {
