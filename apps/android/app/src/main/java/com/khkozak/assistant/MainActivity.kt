@@ -202,7 +202,7 @@ class MainActivity : Activity() {
         val aiEndpointInput = EditText(this).apply {
             hint = "https://твій-worker.workers.dev/chat"
             textSize = 13f
-            singleLine = true
+            setSingleLine(true)
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
             setTextColor(white)
             setHintTextColor(muted)
