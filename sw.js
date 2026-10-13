@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'kh-kozak-shell-v67';
+const CACHE = 'kh-kozak-shell-v68';
 const CORE = [
  './global-v46.css?v=1','./global-v46.js?v=1','./global-community-v46.css?v=1','./global-community-v46.js?v=1','./global-community-schema.sql','./online-server-v46.js?v=1','./online-server-v46.sql','./online-arcade-v46.js?v=1','./online-arcade-v46.sql',
  './','./index.html','./account.html','./account.css?v=1','./account.js?v=2','./supabase-config.js?v=1','./cloud-sync.js?v=1','./community.html','./community.css?v=1','./chat.css?v=1','./community.js?v=2','./community-schema.sql','./chat-schema.sql','./index-v3.html','./avatars.html','./videos.html','./minigames.html','./locker.html','./music.html','./battlehub.html','./assistant.html','./download.html','./assistant.css?v=3','./assistant.js?v=5','./assistant-manifest.webmanifest',
