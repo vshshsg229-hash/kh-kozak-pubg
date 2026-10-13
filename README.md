@@ -75,3 +75,9 @@ Only selected localStorage keys that look like game/progress keys are eligible f
 - Public community feed, online presence heartbeat, searchable feed, editable local nickname, and support reactions.
 - Run `global-community-schema.sql` in the configured Supabase SQL Editor to create the posts, presence, and reactions tables with row-level security. Anonymous Sign-Ins must be enabled for guest profiles.
 - Community posts and presence are shared across users only after the schema is applied to the same Supabase project configured in `supabase-config.js`.
+
+
+## KH Online Server 4.6
+- Added a shared Supabase-backed lobby list, create/join/close room actions, and online-presence heartbeat for the Mini Games page.
+- Run `online-server-v46.sql` in the configured Supabase SQL Editor and enable Anonymous Sign-Ins before the online lobby can be used by everyone.
+- Room and presence data is stored in shared Supabase tables, not browser localStorage. The lobby is a community room server, not a dedicated PUBG game server.
