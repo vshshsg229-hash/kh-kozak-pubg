@@ -30,4 +30,18 @@ create policy "Players can publish their own presence" on public.kozak_presence 
 drop policy if exists "Players can update their own presence" on public.kozak_presence;
 create policy "Players can update their own presence" on public.kozak_presence for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
 grant select, insert, update on public.kozak_presence to authenticated;
+create table if not exists public.kozak_community_reactions (
+ post_id bigint not null references public.kozak_community_posts(id) on delete cascade,
+ user_id uuid not null references auth.users(id) on delete cascade,
+ created_at timestamptz not null default now(),
+ primary key (post_id, user_id)
+);
+alter table public.kozak_community_reactions enable row level security;
+drop policy if exists "Signed-in players can read community reactions" on public.kozak_community_reactions;
+create policy "Signed-in players can read community reactions" on public.kozak_community_reactions for select to authenticated using (true);
+drop policy if exists "Players can react as themselves" on public.kozak_community_reactions;
+create policy "Players can react as themselves" on public.kozak_community_reactions for insert to authenticated with check (auth.uid() = user_id);
+drop policy if exists "Players can remove their own reactions" on public.kozak_community_reactions;
+create policy "Players can remove their own reactions" on public.kozak_community_reactions for delete to authenticated using (auth.uid() = user_id);
+grant select, insert, delete on public.kozak_community_reactions to authenticated;
 notify pgrst, 'reload schema';
