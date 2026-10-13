@@ -32,5 +32,5 @@ function loadTikTok(raw){
  try{localStorage.setItem('khkozak_tiktok_url',safeUrl)}catch{}
 }
 tiktokForm?.addEventListener('submit',e=>{e.preventDefault();loadTikTok(tiktokInput?.value||'')});
-try{if(youtubeInput)youtubeInput.value=localStorage.getItem('khkozak_youtube_url')||'';if(tiktokInput)tiktokInput.value=localStorage.getItem('khkozak_tiktok_url')||'https://www.tiktok.com/@baggy8364?_r=1&_t=ZS-99eA5MwIt6r'}catch{}
+try{if(youtubeInput)youtubeInput.value=localStorage.getItem('khkozak_youtube_url')||'';if(tiktokInput){tiktokInput.value=(localStorage.getItem('khkozak_tiktok_url')||'').includes('baggy8364')?'https://www.tiktok.com/@khkozak4':(localStorage.getItem('khkozak_tiktok_url')||'https://www.tiktok.com/@khkozak4');loadTikTok(tiktokInput.value)}}catch{}
 })();
