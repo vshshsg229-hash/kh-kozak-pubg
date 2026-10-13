@@ -92,3 +92,14 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .scene-tip{position:relative;color:#c1cba8;font-size:8px;letter-spacing:2px}
 .game-area button:focus-visible{outline:2px solid #f5c342;outline-offset:2px}
 @media(max-width:680px){.control-console{padding:10px}.raid-actions{grid-template-columns:1fr}.control-btn{min-height:67px;padding:9px 11px}.control-icon{flex-basis:38px;width:38px;height:38px;font-size:21px}.control-copy strong{font-size:12px}.control-copy small{font-size:10px}.control-console-head{font-size:9px}}
+
+/* v7.7: Classic mode and Metro Royale game scenes */
+.visual-classic{background:radial-gradient(circle at 70% 15%,#bba45d55,transparent 38%),linear-gradient(135deg,#303c2e,#111a18 72%)}.game-tile-classic .tile-visual{border-bottom:2px solid #d7b84c}
+.classic-scene{height:150px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:12px 0;background:linear-gradient(155deg,#53664b,#24382c 45%,#101b19);border:1px solid #52654c;border-radius:7px}
+.classic-scene:before,.classic-scene:after{content:"";position:absolute;bottom:-25px;width:75%;height:95px;background:#15231e;transform:skewY(-13deg);opacity:.8}.classic-scene:after{right:-15%;bottom:-35px;background:#344b35;transform:skewY(17deg)}
+.classic-zone{position:absolute;inset:12px 20%;border:2px solid #b5d0a1;border-radius:50%;box-shadow:0 0 18px #b5d0a155;opacity:.65}
+.classic-drop{z-index:1;font-size:25px;color:#f5c342;text-shadow:0 2px 8px #000}.classic-landmark{z-index:1;text-align:center;font-weight:900;letter-spacing:3px;font-size:17px;text-shadow:0 2px 5px #000}.classic-landmark small{display:block;margin-top:4px;color:#c4d1bc;font-size:8px;letter-spacing:2px}.classic-stage{position:absolute;top:9px;left:10px;z-index:2;color:#f4d26d;font-size:9px;font-weight:900;letter-spacing:1px}
+.mode-result{padding:22px 12px;text-align:center;border:1px solid #3b4938;border-radius:8px;background:linear-gradient(150deg,#1b261e,#11161a)}
+.mode-result.result-win{border-color:#9a853e;background:radial-gradient(circle at 50% 0,#b79c3024,transparent 50%),#141a17}
+.result-emblem{font-size:42px;margin-bottom:10px}.result-kicker{font-size:9px;letter-spacing:2px;color:#d6b94e;font-weight:900}.mode-result h3{font-size:24px;margin:9px 0}.mode-result p{font-size:12px;line-height:1.6;color:#b6c0b4;max-width:420px;margin:0 auto 16px}.result-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.result-stats span{padding:10px 4px;border:1px solid #343e32;border-radius:5px;font-size:8px;letter-spacing:.8px;color:#a8b29f}.result-stats b{display:block;font-size:17px;color:#f4f5f0;margin-top:5px}
+@media(max-width:680px){.classic-scene{height:132px}.result-stats{gap:4px}.result-stats span{font-size:7px}.result-stats b{font-size:15px}}
