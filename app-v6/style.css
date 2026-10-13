@@ -329,3 +329,9 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .kh-playlist-track-list{display:grid;gap:7px}
 .kh-playlist-track{display:flex;align-items:center;gap:12px;min-width:0;padding:10px;border:1px solid var(--line,#343b46);border-radius:8px;background:rgba(255,255,255,.02)}
 @media(max-width:560px){.kh-playlist-hero{align-items:flex-start;gap:12px}.kh-playlist-art{flex-basis:82px;width:82px;height:82px}.kh-playlist-art span{font-size:38px}.kh-playlist-actions{display:grid;grid-template-columns:1fr}.kh-playlist-actions .btn{width:100%;white-space:normal}.kh-playlist-track{gap:8px;padding:8px}}
+
+/* Ukrainian music on-site player */
+.kh-ukrainian-section{margin-top:22px;padding-top:18px;border-top:1px solid var(--line,#343b46)}
+.kh-ukrainian-section h3{margin:6px 0;font-size:clamp(18px,3vw,23px)}
+.kh-ukrainian-section>p{color:var(--muted,#aab3c0);font-size:12px;line-height:1.6}
+.kh-playlist-track .music-play-btn{border:0;cursor:pointer}
