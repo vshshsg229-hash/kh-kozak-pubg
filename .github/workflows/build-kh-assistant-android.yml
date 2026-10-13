@@ -38,18 +38,18 @@ jobs:
       - name: Upload debug APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: kh-kozak-assistant-android-v0.2.0-apk
+          name: kh-kozak-assistant-android-v4.6-apk
           path: apps/android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
       - name: Publish direct APK download
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: assistant-v0.2.${{ github.run_number }}
-          name: KH么Kozak Assistant Android v0.2.${{ github.run_number }}
+          tag_name: assistant-v4.6.${{ github.run_number }}
+          name: KH么Kozak Assistant Android v4.6.${{ github.run_number }}
           body: |
-            Оновлена тестова збірка KH么Kozak Assistant.
-            Підтримує історію команд, швидкі посилання на Gaming Hub, покращене введення та голосовий режим.
+            Глобальне оновлення 4.6 для KH么Kozak Assistant.
+            Підтримує історію команд, швидкі посилання, голосовий режим і оновлений інтерфейс. Версія Android: 4.6.0.
             Це debug APK для прямого встановлення, не публікація Google Play.
           files: apps/android/app/build/outputs/apk/debug/app-debug.apk
           fail_on_unmatched_files: true
