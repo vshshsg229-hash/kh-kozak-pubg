@@ -150,3 +150,24 @@ footer{max-width:1320px;margin:30px auto 0}
  .hero-art{height:220px}.orbit-one{width:230px;height:230px}.orbit-two{width:285px;height:175px}.hero-emblem{width:155px;height:155px;font-size:24px}.hero-emblem b{font-size:38px}
  .reward-meta{flex-wrap:wrap}.rewards-panel{grid-template-columns:56px minmax(0,1fr);padding:14px;gap:12px}.rank-emblem{width:52px;height:52px;font-size:26px}
 }
+
+/* Complete game library and category controls */
+.game-tools{display:grid;gap:12px;margin:0 0 20px;padding:14px;border:1px solid var(--esports-line,#ffffff18);border-radius:10px;background:linear-gradient(120deg,#121a12,#0c110d)}
+.game-search{display:flex;align-items:center;gap:10px;max-width:480px;padding:0 13px;border:1px solid #c9e34b38;border-radius:8px;background:#080d09;color:#c9e34b}
+.game-search>span{font-size:23px;line-height:1}
+.game-search input{width:100%;min-width:0;padding:12px 0;border:0;outline:0;background:transparent;color:#f2f5e8;font-size:13px}
+.game-search input::placeholder{color:#87917e}
+.game-filters{display:flex;gap:8px;flex-wrap:wrap}
+.game-filter{padding:9px 13px;border:1px solid #ffffff1c;border-radius:6px;background:#ffffff05;color:#aeb8a5;font-size:11px;font-weight:800;cursor:pointer}
+.game-filter:hover,.game-filter.active{border-color:#c9e34b8c;background:#c9e34b14;color:#eaf7b9}
+.game-filter b{margin-left:4px;color:#c9e34b}
+.game-results{margin:0;color:#9ca995;font-size:11px}
+.game-card[hidden]{display:none!important}
+@media(max-width:760px){
+ .topbar nav.app-nav{overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:thin}
+ .topbar nav.app-nav a{flex:0 0 78px}
+ .topbar nav.app-nav a:last-child{flex-basis:92px}
+ .game-tools{padding:11px}
+ .game-filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+ .game-filter{white-space:nowrap;flex-shrink:0}
+}
