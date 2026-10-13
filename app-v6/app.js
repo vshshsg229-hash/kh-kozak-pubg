@@ -281,5 +281,37 @@ $('#spinWheel')?.addEventListener('click',()=>{
 });
 renderWheel();
 $('#tacticResult')&&($('#tacticResult').innerHTML='<b>'+pick(funTactics)+'</b>');
+
+// Local progress backup: export/import without requiring the server.
+const exportProgressButton=$('#exportProgress'),importProgressButton=$('#importProgress'),progressFile=$('#progressFile'),backupMessage=$('#backupMessage');
+exportProgressButton?.addEventListener('click',()=>{
+ try{
+  const payload={app:'KH么Kozak Battle Hub',version:1,exportedAt:new Date().toISOString(),state};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='khkozak-progress-'+localDateKey()+'.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  if(backupMessage)backupMessage.textContent='Резервну копію створено.';
+  showToast('Прогрес експортовано у файл JSON.');
+ }catch(error){if(backupMessage)backupMessage.textContent='Не вдалося створити файл на цьому пристрої.';showToast('Експорт не вдався.')}
+});
+importProgressButton?.addEventListener('click',()=>progressFile?.click());
+progressFile?.addEventListener('change',async()=>{
+ const file=progressFile.files?.[0];if(!file)return;
+ try{
+  const payload=JSON.parse(await file.text()),incoming=payload?.state;
+  if(!incoming||typeof incoming!=='object'||!('coins' in incoming)||!('games' in incoming)||!Array.isArray(incoming.owned)||!Array.isArray(incoming.completed))throw new Error('invalid backup');
+  if(!confirm('Імпортувати резервну копію? Поточний локальний прогрес буде замінено.'))return;
+  state={...defaultState,...incoming,games:{...defaultState.games,...(incoming.games||{})}};
+  state.owned=Array.isArray(state.owned)?state.owned:[];
+  state.completed=Array.isArray(state.completed)?state.completed:[];
+  state.passClaimed=Array.isArray(state.passClaimed)?state.passClaimed:[];
+  state.redeemedCodes=Array.isArray(state.redeemedCodes)?state.redeemedCodes:[];
+  save();render();renderFunMission();renderWheel();
+  if(backupMessage)backupMessage.textContent='Прогрес відновлено.';
+  showToast('Резервну копію імпортовано.');
+ }catch(error){if(backupMessage)backupMessage.textContent='Файл не схожий на резервну копію KH么Kozak.';showToast('Не вдалося прочитати резервну копію.')}
+ finally{progressFile.value=''}
+});
 render();
 })();
