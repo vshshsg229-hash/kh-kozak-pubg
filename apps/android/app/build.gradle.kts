@@ -16,7 +16,7 @@ android {
         applicationId = "com.khkozak.assistant"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.2.0"
+        versionCode = 46
+        versionName = "4.6.0"
     }
 }
