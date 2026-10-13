@@ -118,7 +118,7 @@ class MainActivity : Activity() {
             setSingleLine(false)
             imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEND
         }
-        chatPanel.addView(commandInput, LinearLayout.LayoutParams(-1, -2).apply { minimumHeight = dp(82) })
+        chatPanel.addView(commandInput, LinearLayout.LayoutParams(-1, dp(82)))
         addGap(chatPanel, 10)
         val send = actionButton("➤   Надіслати команду", lime, bg)
         send.setOnClickListener { sendTypedCommand() }
