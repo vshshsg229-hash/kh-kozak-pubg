@@ -1,0 +1,30 @@
+/* KH么Kozak Gaming Hub 4.6 — global app layer */
+:root{--kh46-violet:#9b6dff;--kh46-violet-soft:#c7aaff;--kh46-red:#ff4655;--kh46-glass:rgba(15,13,25,.96)}
+.kh46-launcher{position:fixed;z-index:10040;right:18px;bottom:22px;width:54px;height:54px;border:1px solid #c7aaff70;border-radius:18px;background:linear-gradient(145deg,#30204e,#15111f);color:#fff;box-shadow:0 10px 32px #0008,0 0 22px #9b6dff25;font:800 20px/1 system-ui;cursor:pointer;display:grid;place-items:center;transition:transform .2s,box-shadow .2s}
+.kh46-launcher:hover{transform:translateY(-3px);box-shadow:0 12px 36px #0009,0 0 28px #9b6dff55}
+.kh46-launcher:focus-visible,.kh46-dialog button:focus-visible,.kh46-dialog input:focus-visible{outline:2px solid var(--kh46-violet-soft);outline-offset:3px}
+.kh46-launcher .kh46-launcher-dot{position:absolute;right:7px;top:7px;width:7px;height:7px;border-radius:50%;background:#61e6a4;box-shadow:0 0 8px #61e6a4}
+.kh46-dialog{position:fixed;z-index:10060;inset:0;display:none;align-items:flex-start;justify-content:center;padding: min(15vh,110px) 14px 24px;background:#05040bd9;backdrop-filter:blur(12px)}
+.kh46-dialog[open]{display:flex}
+.kh46-panel{width:min(600px,100%);max-height:min(76vh,700px);display:flex;flex-direction:column;overflow:hidden;border:1px solid #bda2ff4d;border-radius:24px;background:linear-gradient(160deg,#171323,#0a0b12 72%);color:#f7f4ff;box-shadow:0 28px 90px #000b,0 0 55px #8050d51c}
+.kh46-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 12px}
+.kh46-brand{font:850 15px/1.3 system-ui;letter-spacing:.04em}.kh46-brand small{display:block;margin-top:4px;color:#b4a5d3;font-size:10px;letter-spacing:.16em}
+.kh46-close{border:1px solid #ffffff22;border-radius:12px;background:#ffffff0b;color:#fff;min-width:38px;min-height:38px;font-size:20px;cursor:pointer}
+.kh46-search-wrap{padding:0 18px 12px}
+.kh46-search{box-sizing:border-box;width:100%;min-height:50px;padding:0 15px;border:1px solid #a889e74a;border-radius:15px;background:#080810;color:#fff;font:500 16px system-ui}
+.kh46-hints{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 14px;color:#aaa0c0;font:11px system-ui}
+.kh46-key{border:1px solid #ffffff20;border-radius:6px;padding:2px 6px;color:#e2d6ff;background:#ffffff08}
+.kh46-results{overflow:auto;padding:0 10px 12px}
+.kh46-group{margin:4px 8px 8px;color:#9585b7;font:800 10px system-ui;letter-spacing:.16em;text-transform:uppercase}
+.kh46-item{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;margin:4px 0;padding:9px 12px;border:1px solid transparent;border-radius:14px;background:transparent;color:#f5f0ff;text-align:left;font:650 13px system-ui;cursor:pointer}
+.kh46-item:hover,.kh46-item:focus-visible{border-color:#9b6dff55;background:linear-gradient(100deg,#9b6dff20,#ff46550b)}
+.kh46-icon{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:11px;background:#9b6dff1c;font-size:17px}
+.kh46-item-copy{flex:1;min-width:0}.kh46-item-copy small{display:block;margin-top:4px;color:#a9a1bc;font-size:11px;font-weight:450}
+.kh46-arrow{color:#a99ac7;font-size:16px}
+.kh46-empty{padding:22px 14px;color:#b9b0ca;text-align:center;font:13px system-ui}
+.kh46-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-top:1px solid #ffffff12;color:#9d94b1;font:11px system-ui}
+.kh46-status{display:inline-flex;align-items:center;gap:7px}.kh46-status:before{content:"";width:7px;height:7px;border-radius:50%;background:#61e6a4}.kh46-status[data-online="false"]:before{background:#ffb454}
+.kh46-toast{position:fixed;z-index:10070;left:50%;bottom:92px;transform:translate(-50%,12px);opacity:0;pointer-events:none;max-width:min(90vw,460px);padding:12px 16px;border:1px solid #c7aaff44;border-radius:13px;background:#171323;color:#f7f4ff;box-shadow:0 12px 40px #0008;font:600 13px/1.4 system-ui;transition:opacity .2s,transform .2s}
+.kh46-toast.is-visible{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.kh46-launcher{right:14px;bottom:calc(92px + env(safe-area-inset-bottom));width:48px;height:48px;border-radius:16px}.kh46-dialog{padding:7vh 9px 18px}.kh46-panel{max-height:82vh;border-radius:21px}.kh46-item{min-height:58px}.kh46-footer{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.kh46-launcher,.kh46-toast{transition:none}}
