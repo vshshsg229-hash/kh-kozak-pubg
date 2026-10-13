@@ -89,3 +89,64 @@ body{background:radial-gradient(ellipse at 70% 0%,#26321b 0%,transparent 38%),#0
 .metro-visual{background:radial-gradient(circle at 50% 50%,#536b30,#1a2719 58%,#111710)!important}.classic-visual{background:radial-gradient(circle at 50% 50%,#a15f2c,#362319 58%,#17130f)!important}
 .metro-visual .challenge-preview{color:#d8ef70}.classic-visual .challenge-preview{color:#ffc16c}
 @media(max-width:760px){.rewards-panel{grid-template-columns:70px minmax(0,1fr);gap:15px;padding:17px}.rank-emblem{width:65px;height:65px;font-size:32px}.daily-reward{grid-column:1/-1;max-width:none;width:100%}.award-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.creator-panel{grid-template-columns:1fr;padding:18px}.creator-embed{min-height:240px}.creator-copy .btn{width:100%;margin:6px 0}.topbar nav{gap:12px}.topbar nav a{font-size:10px}.live{display:none}}
+
+
+/* Competitive esports app shell: real tab views, desktop sidebar and mobile dock */
+:root{--esports-bg:#090d0b;--esports-panel:#121914;--esports-line:#c9e34b25;--esports-accent:#c9e34b;--esports-gold:#f2a83b}
+body{background:radial-gradient(ellipse at 80% 0%,#26351a 0%,transparent 32%),#080b09}
+.topbar{max-width:none;height:76px;padding:0 30px 0 28px;border-bottom:1px solid var(--esports-line);background:#090d0bf2;position:sticky;top:0;z-index:50;backdrop-filter:blur(18px)}
+.topbar .brand{min-width:225px}
+.topbar .live{margin-left:auto}
+.topbar nav.app-nav{position:fixed;z-index:60;left:0;top:76px;bottom:0;width:238px;padding:26px 15px;display:flex;flex-direction:column;gap:7px;background:linear-gradient(180deg,#101710,#0b100c);border-right:1px solid var(--esports-line);font-size:12px}
+.topbar nav.app-nav a{display:flex;align-items:center;gap:12px;min-height:45px;padding:0 13px;border:1px solid transparent;border-radius:9px;color:#9da896;transition:background .18s,border-color .18s,color .18s}
+.topbar nav.app-nav a span{width:22px;text-align:center;font-size:16px}
+.topbar nav.app-nav a:hover,.topbar nav.app-nav a.active{color:#e7f2c4;background:linear-gradient(90deg,#c9e34b1b,#c9e34b05);border-color:#c9e34b35}
+.topbar nav.app-nav a.active{box-shadow:inset 3px 0 #c9e34b}
+main{max-width:none;margin:0;padding:0 38px 40px 276px;min-height:calc(100vh - 76px)}
+.app-view{display:none!important;animation:tabIn .2s ease}
+.app-view.active{display:block!important}
+.hero.app-view.active{display:grid!important}
+@keyframes tabIn{from{opacity:.45;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.hero{max-width:1320px;margin:0 auto;min-height:480px;padding:36px 0 35px;border-bottom:1px solid var(--esports-line)}
+.hero h1{font-size:clamp(42px,5.1vw,68px);letter-spacing:-2.8px}
+.hero-art{height:330px}
+.section{max-width:1320px;margin:0 auto;padding:35px 0 24px;min-height:calc(100vh - 120px)}
+.section-head{border-bottom:1px solid var(--esports-line);padding-bottom:20px;margin-bottom:25px}
+.section-head h2{font-family:Orbitron,Manrope,sans-serif;font-size:clamp(25px,3vw,34px);text-transform:uppercase;letter-spacing:-.8px}
+.section-head>p{max-width:320px;line-height:1.7;text-align:right}
+.profile-card,.rewards-panel,.creator-panel,.music-panel{box-shadow:0 20px 70px #0005}
+.game-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.game-card{border-radius:9px}
+.game-visual{height:145px}
+.game-content{padding:18px}
+.game-content p{min-height:42px}
+.game-card:before{height:2px}
+.profile-card{border-radius:10px}
+.rewards-panel{border-radius:10px}
+.award-card{border-radius:8px}
+.creator-panel,.music-panel{border-radius:10px}
+footer{max-width:1320px;margin:30px auto 0}
+@media(max-width:900px){
+ .topbar{padding:0 16px;height:66px}.topbar .brand{min-width:0}.topbar .live{display:none}
+ .topbar nav.app-nav{top:auto;left:0;right:0;bottom:0;width:auto;height:70px;padding:6px 5px calc(6px + env(safe-area-inset-bottom));display:flex;flex-direction:row;justify-content:space-around;gap:2px;border-right:0;border-top:1px solid var(--esports-line);background:#090d0bf5;backdrop-filter:blur(18px)}
+ .topbar nav.app-nav a{min-width:0;flex:1;min-height:52px;padding:4px 2px;display:flex;flex-direction:column;justify-content:center;gap:3px;text-align:center;font-size:9px;line-height:1.2}
+ .topbar nav.app-nav a span{width:auto;font-size:17px}
+ .topbar nav.app-nav a.active{box-shadow:inset 0 2px #c9e34b}
+ main{padding:0 18px 95px}
+ .hero{min-height:auto;grid-template-columns:1fr;padding:30px 0;gap:8px}
+ .hero-art{height:245px;grid-row:1}
+ .hero-copy{grid-row:2}.hero h1{font-size:clamp(40px,10vw,62px)}
+ .hero-stats{margin-top:28px}.section{padding-top:28px;min-height:auto}
+ .game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .section-head{align-items:start;gap:10px;flex-direction:column}.section-head>p{text-align:left}
+}
+@media(max-width:520px){
+ .game-grid{grid-template-columns:1fr}
+ .game-visual{height:135px}.game-content p{min-height:0}
+ .profile-card{align-items:flex-start;flex-wrap:wrap;padding:18px;gap:16px}
+ .profile-avatar{width:70px;height:70px;border-radius:18px}
+ .profile-info{width:100%}.profile-badge{display:none}
+ .hero-actions{flex-wrap:wrap}.hero-actions .btn{flex:1}
+ .hero-art{height:220px}.orbit-one{width:230px;height:230px}.orbit-two{width:285px;height:175px}.hero-emblem{width:155px;height:155px;font-size:24px}.hero-emblem b{font-size:38px}
+ .reward-meta{flex-wrap:wrap}.rewards-panel{grid-template-columns:56px minmax(0,1fr);padding:14px;gap:12px}.rank-emblem{width:52px;height:52px;font-size:26px}
+}
