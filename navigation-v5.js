@@ -11,6 +11,7 @@ const items=[
 ];
 const nav=document.createElement('nav');nav.className='kh5-bottom-nav';nav.id='kh5-bottom-nav';nav.setAttribute('aria-label','Швидка навігація');
 for(const [href,icon,label,activePaths] of items){const a=document.createElement('a');a.href=href;a.innerHTML='<span class="kh5-nav-icon" aria-hidden="true">'+icon+'</span><span>'+label+'</span>';if(activePaths.includes(path)){a.setAttribute('aria-current','page');}nav.append(a)}
+if(document.body.classList.contains('kh-app-mode'))nav.hidden=true;
 document.body.append(nav);
 const progress=document.createElement('div');progress.className='kh5-page-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);
 let ticking=false;function updateProgress(){const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max>0?Math.min(100,scrollY/max*100):0)+'%';ticking=false}addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(updateProgress);ticking=true}},{passive:true});addEventListener('resize',updateProgress,{passive:true});updateProgress();
