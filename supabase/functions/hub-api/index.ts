@@ -172,6 +172,14 @@ async function telegramWebhook(req: Request, origin: string | null) {
           await telegramSend(chat.id, "🎁 Щоденна нагорода отримана! +25 монет · +20 очок · +20 XP.");
         }
       }
+    } else if (command === "/unlink") {
+      const { data: removed, error } = await admin.from("hub_telegram_links").delete().eq("telegram_user_id", from.id).select("user_id").maybeSingle();
+      if (error) throw error;
+      if (!removed) await telegramSend(chat.id, "Цей Telegram не прив’язано до акаунта KH么Kozak.");
+      else {
+        await admin.rpc("hub_refresh_achievements", { p_user_id: removed.user_id });
+        await telegramSend(chat.id, "Telegram відв’язано від акаунта. Сповіщення про ігрові нагороди більше не надходитимуть.");
+      }
     } else if (command === "/top") {
       const { data, error } = await admin.from("hub_profiles").select("username,points,xp").order("points", { ascending: false }).order("xp", { ascending: false }).limit(5);
       if (error) throw error;
