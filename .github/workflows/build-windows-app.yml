@@ -6,7 +6,7 @@ on:
       - 'desktop/**'
       - '.github/workflows/build-windows-app.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
     runs-on: windows-latest
@@ -24,10 +24,18 @@ jobs:
         run: npm install
       - name: Build Windows installer
         run: npm run build:win
-      - name: Upload installer
+      - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         with:
           name: KH-Kozak-Windows-Installer
           path: desktop/dist/*.exe
           if-no-files-found: error
           retention-days: 30
+      - name: Publish downloadable Windows installer
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: desktop-v1.0.${{ github.run_number }}
+          name: KH Kozak Gaming Hub for Windows v1.0.${{ github.run_number }}
+          make_latest: true
+          files: desktop/dist/*.exe
+          generate_release_notes: true
