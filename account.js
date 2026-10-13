@@ -80,7 +80,8 @@
         const { data: sessionData } = await client.auth.getSession();
         const currentUser = sessionData?.session?.user;
         let data, error;
-        if (currentUser?.is_anonymous) {
+        const upgradingGuest = Boolean(currentUser?.is_anonymous);
+        if (upgradingGuest) {
           ({ data, error } = await client.auth.updateUser({ email, password, data: { nickname: localStorage.getItem('khkozak:community-nickname') || 'Гравець' } }));
         } else {
           ({ data, error } = await client.auth.signUp({
@@ -89,10 +90,14 @@
           }));
         }
         if (error) throw error;
-        if (data.session) {
+        if (upgradingGuest) {
           showUser(data.user);
           const result = window.KozakCloudSync ? await window.KozakCloudSync.syncNow() : null;
-          show(result && result.ok ? 'Постійний акаунт готовий. Твій гостьовий прогрес збережено у хмарі!' : 'Дані акаунта оновлено. Якщо Supabase попросить підтвердити пошту, перевір лист.', 'success');
+          show(result && result.ok ? 'Гостьовий профіль став постійним, прогрес збережено у хмарі!' : 'Дані профілю оновлено. Якщо Supabase попросить підтвердити пошту, перевір лист.', 'success');
+        } else if (data.session) {
+          showUser(data.user);
+          const result = window.KozakCloudSync ? await window.KozakCloudSync.syncNow() : null;
+          show(result && result.ok ? 'Акаунт створено, прогрес збережено у хмарі!' : 'Акаунт створено. Якщо потрібно, підтверди пошту.', 'success');
         } else {
           show('Майже готово! Перевір пошту та підтверди акаунт, потім увійди на цьому сайті.', 'success');
         }
