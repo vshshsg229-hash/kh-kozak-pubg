@@ -37,7 +37,7 @@ function safeUser(row: any) {
   return {
     id: String(row.id), username: row.username, coins: row.coins,
     points: row.points, xp: row.xp, played: row.played,
-    games: row.games ?? {}, createdAt: row.created_at,
+    games: row.games ?? {}, inventory: row.inventory ?? [], achievements: row.achievements ?? [], createdAt: row.created_at,
   };
 }
 function validEmail(value: unknown): value is string {
@@ -62,6 +62,19 @@ async function getProfile(userId: string) {
   const { data, error } = await admin.from("hub_profiles").select("*").eq("id", userId).maybeSingle();
   if (error) throw error;
   return data;
+}
+async function getUserSnapshot(userId: string) {
+  const { error: achievementError } = await admin.rpc("hub_refresh_achievements", { p_user_id: userId });
+  if (achievementError) throw achievementError;
+  const [profile, inventory, achievements] = await Promise.all([
+    getProfile(userId),
+    admin.from("hub_inventory").select("item_id").eq("user_id", userId),
+    admin.from("hub_achievements").select("achievement_id").eq("user_id", userId),
+  ]);
+  if (!profile) return null;
+  if (inventory.error) throw inventory.error;
+  if (achievements.error) throw achievements.error;
+  return { ...profile, inventory: (inventory.data ?? []).map((row) => row.item_id), achievements: (achievements.data ?? []).map((row) => row.achievement_id) };
 }
 
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
@@ -205,6 +218,33 @@ Deno.serve(async (req: Request) => {
       return response({ linked: Boolean(data), username: data?.username ?? null, linkedAt: data?.linked_at ?? null, botConfigured: Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_WEBHOOK_SECRET) }, 200, origin);
     }
 
+
+    if (req.method === "POST" && path === "/api/shop/purchase") {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в онлайн-акаунт, щоб купувати нагороди на сервері." }, 401, origin);
+      const body = await req.json().catch(() => ({}));
+      const itemId = typeof body.itemId === "string" ? body.itemId.trim().slice(0, 64) : "";
+      const daily = body.daily === true;
+      if (!/^[a-z0-9_]+$/.test(itemId)) return response({ error: "Некоректний ідентифікатор предмета." }, 400, origin);
+      const { data: purchase, error } = await admin.rpc("hub_purchase_item", { p_user_id: user.id, p_item_id: itemId, p_daily: daily });
+      if (error) throw error;
+      const messages: Record<string, string> = {
+        profile_not_found: "Профіль не знайдено.",
+        item_not_found: "Цей предмет більше недоступний.",
+        daily_offer_invalid: "Предмет не входить до сьогоднішньої пропозиції магазину дня.",
+        daily_already_bought: "Ти вже придбав цей предмет у магазині дня сьогодні.",
+        already_owned: "Цей предмет уже є у твоїй колекції.",
+        insufficient_coins: "Не вистачає монет.",
+        collection_complete: "Ти вже зібрав усю косметичну колекцію. Кейс не списано.",
+      };
+      if (purchase?.error) return response({ error: messages[purchase.error] ?? "Не вдалося придбати предмет." }, purchase.error === "insufficient_coins" ? 409 : 400, origin);
+      const snapshot = await getUserSnapshot(user.id);
+      if (!snapshot) return response({ error: "Профіль не знайдено." }, 404, origin);
+      try { await notifyTelegram(user.id, `🛒 Магазин KH: придбання успішне. ${purchase.won_item_id ? "Із кейса випав " + purchase.won_item_id : itemId}. Витрачено ${purchase.cost} монет.`); }
+      catch (notifyError) { console.error("Telegram purchase notification failed:", notifyError?.message ?? notifyError); }
+      return response({ user: safeUser(snapshot), purchased: true, itemId: purchase.item_id, itemKind: purchase.item_kind, wonItemId: purchase.won_item_id ?? null, cost: purchase.cost, daily: purchase.daily }, 200, origin);
+    }
+
     if (req.method === "GET" && path === "/api/admin/overview") {
       const user = await isAdmin(req);
       if (!user) return response({ error: "Адмін-доступ не налаштований для цього акаунта." }, 403, origin);
@@ -255,7 +295,7 @@ Deno.serve(async (req: Request) => {
         }, 201, origin);
       }
       const profile = await getProfile(data.user.id);
-      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 201, origin);
+      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(await getUserSnapshot(data.user.id)) }, 201, origin);
     }
 
     if (req.method === "POST" && path === "/api/auth/refresh") {
@@ -267,7 +307,7 @@ Deno.serve(async (req: Request) => {
       if (error || !data.session || !data.user) return response({ error: "Сесія завершилася. Увійди знову." }, 401, origin);
       const profile = await getProfile(data.user.id);
       if (!profile) return response({ error: "Профіль не знайдено." }, 404, origin);
-      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 200, origin);
+      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(await getUserSnapshot(data.user.id)) }, 200, origin);
     }
 
     if (req.method === "POST" && path === "/api/auth/login") {
@@ -286,7 +326,7 @@ Deno.serve(async (req: Request) => {
     if (req.method === "GET" && path === "/api/auth/me") {
       const user = await getUser(req);
       if (!user) return response({ error: "Сесія завершилася. Увійди ще раз." }, 401, origin);
-      const profile = await getProfile(user.id);
+      const profile = await getUserSnapshot(user.id);
       if (!profile) return response({ error: "Профіль не знайдено." }, 404, origin);
       return response({ user: safeUser(profile) }, 200, origin);
     }
@@ -320,11 +360,13 @@ Deno.serve(async (req: Request) => {
       if (rewardError) throw rewardError;
       if (result?.error === "daily_limit") return response({ error: "Досягнуто денний ліміт 40 нагород за ігри. Повернись завтра." }, 429, origin);
       if (result?.error === "profile_not_found") return response({ error: "Профіль не знайдено." }, 404, origin);
-      if (result?.duplicate) return response({ duplicate: true, reward: { coins: 0, points: 0, xp: 0 }, user: safeUser(result.user) }, 200, origin);
+      const snapshot = await getUserSnapshot(user.id);
+      if (!snapshot) return response({ error: "Профіль не знайдено." }, 404, origin);
+      if (result?.duplicate) return response({ duplicate: true, reward: { coins: 0, points: 0, xp: 0 }, user: safeUser(snapshot) }, 200, origin);
       try {
-        await notifyTelegram(user.id, `🎮 Матч завершено: +${result.reward?.coins ?? 0} монет · +${result.reward?.points ?? 0} очок · +${result.reward?.xp ?? 0} XP. Тепер у тебе ${result.user?.coins ?? 0} монет.`);
+        await notifyTelegram(user.id, `🎮 Матч завершено: +${result.reward?.coins ?? 0} монет · +${result.reward?.points ?? 0} очок · +${result.reward?.xp ?? 0} XP. Тепер у тебе ${snapshot.coins ?? 0} монет.`);
       } catch (notifyError) { console.error("Telegram reward notification failed:", notifyError?.message ?? notifyError); }
-      return response({ user: safeUser(result.user), reward: result.reward, dailyBonus: result.dailyBonus }, 200, origin);
+      return response({ user: safeUser(snapshot), reward: result.reward, dailyBonus: result.dailyBonus }, 200, origin);
     }
     return response({ error: "Маршрут не знайдено." }, 404, origin);
   } catch (error) {
