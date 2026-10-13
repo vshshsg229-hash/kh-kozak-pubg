@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const KEY='khkozak_hub_v6';
-const defaultState={name:'KH么Kozak',coins:0,points:0,xp:0,passXp:0,passSeason:'',played:0,bestReaction:null,owned:[],completed:[],dailyClaimDate:'',dailyStreak:0,lastDailyDate:'',passClaimed:[],equippedTitle:'',equippedFrame:'',equippedAvatar:'',equippedTheme:'',equippedBadge:'',equippedBanner:'',botUsername:'',funClaimDate:'',games:{reaction:0,aim:0,quiz:0,memory:0,loot:0,pubg:0,metro:0,classic:0}};
+const defaultState={name:'KH么Kozak',coins:0,points:0,xp:0,passXp:0,passSeason:'',played:0,bestReaction:null,owned:[],completed:[],dailyClaimDate:'',dailyStreak:0,lastDailyDate:'',passClaimed:[],equippedTitle:'',equippedFrame:'',equippedAvatar:'',equippedTheme:'',equippedBadge:'',equippedBanner:'',botUsername:'',funClaimDate:'',wheelClaimDate:'',games:{reaction:0,aim:0,quiz:0,memory:0,loot:0,pubg:0,metro:0,classic:0}};
 let state;try{state={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')};state.games={...defaultState.games,...(state.games||{})};state.owned=state.owned||[];state.completed=state.completed||[];state.passClaimed=state.passClaimed||[];state.equippedTitle=state.equippedTitle||'';state.equippedFrame=state.equippedFrame||'';state.equippedTheme=state.equippedTheme||'';state.equippedBadge=state.equippedBadge||'';state.equippedBanner=state.equippedBanner||'';state.owned=state.owned.map(id=>({frame:'frame_steel',title:'title_raider',camo:'frame_neon'}[id]||id))}catch(e){state={...defaultState,owned:[],completed:[],games:{...defaultState.games}}}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 function currentSeasonKey(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
@@ -200,6 +200,31 @@ function runFunAction(action){if(action==='weapon'){const style=$('#weaponStyle'
 document.addEventListener('click',e=>{const b=e.target.closest('[data-fun]');if(b)runFunAction(b.dataset.fun)});
 $('#claimFunMission')?.addEventListener('click',()=>{const today=localDateKey();if(state.funClaimDate===today)return;state.funClaimDate=today;state.coins+=20;state.points+=25;addXP(20);save();render();renderFunMission();showToast('Місію дня виконано: +20 монет, +25 очок, +20 XP!')});
 renderFunMission();
+const wheelPrizes=[
+{name:'+10 монет',coins:10,points:0,xp:0},
+{name:'+25 монет і +10 очок',coins:25,points:10,xp:0},
+{name:'+20 XP',coins:0,points:0,xp:20},
+{name:'+40 монет',coins:40,points:0,xp:0},
+{name:'+25 очок і +15 XP',coins:0,points:25,xp:15},
+{name:'+75 монет — джекпот!',coins:75,points:10,xp:10}
+];
+function renderWheel(){
+ const b=$('#spinWheel'),r=$('#wheelResult');if(!b||!r)return;
+ const claimed=state.wheelClaimDate===localDateKey();b.disabled=claimed;
+ b.textContent=claimed?'СЬОГОДНІ ВЖЕ КРУТИВ ✓':'КРУТИТИ КОЛЕСО 🎡';
+ if(claimed&&r.dataset.claimed!=='yes'){r.innerHTML='<b>Бонус дня вже отримано.</b><small>Повертайся завтра по новий шанс.</small>';r.dataset.claimed='yes'}
+}
+$('#spinWheel')?.addEventListener('click',()=>{
+ if(state.wheelClaimDate===localDateKey())return;
+ const b=$('#spinWheel'),wheel=$('#luckyWheel'),r=$('#wheelResult');if(!b||!wheel||!r)return;
+ b.disabled=true;b.textContent='КОЛЕСО ОБЕРТАЄТЬСЯ…';wheel.classList.remove('spinning');void wheel.offsetWidth;wheel.classList.add('spinning');
+ r.dataset.claimed='no';r.innerHTML='<b>Визначаємо нагороду…</b><small>Ще мить!</small>';
+ setTimeout(()=>{
+  const prize=pick(wheelPrizes);state.wheelClaimDate=localDateKey();state.coins+=prize.coins;state.points+=prize.points;if(prize.xp)addXP(prize.xp);
+  save();render();wheel.classList.remove('spinning');r.innerHTML='<b>Твій виграш: '+prize.name+'</b><small>Нагороду додано до балансу KH么Kozak.</small>';r.dataset.claimed='yes';renderWheel();showToast('Колесо: '+prize.name+'!')
+ },1150)
+});
+renderWheel();
 $('#tacticResult')&&($('#tacticResult').innerHTML='<b>'+pick(funTactics)+'</b>');
 render();
 })();
