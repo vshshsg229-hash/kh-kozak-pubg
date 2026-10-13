@@ -1,0 +1,84 @@
+name: Battle Hub quality checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app-v6/**"
+      - "supabase/**"
+      - ".github/workflows/battle-hub-checks.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "app-v6/**"
+      - "supabase/**"
+      - ".github/workflows/battle-hub-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-checks:
+    name: Validate app assets and JavaScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check app-v6/app.js
+          node --check app-v6/i18n.js
+
+      - name: Validate PWA manifest and referenced local assets
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+
+          const root = 'app-v6';
+          const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+          const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.webmanifest'), 'utf8'));
+          const checks = [];
+          const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+            checks.push(message);
+          };
+
+          assert(manifest.name?.includes('KH') && manifest.start_url && manifest.scope,
+            'PWA manifest has app name, start URL and scope');
+          assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
+            'PWA manifest declares at least one icon');
+
+          for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
+            const value = match[1];
+            if (/^(?:https?:|data:|#|\/\/)/i.test(value)) continue;
+            const localPath = value.split('?')[0].split('#')[0];
+            if (!localPath || localPath.endsWith('/')) continue;
+            assert(fs.existsSync(path.join(root, localPath)),
+              `Referenced local asset exists: ${localPath}`);
+          }
+
+          for (const id of ['tab-home', 'tab-games', 'tab-missions', 'tab-rewards',
+            'tab-profile', 'tab-pass', 'tab-telegram', 'tab-admin', 'tab-assistant',
+            'gameModal', 'installPwa', 'checkInstall']) {
+            assert(html.includes(`id="${id}"`), `Required interface element exists: ${id}`);
+          }
+
+          for (const game of ['reaction', 'aim', 'quiz', 'memory', 'loot', 'pubg',
+            'classic', 'metro', 'arena']) {
+            assert(html.includes(`data-game="${game}"`),
+              `Game launch control exists: ${game}`);
+          }
+
+          console.log(`Passed ${checks.length} Battle Hub static checks.`);
+          NODE
+
+      - name: Check service worker syntax
+        run: node --check app-v6/sw.js
