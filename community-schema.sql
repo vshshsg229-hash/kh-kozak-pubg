@@ -51,7 +51,7 @@ begin
  end if;
  return new;
 end;
-$;
+$$;
 notify pgrst, 'reload schema';
 
 drop trigger if exists kozak_friend_request_guard on public.kozak_friend_requests;
