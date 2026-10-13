@@ -1,5 +1,5 @@
-const CACHE_NAME = "kh-kozak-hub-v8.17.0";
-const CORE = ["./", "./index.html", "./style.css?v=8.17.0", "./app.js?v=8.17.0", "./media.js?v=8.17.0", "./i18n.js?v=8.17.0", "./manifest.webmanifest", "./icon.svg"];
+const CACHE_NAME = "kh-kozak-hub-v8.17.1";
+const CORE = ["./", "./index.html", "./style.css?v=8.17.1", "./app.js?v=8.17.1", "./media.js?v=8.17.1", "./i18n.js?v=8.17.1", "./manifest.webmanifest", "./icon.svg"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
