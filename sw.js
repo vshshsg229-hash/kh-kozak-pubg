@@ -31,6 +31,11 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
  const request = event.request;
  if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
+ // Config must be fetched fresh after the owner adds Supabase project details.
+ if (new URL(request.url).pathname.endsWith('/supabase-config.js')) {
+  event.respondWith(fetch(request, {cache:'no-store'}).catch(() => caches.match(request)));
+  return;
+ }
  event.respondWith(
   caches.match(request).then(cached => {
    if (cached) return cached;
