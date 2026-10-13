@@ -28,4 +28,5 @@
 <script>
 (()=>{let promptEvent=null;const install=document.getElementById('install-app'),hint=document.getElementById('install-hint');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;install.classList.add('ready');hint.textContent='Цей браузер дозволяє встановити вебзастосунок на пристрій.'});install.addEventListener('click',async()=>{if(!promptEvent){hint.textContent='Відкрий меню браузера й обери «Встановити застосунок» або «Додати на головний екран».';return}promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;install.classList.remove('ready')});if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));})();
 </script>
+<script src="community.js?v=1"></script>
 </body></html>
