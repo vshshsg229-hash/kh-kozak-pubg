@@ -56,11 +56,36 @@
       else show('Ти увійшов. ' + (result.ok ? 'Прогрес синхронізовано з хмарою.' : ''), result.ok ? 'success' : '');
     }
   }
-  function waitForClient() {
+  let guestBootstrapAttempted = false;
+  async function waitForClient() {
     const sync = window.KozakCloudSync;
     if (sync && sync.enabled && sync.client) {
       client = sync.client;
-      client.auth.onAuthStateChange((event) => { if (['SIGNED_IN','SIGNED_OUT','USER_UPDATED','TOKEN_REFRESHED'].includes(event)) setTimeout(() => refreshSession(), 0); });
+      client.auth.onAuthStateChange((event) => {
+        if (['SIGNED_IN','SIGNED_OUT','USER_UPDATED','TOKEN_REFRESHED'].includes(event)) setTimeout(() => refreshSession(), 0);
+      });
+      const { data, error } = await client.auth.getSession();
+      if (error) {
+        show(friendlyError(error), 'error');
+        return;
+      }
+      if (data && data.session) {
+        return refreshSession();
+      }
+      // Create a guest profile once on first visit so progress can later be linked to email.
+      // Do not auto-create a new guest after the user explicitly signs out.
+      if (!guestBootstrapAttempted) {
+        guestBootstrapAttempted = true;
+        show('Створюємо гостьовий профіль…');
+        const { error: guestError } = await client.auth.signInAnonymously();
+        if (guestError) {
+          const message = /anonymous.*disabled|anonymous sign.?ins.*disabled/i.test(guestError.message || '')
+            ? 'Увімкни Anonymous Sign-Ins у Supabase → Authentication → Sign In / Providers, щоб автоматично створювати гостьовий профіль.'
+            : friendlyError(guestError);
+          show(message, 'warning');
+          return;
+        }
+      }
       return refreshSession();
     }
     show('Хмарний акаунт ще не налаштовано. Спершу потрібно додати URL і publishable/anon key у supabase-config.js та виконати account-schema.sql у Supabase.', 'warning');
