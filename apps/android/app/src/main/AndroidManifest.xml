@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <queries>
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.APP_CALCULATOR" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent>
+        <intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.APP_CALCULATOR" /></intent>
+        <intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent>
         <package android:name="com.google.android.calculator" />
         <package android:name="com.android.calculator2" />
         <package android:name="com.transsion.calculator" />
@@ -26,7 +20,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
-    <application android:theme="@android:style/Theme.Material.NoActionBar" android:label="KH Assistant" android:allowBackup="false">
+    <application android:theme="@android:style/Theme.Material.NoActionBar" android:label="KH么Kozak Assistant" android:icon="@drawable/kh_kozak_launcher" android:roundIcon="@drawable/kh_kozak_launcher" android:allowBackup="false">
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
