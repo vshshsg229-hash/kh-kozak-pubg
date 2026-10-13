@@ -148,46 +148,20 @@ Deno.serve(async (req: Request) => {
       if (!rewards[game]) return response({ error: "Невідомий режим гри." }, 400, origin);
       if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(eventId)) return response({ error: "Некоректний ідентифікатор результату." }, 400, origin);
 
-      const { data: existing, error: existsError } = await admin.from("hub_game_events").select("id").eq("user_id", user.id).eq("event_id", eventId).maybeSingle();
-      if (existsError) throw existsError;
-      if (existing) {
-        const profile = await getProfile(user.id);
-        return response({ duplicate: true, reward: { coins: 0, points: 0, xp: 0 }, user: safeUser(profile) }, 200, origin);
-      }
-      const todayStart = new Date(); todayStart.setUTCHours(0, 0, 0, 0);
-      const { count, error: countError } = await admin.from("hub_game_events").select("id", { count: "exact", head: true })
-        .eq("user_id", user.id).gte("created_at", todayStart.toISOString());
-      if (countError) throw countError;
-      if ((count ?? 0) >= 40) return response({ error: "Досягнуто денний ліміт 40 нагород за ігри. Повернись завтра." }, 429, origin);
-
-      const profile = await getProfile(user.id);
-      if (!profile) return response({ error: "Профіль не знайдено." }, 404, origin);
-      const nowDay = new Date().toISOString().slice(0, 10);
-      const firstToday = profile.last_daily_bonus_date !== nowDay;
       const base = rewards[game];
-      const bonus = firstToday ? { coins: 15, points: 10, xp: 10 } : { coins: 0, points: 0, xp: 0 };
-      const reward = { coins: base.coins + bonus.coins, points: base.points + bonus.points, xp: base.xp + bonus.xp };
-      const games = { ...(profile.games ?? {}), [game]: (Number(profile.games?.[game]) || 0) + 1 };
-      const { data: updated, error: updateError } = await admin.from("hub_profiles").update({
-        coins: profile.coins + reward.coins, points: profile.points + reward.points,
-        xp: profile.xp + reward.xp, played: profile.played + 1, games,
-        last_daily_bonus_date: firstToday ? nowDay : profile.last_daily_bonus_date,
-        updated_at: new Date().toISOString(),
-      }).eq("id", user.id).select("*").single();
-      if (updateError) throw updateError;
-      const { error: insertError } = await admin.from("hub_game_events").insert({
-        user_id: user.id, event_id: eventId, game, coins: reward.coins, points: reward.points, xp: reward.xp,
+      const { data: result, error: rewardError } = await admin.rpc("hub_finish_game", {
+        p_user_id: user.id,
+        p_event_id: eventId,
+        p_game: game,
+        p_base_coins: base.coins,
+        p_base_points: base.points,
+        p_base_xp: base.xp,
       });
-      if (insertError) {
-        // Compensate the profile update if the unique event insert fails.
-        await admin.from("hub_profiles").update({
-          coins: profile.coins, points: profile.points, xp: profile.xp, played: profile.played,
-          games: profile.games, last_daily_bonus_date: profile.last_daily_bonus_date,
-        }).eq("id", user.id);
-        if (insertError.code === "23505") return response({ error: "Цей результат уже був зарахований." }, 409, origin);
-        throw insertError;
-      }
-      return response({ user: safeUser(updated), reward, dailyBonus: firstToday ? bonus : null }, 200, origin);
+      if (rewardError) throw rewardError;
+      if (result?.error === "daily_limit") return response({ error: "Досягнуто денний ліміт 40 нагород за ігри. Повернись завтра." }, 429, origin);
+      if (result?.error === "profile_not_found") return response({ error: "Профіль не знайдено." }, 404, origin);
+      if (result?.duplicate) return response({ duplicate: true, reward: { coins: 0, points: 0, xp: 0 }, user: safeUser(result.user) }, 200, origin);
+      return response({ user: safeUser(result.user), reward: result.reward, dailyBonus: result.dailyBonus }, 200, origin);
     }
     return response({ error: "Маршрут не знайдено." }, 404, origin);
   } catch (error) {
