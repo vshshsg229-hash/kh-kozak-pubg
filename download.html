@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#090b10"><meta name="description" content="Завантаження KH Assistant для Android, ПК та браузера.">
 <title>Завантажити KH Assistant · KH么Kozak</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="assistant-manifest.webmanifest">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="site-v4.css?v=7"><link rel="stylesheet" href="assistant.css?v=3">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="site-v4.css?v=8"><link rel="stylesheet" href="assistant.css?v=3">
 <style>
 .khd-downloads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0 34px}.khd-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:22px;border:1px solid #ffffff18;border-radius:20px;background:linear-gradient(150deg,#171923,#0c0e14);min-width:0}.khd-card .emoji{font-size:2rem}.khd-card h2{font-size:1.25rem;margin:0}.khd-card p{color:#a0a9b7;font-size:.92rem;line-height:1.6;margin:0;flex:1}.khd-card .btn{display:inline-flex;justify-content:center;align-items:center;text-align:center;width:100%;text-decoration:none;min-height:46px}.khd-note{max-width:880px;padding:18px 20px;border:1px solid #d6ff5730;border-radius:16px;background:#d6ff5708;color:#c9d0dd;line-height:1.7;margin:18px 0}.khd-note strong{color:#d6ff57}.khd-steps{max-width:880px;padding-left:22px;color:#a0a9b7;line-height:1.8}.khd-install{display:none}.khd-install.ready{display:inline-flex}@media(max-width:800px){.khd-downloads{grid-template-columns:1fr}.khd-card{padding:18px}}
 </style>
@@ -24,7 +24,7 @@
 <section class="khd-note"><strong>🖥️ Як установити на ПК</strong><ol class="khd-steps"><li>Відкрий цю сторінку в Chrome або Edge через HTTPS.</li><li>Натисни «Встановити застосунок», якщо кнопка доступна, або знайди пункт встановлення в меню браузера.</li><li>Для Windows-компаньйона окремо завантаж скрипт та прочитай інструкцію. Не запускай скрипти, якщо не довіряєш джерелу.</li></ol></section>
 </main>
 <footer class="wrap footer"><span>© 2026 <strong>KH么Kozak</strong> · KH Assistant</span><a href="assistant.html">До помічника ↗</a></footer>
-<script src="script.js"></script><script src="site-i18n.js"></script><script src="site-v4.js?v=7"></script>
+<script src="script.js"></script><script src="site-i18n.js"></script><script src="site-v4.js?v=8"></script>
 <script>
 (()=>{let promptEvent=null;const install=document.getElementById('install-app'),hint=document.getElementById('install-hint');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;install.classList.add('ready');hint.textContent='Цей браузер дозволяє встановити вебзастосунок на пристрій.'});install.addEventListener('click',async()=>{if(!promptEvent){hint.textContent='Відкрий меню браузера й обери «Встановити застосунок» або «Додати на головний екран».';return}promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;install.classList.remove('ready')});if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));})();
 </script>
