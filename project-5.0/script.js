@@ -29,7 +29,35 @@ function recordText(game){if(game==='memory')return records.memory?('Рекор�
 function openGame(name){gameCleanup();stage.innerHTML='';modal.classList.add('open');modal.setAttribute('aria-hidden','false');noteGameStart(name);if(name==='memory')memoryGame();if(name==='reaction')reactionGame();if(name==='clicker')clickerGame();if(name==='ttt')ticTacToeGame();if(name==='numbers')numberMemoryGame();if(name==='snake')snakeGame();if(name==='aim')aimTrainerGame();if(name==='challenge')challengeGame();if(name==='run')runGame();if(name==='musicquiz')musicQuizGame();if(name==='wheel')wheelGame();if(name==='crates')cratesGame();if(name==='code')codeGame();if(name==='dodge')dodgeGame();if(name==='metro')metroGame();if(name==='classic')classicGame()}
 function closeGame(){gameCleanup();modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
 $('#close-modal').addEventListener('click',closeGame);modal.addEventListener('click',e=>{if(e.target===modal)closeGame()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGame()});
-$$('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
+$('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
+
+const gameCards=$('[data-game-card]');
+const gameSearch=$('#game-search');
+const gameResult=$('#game-results');
+const gameFilters=$('[data-game-filter]');
+let activeGameFilter='all';
+function filterGames(){
+ const query=(gameSearch?.value||'').trim().toLocaleLowerCase('uk');
+ let shown=0;
+ gameCards.forEach(card=>{
+  const title=(card.querySelector('h3')?.textContent||'').toLocaleLowerCase('uk');
+  const desc=(card.querySelector('.game-content p')?.textContent||'').toLocaleLowerCase('uk');
+  const matchCategory=activeGameFilter==='all'||card.dataset.category===activeGameFilter;
+  const matchQuery=!query||(title+' '+desc).includes(query);
+  const visible=matchCategory&&matchQuery;
+  card.hidden=!visible;
+  if(visible)shown++;
+ });
+ if(gameResult)gameResult.textContent=shown+' '+(shown===1?'гра доступна':shown>=2&&shown<=4?'ігри доступні':'ігор доступно');
+}
+gameFilters.forEach(button=>button.addEventListener('click',()=>{
+ activeGameFilter=button.dataset.gameFilter;
+ gameFilters.forEach(item=>item.classList.toggle('active',item===button));
+ filterGames();
+}));
+gameSearch?.addEventListener('input',filterGames);
+filterGames();
+
 
 
 const rewardKey='kh-kozak-rewards-v1';let reward={xp:0,games:0,daily:'',claimed:false,coins:0,points:0};try{reward={...reward,...JSON.parse(localStorage.getItem(rewardKey)||'{}')}}catch(e){}reward.coins=Number(reward.coins)||0;reward.points=Number(reward.points)||0;
