@@ -281,3 +281,12 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .tiktok-embed-wrap .media-empty{min-height:180px}
 @media(max-width:800px){.media-layout{grid-template-columns:1fr}.media-side-panel{order:2}.tiktok-profile-card{align-items:flex-start}.tiktok-profile-mark{flex-basis:42px;width:42px;height:42px}}
 @media(max-width:560px){.media-layout{gap:12px}.tiktok-profile-card{gap:12px}.tiktok-profile-copy .btn{width:100%;white-space:normal}.media-frame-wrap{aspect-ratio:16/10}.media-empty{min-height:160px}.mobile-nav button[data-tab="music"],.mobile-nav button[data-tab="tiktok"]{font-size:9px}}
+
+.telegram-music-links{display:grid;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line,#343b46)}
+.telegram-music-link{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid var(--line,#343b46);border-radius:8px;background:rgba(255,255,255,.025);color:var(--text,#f4f6f8);text-decoration:none;transition:border-color .18s,transform .18s}
+.telegram-music-link:hover{border-color:#4c9bd6;transform:translateY(-1px)}
+.telegram-music-link>span:first-child{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:8px;background:#153b55;color:#66c5ff;font-size:18px}
+.telegram-music-link>span:nth-child(2){display:grid;gap:3px;min-width:0}
+.telegram-music-link b{font-size:12px;letter-spacing:.04em}
+.telegram-music-link small{font-size:10px;color:var(--muted,#aab3c0)}
+.telegram-music-link .external-arrow{margin-left:auto;color:#66c5ff}
