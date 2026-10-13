@@ -1,0 +1,2 @@
+[functions.hub-api]
+verify_jwt = false
