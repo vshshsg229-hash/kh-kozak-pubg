@@ -314,7 +314,17 @@ class WakeWordService : Service(), RecognitionListener {
 
     private fun setFlashlight(enabled: Boolean) {
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            speakOrShow("Дозволь доступ до камери в налаштуваннях KH Assistant, щоб керувати ліхтариком.")
+            try {
+                val request = Intent(this, MainActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    putExtra("request_camera_for_torch", true)
+                    putExtra("torch_command", if (enabled) "увімкни ліхтарик" else "вимкни ліхтарик")
+                }
+                startActivity(request)
+                speakOrShow("Відкрив KH Assistant — дозволь камеру, щоб керувати ліхтариком.")
+            } catch (_: Exception) {
+                speakOrShow("Відкрий KH Assistant і дозволь камеру, щоб керувати ліхтариком.")
+            }
             return
         }
         try {
