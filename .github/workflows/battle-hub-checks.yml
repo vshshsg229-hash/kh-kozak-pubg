@@ -84,11 +84,11 @@ jobs:
           for (const mode of ['BATTLE SURVIVAL 3D', 'OFFROAD DRIVE 3D', 'TACTICAL RANGE 3D']) {
             assert(threeD.includes(mode), '3D mode exists: ' + mode);
           }
-          for (const control of ['kh3dCanvas', 'kh3dAction', 'kh3dRestart', 'kh3d-finished']) {
+          for (const control of ['kh3dCanvas', 'kh3dAction', 'kh3dReload', 'kh3dAmmo', 'reloadWeapon', 'kh3dRestart', 'kh3d-finished']) {
             assert(threeD.includes(control), '3D control/reward hook exists: ' + control);
           }
           assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
-          assert(html.includes('games-3d.js?v=1.0.3'), 'HTML loads current 3D engine version');
+          assert(html.includes('games-3d.js?v=1.0.4'), 'HTML loads current 3D engine version with ammo update');
 
           console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
