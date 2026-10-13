@@ -10,6 +10,7 @@
   let mode = 'signup';
   let client = null;
   let currentUser = null;
+  let authActionInProgress = false;
 
   function show(message, state = '') {
     status.textContent = message;
@@ -28,6 +29,11 @@
     if (/already registered/i.test(message)) return 'Ця пошта вже зареєстрована. Спробуй увійти.';
     if (/password should be at least/i.test(message)) return 'Пароль має містити щонайменше 6 символів.';
     if (/email not confirmed/i.test(message)) return 'Підтверди пошту за посиланням у листі, потім увійди.';
+    if (/signup is disabled|signups not allowed|new user signups disabled/i.test(message)) return 'Реєстрацію вимкнено в Supabase. Увімкни Allow new users to sign up у налаштуваннях Authentication.';
+    if (/email rate limit exceeded|rate limit/i.test(message)) return 'Supabase тимчасово обмежив надсилання листів. Зачекай і спробуй пізніше або налаштуй SMTP.';
+    if (/anonymous.*disabled|anonymous sign.?ins.*disabled/i.test(message)) return 'Гостьовий режим вимкнений у Supabase. Реєстрація через email має працювати окремо; увімкни Anonymous Sign-Ins для інших функцій.';
+    if (/failed to fetch|networkerror|load failed/i.test(message)) return 'Немає зв’язку із сервером реєстрації. Перевір інтернет і спробуй ще раз.';
+    if (/redirect.*not allowed|invalid redirect/i.test(message)) return 'Supabase відхилив адресу повернення. Додай URL сторінки account.html у Authentication → URL Configuration.';
     return message;
   }
   function showUser(user) {
@@ -116,7 +122,7 @@
     if (sync && sync.enabled && sync.client) {
       client = sync.client;
       client.auth.onAuthStateChange((event) => {
-        if (['SIGNED_IN','SIGNED_OUT','USER_UPDATED','TOKEN_REFRESHED'].includes(event)) setTimeout(() => refreshSession(), 0);
+        if (!authActionInProgress && ['SIGNED_IN','SIGNED_OUT','USER_UPDATED','TOKEN_REFRESHED'].includes(event)) setTimeout(() => refreshSession(), 0);
       });
       const { data, error } = await client.auth.getSession();
       if (error) {
@@ -149,14 +155,20 @@
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!client) return;
+    if (!client) {
+      show('Ще підключаємо сервер акаунтів. Зачекай секунду й натисни ще раз.', 'warning');
+      await waitForClient();
+      if (!client) return;
+    }
     const email = $('account-email-input').value.trim();
     const password = $('account-password').value;
     submit.disabled = true;
+    authActionInProgress = true;
     show(mode === 'signup' ? 'Створюємо акаунт…' : 'Входимо…');
     try {
       if (mode === 'signup') {
-        const { data: sessionData } = await client.auth.getSession();
+        const { data: sessionData, error: sessionError } = await client.auth.getSession();
+        if (sessionError) throw sessionError;
         const wasGuest = Boolean(sessionData?.session?.user?.is_anonymous);
         // A guest session can interfere with ordinary signUp and email/password linking
         // requires extra Supabase identity-linking configuration. Keep local progress,
@@ -177,12 +189,14 @@
           if (wasGuest) await client.auth.signInAnonymously().catch(() => {});
           throw error;
         }
+        if (!data.user && !data.session) throw new Error('Supabase не повернув створений акаунт. Перевір налаштування реєстрації та спробуй ще раз.');
         if (data.session) {
           showUser(data.user);
           const result = window.KozakCloudSync ? await window.KozakCloudSync.syncNow() : null;
           show(result && result.ok ? 'Акаунт створено, прогрес збережено у хмарі!' : 'Акаунт створено успішно!', 'success');
         } else {
-          show('Акаунт майже готовий! Перевір пошту та підтверди адресу. Після підтвердження увійди тут — локальний прогрес залишиться на пристрої.', 'success');
+          if (wasGuest) await client.auth.signInAnonymously().catch(() => {});
+          show('Запит на створення акаунта прийнято. Перевір пошту та папку «Спам», підтверди адресу, а потім увійди тут. Локальний прогрес залишився на пристрої.', 'success');
         }
       } else {
         const { error } = await client.auth.signInWithPassword({ email, password });
@@ -192,6 +206,7 @@
     } catch (error) {
       show(friendlyError(error), 'error');
     } finally {
+      authActionInProgress = false;
       submit.disabled = false;
     }
   });
