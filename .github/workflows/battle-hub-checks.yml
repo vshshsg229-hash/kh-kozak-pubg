@@ -82,3 +82,55 @@ jobs:
 
       - name: Check service worker syntax
         run: node --check app-v6/sw.js
+
+      - name: Validate Supabase security and feature schema
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const sql = fs.readFileSync('supabase/schema.sql', 'utf8').toLowerCase();
+          const api = fs.readFileSync('supabase/functions/hub-api/index.ts', 'utf8');
+          const app = fs.readFileSync('app-v6/app.js', 'utf8');
+          const checks = [];
+          const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+            checks.push(message);
+          };
+
+          for (const table of [
+            'hub_profiles', 'hub_game_events', 'hub_telegram_links',
+            'hub_telegram_link_codes', 'hub_telegram_daily_claims',
+            'hub_shop_catalog', 'hub_inventory', 'hub_daily_shop_purchases',
+            'hub_achievements'
+          ]) {
+            assert(sql.includes('create table if not exists public.' + table),
+              'Schema declares ' + table);
+            assert(sql.includes('alter table public.' + table + ' enable row level security'),
+              'RLS enabled for ' + table);
+          }
+
+          for (const fn of [
+            'hub_finish_game', 'hub_claim_telegram_daily',
+            'hub_purchase_item', 'hub_equip_item', 'hub_refresh_achievements'
+          ]) {
+            assert(sql.includes('function public.' + fn),
+              'Schema declares RPC ' + fn);
+            assert(api.includes('"' + fn + '"'),
+              'Edge Function calls RPC ' + fn);
+          }
+
+          assert(api.includes('ADMIN_USER_IDS') && api.includes('async function isAdmin'),
+            'Admin endpoints have server-side identity checks');
+          assert(api.includes('SUPABASE_SERVICE_ROLE_KEY'),
+            'Service role key is read only by the server function');
+          assert(!app.includes('SUPABASE_SERVICE_ROLE_KEY') &&
+                 !app.includes('service_role key') &&
+                 !app.includes('service_role_key'),
+            'Frontend does not contain service-role key identifiers');
+          assert(api.includes('p_base_coins: base.coins') &&
+                 api.includes('p_base_points: base.points') &&
+                 api.includes('p_base_xp: base.xp'),
+            'Game reward amounts come from server-side reward map');
+
+          console.log('Passed ' + checks.length + ' Supabase schema/security checks.');
+          NODE
