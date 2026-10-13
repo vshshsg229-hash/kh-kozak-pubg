@@ -88,7 +88,7 @@ jobs:
             assert(threeD.includes(control), '3D control/reward hook exists: ' + control);
           }
           assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
-          assert(html.includes('games-3d.js?v=1.0.2'), 'HTML loads current 3D engine version');
+          assert(html.includes('games-3d.js?v=1.0.3'), 'HTML loads current 3D engine version');
 
           console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
