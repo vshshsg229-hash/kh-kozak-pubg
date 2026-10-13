@@ -519,3 +519,79 @@ input,textarea,select{color-scheme:dark}
 }
 @media(max-width:420px){.hero h1{font-size:36px}.hero{min-height:300px}.hero-actions .btn{font-size:9px;padding:9px}.feature-grid,.games-grid{grid-template-columns:1fr}.topbar .language-control{max-width:72px}.language-control select{max-width:49px}.currency b{font-size:12px}}
 @media(min-width:901px){.main{max-width:1600px}.hero{border-radius:15px}.feature-card,.game-tile{transition:transform .2s,border-color .2s,box-shadow .2s}.feature-card:hover,.game-tile:hover{transform:translateY(-3px);border-color:#806b32;box-shadow:0 16px 32px #0006}}
+
+/* Reference-matched PUBG Mobile Battle Hub UI — release 8.20.0 */
+:root{--bg:#070b11;--panel:#0d141e;--panel2:#131d29;--line:#263543;--text:#f4f6f8;--muted:#a4afbc;--yellow:#ffca2f;--yellow2:#ffe16a;--green:#86e34f;--blue:#61b9ff;--orange:#ff9e43}
+html,body{background:#070b11;color:#f4f6f8}
+body{background:radial-gradient(ellipse at 50% -12%,#253647 0,transparent 42%),linear-gradient(140deg,#070b11,#0b1119 58%,#070b11)}
+.app-shell{background:transparent}
+.sidebar{background:linear-gradient(180deg,#0b121b,#070b11);border-color:#283542;box-shadow:8px 0 32px #0007}
+.brand-mark{background:linear-gradient(145deg,#ffe36b,#f4ad00);color:#10151a;border-radius:8px;clip-path:none;box-shadow:0 0 18px #ffc62925}
+.brand b{color:#fff;letter-spacing:.3px}.brand small i,.side-label,.eyebrow,.season b{color:#ffcf3b}
+.nav-item{border:1px solid transparent;border-radius:8px;color:#b3bdc9;transition:background .18s,border-color .18s}
+.nav-item:hover{background:#1a2530;color:#fff;border-color:#394958}
+.nav-item.active{background:linear-gradient(110deg,#ffdf45,#ffb900);color:#171b20;border-color:#ffe16a;box-shadow:0 6px 22px #ffc62920;font-weight:900}
+.nav-item.active em{background:#171b20;color:#ffd343}.nav-item em{background:#202b36;color:#c9d2dc}
+.side-bottom{border-color:#263543;color:#a4afbc}.online-dot{background:#86e34f;box-shadow:0 0 10px #86e34f}
+.main{background:transparent;min-width:0}.topbar{border-color:#273543}.season-line{background:#3b4753}
+.currency .coin{color:#ffca29}.avatar-mini{clip-path:none;border-radius:50%;background:#182532;color:#ffd34a;border-color:#ffc629;box-shadow:0 0 12px #ffc62922}
+.hero{position:relative;overflow:hidden;border:1px solid #3b4855;border-radius:15px;background:linear-gradient(110deg,#111a24,#17222c 60%,#111923);box-shadow:0 18px 50px #0007}
+.hero:before{background:linear-gradient(90deg,#0b121cf7 0%,#0b121ce8 43%,#0b121c35 100%)}
+.hero-grid{background-image:linear-gradient(#ffc6290b 1px,transparent 1px),linear-gradient(90deg,#ffc6290b 1px,transparent 1px)}
+.hero-copy>p{color:#c4cdd7}.hero h1,.page-heading h1{font-weight:950;letter-spacing:-1.4px}
+.hero h1 strong{color:#ffca29;text-shadow:0 0 20px #ffc62925}
+.hero-art{border-radius:0 14px 14px 0;background:linear-gradient(145deg,#9c6839,#394652 48%,#101a23)}
+.sun{background:#ffb82e66;box-shadow:0 0 90px #ffb82e55}.mountain{background:#3b4650}.m2{background:#252f39}
+.helmet{background:linear-gradient(120deg,#65717e,#1c2732);border-bottom-color:#10161d}
+.head{background:linear-gradient(90deg,#8c6551,#c39a76,#604d43)}.body{background:linear-gradient(90deg,#26313b,#59616a 45%,#202a34)}
+.gun,.gun:after{background:#161c23}.art-stamp{color:#fff}.art-stamp b{color:#ffc629}
+.btn{border-radius:8px;letter-spacing:.2px;font-weight:850}.btn-yellow{background:linear-gradient(120deg,#ffdf45,#ffb900);color:#171b20;box-shadow:0 5px 18px #ffc92820;border:1px solid #ffe16a}.btn-yellow:hover{background:#ffe36a}
+.btn-ghost{border-color:#3a4653;background:#111923;color:#e5ebf2}.btn-ghost:hover{border-color:#ffc629;color:#ffc629}
+.stat-card,.panel,.game-tile,.feature-card,.daily-drop,.quick-link,.daily-mission-card{border:1px solid #263543;background:linear-gradient(150deg,#121c26,#0b121a);box-shadow:0 10px 28px #0004;border-radius:12px}
+.stat-card:hover,.panel:hover{border-color:#62552e}.stat-icon{border-radius:9px}
+.stat-icon.gold,.stat-icon.blue,.stat-icon.green,.stat-icon.orange{background:#29291f;color:#ffc629;border:1px solid #4d482b}
+.xp-bar{background:#26313c;border-radius:99px;overflow:hidden}.xp-bar i{background:linear-gradient(90deg,#ffb900,#ffe16a)}
+.daily-drop{background:linear-gradient(110deg,#191d21,#111923)}.drop-art{background:linear-gradient(145deg,#49351b,#242c35);border-radius:12px;color:#ffc629;border:1px solid #51432a}
+.drop-rewards span{background:#202833;border:1px solid #313d4b;border-radius:6px;color:#ffd14b}
+.quick-link>b{background:#242d37;color:#ffc629;border:1px solid #394553;border-radius:8px}
+.feature-card:before{opacity:.14}.feature-tag,.feature-bottom{color:#c1cad5}.feature-symbol,.target-art{color:#ffc629}
+.panel-head,.mission-row,.mission-item,.daily-mission-card{border-color:#263543}
+.tile-visual{border-radius:11px;background:linear-gradient(145deg,#253442,#111923);color:#ffc629}
+.assistant-connect{background:#0e151e;border-color:#2a3745;border-radius:12px}
+.assistant-connect-row input{background:#080d13;color:#f3f5f8;border-color:#334150;border-radius:8px}
+@media(min-width:901px){
+.app-shell{min-height:100vh}.sidebar{width:236px}.main{max-width:1800px;padding-left:25px;padding-right:25px}
+.topbar{height:70px}.hero{min-height:340px;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr)}
+.hero-copy{padding:34px 32px}.hero h1{font-size:clamp(42px,4vw,64px);line-height:.98;max-width:600px}
+.hero h1 strong{display:inline-block;max-width:550px}.hero-art{min-height:340px}
+.stats-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.feature-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.bottom-panels{grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:14px}
+.games-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+}
+@media(max-width:900px){
+.sidebar{width:100%;height:72px;inset:auto 0 0;padding:5px 6px calc(5px + env(safe-area-inset-bottom));border-top:1px solid #2a3543;border-right:0;background:#080d14f5;backdrop-filter:blur(18px);box-shadow:0 -8px 24px #0009;z-index:100}
+.brand,.side-label,.side-bottom{display:none!important}.sidebar .nav{height:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;align-items:center}
+.sidebar .nav-item{display:none;min-width:0;padding:6px 1px;border-radius:8px;flex-direction:column;justify-content:center;gap:3px;font-size:9px;line-height:1.15;text-align:center;white-space:normal}
+.sidebar .nav-item>span{font-size:18px;width:auto}
+.sidebar .nav-item[data-tab="home"],.sidebar .nav-item[data-tab="games"],.sidebar .nav-item[data-tab="missions"],.sidebar .nav-item[data-tab="rewards"],.sidebar .nav-item[data-tab="profile"]{display:flex}
+.sidebar .nav-item.active{background:linear-gradient(110deg,#ffdf45,#ffb900);color:#171b20}.sidebar .nav-item em{display:none}
+.main{margin-left:0;padding:0 12px 90px;max-width:none;width:100%}.topbar{height:59px;margin-bottom:13px}.season{display:none}
+.mobile-brand{display:block;border:0;background:transparent;font-weight:950;font-size:15px;color:#fff}.mobile-brand span{color:#ffca29}
+.top-actions{gap:7px}.currency{gap:4px}.currency small{display:none}
+.language-control{max-width:86px;font-size:10px;padding:4px 5px;background:#101720;border:1px solid #263543;border-radius:8px}.language-control select{max-width:62px}
+.hero{grid-template-columns:1fr;min-height:315px;border-radius:12px}.hero-copy{padding:22px 16px 18px}.hero h1{font-size:clamp(31px,8vw,43px);margin:15px 0 11px;line-height:1.02;max-width:330px}
+.hero h1 strong{font-size:.88em;max-width:300px}.hero-copy>p{max-width:240px;font-size:13px}
+.hero-art{position:absolute;right:0;top:0;width:53%;height:100%;min-height:0;opacity:.55;border-radius:0 12px 12px 0}
+.hero:before{background:linear-gradient(90deg,#0b121cf8 0%,#0b121cf0 47%,#0b121c35 100%)}
+.hero-actions{max-width:300px;display:flex;flex-wrap:wrap;gap:7px}.hero-actions .btn{font-size:10px;padding:10px 11px}.hero-foot{font-size:7px;gap:8px}
+.welcome-row,.section-heading{align-items:flex-start;margin-top:21px}.welcome-row h2,.section-heading h2{font-size:16px}
+.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat-card{padding:13px}.stat-card>span{font-size:10px}.stat-card>b{font-size:23px}
+.daily-drop{display:grid;grid-template-columns:50px minmax(0,1fr);padding:13px;gap:10px}.drop-art{width:50px;height:50px}.drop-copy{min-width:0}.drop-copy h2{font-size:16px}
+.drop-claim{grid-column:1/-1;width:100%}.drop-rewards{flex-wrap:wrap;gap:5px}.drop-rewards span{font-size:10px}
+.quick-links{grid-template-columns:1fr;gap:8px}.feature-grid,.games-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.feature-card{min-height:175px}.bottom-panels{grid-template-columns:1fr}.page-heading h1{font-size:32px}
+.topbar .avatar-mini{width:30px;height:30px}.panel{padding:14px}.game-tile{min-width:0}.game-tile .btn{width:100%}
+}
+@media(max-width:420px){.hero h1{font-size:32px}.hero{min-height:300px}.hero-actions .btn{font-size:9px;padding:9px}.feature-grid,.games-grid{grid-template-columns:1fr}
+.topbar .language-control{max-width:72px}.language-control select{max-width:49px}.currency b{font-size:12px}}
