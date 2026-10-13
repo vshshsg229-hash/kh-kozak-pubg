@@ -76,7 +76,7 @@ function escapeOnlineText(value){return String(value??'').replace(/[&<>"']/g,c=>
 $('#connectOnlineApi')?.addEventListener('click',connectOnlineApi);
 $('#onlineRegister')?.addEventListener('click',()=>authenticateOnline('register'));
 $('#onlineLogin')?.addEventListener('click',()=>authenticateOnline('login'));
-$('#onlineLogout')?.addEventListener('click',()=>{localStorage.removeItem(AUTH_TOKEN_KEY);localStorage.removeItem(REFRESH_TOKEN_KEY);renderOnlineStatus();setOnlineMessage('Ти вийшов з онлайн-акаунта. Локальний прогрес на пристрої не видалено.');showToast('Вихід виконано')});
+$('#onlineLogout')?.addEventListener('click',()=>{localStorage.removeItem(AUTH_TOKEN_KEY);localStorage.removeItem(REFRESH_TOKEN_KEY);renderOnlineStatus();setOnlineMessage('Ти вийшов з онлайн-акаунта. Локальний прогрес на пристрої не видалено.');loadTelegramStatus();refreshAdminData();showToast('Вихід виконано')});
 $('#refreshLeaderboard')?.addEventListener('click',loadLeaderboard);
 $('#onlinePassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')authenticateOnline('login')});
 if($('#onlineNickname'))$('#onlineNickname').value=state.name||'KH么Kozak';
@@ -219,12 +219,12 @@ $('#createTelegramLink')?.addEventListener('click',async()=>{
  finally{button.disabled=false;button.textContent='СТВОРИТИ КОД ЗВ’ЯЗУВАННЯ'}
 });
 async function refreshAdminData(){
- const nav=$('#adminNav');if(!nav||!getAuthToken()){if(nav)nav.hidden=true;return}
+ const nav=$('#adminNav'),mobileNav=$('#adminMobileNav');if(!nav||!getAuthToken()){if(nav)nav.hidden=true;if(mobileNav)mobileNav.hidden=true;return}
  try{
-  const data=await apiRequest('/api/admin/overview');nav.hidden=false;
+  const data=await apiRequest('/api/admin/overview');nav.hidden=false;if(mobileNav)mobileNav.hidden=false;
   $('#adminProfiles').textContent=data.profiles;$('#adminLinks').textContent=data.linkedTelegram;$('#adminEvents').textContent=data.gameEvents;
   const recent=$('#adminRecentPlayers');if(recent)recent.innerHTML=(data.recentPlayers||[]).map(p=>'<div class="online-player"><span class="online-place">●</span><b>'+String(p.username||'Player').replace(/[<>]/g,'')+'</b><span>'+Number(p.points||0)+' очок · '+Number(p.played||0)+' ігор</span></div>').join('')||'<p class="online-empty">Профілів поки немає.</p>';
- }catch(error){nav.hidden=true;if(error.status&&error.status!==403)console.warn('Admin panel unavailable:',error.message)}
+ }catch(error){nav.hidden=true;if(mobileNav)mobileNav.hidden=true;if(error.status&&error.status!==403)console.warn('Admin panel unavailable:',error.message)}
 }
 $('#refreshAdmin')?.addEventListener('click',refreshAdminData);
 $('#sendAdminBroadcast')?.addEventListener('click',async()=>{
