@@ -47,7 +47,64 @@ const musicGenres=[
  {id:'anime',name:'Anime',terms:['anime opening songs','anime fight music','anime phonk','Naruto soundtrack','Solo Leveling soundtrack','anime edit music','anime OST mix','dark anime music','anime nightcore','epic anime openings']},
  {id:'mix',name:'Мікси та ремікси',terms:['viral remix mix','nightcore mix','slowed reverb songs','sped up songs','2020s remix mix','bass boosted music','car music mix','party remix','nostalgia mix','best music mix']}
 ];
-const musicArtists=['Alan Walker','The Weeknd','Imagine Dragons','Eminem','Drake','Travis Scott','Billie Eilish','Linkin Park','Skillet','NEFFEX','Miyagi & Andy Panda','KALUSH','Okean Elzy','SadSvit','YAKTAK','DOROFEEVA','Jerry Heil','Tember Blanche','Hardwell','David Guetta','Martin Garrix','Avicii','Marshmello','DVRST','Kordhell','INTERWORLD','MoonDeity','LXST CXNTURY','Joji','XXXTENTACION','Post Malone','NF','Twenty One Pilots','Bring Me The Horizon','The Score','BONES','$uicideboy,'Skrillex','The Prodigy','Hans Zimmer','Rammstein','The Chainsmokers','Oxxxymiron','Skofka','Kavabanga Depo Kolibri'];
+const musicArtists=['Alan Walker','The Weeknd','Imagine Dragons','Eminem','Drake','Travis Scott','Billie Eilish','Linkin Park','Skillet','NEFFEX','Miyagi & Andy Panda','KALUSH','Okean Elzy','SadSvit','YAKTAK','DOROFEEVA','Jerry Heil','Tember Blanche','Hardwell','David Guetta','Martin Garrix','Avicii','Marshmello','DVRST','Kordhell','INTERWORLD','MoonDeity','LXST CXNTURY','Joji','XXXTENTACION','Post Malone','NF','Twenty One Pilots','Bring Me The Horizon','The Score','BONES','$uicideboy,'The Prodigy','Hans Zimmer','Rammstein','The Chainsmokers','Oxxxymiron','Skofka','Kavabanga Depo Kolibri'];
+const musicMoods=['best songs','hits mix','remix','slowed reverb','sped up','live performance','official music video','lyrics','night drive mix','workout mix','chill mix','best of','popular tracks','instrumental','bass boosted','2026 mix','classic hits','dark mix','epic mix','playlist'];
+let musicItems=[];
+musicGenres.forEach(g=>g.terms.forEach((term,i)=>musicItems.push({title:term.charAt(0).toUpperCase()+term.slice(1),query:term,genre:g.id,tag:g.name})));
+musicArtists.forEach((artist,i)=>musicMoods.forEach((mood,j)=>musicItems.push({title:artist+' — '+mood,query:artist+' '+mood,genre:musicGenres[(i+j)%musicGenres.length].id,tag:musicGenres[(i+j)%musicGenres.length].name})));
+musicItems=musicItems.slice(0,1000);
+let musicShown=30;
+function renderMusic(){
+ if(!musicList)return;
+ const q=(musicSearch?.value||'').trim().toLowerCase(),cat=musicCategory?.value||'all';
+ const filtered=musicItems.filter(item=>(cat==='all'||item.genre===cat)&&(!q||(item.title+' '+item.query+' '+item.tag).toLowerCase().includes(q)));
+ musicList.innerHTML='';
+ filtered.slice(0,musicShown).forEach((item,index)=>{
+  const row=document.createElement('div');row.className='music-track-row';
+  const num=document.createElement('span');num.className='music-track-number';num.textContent=String(index+1).padStart(2,'0');
+  const info=document.createElement('div');info.className='music-track-info';
+  const title=document.createElement('b');title.textContent=item.title;
+  const sub=document.createElement('small');sub.textContent=item.tag+' · YouTube';
+  info.append(title,sub);
+  const btn=document.createElement('a');btn.className='music-play-btn';btn.href='https://www.youtube.com/results?search_query='+encodeURIComponent(item.query);btn.target='_blank';btn.rel='noopener noreferrer';btn.textContent='▶ СЛУХАТИ';
+  row.append(num,info,btn);musicList.append(row);
+ });
+ if(musicCount)musicCount.textContent=filtered.length+' результатів';
+ if(musicStatus)musicStatus.textContent=filtered.length?'Показано '+Math.min(musicShown,filtered.length)+' із '+filtered.length+'. Відтворення відкривається на YouTube.':'Нічого не знайдено — спробуй інший запит.';
+ if(musicMore)musicMore.hidden=filtered.length<=musicShown;
+}
+musicSearch?.addEventListener('input',()=>{musicShown=30;renderMusic()});
+musicCategory?.addEventListener('change',()=>{musicShown=30;renderMusic()});
+musicMore?.addEventListener('click',()=>{musicShown+=30;renderMusic()});
+document.querySelectorAll('[data-music-genre]').forEach(btn=>btn.addEventListener('click',()=>{if(musicCategory)musicCategory.value=btn.dataset.musicGenre;musicShown=30;renderMusic();musicList?.scrollIntoView({behavior:'smooth',block:'start'})}));
+renderMusic();
+
+
+const khPlaylist=[
+ ['Murder In My Mind','Kordhell'],['METAMORPHOSIS','INTERWORLD'],['NEON BLADE','MoonDeity'],['Close Eyes','DVRST'],['RAVE','Dxrk ダーク'],['Override','KSLV Noh'],['Scopin','Kordhell'],['Live Another Day','The Score'],['Enemy','Imagine Dragons'],['The Search','NF'],['Legends Never Die','Against The Current'],['Invincible','NEFFEX'],['Spectre','Alan Walker'],['Faded','Alan Walker'],['The Nights','Avicii'],['Animals','Martin Garrix'],['Tremor','Dimitri Vegas & Like Mike'],['Numb','Linkin Park'],['Believer','Imagine Dragons'],['Силуети','SadSvit']
+];
+const khPlaylistTracks=$('#khPlaylistTracks');
+function renderKhPlaylist(){
+ if(!khPlaylistTracks)return;
+ khPlaylistTracks.innerHTML='';
+ khPlaylist.forEach((track,i)=>{
+  const row=document.createElement('div');row.className='kh-playlist-track';
+  const n=document.createElement('span');n.className='music-track-number';n.textContent=String(i+1).padStart(2,'0');
+  const info=document.createElement('div');info.className='music-track-info';
+  const title=document.createElement('b');title.textContent=track[0];
+  const artist=document.createElement('small');artist.textContent=track[1];
+  info.append(title,artist);
+  const link=document.createElement('a');link.className='music-play-btn';link.href='https://www.youtube.com/results?search_query='+encodeURIComponent(track[1]+' '+track[0]+' official audio');link.target='_blank';link.rel='noopener noreferrer';link.textContent='▶ СЛУХАТИ';link.setAttribute('aria-label','Знайти '+track[0]+' — '+track[1]+' на YouTube');
+  row.append(n,info,link);khPlaylistTracks.append(row);
+ });
+}
+$('#shuffleKhPlaylist')?.addEventListener('click',()=>{
+ const track=khPlaylist[Math.floor(Math.random()*khPlaylist.length)];
+ if(track)window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(track[1]+' '+track[0]+' official audio'),'_blank','noopener');
+});
+renderKhPlaylist();
+
+})();,'Skrillex','The Prodigy','Hans Zimmer','Rammstein','The Chainsmokers','Oxxxymiron','Skofka','Kavabanga Depo Kolibri'];
 const musicMoods=['best songs','hits mix','remix','slowed reverb','sped up','live performance','official music video','lyrics','night drive mix','workout mix','chill mix','best of','popular tracks','instrumental','bass boosted','2026 mix','classic hits','dark mix','epic mix','playlist'];
 let musicItems=[];
 musicGenres.forEach(g=>g.terms.forEach((term,i)=>musicItems.push({title:term.charAt(0).toUpperCase()+term.slice(1),query:term,genre:g.id,tag:g.name})));
