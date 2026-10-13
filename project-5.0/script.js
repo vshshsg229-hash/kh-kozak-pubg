@@ -1,0 +1,295 @@
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const modal=$('#game-modal'), stage=$('#game-stage'), modalTitle=$('#modal-title');
+/* App tab navigation */
+const tabLinks=$('.app-nav [data-tab]');
+function activateTab(name,updateHash=true){
+ const valid=['home','profile','games','rewards','tiktok','music','account','missions','loadout','leaderboard','community'];
+ if(!valid.includes(name))name='home';
+ $('.app-view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
+ tabLinks.forEach(a=>a.classList.toggle('active',a.dataset.tab===name));
+ if(updateHash){try{history.replaceState(null,'','#'+(name==='home'?'home':name))}catch(_){}}
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+tabLinks.forEach(a=>a.addEventListener('click',e=>{
+ if(!a.dataset.tab)return;
+ e.preventDefault();activateTab(a.dataset.tab);
+}));
+$('[data-tab]:not(.app-nav [data-tab])').forEach(a=>a.addEventListener('click',e=>{
+ const name=a.dataset.tab;if(!name)return;e.preventDefault();activateTab(name);
+}));
+const initialTab=(location.hash||'#home').slice(1);
+activateTab(initialTab,false);
+
+let gameCleanup=()=>{};
+const RECORDS_KEY='kh-kozak-records-v5';
+let records={memory:null,reaction:null,clicker:0,ttt:0,numbers:0,snake:0,aim:0,challenge:0,run:0,musicquiz:0,wheel:0,crates:0,code:0,dodge:0};
+try{records={...records,...JSON.parse(localStorage.getItem(RECORDS_KEY)||'{}')}}catch(_){}
+function saveRecord(){try{localStorage.setItem(RECORDS_KEY,JSON.stringify(records))}catch(_){}}
+function recordText(game){if(game==='memory')return records.memory?('Рекорд: '+records.memory+' ходів'):'Рекорд: ще немає';if(game==='reaction')return records.reaction?('Найкраще: '+records.reaction+' мс'):'Найкраще: ще немає';if(game==='clicker')return 'Рекорд: '+(records.clicker||0)+' кліків';return 'Рекорд: '+(records[game]||0)}
+function openGame(name){gameCleanup();stage.innerHTML='';modal.classList.add('open');modal.setAttribute('aria-hidden','false');noteGameStart(name);if(name==='memory')memoryGame();if(name==='reaction')reactionGame();if(name==='clicker')clickerGame();if(name==='ttt')ticTacToeGame();if(name==='numbers')numberMemoryGame();if(name==='snake')snakeGame();if(name==='aim')aimTrainerGame();if(name==='challenge')challengeGame();if(name==='run')runGame();if(name==='musicquiz')musicQuizGame();if(name==='wheel')wheelGame();if(name==='crates')cratesGame();if(name==='code')codeGame();if(name==='dodge')dodgeGame();if(name==='metro')metroGame();if(name==='classic')classicGame()}
+function closeGame(){gameCleanup();modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+$('#close-modal').addEventListener('click',closeGame);modal.addEventListener('click',e=>{if(e.target===modal)closeGame()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGame()});
+$('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
+
+const gameCards=$('[data-game-card]');
+const gameSearch=$('#game-search');
+const gameResult=$('#game-results');
+const gameFilters=$('[data-game-filter]');
+let activeGameFilter='all';
+function filterGames(){
+ const query=(gameSearch?.value||'').trim().toLocaleLowerCase('uk');
+ let shown=0;
+ gameCards.forEach(card=>{
+  const title=(card.querySelector('h3')?.textContent||'').toLocaleLowerCase('uk');
+  const desc=(card.querySelector('.game-content p')?.textContent||'').toLocaleLowerCase('uk');
+  const matchCategory=activeGameFilter==='all'||card.dataset.category===activeGameFilter;
+  const matchQuery=!query||(title+' '+desc).includes(query);
+  const visible=matchCategory&&matchQuery;
+  card.hidden=!visible;
+  if(visible)shown++;
+ });
+ if(gameResult)gameResult.textContent=shown+' '+(shown===1?'гра доступна':shown>=2&&shown<=4?'ігри доступні':'ігор доступно');
+}
+gameFilters.forEach(button=>button.addEventListener('click',()=>{
+ activeGameFilter=button.dataset.gameFilter;
+ gameFilters.forEach(item=>item.classList.toggle('active',item===button));
+ filterGames();
+}));
+gameSearch?.addEventListener('input',filterGames);
+filterGames();
+
+
+
+const rewardKey='kh-kozak-rewards-v1';let reward={xp:0,games:0,daily:'',claimed:false,coins:0,points:0};try{reward={...reward,...JSON.parse(localStorage.getItem(rewardKey)||'{}')}}catch(e){}reward.coins=Number(reward.coins)||0;reward.points=Number(reward.points)||0;
+function renderReward(){const level=Math.floor(reward.xp/100)+1,xp=reward.xp%100;const put=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};put('player-level','РІВЕНЬ '+level);put('player-title',reward.xp>=250?'Еліта Kozak':reward.xp>=100?'Ветеран':reward.xp>=40?'Боєць':'Новобранець');put('player-xp',xp+' / 100 XP до наступного рівня');put('xp-total',reward.xp+' XP всього');put('games-played',reward.games+' ігор запущено');put('coin-total','🪙 '+reward.coins+' монет');put('point-total','⭐ '+reward.points+' очок');const fill=document.getElementById('xp-fill');if(fill)fill.style.width=xp+'%';const grid=document.getElementById('award-grid');if(grid)grid.innerHTML=[['🪂','Перший дроп',reward.games>0],['🎖️','Ветеран',reward.xp>=100],['👑','Еліта Kozak',reward.xp>=250],['🎁','Щоденний боєць',reward.claimed]].map(a=>'<div class="award-card '+(a[2]?'unlocked':'')+'"><span class="award-icon">'+a[0]+'</span><strong>'+a[1]+'</strong><small>'+(a[2]?'Відкрито':'Ще не відкрито')+'</small></div>').join('');const b=document.getElementById('daily-reward');if(b){b.disabled=reward.daily===new Date().toISOString().slice(0,10);b.textContent=b.disabled?'✓ Забрано сьогодні':'🎁 Забрати щоденну нагороду'}}
+function saveReward(){try{localStorage.setItem(rewardKey,JSON.stringify(reward))}catch(e){}renderReward()}
+function addReward(coins=0,points=0){reward.coins+=Math.max(0,Math.floor(coins));reward.points+=Math.max(0,Math.floor(points));saveReward()}
+function noteGameStart(name){reward.games++;reward.points+=1;if(!reward.used)reward.used={};const day=new Date().toISOString().slice(0,10);if(reward.used[name]!==day){reward.used[name]=day;reward.xp+=10;reward.coins+=10}saveReward()}
+const dailyRewardButton=document.getElementById('daily-reward');if(dailyRewardButton)dailyRewardButton.addEventListener('click',()=>{const day=new Date().toISOString().slice(0,10);if(reward.daily===day)return;reward.daily=day;reward.claimed=true;reward.xp+=25;reward.coins+=50;reward.points+=25;saveReward();const e=document.getElementById('reward-message');if(e)e.textContent='Нагорода отримана: +25 XP, +50 монет і +25 очок! Повертайся завтра.'});renderReward();
+function runGame(){
+  modalTitle.textContent='Kozak Run · мінігра 4.6';
+  stage.innerHTML='<p class="game-note">Натискай «Стрибок» або торкайся поля, щоб перестрибувати перешкоди.</p><div class="game-status"><span id="run-score">Очки: 0</span><span id="run-best">Рекорд: '+(records.run||0)+'</span></div><canvas id="run-canvas" width="720" height="260" style="display:block;width:100%;border-radius:14px;background:#15112d;touch-action:manipulation"></canvas><div class="game-start"><button class="btn primary" id="run-start">Старт забігу</button><button class="btn ghost" id="run-jump">Стрибок ⤴</button><p id="run-status" class="game-note">Готовий? Починай забіг!</p></div>';
+  const canvas=$('#run-canvas'),ctx=canvas.getContext('2d'),scoreEl=$('#run-score'),status=$('#run-status'),start=$('#run-start'),jump=$('#run-jump');let raf=0,on=false,last=0,score=0,y=0,vy=0,obs=[];
+  function draw(){const w=canvas.width,h=canvas.height,g=h-34;ctx.fillStyle='#17102b';ctx.fillRect(0,0,w,h);ctx.fillStyle='#554078';ctx.fillRect(0,g,w,h-g);ctx.fillStyle='#a98aff';ctx.fillRect(0,g,w,3);ctx.fillStyle='#8effd0';ctx.fillRect(75,g-34-y,24,34);ctx.fillStyle='#ff6d9d';obs.forEach(o=>ctx.fillRect(o.x,g-o.h,o.w,o.h));ctx.fillStyle='#fff';ctx.font='bold 20px system-ui';ctx.fillText('SCORE '+Math.floor(score),16,28);if(!on){ctx.font='16px system-ui';ctx.fillText('Натисни «Старт забігу»',250,130)}}
+  function finish(){on=false;cancelAnimationFrame(raf);records.run=Math.max(records.run||0,Math.floor(score));saveRecord();$('#run-best').textContent='Рекорд: '+records.run;status.textContent='Забіг завершено! Очки: '+Math.floor(score);start.disabled=false;start.textContent='Зіграти ще';draw()}
+  function gpy(){return canvas.height-34-y}
+  function frame(t){if(!on)return;const dt=Math.min((t-last)/1000,.04)||0;last=t;score+=dt*10;y+=vy*dt;vy-=1400*dt;if(y<0){y=0;vy=0}if(Math.random()<dt*(.8+score/180))obs.push({x:canvas.width,w:18+Math.random()*18,h:22+Math.random()*35});obs.forEach(o=>{o.x-=(300+Math.min(score,200))*dt});obs=obs.filter(o=>o.x+o.w>0);if(obs.some(o=>o.x<99&&o.x+o.w>75&&y<o.h)){finish();return}scoreEl.textContent='Очки: '+Math.floor(score);draw();raf=requestAnimationFrame(frame)}
+  function doJump(){if(on&&y<=0.1)vy=560}
+  start.addEventListener('click',()=>{cancelAnimationFrame(raf);on=true;last=performance.now();score=0;y=0;vy=0;obs=[];start.disabled=true;start.textContent='Забіг триває…';status.textContent='Стрибай через перешкоди!';raf=requestAnimationFrame(frame)});
+  jump.addEventListener('click',doJump);canvas.addEventListener('pointerdown',doJump);
+  gameCleanup=()=>{on=false;cancelAnimationFrame(raf)};
+  draw();
+}
+function musicQuizGame(){
+  modalTitle.textContent='KH Music Challenge · 4.6';
+  const qs=[['Хто виконує «Обійми»?',['Океан Ельзи','Бумбокс','Антитіла'],0],['«Stefania» — пісня якого гурту?',['Kalush Orchestra','Go_A','TVORCHI'],0],['Хто виконує «Плакала»?',['Alyona Alyona','KAZKA','ONUKA'],1],['Хто співає «Тримай»?',['Христина Соловій','Jerry Heil','KOLA'],0],['Який гурт виконує «Шум»?',['Go_A','Kalush Orchestra','The Hardkiss'],0],['Хто виконує «Вахтерам»?',['Бумбокс','Океан Ельзи','Скрябін'],0],['Хто співає «Додому» разом із Kalush?',['Skofka','YARMAK','Wellboy'],0]];
+  let list=[],idx=0,score=0,locked=false;
+  stage.innerHTML='<div class="game-status"><span id="mq-progress">Питання 1</span><span id="mq-score">Рахунок: 0</span></div><h3 id="mq-question" class="challenge-panel"></h3><div id="mq-options" style="display:grid;gap:9px"></div><p id="mq-status" class="game-note">Обери правильну відповідь.</p><button class="btn primary game-action" id="mq-start">Почати челендж</button><button class="btn ghost" id="mq-next" hidden>Наступне питання →</button>';
+  const progress=$('#mq-progress'),qel=$('#mq-question'),opts=$('#mq-options'),msg=$('#mq-status'),next=$('#mq-next'),start=$('#mq-start');
+  function render(){const q=list[idx];if(!q)return;progress.textContent='Питання '+(idx+1)+' / '+list.length;$('#mq-score').textContent='Рахунок: '+score;qel.textContent=q[0];opts.innerHTML='';q[1].forEach((a,i)=>{const b=document.createElement('button');b.className='btn ghost full';b.textContent=a;b.addEventListener('click',()=>{if(locked)return;locked=true;if(i===q[2]){score++;msg.textContent='Правильно! 🎉'}else msg.textContent='Правильна відповідь: '+q[1][q[2]];[...opts.children].forEach((el,j)=>{el.disabled=true;if(j===q[2])el.style.borderColor='#8effd0';else if(j===i)el.style.borderColor='#ff6d9d'});$('#mq-score').textContent='Рахунок: '+score;next.hidden=false});opts.appendChild(b)});next.hidden=true;locked=false;msg.textContent='Обери правильну відповідь.'}
+  start.addEventListener('click',()=>{list=[...qs].sort(()=>Math.random()-.5).slice(0,5);idx=0;score=0;start.hidden=true;render()});
+  next.addEventListener('click',()=>{if(idx<list.length-1){idx++;render()}else{qel.textContent='Челендж завершено!';opts.innerHTML='';progress.textContent='Результат: '+score+'/'+list.length;msg.textContent=score>=4?'Музичний експерт! 🎧':'Спробуй ще раз!';records.musicquiz=Math.max(records.musicquiz||0,score);saveRecord();next.hidden=true;start.hidden=false;start.textContent='Зіграти знову ↻'}});
+  gameCleanup=()=>{};
+}
+function wheelGame(){
+  modalTitle.textContent='Колесо удачі · 4.6';
+  const prizes=['+5 очок','+10 очок','+20 очок','Ще раз!','+15 очок','Супер! +30'];let busy=false,total=0;
+  stage.innerHTML='<div style="text-align:center"><canvas id="luck-canvas" width="300" height="300" style="max-width:100%;height:auto"></canvas><p id="luck-result" class="game-note">Крути колесо й перевір удачу.</p><p id="luck-total" class="record-line">Зібрано очок: 0</p><button class="btn primary game-action" id="luck-spin">Крутити колесо 🎡</button></div>';
+  const can=$('#luck-canvas'),ctx=can.getContext('2d');let angle=0;
+  function draw(){const n=prizes.length,c=150,r=140;ctx.clearRect(0,0,300,300);prizes.forEach((p,i)=>{const a=angle+i*Math.PI*2/n;ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,a,a+Math.PI*2/n);ctx.closePath();ctx.fillStyle=['#ff4f7b','#7c5cff','#00bfa6','#f6b73c','#2f80ed','#f06543'][i];ctx.fill();ctx.save();ctx.translate(c,c);ctx.rotate(a+Math.PI/n);ctx.fillStyle='#fff';ctx.font='bold 12px system-ui';ctx.textAlign='right';ctx.fillText(p,r-12,4);ctx.restore()});ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(c,c,16,0,Math.PI*2);ctx.fill()}
+  draw();$('#luck-spin').addEventListener('click',()=>{if(busy)return;busy=true;const start=angle,extra=Math.PI*2*(4+Math.random()*3)+Math.random()*Math.PI*2,begin=performance.now(),duration=2400;function frame(t){const p=Math.min(1,(t-begin)/duration);angle=start+extra*(1-Math.pow(1-p,4));draw();if(p<1)requestAnimationFrame(frame);else{busy=false;const norm=((angle%(Math.PI*2))+Math.PI*2)%(Math.PI*2),i=(prizes.length-Math.floor(norm/(Math.PI*2/prizes.length)))%prizes.length,prize=prizes[i],n=Number(prize.match(/\d+/)?.[0]||0);total+=n;if(n>0)addReward(n,n);$('#luck-result').textContent='Випало: '+prize;$('#luck-total').textContent='Зібрано очок: '+total;records.wheel=Math.max(records.wheel||0,total);saveRecord()}}requestAnimationFrame(frame)});
+  gameCleanup=()=>{busy=false};
+}
+function cratesGame(){
+  modalTitle.textContent='Лутбокси · 4.6';let coins=0;
+  stage.innerHTML='<p class="game-note">Обери один із трьох ящиків. Це віртуальні очки у браузері.</p><div class="game-status"><span>Монети: <b id="crate-coins">0</b></span><span>Рекорд: <b id="crate-best">0</b></span></div><div id="crate-options" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0"><button class="btn ghost" data-crate="0">📦<br>Ящик 1</button><button class="btn ghost" data-crate="1">🧰<br>Ящик 2</button><button class="btn ghost" data-crate="2">🎒<br>Ящик 3</button></div><p id="crate-status" class="game-note">Вибери ящик, щоб відкрити лут.</p><button class="btn primary" id="crate-reset">Новий раунд ↻</button>';
+  coins=reward.coins;let best=0;try{best=Number(localStorage.getItem('kh-kozak-46-crate-best'))||0}catch(_){}
+  const coin=$('#crate-coins'),bestEl=$('#crate-best'),msg=$('#crate-status'),buttons=$('#crate-options [data-crate]');
+  function update(){coin.textContent=coins;bestEl.textContent=best}
+  function reset(){buttons.forEach((b,i)=>{b.disabled=false;b.innerHTML=['📦<br>Ящик 1','🧰<br>Ящик 2','🎒<br>Ящик 3'][i]});msg.textContent='Обери ящик і перевір свою удачу.'}
+  buttons.forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;const prize=[0,5,10,20,35,50][Math.floor(Math.random()*6)];if(prize>0)addReward(prize,prize);coins=reward.coins;best=Math.max(best,coins);try{localStorage.setItem('kh-kozak-46-crate-coins',coins);localStorage.setItem('kh-kozak-46-crate-best',best)}catch(_){}buttons.forEach(x=>x.disabled=true);b.textContent=prize>=35?'💎':prize>=20?'🪙':prize>0?'🎉':'🪨';msg.textContent=prize?'Знайдено '+prize+' монет!':'Цього разу порожньо — спробуй ще.';records.crates=Math.max(records.crates||0,coins);saveRecord();update()}));$('#crate-reset').addEventListener('click',reset);update();gameCleanup=()=>{};
+}
+function codeGame(){
+  modalTitle.textContent='Запам’ятай код · 4.6';let code='',timer=null,best=records.code||0;
+  stage.innerHTML='<div class="game-status"><span>Рекорд: <b id="code-best">'+best+'</b></span><span>Режим: пам’ять</span></div><div id="code-display" class="challenge-number">••••</div><input id="code-input" inputmode="numeric" maxlength="6" placeholder="Введи код" style="display:block;width:100%;padding:14px;border-radius:12px;background:#10151d;color:white;border:1px solid #ffffff22;margin:12px 0"><p id="code-status" class="game-note">Натисни «Показати код», щоб почати.</p><button class="btn primary" id="code-start">Показати код</button> <button class="btn ghost" id="code-check">Перевірити</button>';
+  const display=$('#code-display'),input=$('#code-input'),msg=$('#code-status'),start=$('#code-start');
+  start.addEventListener('click',()=>{clearTimeout(timer);code=String(Math.floor(1000+Math.random()*9000));display.textContent=code;input.value='';input.disabled=true;msg.textContent='Запам’ятай код! Він зникне за 3 секунди.';start.disabled=true;timer=setTimeout(()=>{display.textContent='••••';input.disabled=false;input.focus();start.disabled=false;msg.textContent='Тепер введи код і натисни «Перевірити».'},3000)});
+  $('#code-check').addEventListener('click',()=>{if(!code){msg.textContent='Спочатку покажи код.';return}if(input.value.trim()===code){best++;records.code=best;saveRecord();$('#code-best').textContent=best;msg.textContent='Правильно! Код запам’ятовано 🧠';code=''}else msg.textContent='Не збіглося. Спробуй ще раз.'});
+  gameCleanup=()=>clearTimeout(timer);
+}
+function dodgeGame(){
+  modalTitle.textContent='Влуч у ціль · 4.6';let active=false,score=0,left=15,timer=null;
+  stage.innerHTML='<div class="game-status"><span>Влучання: <b id="dodge-score">0</b></span><span>Час: <b id="dodge-time">15</b> с</span><span>Рекорд: <b id="dodge-best">'+(records.dodge||0)+'</b></span></div><div id="dodge-arena" style="height:250px;position:relative;overflow:hidden;border:1px solid #ffffff22;border-radius:14px;background:radial-gradient(circle at center,#182b34,#09131b);margin:14px 0"><button id="dodge-target" type="button" aria-label="Ціль" style="position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid #baff7b;background:#baff7b22;color:#baff7b;font-size:22px;left:40%;top:40%">✦</button></div><p id="dodge-status" class="game-note">Почни раунд і лови ціль.</p><button id="dodge-start" class="btn primary">Старт 15 секунд</button>';
+  const arena=$('#dodge-arena'),target=$('#dodge-target'),status=$('#dodge-status');
+  function move(){target.style.left=Math.floor(Math.random()*Math.max(1,arena.clientWidth-48))+'px';target.style.top=Math.floor(Math.random()*Math.max(1,arena.clientHeight-48))+'px'}
+  function finish(){active=false;clearInterval(timer);timer=null;target.disabled=true;records.dodge=Math.max(records.dodge||0,score);saveRecord();$('#dodge-best').textContent=records.dodge;status.textContent='Раунд завершено! Влучань: '+score;$('#dodge-start').disabled=false;$('#dodge-start').textContent='Зіграти ще'}
+  target.disabled=true;target.addEventListener('click',()=>{if(!active)return;score++;$('#dodge-score').textContent=score;move()});
+  $('#dodge-start').addEventListener('click',()=>{clearInterval(timer);active=true;score=0;left=15;target.disabled=false;$('#dodge-score').textContent='0';$('#dodge-time').textContent=left;$('#dodge-start').disabled=true;status.textContent='Швидше!';move();timer=setInterval(()=>{left--;$('#dodge-time').textContent=left;if(left<=0)finish()},1000)});
+  gameCleanup=()=>{active=false;clearInterval(timer)};
+}
+
+
+function metroGame(){
+  modalTitle.textContent='METRO ROYALE · РЕЙД';
+  let loot=0, turns=0, ended=false, inventory=[];
+  stage.innerHTML='<p class="game-note">Збирай цінний лут у рейді. Кожен пошук має ризик засідки. Евакуюйся вчасно, щоб зберегти здобич.</p><div class="game-status"><span>Вартість луту: <b id="metro-loot">0</b></span><span>Пошуки: <b id="metro-turns">0/5</b></span><span>Рюкзак: <b id="metro-bag">порожній</b></span></div><div class="challenge-panel" id="metro-scene">Ти на вході до покинутого метро. Вибери дію.</div><div id="metro-actions" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0"><button class="btn primary" id="metro-search">🔎 Шукати лут</button><button class="btn ghost" id="metro-extract" disabled>🚁 Евакуюватися</button></div><p id="metro-result" class="game-note" aria-live="polite">Порада: можна евакуюватися після першої знахідки.</p><button class="btn ghost" id="metro-reset">Новий рейд ↻</button>';
+  const lootEl=$('#metro-loot'),turnsEl=$('#metro-turns'),bagEl=$('#metro-bag'),scene=$('#metro-scene'),msg=$('#metro-result'),search=$('#metro-search'),extract=$('#metro-extract');
+  const finds=[{name:'Запчастини',value:15},{name:'Медикаменти',value:25},{name:'Військовий жетон',value:40},{name:'Рідкісний контейнер',value:70},{name:'Золотий трофей',value:110}];
+  function render(){lootEl.textContent=loot;turnsEl.textContent=turns+'/5';bagEl.textContent=inventory.length?inventory.slice(-2).join(', '):'порожній';search.disabled=ended||turns>=5;extract.disabled=ended||loot<=0}
+  function reset(){loot=0;turns=0;ended=false;inventory=[];scene.textContent='Ти на вході до покинутого метро. Вибери дію.';msg.textContent='Порада: можна евакуюватися після першої знахідки.';search.textContent='🔎 Шукати лут';render()}
+  search.addEventListener('click',()=>{if(ended||turns>=5)return;turns++;const roll=Math.random();if(roll<.19){loot=0;inventory=[];ended=true;scene.textContent='ЗАСІДКА!';msg.textContent='Ти потрапив у засідку та втратив здобич. Рейд завершено.';addReward(0,0)}else{const found=finds[Math.floor(Math.random()*finds.length)];loot+=found.value;inventory.push(found.name);scene.textContent='Знахідка: '+found.name+' · +'+found.value+' до вартості луту';msg.textContent=turns>=5?'Маршрут закривається — потрібно евакуюватися!':'Продовжити пошук чи забрати здобич?';if(turns>=5)ended=true}render()});
+  extract.addEventListener('click',()=>{if(loot<=0||extract.disabled)return;const earned=Math.max(5,Math.floor(loot/5));addReward(earned,earned);reward.xp+=10;saveReward();ended=true;scene.textContent='ЕВАКУАЦІЯ УСПІШНА ✓';msg.textContent='Ти виніс лут вартістю '+loot+' та отримав +'+earned+' монет і очок на сайті!';if(typeof renderRewards==='function')renderRewards();render()});
+  $('#metro-reset').addEventListener('click',reset);render();
+}
+function classicGame(){
+  modalTitle.textContent='CLASSIC · ВИЖИВАННЯ';
+  let round=0,hp=100,ammo=3,loot=0,ended=false;
+  stage.innerHTML='<p class="game-note">Мінікампанія у стилі Classic: висадка, пошук спорядження, сутички та фінальна зона. Приймай рішення — виживання залежить від твоєї тактики.</p><div class="game-status"><span>❤️ Здоров’я: <b id="classic-hp">100</b></span><span>🔫 Патрони: <b id="classic-ammo">3</b></span><span>🎒 Лут: <b id="classic-loot">0</b></span><span>Етап: <b id="classic-round">0/5</b></span></div><div id="classic-scene" class="challenge-panel">Літак наближається до острова. Ти готовий до висадки?</div><div id="classic-actions" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0"><button class="btn primary" id="classic-drop">🪂 Висадитися</button><button class="btn ghost" id="classic-loot-action" disabled>🎒 Шукати спорядження</button><button class="btn ghost" id="classic-fight" disabled>⚔️ Вступити в бій</button><button class="btn ghost" id="classic-heal" disabled>🩹 Використати аптечку</button></div><p id="classic-result" class="game-note" aria-live="polite">Мета: пройди п’ять етапів і здобудь Chicken Dinner.</p><button class="btn ghost" id="classic-reset">Нова катка ↻</button>';
+  const hpEl=$('#classic-hp'),ammoEl=$('#classic-ammo'),lootEl=$('#classic-loot'),roundEl=$('#classic-round'),scene=$('#classic-scene'),msg=$('#classic-result'),drop=$('#classic-drop'),lootBtn=$('#classic-loot-action'),fight=$('#classic-fight'),heal=$('#classic-heal');
+  function render(){hpEl.textContent=hp;ammoEl.textContent=ammo;lootEl.textContent=loot;roundEl.textContent=round+'/5';lootBtn.disabled=ended||round===0||round>=5;fight.disabled=ended||round===0||round>=5;heal.disabled=ended||round===0||hp>=100;drop.disabled=ended||round>0;$('#classic-reset').disabled=false}
+  function finish(win){ended=true;scene.textContent=win?'CHICKEN DINNER 🏆':'Ти вибув із матчу';msg.textContent=win?'Перемога! Ти вижив до фіналу й отримав нагороду.':'Матч завершено. Спробуй іншу тактику та зайди ще раз.';if(win){const earned=20+loot;addReward(earned,earned);reward.xp+=25;saveReward();if(typeof renderRewards==='function')renderRewards()}render()}
+  drop.addEventListener('click',()=>{if(ended)return;round=1;scene.textContent='Висадка успішна. Зона ще далеко — знайди спорядження.';msg.textContent='Спершу знайди лут або ризикни вступити в бій.';render()});
+  lootBtn.addEventListener('click',()=>{if(ended||round===0||round>=5)return;const gain=10+Math.floor(Math.random()*26);loot+=gain;if(Math.random()<.25){hp-=10;msg.textContent='Ти знайшов '+gain+' одиниць луту, але отримав 10 шкоди від засідки.'}else msg.textContent='Знайдено '+gain+' одиниць спорядження.';round++;scene.textContent=['Покинута будівля','Склад біля дороги','Місто в зоні','Останній рубіж'][Math.min(round-1,3)];if(hp<=0)finish(false);else if(round>=5)finish(true);render()});
+  fight.addEventListener('click',()=>{if(ended||round===0||round>=5)return;if(ammo<=0){msg.textContent='Немає патронів! Шукай спорядження або віднови здоров’я.';return}ammo--;round++;const damage=10+Math.floor(Math.random()*36);hp-=damage;const gain=15+Math.floor(Math.random()*25);loot+=gain;msg.textContent='Перемога в сутичці! +'+gain+' луту, отримано '+damage+' шкоди.';scene.textContent='Ти пережив перестрілку. Перевір зону й готуйся до наступної.';if(hp<=0)finish(false);else if(round>=5)finish(true);render()});
+  heal.addEventListener('click',()=>{if(ended||hp>=100)return;hp=Math.min(100,hp+35);msg.textContent='Аптечка використана: здоров’я відновлено.';scene.textContent='Ти сховався за укриттям і відновив сили.';render()});
+  $('#classic-reset').addEventListener('click',()=>{round=0;hp=100;ammo=3;loot=0;ended=false;scene.textContent='Літак наближається до острова. Ти готовий до висадки?';msg.textContent='Мета: пройди п’ять етапів і здобудь Chicken Dinner.';drop.disabled=false;render()});render();
+}
+
+function aimTrainerGame(){
+  modalTitle.textContent='Тренер прицілу';
+  let hits=0,seconds=20,timer=null,running=false;
+  stage.innerHTML='<div class="game-status"><span id="aim-time">Час: 20 с</span><span id="aim-hits">Влучання: 0</span></div><p class="record-line" id="aim-record"></p><div class="aim-arena" id="aim-arena"><button class="aim-target" id="aim-target" type="button" aria-label="Ціль">✦</button></div><p class="game-note">Натискай на ціль, поки не закінчиться час. Працює мишкою або дотиком.</p><button class="btn primary game-action" id="aim-start" type="button">Почати 20 секунд</button>';
+  const arena=$('#aim-arena'),target=$('#aim-target'),time=$('#aim-time'),score=$('#aim-hits'),record=$('#aim-record'),start=$('#aim-start');
+  record.textContent='Рекорд: '+(records.aim||0)+' влучань';
+  function moveTarget(){const maxX=Math.max(0,arena.clientWidth-target.offsetWidth),maxY=Math.max(0,arena.clientHeight-target.offsetHeight);target.style.left=Math.round(Math.random()*maxX)+'px';target.style.top=Math.round(Math.random()*maxY)+'px'}
+  function finish(){running=false;clearInterval(timer);timer=null;target.disabled=true;start.disabled=false;start.textContent='Зіграти ще раз';if(hits>(records.aim||0)){records.aim=hits;saveRecord();record.textContent='Новий рекорд: '+hits+' влучань!'}time.textContent='Час вийшов';}
+  target.disabled=true;moveTarget();
+  target.addEventListener('click',()=>{if(!running)return;hits++;score.textContent='Влучання: '+hits;moveTarget()});
+  start.addEventListener('click',()=>{clearInterval(timer);hits=0;seconds=20;running=true;score.textContent='Влучання: 0';time.textContent='Час: 20 с';target.disabled=false;start.disabled=true;start.textContent='Гра триває…';moveTarget();timer=setInterval(()=>{seconds--;time.textContent='Час: '+seconds+' с';if(seconds<=0)finish()},1000)});
+  gameCleanup=()=>{running=false;clearInterval(timer);timer=null};
+}
+function challengeGame(){
+  modalTitle.textContent='Рулетка PUBG-челенджів';
+  const challenges=[
+    'Висадися в гарячій зоні та спробуй пережити перші 5 хвилин.',
+    'Зіграй матч лише зі зброєю, яку знайдеш першою.',
+    'Зроби щонайменше 3 нокаути з автомата.',
+    'Проведи наступний бій без транспорту.',
+    'Знайди дробовик і виграй хоча б одну ближню перестрілку.',
+    'До топ-10 грай максимально тихо й уникай зайвих боїв.',
+    'Використовуй тільки приціли, які знайдеш у матчі.',
+    'Допоможи напарнику: підніми його та поділися лутом.',
+    'Зроби один влучний постріл на далекій дистанції.',
+    'Переміщайся до наступної зони пішки, якщо це безпечно.',
+    'Спробуй перемогти з незвичною комбінацією двох видів зброї.',
+    'Знайди гранату та використай її з тактичною користю.'
+  ];
+  let last=-1;
+  stage.innerHTML='<div class="challenge-panel"><span class="pill">ВИПАДКОВЕ ЗАВДАННЯ</span><div class="challenge-number">?</div><h3 id="challenge-text">Готовий до нового випробування?</h3><p class="game-note">Натисни кнопку, щоб отримати завдання для наступного матчу.</p><button class="btn primary game-action" id="new-challenge" type="button">Крутити рулетку ↻</button></div>';
+  $('#new-challenge').addEventListener('click',()=>{let next;do{next=Math.floor(Math.random()*challenges.length)}while(next===last&&challenges.length>1);last=next;$('.challenge-number').textContent=String(next+1).padStart(2,'0');$('#challenge-text').textContent=challenges[next];});
+  gameCleanup=()=>{};
+}
+
+function memoryGame(){modalTitle.textContent='Знайди пару';const symbols=['✦','☾','♛','⚡','♥','❖','☀','♠'];let cards=[...symbols,...symbols].sort(()=>Math.random()-.5),first=null,lock=false,matches=0,moves=0;stage.innerHTML='<div class="game-status"><span id="mem-moves">Ходи: 0</span><span id="mem-pairs">Пари: 0 / 8</span></div><p class="record-line" id="mem-record"></p><div class="memory-board"></div><p class="game-note">Відкривай дві картки за раз і знайди всі 8 пар.</p><button class="btn ghost" id="mem-restart">Почати заново</button>';const board=$('.memory-board');$('#mem-record').textContent=recordText('memory');function draw(){board.innerHTML='';cards.forEach((symbol,i)=>{const btn=document.createElement('button');btn.className='memory-tile';btn.textContent='?';btn.setAttribute('aria-label','Картка '+(i+1));btn.addEventListener('click',()=>{if(lock||btn.classList.contains('revealed')||btn.classList.contains('matched'))return;btn.textContent=symbol;btn.classList.add('revealed');if(!first){first={btn,symbol};return}moves++;$('#mem-moves').textContent='Ходи: '+moves;if(first.symbol===symbol){btn.classList.add('matched');first.btn.classList.add('matched');first=null;matches++;$('#mem-pairs').textContent='Пари: '+matches+' / 8';if(matches===8){if(!records.memory||moves<records.memory){records.memory=moves;saveRecord();$('#mem-record').textContent=recordText('memory')}board.insertAdjacentHTML('afterend','<div class="game-start"><div class="score-large">Перемога!</div><p>Усі пари знайдено за '+moves+' ходів.</p></div>')}}else{lock=true;const prev=first;first=null;const t=setTimeout(()=>{btn.textContent='?';prev.btn.textContent='?';btn.classList.remove('revealed');prev.btn.classList.remove('revealed');lock=false},750);gameCleanup=()=>clearTimeout(t)}});board.appendChild(btn)})}function reset(){cards=[...symbols,...symbols].sort(()=>Math.random()-.5);first=null;lock=false;matches=0;moves=0;$$('.game-start').forEach(x=>x.remove());draw();$('#mem-moves').textContent='Ходи: 0';$('#mem-pairs').textContent='Пари: 0 / 8'}draw();$('#mem-restart').addEventListener('click',reset)}
+function reactionGame(){modalTitle.textContent='Перевір реакцію';stage.innerHTML='<p class="record-line" id="reaction-record"></p><div class="game-start"><p id="reaction-msg">Натисни старт і дочекайся зеленого сигналу.</p><button class="btn primary game-action" id="reaction-start">Старт</button><div id="reaction-result"></div></div>';let timer=null,startAt=0,state='idle';const msg=$('#reaction-msg'),btn=$('#reaction-start'),result=$('#reaction-result');$('#reaction-record').textContent=recordText('reaction');btn.addEventListener('click',()=>{if(state==='wait'){clearTimeout(timer);state='early';btn.textContent='Спробувати ще';btn.className='reaction-pad';msg.textContent='Зарано! Дочекайся зеленого кольору.';return}if(state==='go'){const elapsed=(performance.now()-startAt)|0;if(!records.reaction||elapsed<records.reaction){records.reaction=elapsed;saveRecord();$('#reaction-record').textContent=recordText('reaction')}result.innerHTML='<div class="score-large">'+elapsed+' ms</div><p>Натисни ще раз, щоб зіграти знову.</p>';state='done';btn.textContent='Ще раз';btn.className='btn primary game-action';return}state='wait';result.innerHTML='';msg.textContent='Чекай зеленого сигналу…';btn.textContent='НЕ НАТИСКАЙ';btn.className='reaction-pad ready';timer=setTimeout(()=>{state='go';startAt=performance.now();msg.textContent='ТЕПЕР!';btn.textContent='НАТИСНИ!';btn.className='reaction-pad go'},1200+Math.random()*2800)});gameCleanup=()=>clearTimeout(timer)}
+function clickerGame(){modalTitle.textContent='Клік-челендж';stage.innerHTML='<p class="record-line" id="click-record"></p><div class="game-status"><span id="click-time">Час: 10 с</span><span id="click-score">Кліки: 0</span></div><button class="click-pad" id="click-pad">НАТИСКАЙ!</button><div class="game-start"><p id="click-msg">Натисни кнопку, щоб почати. У тебе буде 10 секунд.</p><button class="btn ghost" id="click-reset">Почати заново</button></div>';let active=false,score=0,left=10,interval=null;const pad=$('#click-pad'),reset=$('#click-reset');$('#click-record').textContent=recordText('clicker');function end(){active=false;if(score>(records.clicker||0)){records.clicker=score;saveRecord();$('#click-record').textContent=recordText('clicker')};clearInterval(interval);pad.disabled=true;$('#click-msg').textContent='Час вийшов! Твій результат: '+score+' кліків.';pad.textContent='ГОТОВО!'}function start(){clearInterval(interval);active=true;score=0;left=10;pad.disabled=false;pad.textContent='НАТИСКАЙ!';$('#click-score').textContent='Кліки: 0';$('#click-time').textContent='Час: 10 с';$('#click-msg').textContent='Поїхали!';interval=setInterval(()=>{left--;$('#click-time').textContent='Час: '+left+' с';if(left<=0)end()},1000)}pad.addEventListener('click',()=>{if(!active)return;score++;$('#click-score').textContent='Кліки: '+score});reset.addEventListener('click',start);start();gameCleanup=()=>clearInterval(interval)}
+
+function ticTacToeGame(){modalTitle.textContent='Хрестики-нулики';let board=Array(9).fill(''),turn='X',done=false;stage.innerHTML='<div class="game-status"><span id="ttt-turn">Твій хід: X</span><span id="ttt-score">X — ти · O — друг</span></div><div class="ttt-board">'+board.map((_,i)=>'<button class="ttt-cell" data-cell="'+i+'" aria-label="Клітинка '+(i+1)+'"></button>').join('')+'</div><p class="game-note" id="ttt-note">Гра для двох на одному пристрої.</p><button class="btn ghost" id="ttt-reset">Нова партія</button>';const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];function reset(){board=Array(9).fill('');turn='X';done=false;$('.ttt-cell').forEach(b=>{b.textContent='';b.classList.remove('x','o','winner');b.disabled=false});$('#ttt-turn').textContent='Твій хід: X';$('#ttt-note').textContent='Гра для двох на одному пристрої.'}function play(i){if(done||board[i])return;board[i]=turn;const b=$('.ttt-cell[data-cell="'+i+'"]');b.textContent=turn;b.classList.add(turn.toLowerCase());const win=wins.find(line=>line.every(n=>board[n]===turn));if(win){done=true;win.forEach(n=>$('.ttt-cell[data-cell="'+n+'"]').classList.add('winner'));$('#ttt-note').textContent='Переміг гравець '+turn+'!';$('.ttt-cell').forEach(x=>x.disabled=true);if(turn==='X'){records.ttt=(records.ttt||0)+1;saveRecord()}return}if(board.every(Boolean)){done=true;$('#ttt-note').textContent='Нічия! Спробуйте ще раз.';return}turn=turn==='X'?'O':'X';$('#ttt-turn').textContent='Хід гравця: '+turn}$('.ttt-cell').forEach(b=>b.addEventListener('click',()=>play(Number(b.dataset.cell))));$('#ttt-reset').addEventListener('click',reset)}
+function numberMemoryGame(){modalTitle.textContent='Пам’ять чисел';let sequence='',level=3;stage.innerHTML='<div class="game-start"><p id="num-instructions">Запам’ятай цифри, які з’являться на екрані.</p><div id="num-sequence" class="number-sequence">Ready?</div><form id="num-form" class="number-form"><input id="num-answer" inputmode="numeric" autocomplete="off" placeholder="Введи послідовність" aria-label="Введи послідовність" disabled><button class="btn primary" type="submit" id="num-submit" disabled>Перевірити</button></form><p id="num-result" class="game-note">Рівень: 3 цифри</p><button class="btn ghost" id="num-start">Почати</button></div>';let timer=null;const seq=$('#num-sequence'),answer=$('#num-answer'),submit=$('#num-submit');function start(){clearTimeout(timer);sequence='';for(let i=0;i<level;i++)sequence+=Math.floor(Math.random()*10);seq.textContent=sequence;answer.value='';answer.disabled=true;submit.disabled=true;$('#num-instructions').textContent='Запам’ятай!';$('#num-result').textContent='Рівень: '+level+' цифри';timer=setTimeout(()=>{seq.textContent='••••••';answer.disabled=false;submit.disabled=false;answer.focus();$('#num-instructions').textContent='Тепер введи цифри в тому самому порядку.'},Math.max(900,level*550))}$('#num-start').addEventListener('click',start);$('#num-form').addEventListener('submit',e=>{e.preventDefault();if(answer.disabled)return;if(answer.value.trim()===sequence){level++;records.numbers=Math.max(records.numbers||0,level-1);saveRecord();$('#num-result').textContent='Правильно! Наступний рівень: '+level+' цифр.';seq.textContent='✓';answer.disabled=true;submit.disabled=true}else{level=3;$('#num-result').textContent='Не збіглося. Почни знову з 3 цифр.';seq.textContent='×';answer.disabled=true;submit.disabled=true}});gameCleanup=()=>clearTimeout(timer)}
+function snakeGame(){modalTitle.textContent='Неонова змійка';stage.innerHTML='<div class="game-status"><span id="snake-score">Очки: 0</span><span>Керування: стрілки / WASD</span></div><canvas id="snake-canvas" width="320" height="320" class="snake-canvas" aria-label="Поле змійки"></canvas><p id="snake-note" class="game-note">Натисни стрілку або кнопку «Старт».</p><div class="snake-controls"><button data-dir="up">↑</button><button data-dir="left">←</button><button data-dir="down">↓</button><button data-dir="right">→</button></div><button id="snake-start" class="btn primary game-action">Старт / заново</button>';const canvas=$('#snake-canvas'),ctx=canvas.getContext('2d'),cell=16,units=20;let body,dir,next,food,score,loop=null,active=false;function placeFood(){do{food={x:Math.floor(Math.random()*units),y:Math.floor(Math.random()*units)}}while(body.some(p=>p.x===food.x&&p.y===food.y))}function draw(){ctx.fillStyle='#081720';ctx.fillRect(0,0,320,320);ctx.strokeStyle='#ffffff0a';for(let n=0;n<=units;n++){ctx.beginPath();ctx.moveTo(n*cell,0);ctx.lineTo(n*cell,320);ctx.stroke();ctx.beginPath();ctx.moveTo(0,n*cell);ctx.lineTo(320,n*cell);ctx.stroke()}ctx.fillStyle='#ffb35c';ctx.fillRect(food.x*cell+2,food.y*cell+2,cell-4,cell-4);body.forEach((p,i)=>{ctx.fillStyle=i?'#37d6c0':'#d9fff8';ctx.fillRect(p.x*cell+1,p.y*cell+1,cell-2,cell-2)})}function setDir(d){const opp={up:'down',down:'up',left:'right',right:'left'};if(d!==opp[dir])next=d;if(!active&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d'].includes(d))start()}function start(){clearInterval(loop);body=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];dir='right';next='right';score=0;active=true;$('#snake-note').textContent='Збирай помаранчеві блоки й уникай зіткнень.';$('#snake-score').textContent='Очки: 0';placeFood();draw();loop=setInterval(tick,125)}function tick(){dir=next;const head={...body[0]};if(dir==='up')head.y--;if(dir==='down')head.y++;if(dir==='left')head.x--;if(dir==='right')head.x++;if(head.x<0||head.x>=units||head.y<0||head.y>=units||body.some(p=>p.x===head.x&&p.y===head.y)){active=false;clearInterval(loop);$('#snake-note').textContent='Гру завершено! Результат: '+score+' очок. Натисни старт, щоб повторити.';records.snake=Math.max(records.snake||0,score);saveRecord();return}body.unshift(head);if(head.x===food.x&&head.y===food.y){score++;$('#snake-score').textContent='Очки: '+score;placeFood()}else body.pop();draw()}const keyHandler=e=>{const map={ArrowUp:'up',w:'up',ArrowDown:'down',s:'down',ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right'};if(map[e.key]){e.preventDefault();setDir(map[e.key])}};document.addEventListener('keydown',keyHandler);$('.snake-controls button').forEach(b=>b.addEventListener('click',()=>setDir(b.dataset.dir)));$('#snake-start').addEventListener('click',start);body=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];dir='right';next='right';score=0;food={x:14,y:10};draw();gameCleanup=()=>{clearInterval(loop);document.removeEventListener('keydown',keyHandler)}}
+
+// Local audio player: selected tracks are not uploaded anywhere.
+const audio=$('#audio'),fileInput=$('#music-files'),playlist=$('#playlist');let tracks=[],current=-1;
+const fmt=n=>{if(!Number.isFinite(n))return'0:00';return Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0')};
+function renderPlaylist(){playlist.innerHTML='';if(!tracks.length){playlist.innerHTML='<div class="empty-playlist">♫ Твій плейлист з’явиться тут</div>';return}tracks.forEach((t,i)=>{const row=document.createElement('div');row.className='track'+(i===current?' active':'');row.innerHTML='<span class="track-index">'+String(i+1).padStart(2,'0')+'</span><span class="track-name"></span><span class="track-duration">'+(Number.isFinite(t.duration)?fmt(t.duration):'AUDIO')+'</span>';row.querySelector('.track-name').textContent=t.name;row.addEventListener('click',()=>playTrack(i));const remove=document.createElement('button');remove.type='button';remove.className='remove-track';remove.textContent='×';remove.setAttribute('aria-label','Видалити '+t.name);remove.addEventListener('click',e=>{e.stopPropagation();removeTrack(i)});row.appendChild(remove);playlist.appendChild(row)})}
+function removeTrack(i){const wasCurrent=i===current;const old=tracks[i];if(old&&old.url)URL.revokeObjectURL(old.url);tracks.splice(i,1);if(!tracks.length){audio.pause();audio.removeAttribute('src');audio.load();current=-1;$('#track-name').textContent='Обери свій трек';$('#track-detail').textContent='Завантаж музику з пристрою — файли залишаються у тебе.';$('#current-time').textContent='0:00';$('#duration').textContent='0:00';$('#seek').value=0;renderPlaylist();return}if(i<current)current--;else if(wasCurrent)current=Math.min(i,tracks.length-1);if(wasCurrent){playTrack(current)}else renderPlaylist()}
+function playTrack(i){if(!tracks.length)return;current=(i+tracks.length)%tracks.length;audio.src=tracks[current].url;$('#track-name').textContent=tracks[current].name;$('#track-detail').textContent='Трек '+(current+1)+' із '+tracks.length+' • локальне відтворення';audio.play().then(()=>{$('#play-track').textContent='Ⅱ';$('.vinyl').classList.add('playing')}).catch(()=>{$('#play-track').textContent='▶'});renderPlaylist()}
+
+function makeWavBlob(kind){const rate=22050,duration=30,length=rate*duration,buffer=new ArrayBuffer(44+length*2),view=new DataView(buffer);const write=(o,t)=>{for(let i=0;i<t.length;i++)view.setUint8(o+i,t.charCodeAt(i))};write(0,'RIFF');view.setUint32(4,36+length*2,true);write(8,'WAVE');write(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,'data');view.setUint32(40,length*2,true);const notes=kind===0?[110,164.81,220,164.81]:kind===1?[130.81,196,261.63,196]:[98,146.83,196,146.83];for(let i=0;i<length;i++){const t=i/rate,beat=Math.floor(t*(kind===1?2:1.5)),f=notes[beat%notes.length],phase=(t*(kind===1?2:1.5))%1,env=Math.min(1,phase*14)*Math.max(0,1-phase*.8);let sample=(Math.sin(2*Math.PI*f*t)*.28+Math.sin(2*Math.PI*f*2*t)*.08)*env;if(kind===1){sample+=Math.sin(2*Math.PI*55*t)*.1*(phase<.12?1:0)}if(kind===2){sample*=.8+Math.sin(t*2*Math.PI*.25)*.2}sample*=Math.min(1,t*5,(duration-t)*5);view.setInt16(44+i*2,Math.max(-1,Math.min(1,sample))*32767,true)}return new Blob([buffer],{type:'audio/wav'})}
+$('#demo-music').addEventListener('click',()=>{const demos=[['Neon Drift — synthwave',0],['Arcade Rush — 8-bit beat',1],['Midnight Chill — ambient',2]];demos.forEach(([name,kind])=>{const blob=makeWavBlob(kind);tracks.push({name,url:URL.createObjectURL(blob),file:blob,duration:30})});renderPlaylist();if(current<0)playTrack(0);$('#track-detail').textContent='Додано 3 оригінальні синтезовані біти • локально'});
+
+fileInput.addEventListener('change',e=>{const added=[...e.target.files].map(f=>({name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f),file:f,duration:NaN}));tracks.push(...added);renderPlaylist();if(current<0&&tracks.length)playTrack(0);added.forEach(t=>{const probe=new Audio();probe.src=t.url;probe.addEventListener('loadedmetadata',()=>{t.duration=probe.duration;renderPlaylist()},{once:true})});fileInput.value=''});
+$('#play-track').addEventListener('click',()=>{if(!tracks.length){fileInput.click();return}if(audio.paused){audio.play().then(()=>{$('#play-track').textContent='Ⅱ';$('.vinyl').classList.add('playing')}).catch(()=>{})}else audio.pause()});
+audio.addEventListener('play',()=>{$('#play-track').textContent='Ⅱ';$('.vinyl').classList.add('playing')});audio.addEventListener('pause',()=>{$('#play-track').textContent='▶';$('.vinyl').classList.remove('playing')});
+$('#prev-track').addEventListener('click',()=>playTrack(current<=0?tracks.length-1:current-1));$('#next-track').addEventListener('click',()=>playTrack(current+1));
+audio.addEventListener('ended',()=>{if(tracks.length)playTrack(current+1)});audio.addEventListener('loadedmetadata',()=>$('#duration').textContent=fmt(audio.duration));audio.addEventListener('timeupdate',()=>{if(audio.duration){$('#seek').value=audio.currentTime/audio.duration*100;$('#current-time').textContent=fmt(audio.currentTime)}});audio.addEventListener('emptied',()=>{$('#seek').value=0});$('#seek').addEventListener('input',e=>{if(audio.duration)audio.currentTime=audio.duration*e.target.value/100});$('#volume').addEventListener('input',e=>audio.volume=Number(e.target.value));audio.volume=.8;
+
+/* Profile settings are saved in this browser on this device. */
+const profileDefaults={name:'KH么Kozak',bio:'PUBG Mobile • геймінг • моменти з життя',tiktok:'khkozak4',telegram:'tt_KH_Kozak'};
+let profile={...profileDefaults,avatar:''};
+try{const saved=JSON.parse(localStorage.getItem('kh-kozak-profile-v5')||'null');if(saved&&typeof saved==='object')profile={...profileDefaults,avatar:'',...saved}}catch(_){}
+function cleanHandle(v){return String(v||'').trim().replace(/^@/,'').replace(/[^a-zA-Z0-9._]/g,'').slice(0,40)}
+function applyProfile(){const avatar=$('.profile-avatar');if(avatar){if(profile.avatar){avatar.innerHTML='';const img=document.createElement('img');img.src=profile.avatar;img.alt='Аватар профілю';avatar.appendChild(img);avatar.classList.add('has-avatar')}else{avatar.classList.remove('has-avatar');avatar.innerHTML='<span>KH</span><b>么</b>'}}const name=String(profile.name||profileDefaults.name).trim().slice(0,48)||profileDefaults.name;const bio=String(profile.bio||'').trim().slice(0,120);$('.profile-info h3').textContent=name;$('.profile-info>p').textContent=bio;const links=$$('.social');if(links[0]){links[0].href='https://www.tiktok.com/@'+cleanHandle(profile.tiktok||profileDefaults.tiktok);links[0].querySelector('b').textContent='@'+cleanHandle(profile.tiktok||profileDefaults.tiktok)}if(links[1]){links[1].href='https://t.me/'+cleanHandle(profile.telegram||profileDefaults.telegram);links[1].querySelector('b').textContent='@'+cleanHandle(profile.telegram||profileDefaults.telegram)}}
+function showProfileEditor(){gameCleanup();modalTitle.textContent='Редагувати профіль';stage.innerHTML='<form id="profile-form" class="profile-form"><label>Нікнейм<input id="profile-name" maxlength="48" required></label><label>Короткий опис<textarea id="profile-bio" maxlength="120" rows="2"></textarea></label><label>Аватар (JPG, PNG або WebP, до 1 МБ)<input id="profile-avatar-file" type="file" accept="image/png,image/jpeg,image/webp"></label><button class="btn ghost" id="remove-avatar" type="button">Прибрати аватар</button><label>TikTok username<input id="profile-tiktok" maxlength="40" placeholder="khkozak4"></label><label>Telegram username<input id="profile-telegram" maxlength="40" placeholder="tt_KH_Kozak"></label><p class="game-note">Налаштування збережуться в цьому браузері на цьому пристрої.</p><button class="btn primary game-action" type="submit">Зберегти профіль ✓</button></form>';$('#profile-name').value=profile.name;$('#profile-bio').value=profile.bio;$('#profile-tiktok').value=profile.tiktok;$('#profile-telegram').value=profile.telegram;let pendingAvatar=profile.avatar||'';$('#profile-avatar-file').addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>1024*1024){e.target.value='';alert('Обери JPG, PNG або WebP розміром до 1 МБ.');return}const reader=new FileReader();reader.onload=()=>{pendingAvatar=String(reader.result||'')};reader.readAsDataURL(file)});$('#remove-avatar').addEventListener('click',()=>{pendingAvatar='';$('#profile-avatar-file').value=''});modal.classList.add('open');modal.setAttribute('aria-hidden','false');$('#profile-form').addEventListener('submit',e=>{e.preventDefault();profile={name:$('#profile-name').value.trim()||profileDefaults.name,bio:$('#profile-bio').value.trim(),tiktok:cleanHandle($('#profile-tiktok').value)||profileDefaults.tiktok,telegram:cleanHandle($('#profile-telegram').value)||profileDefaults.telegram,avatar:pendingAvatar};try{localStorage.setItem('kh-kozak-profile-v5',JSON.stringify(profile))}catch(_){}applyProfile();closeGame()})}
+$('#edit-profile').addEventListener('click',showProfileEditor);
+
+const copyPubgButton=$('#copy-pubg-id');
+if(copyPubgButton)copyPubgButton.addEventListener('click',async()=>{const id=$('#pubg-id').textContent.trim();try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(id)}else{const field=document.createElement('textarea');field.value=id;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();const copied=document.execCommand('copy');field.remove();if(!copied)throw new Error('copy failed')}$('#copy-status').textContent='PUBG ID скопійовано ✓';copyPubgButton.textContent='Скопійовано ✓'}catch(_){$('#copy-status').textContent='Твій PUBG ID: '+id;copyPubgButton.textContent='ID: '+id}setTimeout(()=>{copyPubgButton.textContent='Скопіювати ID'},2200)});
+
+applyProfile();
+
+
+/* KH KOZAK ACCOUNT LOCAL MODE
+   Browser-local demo only. Do not treat this as server authentication. */
+(()=>{
+ const form=document.getElementById('account-form');
+ if(!form)return;
+ const userInput=document.getElementById('account-username');
+ const passInput=document.getElementById('account-password');
+ const submit=document.getElementById('account-submit');
+ const toggle=document.getElementById('account-toggle');
+ const status=document.getElementById('account-status');
+ const heading=document.getElementById('account-heading');
+ const description=document.getElementById('account-description');
+ const session=document.getElementById('account-session');
+ const welcome=document.getElementById('account-welcome');
+ const logout=document.getElementById('account-logout');
+ const USERS='kh-kozak-local-users-v1',ACTIVE='kh-kozak-local-session-v1';
+ let mode='register';
+ const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch(_){return fallback}};
+ const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}};
+ const clean=s=>String(s||'').trim().toLowerCase();
+ function setMode(next){mode=next;heading.textContent=mode==='register'?'Створи свій акаунт':'З поверненням!';description.textContent=mode==='register'?'Створи локальний профіль для цього браузера.':'Увійди в акаунт, створений у цьому браузері.';submit.textContent=mode==='register'?'Створити акаунт':'Увійти';toggle.textContent=mode==='register'?'Уже маю акаунт':'Створити новий акаунт';passInput.autocomplete=mode==='register'?'new-password':'current-password';status.textContent='Локальний режим: дані не синхронізуються між пристроями.'}
+ function showSession(){const active=read(ACTIVE,null);form.hidden=!!active;session.hidden=!active;if(active){welcome.textContent='Вітаємо, '+active.username+'!';heading.textContent='Ти увійшов';description.textContent='Поточний акаунт збережено в цьому браузері.'}else setMode(mode)}
+ toggle.addEventListener('click',()=>setMode(mode==='register'?'login':'register'));
+ form.addEventListener('submit',async e=>{e.preventDefault();const username=userInput.value.trim(),key=clean(username),password=passInput.value;if(username.length<3||password.length<6){status.textContent='Вкажи нікнейм від 3 символів і пароль від 6 символів.';return}
+ let users=read(USERS,{});if(mode==='register'&&users[key]){status.textContent='Такий нікнейм уже зареєстрований у цьому браузері. Увійди в акаунт.';return}
+ if(mode==='login'&&!users[key]){status.textContent='Акаунт не знайдено в цьому браузері. Перевір нікнейм або створи акаунт.';return}
+ let digest='';try{const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(password));digest=[...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('')}catch(_){status.textContent='Браузер не підтримує безпечне хешування пароля. Онови браузер і спробуй знову.';return}
+ if(mode==='register'){users[key]={username,digest,createdAt:new Date().toISOString()};if(!write(USERS,users)){status.textContent='Не вдалося зберегти акаунт. Перевір налаштування браузера.';return}}
+ else if(users[key].digest!==digest){status.textContent='Неправильний пароль.';return}
+ write(ACTIVE,{username,key});passInput.value='';status.textContent='Готово!';showSession();
+ });
+ logout.addEventListener('click',()=>{try{localStorage.removeItem(ACTIVE)}catch(_){}showSession();status.textContent='Ти вийшов з акаунта.'});
+ showSession();
+})();
+
+/* BATTLEGROUNDS HUB interactions: daily missions, saved loadout, local leaderboard */
+(()=>{
+ const $=s=>document.querySelector(s);
+ const today=()=>new Date().toISOString().slice(0,10);
+ const missionKey='kh-kozak-missions-v1';
+ let missions={day:today(),claimed:[]};
+ try{missions={...missions,...JSON.parse(localStorage.getItem(missionKey)||'{}')}}catch(_){}
+ if(missions.day!==today())missions={day:today(),claimed:[]};
+ function saveMissions(){try{localStorage.setItem(missionKey,JSON.stringify(missions))}catch(_){}}
+ function renderMissions(){document.querySelectorAll('[data-mission]').forEach(b=>{const done=missions.claimed.includes(b.dataset.mission);b.disabled=done;b.textContent=done?'✓ Виконано сьогодні':'Забрати нагороду'});}
+ document.querySelectorAll('[data-mission]').forEach(b=>b.addEventListener('click',()=>{
+  const id=b.dataset.mission;if(missions.claimed.includes(id))return;
+  const prizes={play:{coins:30,xp:20,points:10},aim:{coins:25,xp:15,points:15},music:{coins:15,xp:10,points:5}}[id];
+  if(!prizes)return;
+  missions.claimed.push(id);saveMissions();
+  if(typeof reward!=='undefined'){reward.coins+=prizes.coins;reward.xp+=prizes.xp;reward.points+=prizes.points;reward.claimed=true;saveReward();}
+  const msg=$('#mission-status');if(msg)msg.textContent='Місію виконано! +'+prizes.coins+' монет, +'+prizes.xp+' XP і +'+prizes.points+' очок.';
+  renderMissions();
+ }));
+ renderMissions();
+ const role=$('#loadout-role'),weapon=$('#loadout-weapon'),map=$('#loadout-map'),style=$('#loadout-style');
+ const roleNames={assault:'Штурмовик',scout:'Розвідник',support:'Підтримка',survivor:'Виживальник'};
+ function renderLoadout(){const r=roleNames[role.value]||'Польовий боєць';const name=$('#loadout-name'),summary=$('#loadout-summary');if(name)name.textContent=r;if(summary)summary.textContent=weapon.value+' • '+map.value+' • '+style.value;}
+ try{const saved=JSON.parse(localStorage.getItem('kh-kozak-loadout-v1')||'null');if(saved){if(saved.role)role.value=saved.role;if(saved.weapon)weapon.value=saved.weapon;if(saved.map)map.value=saved.map;if(saved.style)style.value=saved.style}}catch(_){}
+ [role,weapon,map,style].forEach(el=>el.addEventListener('change',renderLoadout));renderLoadout();
+ $('#save-loadout')?.addEventListener('click',()=>{const data={role:role.value,weapon:weapon.value,map:map.value,style:style.value};try{localStorage.setItem('kh-kozak-loadout-v1',JSON.stringify(data));$('#loadout-status').textContent='Комплект збережено! '+(roleNames[data.role]||data.role)+' / '+data.weapon+' / '+data.map+'.'}catch(_){$('#loadout-status').textContent='Не вдалося зберегти комплект у браузері.'}});
+ function renderLeaderboard(){const table=$('#leaderboard-table');if(!table)return;const labels={memory:'Знайди пару — ходи',reaction:'Реакція — мс',clicker:'Клік-челендж',ttt:'Хрестики-нулики',numbers:'Пам’ять чисел',snake:'Неонова змійка',aim:'Тренер прицілювання',challenge:'Випробування',run:'Kozak Run',musicquiz:'Music Challenge',wheel:'Колесо удачі',crates:'Лутбокси',code:'Кодова пам’ять',dodge:'Швидкі цілі',metro:'Метро: евакуація',classic:'Classic Survival'};let rows=[];try{const rec=JSON.parse(localStorage.getItem('kh-kozak-records-v5')||'{}');Object.keys(labels).forEach(k=>{const v=rec[k];if(v!==null&&v!==undefined&&v!==0&&v!=='')rows.push({name:labels[k],value:v,score:Number(v)||0})})}catch(_){}rows.sort((a,b)=>b.score-a.score);table.innerHTML='<div class="leaderboard-row leaderboard-head"><span>#</span><span>Випробування</span><span>Результат</span></div>'+(rows.length?rows.map((r,i)=>'<div class="leaderboard-row"><strong>'+(i+1)+'</strong><span>'+r.name+'</span><strong>'+r.value+'</strong></div>').join(''):'<div class="leaderboard-row"><span>—</span><span>Поки немає рекордів. Зіграй у мінігру!</span><span>—</span></div>');}
+ $('#refresh-leaderboard')?.addEventListener('click',renderLeaderboard);renderLeaderboard();
+})();
