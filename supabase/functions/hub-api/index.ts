@@ -140,6 +140,12 @@ async function telegramWebhook(req: Request, origin: string | null) {
         if (!pending) {
           await telegramSend(chat.id, "Код не знайдено або він прострочений. Створи новий код на сайті.");
         } else {
+          const { data: existingLink, error: existingLinkError } = await admin.from("hub_telegram_links").select("user_id").eq("telegram_user_id", from.id).maybeSingle();
+          if (existingLinkError) throw existingLinkError;
+          if (existingLink && existingLink.user_id !== pending.user_id) {
+            await telegramSend(chat.id, "Цей Telegram уже прив’язано до іншого акаунта Battle Hub. Спочатку надішли /unlink з того Telegram-акаунта, потім створи новий код.");
+            return response({ ok: true }, 200, origin);
+          }
           const { data: claimedCode, error: claimError } = await admin.from("hub_telegram_link_codes").delete().eq("user_id", pending.user_id).eq("code_hash", codeHash).gt("expires_at", new Date().toISOString()).select("user_id").maybeSingle();
           if (claimError) throw claimError;
           if (!claimedCode) {
