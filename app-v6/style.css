@@ -768,3 +768,17 @@ body{background:radial-gradient(ellipse at 15% -5%,#17194b 0,transparent 35%),ra
 input,textarea,select{accent-color:#00f5ff}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #00f5ff;outline-offset:3px}
 @media(max-width:900px){.sidebar{background:#070b18f5;border-top:1px solid #2b3b63;box-shadow:0 -8px 25px #0009,0 0 20px #00f5ff0a}.sidebar .nav-item.active{background:linear-gradient(110deg,#00f5ff,#7c7bff);color:#07101d}.hero:before{background:linear-gradient(90deg,#080d1bfc 0%,#080d1bf0 42%,#080d1b65 78%,#080d1b25 100%)}}
+
+/* 39-game arcade catalogue */
+.arcade-tile .tile-visual{background:linear-gradient(135deg,#111b37,#27103a 65%,#092c3c);border-bottom:1px solid #244d68}
+.arcade-tile .tile-visual span{filter:drop-shadow(0 0 12px #00f5ff44)}
+.arcade-play{width:100%;min-height:220px;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:12px;padding:14px;border:1px solid #2a3a63;border-radius:10px;background:radial-gradient(ellipse at top,#1a2040,#080d1b 72%);color:#f1f7ff}
+.arcade-play h3{text-align:center;font-size:clamp(18px,3vw,26px);color:#00f5ff;margin:12px 0}
+.arcade-progress{text-align:center;color:#ff36d1;font-size:10px;font-weight:900;letter-spacing:1.3px}
+.arcade-option{min-height:42px;padding:11px 13px;border:1px solid #2c4674;border-radius:7px;background:#111b35;color:#edf7ff;text-align:left;font-size:12px;font-weight:700;cursor:pointer}
+.arcade-option:hover{border-color:#00f5ff;box-shadow:0 0 18px #00f5ff16}
+.arcade-result{text-align:center;padding:25px 8px}.arcade-result p{color:#00f5ff;font-size:18px;font-weight:900}
+.timing-track{height:24px;position:relative;border:1px solid #2c4674;border-radius:6px;background:linear-gradient(90deg,#ff36d1 0 32%,#67ffbd 32% 68%,#ff36d1 68%);overflow:hidden}
+.timing-track i{position:absolute;top:-2px;left:0;width:5px;height:28px;background:#fff;box-shadow:0 0 10px #fff;z-index:2}
+.timing-track b{position:absolute;top:0;left:50%;width:34%;height:100%;transform:translateX(-50%);border-left:1px solid #fff9;border-right:1px solid #fff9;background:#67ffbd22}
+@media(max-width:900px){.arcade-play{padding:10px;min-height:190px}.arcade-option{font-size:11px;min-height:40px}.arcade-tile .tile-visual{min-height:86px}.arcade-tile .tile-content{padding:10px}}
