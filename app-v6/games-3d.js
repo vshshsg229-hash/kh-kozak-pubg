@@ -29,10 +29,10 @@ function clearGame(){active=false;if(reloadTimer!==null){clearTimeout(reloadTime
 function mat(T,color,roughness=.8){return new T.MeshStandardMaterial({color,roughness})}
 function makeCombatant(T,{zombie=false,boss=false}={}){const g=new T.Group();const skin=zombie?0x718b58:boss?0x6d4b78:0xb98768,cloth=zombie?0x3f5940:boss?0x342d40:0x424a38,armor=zombie?0x293c2c:boss?0x382844:0x252b2b,metal=0x202522;const add=(geo,color,x,y,z,rx=0,ry=0,rz=0)=>{const m=new T.Mesh(geo,mat(T,color));m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;g.add(m);return m};const scale=boss?1.45:1;g.scale.setScalar(scale);
 // boots, legs, knees
-for(const s of [-1,1]){add(new T.BoxGeometry(.31,.18,.46),metal,s*.21,.13,-.04);add(new T.CapsuleGeometry(.14,.56,5,9),cloth,s*.21,.52,0);add(new T.BoxGeometry(.3,.17,.13),armor,s*.21,.72,-.09);}
+for(const s of [-1,1]){add(new T.BoxGeometry(.31,.18,.46),metal,s*.21,.13,-.04);add(new T.CapsuleGeometry(.14,.56,5,9),cloth,s*.21,.52,0);add(new T.SphereGeometry(.16,12,10),armor,s*.21,.72,-.09);}
 // torso and field vest
-add(new T.CapsuleGeometry(.34,.65,5,10),cloth,0,1.27,0);add(new T.BoxGeometry(.7,.66,.25),armor,0,1.31,-.1);add(new T.BoxGeometry(.72,.1,.27),boss?0x796044:0x555b45,0,1.62,-.1);
-for(const s of [-1,0,1])add(new T.BoxGeometry(.17,.22,.1),boss?0x4b3b50:0x343b31,s*.22,1.23,-.25);
+add(new T.CapsuleGeometry(.34,.65,5,10),cloth,0,1.27,0);add(new T.CapsuleGeometry(.33,.42,6,12),armor,0,1.31,-.1);add(new T.CapsuleGeometry(.35,.06,4,10),boss?0x796044:0x555b45,0,1.62,-.1);
+for(const s of [-1,0,1])add(new T.CapsuleGeometry(.075,.12,4,8),boss?0x4b3b50:0x343b31,s*.22,1.23,-.25);
 for(const s of [-1,1]){add(new T.CapsuleGeometry(.13,.39,5,8),cloth,s*.45,1.32,-.01,0,0,s*.2);add(new T.BoxGeometry(.17,.15,.16),armor,s*.55,1.08,-.12);add(new T.CapsuleGeometry(.095,.19,4,7),cloth,s*.57,.98,-.18);}
 // neck, head, face covering and helmet; zombies have exposed ragged face
 add(new T.CylinderGeometry(.09,.11,.14,10),skin,0,1.72,0);add(new T.SphereGeometry(boss?.26:.22,16,14),skin,0,1.91,-.015);
@@ -52,20 +52,20 @@ const uniform=0x454b35,uniformLight=0x62654a,armor=0x242b2b,armorEdge=0x414747,s
 // Boots and articulated legs
 for(const side of [-1,1]){
 player.userData.limbs.push(part(new T.CapsuleGeometry(.145,.62,5,10),uniform,side*.22,.57,0,0,0,side*.035));
-part(new T.BoxGeometry(.29,.17,.46),0x171a19,side*.22,.16,-.09);
-part(new T.BoxGeometry(.32,.11,.49),0x292c29,side*.22,.095,-.09);
+part(new T.CapsuleGeometry(.13,.2,4,9),0x171a19,side*.22,.16,-.09);
+part(new T.CapsuleGeometry(.13,.12,4,9),0x292c29,side*.22,.095,-.09);
 part(new T.CapsuleGeometry(.16,.22,4,8),uniformLight,side*.22,.99,0);
 }
 // Torso, shoulder pads, tactical vest and segmented pouches
 part(new T.CapsuleGeometry(.34,.66,6,12),uniform,0,1.35,0);
-part(new T.BoxGeometry(.76,.72,.27),armor,0,1.39,-.12);
-part(new T.BoxGeometry(.79,.12,.3),armorEdge,0,1.69,-.12);
-part(new T.BoxGeometry(.59,.28,.08),0x555744,0,1.47,-.275);
-part(new T.BoxGeometry(.18,.27,.11),0x343a32,-.24,1.22,-.29);
-part(new T.BoxGeometry(.18,.27,.11),0x343a32,0,1.22,-.29);
-part(new T.BoxGeometry(.18,.27,.11),0x343a32,.24,1.22,-.29);
-part(new T.BoxGeometry(.15,.16,.1),0x5b5542,-.23,1.55,-.29);
-part(new T.BoxGeometry(.15,.16,.1),0x5b5542,.23,1.55,-.29);
+part(new T.CapsuleGeometry(.34,.43,6,12),armor,0,1.39,-.12);
+part(new T.CapsuleGeometry(.36,.07,4,10),armorEdge,0,1.69,-.12);
+part(new T.CapsuleGeometry(.27,.12,4,10),0x555744,0,1.47,-.275);
+part(new T.CapsuleGeometry(.07,.13,4,8),0x343a32,-.24,1.22,-.29);
+part(new T.CapsuleGeometry(.07,.13,4,8),0x343a32,0,1.22,-.29);
+part(new T.CapsuleGeometry(.07,.13,4,8),0x343a32,.24,1.22,-.29);
+part(new T.SphereGeometry(.09,10,8),0x5b5542,-.23,1.55,-.29);
+part(new T.SphereGeometry(.09,10,8),0x5b5542,.23,1.55,-.29);
 part(new T.BoxGeometry(.12,.42,.12),0x252a27,0,1.34,-.3);
 part(new T.BoxGeometry(.12,.12,.07),0xb49b62,0,1.35,-.37);
 // Arms with sleeves, gloves, elbow pads
@@ -73,8 +73,8 @@ for(const side of [-1,1]){
 player.userData.limbs.push(part(new T.CapsuleGeometry(.14,.39,5,9),uniformLight,side*.48,1.39,-.015,0,0,side*.27));
 part(new T.SphereGeometry(.155,12,10),uniform,side*.57,1.16,-.12);
 part(new T.CapsuleGeometry(.105,.25,4,8),uniform,side*.63,1.13,-.2,0,0,side*.14);
-part(new T.BoxGeometry(.17,.13,.16),armor,side*.64,1.03,-.28);
-part(new T.BoxGeometry(.15,.12,.13),0x292c29,side*.64,1.02,-.35);
+part(new T.SphereGeometry(.09,10,8),armor,side*.64,1.03,-.28);
+part(new T.SphereGeometry(.08,10,8),0x292c29,side*.64,1.02,-.35);
 }
 // Neck, face, balaclava, helmet, goggles
 part(new T.CylinderGeometry(.105,.12,.16,12),skin,0,1.82,0);
