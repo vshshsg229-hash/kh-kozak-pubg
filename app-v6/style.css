@@ -880,3 +880,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .mode-shortcut-arena{background:linear-gradient(145deg,#352c19,#12171b)}.mode-shortcut-classic{background:linear-gradient(145deg,#1d3426,#11171b)}.mode-shortcut-metro{background:linear-gradient(145deg,#25302e,#11171b)}.mode-shortcut-zombie{background:linear-gradient(145deg,#23381f,#11171b)}
 @media(max-width:900px){.mode-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.mode-shortcut{padding:13px}}
 @media(max-width:420px){.mode-shortcut small{font-size:10px}.mode-shortcut strong{font-size:12px}.mode-shortcut{padding:11px}}
+
+
+/* 3D Arena launch card in the main game catalogue */
+.mode-shortcut-wide{width:100%;display:grid;grid-template-columns:54px minmax(120px,.45fr) minmax(180px,1fr) auto;align-items:center;gap:14px;margin:0 0 14px;text-align:left;padding:17px 20px;border:1px solid #806a2c;background:linear-gradient(100deg,#292719,#171d22 58%,#101820);color:var(--text);min-height:82px}
+.mode-shortcut-wide>span{font-size:31px;color:var(--yellow);display:grid;place-items:center;width:48px;height:48px;background:#f5c34214;border:1px solid #f5c34244}
+.mode-shortcut-wide>strong{font:900 20px 'Barlow Condensed';letter-spacing:1px;color:var(--yellow)}
+.mode-shortcut-wide>small{font-size:11px;line-height:1.55;color:#aab5c0}
+.mode-shortcut-wide>em{font-style:normal;font-size:10px;font-weight:900;letter-spacing:1px;color:var(--yellow);white-space:nowrap}
+.mode-shortcut-wide:hover{border-color:var(--yellow);transform:translateY(-2px)}
+@media(max-width:900px){.mode-shortcut-wide{grid-template-columns:44px 1fr auto;gap:10px;padding:14px}.mode-shortcut-wide>span{width:40px;height:40px;font-size:26px}.mode-shortcut-wide>strong{font-size:17px}.mode-shortcut-wide>small{grid-column:2 / 4;grid-row:2}.mode-shortcut-wide>em{grid-column:3;grid-row:1}}
+@media(max-width:520px){.mode-shortcut-wide{grid-template-columns:38px minmax(0,1fr) auto;gap:8px;padding:12px}.mode-shortcut-wide>small{font-size:10px}.mode-shortcut-wide>em{font-size:8px}.mode-shortcut-wide>strong{font-size:15px}}
