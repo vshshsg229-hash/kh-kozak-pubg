@@ -2,14 +2,77 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const modal=$('#game-modal'), stage=$('#game-stage'), modalTitle=$('#modal-title');
 let gameCleanup=()=>{};
 const RECORDS_KEY='kh-kozak-records-v5';
-let records={memory:null,reaction:null,clicker:0,ttt:0,numbers:0,snake:0,aim:0,challenge:0};
+let records={memory:null,reaction:null,clicker:0,ttt:0,numbers:0,snake:0,aim:0,challenge:0,run:0,musicquiz:0,wheel:0,crates:0,code:0,dodge:0};
 try{records={...records,...JSON.parse(localStorage.getItem(RECORDS_KEY)||'{}')}}catch(_){}
 function saveRecord(){try{localStorage.setItem(RECORDS_KEY,JSON.stringify(records))}catch(_){}}
 function recordText(game){if(game==='memory')return records.memory?('Рекорд: '+records.memory+' ходів'):'Рекорд: ще немає';if(game==='reaction')return records.reaction?('Найкраще: '+records.reaction+' мс'):'Найкраще: ще немає';return 'Рекорд: '+(records.clicker||0)+' кліків'}
-function openGame(name){gameCleanup();stage.innerHTML='';modal.classList.add('open');modal.setAttribute('aria-hidden','false');if(name==='memory')memoryGame();if(name==='reaction')reactionGame();if(name==='clicker')clickerGame();if(name==='ttt')ticTacToeGame();if(name==='numbers')numberMemoryGame();if(name==='snake')snakeGame();if(name==='aim')aimTrainerGame();if(name==='challenge')challengeGame()}
+function openGame(name){gameCleanup();stage.innerHTML='';modal.classList.add('open');modal.setAttribute('aria-hidden','false');if(name==='memory')memoryGame();if(name==='reaction')reactionGame();if(name==='clicker')clickerGame();if(name==='ttt')ticTacToeGame();if(name==='numbers')numberMemoryGame();if(name==='snake')snakeGame();if(name==='aim')aimTrainerGame();if(name==='challenge')challengeGame();if(name==='run')runGame();if(name==='musicquiz')musicQuizGame();if(name==='wheel')wheelGame();if(name==='crates')cratesGame();if(name==='code')codeGame();if(name==='dodge')dodgeGame()}
 function closeGame(){gameCleanup();modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
 $('#close-modal').addEventListener('click',closeGame);modal.addEventListener('click',e=>{if(e.target===modal)closeGame()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGame()});
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
+
+
+function runGame(){
+  modalTitle.textContent='Kozak Run · мінігра 4.6';
+  stage.innerHTML='<p class="game-note">Натискай «Стрибок» або торкайся поля, щоб перестрибувати перешкоди.</p><div class="game-status"><span id="run-score">Очки: 0</span><span id="run-best">Рекорд: '+(records.run||0)+'</span></div><canvas id="run-canvas" width="720" height="260" style="display:block;width:100%;border-radius:14px;background:#15112d;touch-action:manipulation"></canvas><div class="game-start"><button class="btn primary" id="run-start">Старт забігу</button><button class="btn ghost" id="run-jump">Стрибок ⤴</button><p id="run-status" class="game-note">Готовий? Починай забіг!</p></div>';
+  const canvas=$('#run-canvas'),ctx=canvas.getContext('2d'),scoreEl=$('#run-score'),status=$('#run-status'),start=$('#run-start'),jump=$('#run-jump');let raf=0,on=false,last=0,score=0,y=0,vy=0,obs=[];
+  function draw(){const w=canvas.width,h=canvas.height,g=h-34;ctx.fillStyle='#17102b';ctx.fillRect(0,0,w,h);ctx.fillStyle='#554078';ctx.fillRect(0,g,w,h-g);ctx.fillStyle='#a98aff';ctx.fillRect(0,g,w,3);ctx.fillStyle='#8effd0';ctx.fillRect(75,g-34-y,24,34);ctx.fillStyle='#ff6d9d';obs.forEach(o=>ctx.fillRect(o.x,g-o.h,o.w,o.h));ctx.fillStyle='#fff';ctx.font='bold 20px system-ui';ctx.fillText('SCORE '+Math.floor(score),16,28);if(!on){ctx.font='16px system-ui';ctx.fillText('Натисни «Старт забігу»',250,130)}}
+  function finish(){on=false;cancelAnimationFrame(raf);records.run=Math.max(records.run||0,Math.floor(score));saveRecord();$('#run-best').textContent='Рекорд: '+records.run;status.textContent='Забіг завершено! Очки: '+Math.floor(score);start.disabled=false;start.textContent='Зіграти ще';draw()}
+  function gpy(){return canvas.height-34-y}
+  function frame(t){if(!on)return;const dt=Math.min((t-last)/1000,.04)||0;last=t;score+=dt*10;y+=vy*dt;vy-=1400*dt;if(y<0){y=0;vy=0}if(Math.random()<dt*(.8+score/180))obs.push({x:canvas.width,w:18+Math.random()*18,h:22+Math.random()*35});obs.forEach(o=>{o.x-=(300+Math.min(score,200))*dt});obs=obs.filter(o=>o.x+o.w>0);if(obs.some(o=>o.x<100&&o.x+o.w>70&&gpy()+34>canvas.height-34-o.h)){finish();return}scoreEl.textContent='Очки: '+Math.floor(score);draw();raf=requestAnimationFrame(frame)}
+  function doJump(){if(on&&y<=0.1)vy=560}
+  start.addEventListener('click',()=>{cancelAnimationFrame(raf);on=true;last=performance.now();score=0;y=0;vy=0;obs=[];start.disabled=true;start.textContent='Забіг триває…';status.textContent='Стрибай через перешкоди!';raf=requestAnimationFrame(frame)});
+  jump.addEventListener('click',doJump);canvas.addEventListener('pointerdown',doJump);
+  gameCleanup=()=>{on=false;cancelAnimationFrame(raf)};
+  draw();
+}
+function musicQuizGame(){
+  modalTitle.textContent='KH Music Challenge · 4.6';
+  const qs=[['Хто виконує «Обійми»?',['Океан Ельзи','Бумбокс','Антитіла'],0],['«Stefania» — пісня якого гурту?',['Kalush Orchestra','Go_A','TVORCHI'],0],['Хто виконує «Плакала»?',['Alyona Alyona','KAZKA','ONUKA'],1],['Хто співає «Тримай»?',['Христина Соловій','Jerry Heil','KOLA'],0],['Який гурт виконує «Шум»?',['Go_A','Kalush Orchestra','The Hardkiss'],0],['Хто виконує «Вахтерам»?',['Бумбокс','Океан Ельзи','Скрябін'],0],['Хто співає «Додому» разом із Kalush?',['Skofka','YARMAK','Wellboy'],0]];
+  let list=[],idx=0,score=0,locked=false;
+  stage.innerHTML='<div class="game-status"><span id="mq-progress">Питання 1</span><span id="mq-score">Рахунок: 0</span></div><h3 id="mq-question" class="challenge-panel"></h3><div id="mq-options" style="display:grid;gap:9px"></div><p id="mq-status" class="game-note">Обери правильну відповідь.</p><button class="btn primary game-action" id="mq-start">Почати челендж</button><button class="btn ghost" id="mq-next" hidden>Наступне питання →</button>';
+  const progress=$('#mq-progress'),qel=$('#mq-question'),opts=$('#mq-options'),msg=$('#mq-status'),next=$('#mq-next'),start=$('#mq-start');
+  function render(){const q=list[idx];if(!q)return;progress.textContent='Питання '+(idx+1)+' / '+list.length;$('#mq-score').textContent='Рахунок: '+score;qel.textContent=q[0];opts.innerHTML='';q[1].forEach((a,i)=>{const b=document.createElement('button');b.className='btn ghost full';b.textContent=a;b.addEventListener('click',()=>{if(locked)return;locked=true;if(i===q[2]){score++;msg.textContent='Правильно! 🎉'}else msg.textContent='Правильна відповідь: '+q[1][q[2]];[...opts.children].forEach((el,j)=>{el.disabled=true;if(j===q[2])el.style.borderColor='#8effd0';else if(j===i)el.style.borderColor='#ff6d9d'});$('#mq-score').textContent='Рахунок: '+score;next.hidden=false});opts.appendChild(b)});next.hidden=true;locked=false;msg.textContent='Обери правильну відповідь.'}
+  start.addEventListener('click',()=>{list=[...qs].sort(()=>Math.random()-.5).slice(0,5);idx=0;score=0;start.hidden=true;render()});
+  next.addEventListener('click',()=>{if(idx<list.length-1){idx++;render()}else{qel.textContent='Челендж завершено!';opts.innerHTML='';progress.textContent='Результат: '+score+'/'+list.length;msg.textContent=score>=4?'Музичний експерт! 🎧':'Спробуй ще раз!';records.musicquiz=Math.max(records.musicquiz||0,score);saveRecord();next.hidden=true;start.hidden=false;start.textContent='Зіграти знову ↻'}});
+  gameCleanup=()=>{};
+}
+function wheelGame(){
+  modalTitle.textContent='Колесо удачі · 4.6';
+  const prizes=['+5 очок','+10 очок','+20 очок','Ще раз!','+15 очок','Супер! +30'];let busy=false,total=0;
+  stage.innerHTML='<div style="text-align:center"><canvas id="luck-canvas" width="300" height="300" style="max-width:100%;height:auto"></canvas><p id="luck-result" class="game-note">Крути колесо й перевір удачу.</p><p id="luck-total" class="record-line">Зібрано очок: 0</p><button class="btn primary game-action" id="luck-spin">Крутити колесо 🎡</button></div>';
+  const can=$('#luck-canvas'),ctx=can.getContext('2d');let angle=0;
+  function draw(){const n=prizes.length,c=150,r=140;ctx.clearRect(0,0,300,300);prizes.forEach((p,i)=>{const a=angle+i*Math.PI*2/n;ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,a,a+Math.PI*2/n);ctx.closePath();ctx.fillStyle=['#ff4f7b','#7c5cff','#00bfa6','#f6b73c','#2f80ed','#f06543'][i];ctx.fill();ctx.save();ctx.translate(c,c);ctx.rotate(a+Math.PI/n);ctx.fillStyle='#fff';ctx.font='bold 12px system-ui';ctx.textAlign='right';ctx.fillText(p,r-12,4);ctx.restore()});ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(c,c,16,0,Math.PI*2);ctx.fill()}
+  draw();$('#luck-spin').addEventListener('click',()=>{if(busy)return;busy=true;const start=angle,extra=Math.PI*2*(4+Math.random()*3)+Math.random()*Math.PI*2,begin=performance.now(),duration=2400;function frame(t){const p=Math.min(1,(t-begin)/duration);angle=start+extra*(1-Math.pow(1-p,4));draw();if(p<1)requestAnimationFrame(frame);else{busy=false;const norm=((angle%(Math.PI*2))+Math.PI*2)%(Math.PI*2),i=(prizes.length-Math.floor(norm/(Math.PI*2/prizes.length)))%prizes.length,prize=prizes[i],n=Number(prize.match(/\d+/)?.[0]||0);total+=n;$('#luck-result').textContent='Випало: '+prize;$('#luck-total').textContent='Зібрано очок: '+total;records.wheel=Math.max(records.wheel||0,total);saveRecord()}}requestAnimationFrame(frame)});
+  gameCleanup=()=>{busy=false};
+}
+function cratesGame(){
+  modalTitle.textContent='Лутбокси · 4.6';let coins=0;
+  stage.innerHTML='<p class="game-note">Обери один із трьох ящиків. Це віртуальні очки у браузері.</p><div class="game-status"><span>Монети: <b id="crate-coins">0</b></span><span>Рекорд: <b id="crate-best">0</b></span></div><div id="crate-options" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0"><button class="btn ghost" data-crate="0">📦<br>Ящик 1</button><button class="btn ghost" data-crate="1">🧰<br>Ящик 2</button><button class="btn ghost" data-crate="2">🎒<br>Ящик 3</button></div><p id="crate-status" class="game-note">Вибери ящик, щоб відкрити лут.</p><button class="btn primary" id="crate-reset">Новий раунд ↻</button>';
+  try{coins=Number(localStorage.getItem('kh-kozak-46-crate-coins'))||0}catch(_){}let best=0;try{best=Number(localStorage.getItem('kh-kozak-46-crate-best'))||0}catch(_){}
+  const coin=$('#crate-coins'),bestEl=$('#crate-best'),msg=$('#crate-status'),buttons=$('#crate-options [data-crate]');
+  function update(){coin.textContent=coins;bestEl.textContent=best}
+  function reset(){buttons.forEach((b,i)=>{b.disabled=false;b.innerHTML=['📦<br>Ящик 1','🧰<br>Ящик 2','🎒<br>Ящик 3'][i]});msg.textContent='Обери ящик і перевір свою удачу.'}
+  buttons.forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;const prize=[0,5,10,20,35,50][Math.floor(Math.random()*6)];coins+=prize;best=Math.max(best,coins);try{localStorage.setItem('kh-kozak-46-crate-coins',coins);localStorage.setItem('kh-kozak-46-crate-best',best)}catch(_){}buttons.forEach(x=>x.disabled=true);b.textContent=prize>=35?'💎':prize>=20?'🪙':prize>0?'🎉':'🪨';msg.textContent=prize?'Знайдено '+prize+' монет!':'Цього разу порожньо — спробуй ще.';records.crates=Math.max(records.crates||0,coins);saveRecord();update()}));$('#crate-reset').addEventListener('click',reset);update();gameCleanup=()=>{};
+}
+function codeGame(){
+  modalTitle.textContent='Запам’ятай код · 4.6';let code='',timer=null,best=records.code||0;
+  stage.innerHTML='<div class="game-status"><span>Рекорд: <b id="code-best">'+best+'</b></span><span>Режим: пам’ять</span></div><div id="code-display" class="challenge-number">••••</div><input id="code-input" inputmode="numeric" maxlength="6" placeholder="Введи код" style="display:block;width:100%;padding:14px;border-radius:12px;background:#10151d;color:white;border:1px solid #ffffff22;margin:12px 0"><p id="code-status" class="game-note">Натисни «Показати код», щоб почати.</p><button class="btn primary" id="code-start">Показати код</button> <button class="btn ghost" id="code-check">Перевірити</button>';
+  const display=$('#code-display'),input=$('#code-input'),msg=$('#code-status'),start=$('#code-start');
+  start.addEventListener('click',()=>{clearTimeout(timer);code=String(Math.floor(1000+Math.random()*9000));display.textContent=code;input.value='';input.disabled=true;msg.textContent='Запам’ятай код! Він зникне за 3 секунди.';start.disabled=true;timer=setTimeout(()=>{display.textContent='••••';input.disabled=false;input.focus();start.disabled=false;msg.textContent='Тепер введи код і натисни «Перевірити».'},3000)});
+  $('#code-check').addEventListener('click',()=>{if(!code){msg.textContent='Спочатку покажи код.';return}if(input.value.trim()===code){best++;records.code=best;saveRecord();$('#code-best').textContent=best;msg.textContent='Правильно! Код запам’ятовано 🧠';code=''}else msg.textContent='Не збіглося. Спробуй ще раз.'});
+  gameCleanup=()=>clearTimeout(timer);
+}
+function dodgeGame(){
+  modalTitle.textContent='Влуч у ціль · 4.6';let active=false,score=0,left=15,timer=null;
+  stage.innerHTML='<div class="game-status"><span>Влучання: <b id="dodge-score">0</b></span><span>Час: <b id="dodge-time">15</b> с</span><span>Рекорд: <b id="dodge-best">'+(records.dodge||0)+'</b></span></div><div id="dodge-arena" style="height:250px;position:relative;overflow:hidden;border:1px solid #ffffff22;border-radius:14px;background:radial-gradient(circle at center,#182b34,#09131b);margin:14px 0"><button id="dodge-target" type="button" aria-label="Ціль" style="position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid #baff7b;background:#baff7b22;color:#baff7b;font-size:22px;left:40%;top:40%">✦</button></div><p id="dodge-status" class="game-note">Почни раунд і лови ціль.</p><button id="dodge-start" class="btn primary">Старт 15 секунд</button>';
+  const arena=$('#dodge-arena'),target=$('#dodge-target'),status=$('#dodge-status');
+  function move(){target.style.left=Math.floor(Math.random()*Math.max(1,arena.clientWidth-48))+'px';target.style.top=Math.floor(Math.random()*Math.max(1,arena.clientHeight-48))+'px'}
+  function finish(){active=false;clearInterval(timer);timer=null;target.disabled=true;records.dodge=Math.max(records.dodge||0,score);saveRecord();$('#dodge-best').textContent=records.dodge;status.textContent='Раунд завершено! Влучань: '+score;$('#dodge-start').disabled=false;$('#dodge-start').textContent='Зіграти ще'}
+  target.disabled=true;target.addEventListener('click',()=>{if(!active)return;score++;$('#dodge-score').textContent=score;move()});
+  $('#dodge-start').addEventListener('click',()=>{clearInterval(timer);active=true;score=0;left=15;target.disabled=false;$('#dodge-score').textContent='0';$('#dodge-time').textContent=left;$('#dodge-start').disabled=true;status.textContent='Швидше!';move();timer=setInterval(()=>{left--;$('#dodge-time').textContent=left;if(left<=0)finish()},1000)});
+  gameCleanup=()=>{active=false;clearInterval(timer)};
+}
 
 function aimTrainerGame(){
   modalTitle.textContent='Тренер прицілу';
