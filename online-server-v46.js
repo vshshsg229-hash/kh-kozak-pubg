@@ -17,7 +17,7 @@ function renderRooms(rows,members){
   const meta=el('p','kh-room-meta','👤 '+room.owner_nickname+' · 👥 '+(members[room.id]||0)+'/'+room.max_players+' · до '+new Date(room.expires_at).toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'}));
   card.append(top,meta);
   const actions=el('div','kh-room-actions');
-  if(room.invite_url){const link=el('a','btn','Відкрити запрошення ↗');link.href=safeUrl(room.invite_url)||'#';link.target='_blank';link.rel='noopener noreferrer';if(link.href==='#')link.addEventListener('click',e=>e.preventDefault());actions.append(link);}
+  if(safeUrl(room.invite_url)){const link=el('a','btn','Відкрити запрошення ↗');link.href=safeUrl(room.invite_url);link.target='_blank';link.rel='noopener noreferrer';actions.append(link);}
   if(room.owner_id===user?.id){const del=el('button','btn','Закрити кімнату');del.type='button';del.addEventListener('click',async()=>{del.disabled=true;const {error}=await client.from('kozak_global_rooms').delete().eq('id',room.id).eq('owner_id',user.id);if(error){status('Не вдалося закрити кімнату: '+error.message,true);del.disabled=false;}else{status('Кімнату закрито для всіх гравців.');await refresh();}});actions.append(del);}
   else {const joined=members['mine:'+room.id];const join=el('button','btn btn-primary',joined?'✓ Ти в кімнаті':'Приєднатися');join.type='button';join.disabled=!!joined||joining.has(String(room.id));join.addEventListener('click',async()=>{joining.add(String(room.id));join.disabled=true;const {error}=await client.from('kozak_global_room_members').upsert({room_id:room.id,user_id:user.id,nickname:getNickname()},{onConflict:'room_id,user_id'});joining.delete(String(room.id));if(error){status('Не вдалося приєднатися: '+error.message,true);join.disabled=false;}else{status('Ти приєднався до кімнати «'+room.room_name+'».');await refresh();}});actions.append(join);}
   card.append(actions);root.append(card);
@@ -57,6 +57,7 @@ async function boot(){
   const payload={owner_id:user.id,owner_nickname:getNickname(),room_name:roomName,game_mode:clean(mode?.value||'PUBG Squad',32),invite_url:invite,max_players:Number(max?.value||4),expires_at:new Date(Date.now()+24*60*60*1000).toISOString()};
   const {data,error}=await client.from('kozak_global_rooms').insert(payload).select('id').single();if(button)button.disabled=false;
   if(error){status('Не вдалося створити спільну кімнату: '+error.message,true);return;}
+  const roomId=data?.id;if(roomId){const joined=await client.from('kozak_global_room_members').upsert({room_id:roomId,user_id:user.id,nickname:getNickname()},{onConflict:'room_id,user_id'});if(joined.error){status('Кімнату створено, але не вдалося зайняти місце: '+joined.error.message,true);}}
   name.value='';if(url)url.value='';status('Кімнату створено на сервері — інші гравці можуть її бачити.');await refresh();
  });
  $('kh-server-refresh')?.addEventListener('click',refresh);
