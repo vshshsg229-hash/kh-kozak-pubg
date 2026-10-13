@@ -783,7 +783,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .timing-track b{position:absolute;top:0;left:50%;width:34%;height:100%;transform:translateX(-50%);border-left:1px solid #fff9;border-right:1px solid #fff9;background:#67ffbd22}
 @media(max-width:900px){.arcade-play{padding:10px;min-height:190px}.arcade-option{font-size:11px;min-height:40px}.arcade-tile .tile-visual{min-height:86px}.arcade-tile .tile-content{padding:10px}}
 
-/* KH KOZAK DESKTOP COMMAND CENTER 8.24.0 */
+/* KH KOZAK DESKTOP COMMAND CENTER 8.25.0 */
 @media(min-width:1200px){
  :root{--sidebar:252px;--bg:#070b14;--panel:#0e1625;--panel2:#121d30;--line:#24324b;--yellow:#ffd23f;--yellow2:#fff09a;--blue:#00e5ff;--green:#a3ff4b}
  body{background:radial-gradient(ellipse at 76% 0%,#162449 0,transparent 34%),radial-gradient(ellipse at 35% 72%,#101b37 0,transparent 38%),#070b14}
