@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#0a0c0f"><meta name="description" content="KH么Kozak Player Account — акаунт і хмарний прогрес Gaming Hub 4.6.">
 <title>Акаунт гравця · KH么Kozak 4.6</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="new-home.css?v=41"><link rel="stylesheet" href="site-v4.css?v=8"><link rel="stylesheet" href="account.css?v=1">
+<link rel="stylesheet" href="new-home.css?v=41"><link rel="stylesheet" href="site-v4.css?v=8"><link rel="stylesheet" href="account.css?v=2">
 <link rel="stylesheet" href="navigation-v5.css?v=46">
  <link rel="stylesheet" href="global-v46.css?v=1">
 </head>
@@ -24,6 +24,10 @@
 </form>
 <div class="account-actions"><button class="account-btn secondary" id="account-mode-toggle" type="button">Уже є акаунт? Увійти</button><button class="account-btn secondary" id="account-signout" type="button" hidden>Вийти</button></div>
 <div class="account-profile" id="account-profile" hidden><div class="account-avatar">K</div><div><strong id="account-email"></strong><small id="account-userid"></small></div></div>
+<div class="account-tiktok-panel" id="account-tiktok-panel" hidden><div class="account-tiktok-title"><span aria-hidden="true">♪</span><div><h3>Прив’язка TikTok</h3><p>Додай посилання на свій профіль, щоб інші гравці могли знайти тебе зі стрічки кліпів.</p></div></div>
+<form id="account-tiktok-form" class="account-tiktok-form"><label for="account-tiktok-url">TikTok username або посилання<input id="account-tiktok-url" name="tiktok" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="@твій_нік або https://www.tiktok.com/@твій_нік"></label>
+<div class="account-actions"><button class="account-btn" id="account-tiktok-save" type="submit">Зберегти профіль TikTok</button><button class="account-btn secondary" id="account-tiktok-remove" type="button">Відв’язати</button></div></form>
+<p class="account-tiktok-status" id="account-tiktok-status" role="status" aria-live="polite">Посилання ще не додано.</p><a id="account-tiktok-open" class="account-tiktok-open" href="#" target="_blank" rel="noopener noreferrer" hidden>Відкрити мій TikTok ↗</a></div>
 <div class="account-actions"><button class="account-btn" id="account-sync" type="button" disabled>☁ Синхронізувати прогрес</button></div>
 <div class="account-panel" style="margin-top:16px;padding:16px;background:#0b0e12"><h2>📦 Перенесення без хмари</h2><p class="account-muted">Поки хмарний сервер не налаштований, експортуй прогрес у файл на одному пристрої, перенеси файл на інший і імпортуй його тут.</p><div class="account-actions"><button class="account-btn secondary" id="account-export" type="button">Експортувати прогрес</button><button class="account-btn secondary" id="account-import-trigger" type="button">Імпортувати файл</button><input id="account-import-file" type="file" accept="application/json,.json" hidden></div><div class="account-note">Файл містить лише ігрові дані сайту з префіксом khkozak:. Не передавай його стороннім — у ньому можуть бути твої внутрішні ігрові результати.</div></div>
 <div class="account-status" id="account-status" role="status" aria-live="polite">Перевіряємо налаштування акаунта…</div>
@@ -41,7 +45,7 @@
 <script src="supabase-config.js?v=1"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="cloud-sync.js?v=1"></script>
-<script src="account.js?v=2"></script>
+<script src="account.js?v=3"></script>
 <script src="community.js?v=2"></script>
 <script src="navigation-v5.js?v=46"></script>
  <script src="global-v46.js?v=1" defer></script>
