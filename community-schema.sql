@@ -40,7 +40,7 @@ grant usage, select on sequence public.kozak_friend_requests_id_seq to authentic
 
 create or replace function public.kozak_protect_friend_request()
 returns trigger language plpgsql security invoker set search_path = public
-as $
+as $$
 begin
  if auth.uid() is distinct from old.addressee
     or new.requester is distinct from old.requester
