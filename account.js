@@ -38,10 +38,11 @@
       return;
     }
     profile.hidden = false;
-    form.hidden = true;
+    form.hidden = !user.is_anonymous;
     signOut.hidden = false;
-    $('account-email').textContent = user.email || 'Гравець KH么Kozak';
-    $('account-userid').textContent = 'ID гравця: ' + user.id;
+    $('account-email').textContent = user.email || (user.is_anonymous ? 'Гостьовий профіль KH么Kozak' : 'Гравець KH么Kozak');
+    $('account-userid').textContent = 'ID гравця: ' + user.id + (user.is_anonymous ? ' · гість — прив’яжи email, щоб зберегти доступ' : '');
+    if (user.is_anonymous) { showMode('signup'); show('Гостьовий профіль уже створено автоматично. Додай email і пароль, щоб перетворити його на постійний акаунт.'); }
     syncButton.disabled = false;
   }
   async function refreshSession() {
@@ -59,6 +60,7 @@
     const sync = window.KozakCloudSync;
     if (sync && sync.enabled && sync.client) {
       client = sync.client;
+      client.auth.onAuthStateChange((event) => { if (['SIGNED_IN','SIGNED_OUT','USER_UPDATED','TOKEN_REFRESHED'].includes(event)) setTimeout(() => refreshSession(), 0); });
       return refreshSession();
     }
     show('Хмарний акаунт ще не налаштовано. Спершу потрібно додати URL і publishable/anon key у supabase-config.js та виконати account-schema.sql у Supabase.', 'warning');
@@ -75,15 +77,22 @@
     show(mode === 'signup' ? 'Створюємо акаунт…' : 'Входимо…');
     try {
       if (mode === 'signup') {
-        const { data, error } = await client.auth.signUp({
-          email, password,
-          options: { emailRedirectTo: window.location.origin + window.location.pathname }
-        });
+        const { data: sessionData } = await client.auth.getSession();
+        const currentUser = sessionData?.session?.user;
+        let data, error;
+        if (currentUser?.is_anonymous) {
+          ({ data, error } = await client.auth.updateUser({ email, password, data: { nickname: localStorage.getItem('khkozak:community-nickname') || 'Гравець' } }));
+        } else {
+          ({ data, error } = await client.auth.signUp({
+            email, password,
+            options: { emailRedirectTo: window.location.origin + window.location.pathname }
+          }));
+        }
         if (error) throw error;
         if (data.session) {
           showUser(data.user);
           const result = window.KozakCloudSync ? await window.KozakCloudSync.syncNow() : null;
-          show(result && result.ok ? 'Акаунт створено. Прогрес збережено у хмарі!' : 'Акаунт створено. Якщо ввімкнене підтвердження пошти, перевір лист і підтверди адресу.', 'success');
+          show(result && result.ok ? 'Постійний акаунт готовий. Твій гостьовий прогрес збережено у хмарі!' : 'Дані акаунта оновлено. Якщо Supabase попросить підтвердити пошту, перевір лист.', 'success');
         } else {
           show('Майже готово! Перевір пошту та підтверди акаунт, потім увійди на цьому сайті.', 'success');
         }
