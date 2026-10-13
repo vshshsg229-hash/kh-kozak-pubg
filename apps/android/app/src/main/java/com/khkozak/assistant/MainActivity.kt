@@ -35,7 +35,7 @@ class MainActivity : Activity() {
     private val panel = Color.rgb(22, 26, 43)
     private val muted = Color.rgb(160, 170, 192)
     private val white = Color.rgb(246, 248, 255)
-    private val lime = Color.rgb(255, 199, 55)
+    private val lime = Color.rgb(167, 122, 255)
     private val purple = Color.rgb(143, 110, 255)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +74,7 @@ class MainActivity : Activity() {
             setPadding(dp(12), 0, 0, 0)
         }
         brand.addView(text("KH么KOZAK", 18f, white, true))
-        brand.addView(text("PERSONAL ASSISTANT", 10f, muted, true).apply { letterSpacing = 0.12f })
+        brand.addView(text("GAMING HUB · UPDATE 4.6", 10f, muted, true).apply { letterSpacing = 0.12f })
         top.addView(logo)
         top.addView(brand, LinearLayout.LayoutParams(0, -2, 1f))
         val livePill = text("● READY", 11f, lime, true).apply {
@@ -104,6 +104,10 @@ class MainActivity : Activity() {
         val openHub = actionButton("🌐  Відкрити KH么Kozak Gaming Hub", Color.rgb(48, 38, 26), lime)
         openHub.setOnClickListener { openWebPage("https://vshshsg229-hash.github.io/kh-kozak-pubg/", "KH么Kozak Gaming Hub") }
         content.addView(openHub, LinearLayout.LayoutParams(-1, dp(50)))
+        addGap(content, 10)
+        val openCommunity = actionButton("🌐  Глобальна спільнота · 4.6", Color.rgb(36, 27, 57), Color.rgb(191, 160, 255))
+        openCommunity.setOnClickListener { openWebPage("https://vshshsg229-hash.github.io/kh-kozak-pubg/community.html", "KH么Kozak Global Community") }
+        content.addView(openCommunity, LinearLayout.LayoutParams(-1, dp(50)))
         addGap(content, 20)
 
         content.addView(sectionTitle("НАПИШИ ПОМІЧНИКУ", "01"))
