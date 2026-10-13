@@ -18,6 +18,7 @@ export default {
  async fetch(request, env) {
   const origin = request.headers.get('Origin') || '';
   const allowedOrigin = env.ALLOWED_ORIGIN || '';
+  const isNativeRequest = !origin; // Android companion requests do not send a browser Origin header.
   const corsOrigin = allowedOrigin && origin === allowedOrigin ? origin : 'null';
   const headers = {
    'Access-Control-Allow-Origin': corsOrigin,
@@ -29,7 +30,7 @@ export default {
   if (!allowedOrigin) return Response.json({error:'Set the ALLOWED_ORIGIN variable to your exact GitHub Pages origin before using this Worker'}, {status:503,headers});
   if (request.method === 'OPTIONS') return new Response(null, {status: 204, headers});
   if (request.method !== 'POST') return Response.json({error:'Use POST'}, {status:405,headers});
-  if (corsOrigin === 'null') return Response.json({error:'Origin not allowed'}, {status:403,headers});
+  if (corsOrigin === 'null' && !isNativeRequest) return Response.json({error:'Origin not allowed'}, {status:403,headers});
   if (!env.OPENAI_API_KEY) return Response.json({error:'Server AI key is not configured'}, {status:503,headers});
   let body;
   try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'}, {status:400,headers}); }
