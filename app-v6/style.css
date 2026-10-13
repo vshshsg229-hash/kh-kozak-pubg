@@ -55,7 +55,7 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .reward-card{background:linear-gradient(160deg,#24271e,#171a15)}
 .reward-card.rarity-legendary{background:linear-gradient(155deg,#3b321c,#1b1d16);border-color:#8c6e2c}
 .profile-cover{background:linear-gradient(130deg,#4d4a2a,#272d22 55%,#151a15)}
-.mobile-nav{grid-template-columns:repeat(7,minmax(0,1fr));background:#171b14f5;border-top-color:#414632}
+.mobile-nav{grid-template-columns:repeat(8,minmax(0,1fr));background:#171b14f5;border-top-color:#414632}
 .mobile-nav button{font-size:8px;white-space:nowrap}
 .mobile-nav button span{font-size:17px}
 .mobile-nav button.active{color:#f2c449}
