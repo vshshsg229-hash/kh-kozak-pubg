@@ -10,14 +10,15 @@ Open Supabase Dashboard → SQL Editor and run the complete current `supabase/sc
 
 In Supabase Dashboard → Edge Functions → `hub-api` → Secrets (or project secrets), set:
 
-- `SUPABASE_URL` — the project URL.
-- `SUPABASE_ANON_KEY` — the public anon/publishable key used by the function's auth client.
-- `SUPABASE_SERVICE_ROLE_KEY` — server-only service role key; never place this in the website.
+Supabase provides `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` to Edge Functions by default. Do not place the service-role key in the website.
+
+Set these custom function secrets:
+
 - `TELEGRAM_BOT_TOKEN` — token from @BotFather; keep it secret.
 - `TELEGRAM_WEBHOOK_SECRET` — a random 32+ character string using only A–Z, a–z, 0–9, underscore or hyphen.
 - `ADMIN_USER_IDS` — comma-separated Supabase Auth user UUIDs allowed into the admin panel. This is **not** a Telegram username or email.
 
-Redeploy the `hub-api` Edge Function after updating the code/secrets.
+Redeploy the `hub-api` Edge Function after updating the code/secrets. A manual GitHub Actions workflow is available at **Actions → Deploy Supabase Hub API**. Before using it, add repository Actions secrets `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` in GitHub Settings → Secrets and variables → Actions, then run the workflow with its confirmation checkbox enabled. Apply the SQL schema first; the workflow only deploys the Edge Function.
 
 ## 3. Register Telegram webhook
 
