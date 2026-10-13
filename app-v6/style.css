@@ -782,3 +782,92 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .timing-track i{position:absolute;top:-2px;left:0;width:5px;height:28px;background:#fff;box-shadow:0 0 10px #fff;z-index:2}
 .timing-track b{position:absolute;top:0;left:50%;width:34%;height:100%;transform:translateX(-50%);border-left:1px solid #fff9;border-right:1px solid #fff9;background:#67ffbd22}
 @media(max-width:900px){.arcade-play{padding:10px;min-height:190px}.arcade-option{font-size:11px;min-height:40px}.arcade-tile .tile-visual{min-height:86px}.arcade-tile .tile-content{padding:10px}}
+
+/* KH KOZAK DESKTOP COMMAND CENTER 8.24.0 */
+@media(min-width:1200px){
+ :root{--sidebar:252px;--bg:#070b14;--panel:#0e1625;--panel2:#121d30;--line:#24324b;--yellow:#ffd23f;--yellow2:#fff09a;--blue:#00e5ff;--green:#a3ff4b}
+ body{background:radial-gradient(ellipse at 76% 0%,#162449 0,transparent 34%),radial-gradient(ellipse at 35% 72%,#101b37 0,transparent 38%),#070b14}
+ .sidebar{background:linear-gradient(180deg,#080e1c 0%,#0a1020 72%,#080c16 100%);border-right:1px solid #273657;box-shadow:12px 0 40px #0005;padding:28px 15px 20px}
+ .brand{padding-bottom:30px;border-bottom:1px solid #202c45;margin-bottom:23px}
+ .brand-mark{background:linear-gradient(135deg,#ffe45c,#ff9e26);box-shadow:0 0 22px #ffd23f33}
+ .brand b{font-size:19px;letter-spacing:1.4px}
+ .brand small{font-size:10px;color:#93a7c6}
+ .nav{gap:7px}
+ .nav-item{position:relative;border:1px solid transparent;border-radius:9px;padding:13px 12px;color:#a6b5d1;font-size:12px;letter-spacing:.1px}
+ .nav-item>span{color:#93a9d1;font-size:20px}
+ .nav-item:hover{background:#101e35;border-color:#263e63;color:#fff;box-shadow:inset 3px 0 #00e5ff}
+ .nav-item.active{background:linear-gradient(90deg,#34280d,#131d30 86%);border-color:#5b4a21;color:#ffe16a;box-shadow:inset 3px 0 #ffd23f,0 0 20px #ffd23f0a}
+ .nav-item.active>span{color:#ffe16a}
+ .nav-item em{background:#152843;color:#00e5ff;border:1px solid #284a6c}
+ .side-bottom{border-color:#23324c;color:#a4b5d3}
+ .main{padding:0 clamp(28px,3vw,58px);max-width:1900px;margin-left:var(--sidebar)}
+ .topbar{height:88px;border-color:#22304a;margin-bottom:30px}
+ .season{font-size:11px;color:#a4b5d3}
+ .season b{color:#ffd23f}
+ .season-line{background:linear-gradient(90deg,#ffd23f,#00e5ff);width:60px}
+ .season small{color:#7086a9}
+ .top-actions{gap:20px}
+ .language-control,.currency{background:#0d1729;border:1px solid #243652;border-radius:8px;padding:8px 10px}
+ .currency .coin{color:#ffd23f}.currency small{color:#7d92b7}
+ .avatar-mini{border-color:#00e5ff;background:#0c1b30;box-shadow:0 0 14px #00e5ff18}
+ .view{animation:khDesktopIn .24s ease-out}
+ .hero{min-height:350px;border:1px solid #344567;border-radius:15px;overflow:hidden;background:linear-gradient(105deg,#101a2d 0%,#111b2c 44%,#161d30 100%);box-shadow:0 18px 55px #0004}
+ .hero:after{background:linear-gradient(90deg,#080d18 0%,#0b1324eF 37%,#0a102355 72%,#070b1455 100%)}
+ .hero-copy{padding:clamp(30px,3.3vw,54px)}
+ .hero h1{font-size:clamp(44px,4.4vw,72px);line-height:.94;letter-spacing:-1px}
+ .hero h1 strong{color:#ffd23f;text-shadow:0 0 26px #ffd23f24}
+ .hero p{max-width:560px;color:#aebdd7;font-size:14px;line-height:1.8}
+ .hero-art{opacity:.94;filter:saturate(1.25) contrast(1.06)}
+ .btn-yellow{background:linear-gradient(110deg,#ffe66a,#ffb82f);color:#15120a;border:1px solid #ffe989;box-shadow:0 0 22px #ffd23f28;font-weight:900}
+ .btn-yellow:hover{filter:brightness(1.08);box-shadow:0 0 28px #ffd23f55;transform:translateY(-1px)}
+ .btn-ghost{border-color:#34496c;background:#0c1628aa;color:#dbe9ff}
+ .btn-ghost:hover{border-color:#00e5ff;background:#10253a}
+ .welcome-row{margin-top:34px}
+ .welcome-row h2,.section-heading h2{font-size:clamp(22px,2vw,30px);letter-spacing:-.5px}
+ .stats-grid{gap:16px}
+ .stat-card,.panel{background:linear-gradient(145deg,#101a2b,#0b1220);border:1px solid #273957;border-radius:12px;box-shadow:0 10px 28px #0002}
+ .stat-card{padding:21px;min-height:150px;position:relative;overflow:hidden}
+ .stat-card:after{content:"";position:absolute;right:-28px;top:-38px;width:100px;height:100px;border:1px solid #314969;border-radius:50%;box-shadow:0 0 0 14px #1a2a420c,0 0 0 29px #1a2a4208;pointer-events:none}
+ .stat-card b{font-size:31px;color:#f2f7ff}
+ .stat-card span{color:#91a8cc}
+ .stat-icon.gold{color:#ffd23f}.stat-icon.blue{color:#00e5ff}
+ .daily-drop{border-color:#3b3d45;background:linear-gradient(110deg,#141c2c,#0d1728 66%,#18213a);border-radius:13px;padding:23px 27px}
+ .drop-art{filter:drop-shadow(0 0 22px #ffd23f2c)}
+ .drop-copy h2{font-size:25px}
+ .drop-copy p{color:#9eb0ce}
+ .quick-link{background:linear-gradient(135deg,#101b2e,#0c1322);border:1px solid #293b5a;border-radius:10px;padding:18px}
+ .quick-link:hover{border-color:#00e5ff;transform:translateY(-2px);box-shadow:0 12px 26px #0003}
+ .quick-link>b{color:#00e5ff}
+ .feature-grid{gap:16px}
+ .feature-card{min-height:220px;border:1px solid #2b3d5d;border-radius:12px;background-color:#0d1729}
+ .feature-card:hover{border-color:#00e5ff;box-shadow:0 0 28px #00e5ff12,0 14px 35px #0003;transform:translateY(-3px)}
+ .feature-card h3{font-size:23px}
+ .feature-bottom{color:#ffe16a}
+ .games-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+ .game-tile{background:linear-gradient(155deg,#101a2c,#0b1220);border:1px solid #293b5a;border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+ .game-tile:hover{transform:translateY(-4px);border-color:#00e5ff;box-shadow:0 14px 35px #0004,0 0 20px #00e5ff0c}
+ .tile-visual{min-height:126px;background-color:#121e34;border-bottom:1px solid #273957}
+ .tile-visual span{filter:drop-shadow(0 0 12px #00e5ff33)}
+ .tile-content{padding:17px}
+ .tile-content h3{font-size:18px;color:#f3f7ff}
+ .tile-content p{min-height:50px;color:#9eafca;line-height:1.6}
+ .tile-meta{color:#00e5ff}
+ .tile-reward{color:#ffd23f;border-top:1px solid #25334c;padding-top:11px}
+ .tile-reward span{color:#8ba9d4}
+ .full{width:100%}
+ .mission-card,.mission-row{background:#0e192b;border:1px solid #283b59;border-radius:10px}
+ .mission-card:hover,.mission-row:hover{border-color:#455c83}
+ .footer{border-color:#24324b;color:#7185a8}
+ .toast{border:1px solid #00e5ff;background:#0d192b;box-shadow:0 0 28px #00e5ff19}
+}
+@media(min-width:1500px){
+ .main{padding-left:54px;padding-right:54px}
+ .hero{min-height:390px}
+ .hero h1{font-size:74px}
+ .games-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+@media(min-width:901px) and (max-width:1199px){
+ .games-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .hero h1{font-size:clamp(38px,4vw,54px)}
+}
+@keyframes khDesktopIn{from{opacity:.78;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
