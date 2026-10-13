@@ -157,28 +157,32 @@
     try {
       if (mode === 'signup') {
         const { data: sessionData } = await client.auth.getSession();
-        const currentUser = sessionData?.session?.user;
-        let data, error;
-        const upgradingGuest = Boolean(currentUser?.is_anonymous);
-        if (upgradingGuest) {
-          ({ data, error } = await client.auth.updateUser({ email, password, data: { nickname: localStorage.getItem('khkozak:community-nickname') || 'Гравець' } }));
-        } else {
-          ({ data, error } = await client.auth.signUp({
-            email, password,
-            options: { emailRedirectTo: window.location.origin + window.location.pathname }
-          }));
+        const wasGuest = Boolean(sessionData?.session?.user?.is_anonymous);
+        // A guest session can interfere with ordinary signUp and email/password linking
+        // requires extra Supabase identity-linking configuration. Keep local progress,
+        // sign out the temporary guest, and use the standard email signup flow instead.
+        if (wasGuest) {
+          const { error: signOutError } = await client.auth.signOut();
+          if (signOutError) throw signOutError;
         }
-        if (error) throw error;
-        if (upgradingGuest) {
+        const { data, error } = await client.auth.signUp({
+          email, password,
+          options: {
+            emailRedirectTo: window.location.origin + window.location.pathname,
+            data: { nickname: localStorage.getItem('khkozak:community-nickname') || 'Гравець' }
+          }
+        });
+        if (error) {
+          // Restore guest access if signup fails; local progress remains on this device.
+          if (wasGuest) await client.auth.signInAnonymously().catch(() => {});
+          throw error;
+        }
+        if (data.session) {
           showUser(data.user);
           const result = window.KozakCloudSync ? await window.KozakCloudSync.syncNow() : null;
-          show(result && result.ok ? 'Гостьовий профіль став постійним, прогрес збережено у хмарі!' : 'Дані профілю оновлено. Якщо Supabase попросить підтвердити пошту, перевір лист.', 'success');
-        } else if (data.session) {
-          showUser(data.user);
-          const result = window.KozakCloudSync ? await window.KozakCloudSync.syncNow() : null;
-          show(result && result.ok ? 'Акаунт створено, прогрес збережено у хмарі!' : 'Акаунт створено. Якщо потрібно, підтверди пошту.', 'success');
+          show(result && result.ok ? 'Акаунт створено, прогрес збережено у хмарі!' : 'Акаунт створено успішно!', 'success');
         } else {
-          show('Майже готово! Перевір пошту та підтверди акаунт, потім увійди на цьому сайті.', 'success');
+          show('Акаунт майже готовий! Перевір пошту та підтверди адресу. Після підтвердження увійди тут — локальний прогрес залишиться на пристрої.', 'success');
         }
       } else {
         const { error } = await client.auth.signInWithPassword({ email, password });
