@@ -1,0 +1,16 @@
+{
+  "name": "khkozak-battle-hub-api",
+  "version": "7.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Optional backend for KH么Kozak Battle Hub AI assistant and Telegram bot",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
