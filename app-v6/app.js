@@ -447,7 +447,7 @@ progressFile?.addEventListener('change',async()=>{
  finally{progressFile.value=''}
 });
 window.addEventListener('kh100-finished',e=>{const d=e.detail||{};finishGame('aim',Math.max(10,Number(d.coins)||10),Math.max(15,Number(d.points)||15),Math.max(20,Number(d.xp)||20));});
-window.addEventListener('kh3d-finished',e=>{const d=e.detail||{};finishGame('arena',Math.max(20,Number(d.coins)||20),Math.max(30,Number(d.points)||30),Math.max(25,Number(d.xp)||25));});
+window.addEventListener('kh3d-finished',e=>{const d=e.detail||{};finishGame('arena',Math.max(20,Number(d.coins)||20),Math.max(30,Number(d.points)||30),Math.max(25,Number(d.xp)||25));const status=document.querySelector('#kh3dStatus');if(status)status.textContent='Запит на нарахування нагороди надіслано. Перевір баланс у профілі.';});
 render();
 loadTelegramStatus();refreshAdminData();
 })();
