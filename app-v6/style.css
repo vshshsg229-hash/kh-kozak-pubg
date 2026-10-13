@@ -204,3 +204,15 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .online-player span:last-child{color:var(--muted,#aab3c0);font-size:.82rem}
 .online-empty{margin:0;padding:12px;color:var(--muted,#aab3c0);font-size:.9rem}
 @media(max-width:560px){.online-player{grid-template-columns:32px minmax(0,1fr);gap:8px}.online-player span:last-child{grid-column:2}.online-auth-actions{display:grid;grid-template-columns:1fr}.online-auth-actions .btn{width:100%}}
+
+/* Language switcher */
+.language-control{display:flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;color:var(--yellow);background:#11161c;font-size:12px}
+.language-control select{max-width:112px;background:transparent;border:0;outline:0;color:var(--text);font:700 11px Inter,Arial,sans-serif;cursor:pointer}
+.language-control option{background:#141920;color:#f4f5f6}
+.progress-backup{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.025)}
+.progress-backup>b{font-size:11px;letter-spacing:.7px;color:var(--yellow)}
+.progress-backup p{font-size:12px;line-height:1.5;color:var(--muted)}
+.backup-actions{display:flex;gap:8px;flex-wrap:wrap}
+.backup-actions .btn{flex:1;min-width:130px}
+#backupMessage{display:block;margin-top:9px;color:var(--green);font-size:11px}
+@media(max-width:560px){.topbar{gap:8px}.top-actions{gap:6px}.language-control{padding:5px}.language-control select{max-width:85px}.currency small{display:none}}
