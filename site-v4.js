@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const links=[['index.html','⌂ Головна'],['music.html','♫ Музика'],['minigames.html','🎮 Мініігри'],['videos.html','▶ Відео'],['avatars.html','▧ Аватарки'],['locker.html','🛡 Магазин'],['battlehub.html','⚡ Battle Hub'],['assistant.html','🤖 KH Assistant']];
+const links=[['index.html','⌂ Головна'],['music.html','♫ Музика'],['minigames.html','🎮 Мініігри'],['videos.html','▶ Відео'],['avatars.html','▧ Аватарки'],['locker.html','🛡 Магазин'],['battlehub.html','⚡ Battle Hub'],['assistant.html','🤖 KH Assistant'],['account.html','👤 Мій акаунт']];
 const path=location.pathname.split('/').pop()||'index.html';
 const nav=document.querySelector('.site-header .nav');
 if(nav){nav.setAttribute('aria-label','Навігація KH Gaming Hub');nav.innerHTML=links.map(([href,label])=>'<a href="'+href+'"'+(path===href?' aria-current="page"':'')+'>'+label+'</a>').join('');}
@@ -30,5 +30,13 @@ document.querySelectorAll('.avatar-tile').forEach(tile=>{
   tile.appendChild(link);
  }
 });
-document.documentElement.dataset.siteVersion='4.0';
+
+// Load optional cloud sync on all 4.0 pages. It safely falls back to local-only mode until configured.
+if(!window.__kozakCloudLoaderStarted){
+ window.__kozakCloudLoaderStarted=true;
+ const loadScript=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=()=>next&&next();s.onerror=()=>{};document.head.appendChild(s);};
+ loadScript('supabase-config.js?v=1',()=>loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',()=>loadScript('cloud-sync.js?v=1')));
+}
+
+document.documentElement.dataset.siteVersion='4.1';
 })();
