@@ -1,5 +1,25 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const modal=$('#game-modal'), stage=$('#game-stage'), modalTitle=$('#modal-title');
+/* App tab navigation */
+const tabLinks=$('.app-nav [data-tab]');
+function activateTab(name,updateHash=true){
+ const valid=['home','profile','games','rewards','tiktok','music'];
+ if(!valid.includes(name))name='home';
+ $('.app-view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
+ tabLinks.forEach(a=>a.classList.toggle('active',a.dataset.tab===name));
+ if(updateHash){try{history.replaceState(null,'','#'+(name==='home'?'home':name))}catch(_){}}
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+tabLinks.forEach(a=>a.addEventListener('click',e=>{
+ if(!a.dataset.tab)return;
+ e.preventDefault();activateTab(a.dataset.tab);
+}));
+$('[data-tab]:not(.app-nav [data-tab])').forEach(a=>a.addEventListener('click',e=>{
+ const name=a.dataset.tab;if(!name)return;e.preventDefault();activateTab(name);
+}));
+const initialTab=(location.hash||'#home').slice(1);
+activateTab(initialTab,false);
+
 let gameCleanup=()=>{};
 const RECORDS_KEY='kh-kozak-records-v5';
 let records={memory:null,reaction:null,clicker:0,ttt:0,numbers:0,snake:0,aim:0,challenge:0,run:0,musicquiz:0,wheel:0,crates:0,code:0,dodge:0};
