@@ -18,23 +18,74 @@ function playYouTube(raw){
 youtubeForm?.addEventListener('submit',e=>{e.preventDefault();playYouTube(youtubeInput?.value||'')});
 const tiktokForm=$('#tiktokForm'),tiktokInput=$('#tiktokUrl'),tiktokEmbed=$('#tiktokEmbed'),tiktokMessage=$('#tiktokMessage');
 const PROFILE_URL='https://www.tiktok.com/@khkozak4';
+const tiktokSavedList=$('#tiktokSavedList');
+function safeTikTokUrl(raw){
+ let u;try{u=new URL((raw||'').trim())}catch{return null}
+ if(!/^https?:$/.test(u.protocol)||!/(^|\\.)tiktok\\.com$/i.test(u.hostname))return null;
+ return u;
+}
+function getTikTokVideoId(u){
+ const m=u.pathname.match(/\\/video\\/(\\d+)/);
+ return m?m[1]:'';
+}
+function getSavedTikTok(){
+ try{const a=JSON.parse(localStorage.getItem('khkozak_tiktok_videos')||'[]');return Array.isArray(a)?a.filter(x=>typeof x==='string'&&safeTikTokUrl(x)).slice(0,8):[]}catch{return []}
+}
+function renderSavedTikTok(){
+ if(!tiktokSavedList)return;
+ tiktokSavedList.innerHTML='';
+ const saved=getSavedTikTok();
+ if(!saved.length){const empty=document.createElement('div');empty.className='media-empty';empty.innerHTML='<span>♪</span><b>Тут будуть твої ролики</b><small>Встав посилання на відео вище — воно збережеться у цьому браузері.</small>';tiktokSavedList.append(empty);return}
+ saved.forEach((href,i)=>{
+  const u=safeTikTokUrl(href);if(!u)return;
+  const row=document.createElement('div');row.className='kh-playlist-track';
+  const n=document.createElement('span');n.className='music-track-number';n.textContent=String(i+1).padStart(2,'0');
+  const info=document.createElement('div');info.className='music-track-info';
+  const title=document.createElement('b');title.textContent=getTikTokVideoId(u)?'TikTok відео':'TikTok посилання';
+  const small=document.createElement('small');small.textContent=u.pathname.length>48?u.pathname.slice(0,45)+'…':u.pathname;
+  info.append(title,small);
+  const open=document.createElement('a');open.className='music-play-btn';open.href=u.href;open.target='_blank';open.rel='noopener noreferrer';open.textContent='▶ ВІДКРИТИ';
+  const remove=document.createElement('button');remove.type='button';remove.className='btn btn-ghost';remove.textContent='×';remove.setAttribute('aria-label','Видалити посилання');
+  remove.addEventListener('click',()=>{const next=getSavedTikTok().filter((x,j)=>j!==i);try{localStorage.setItem('khkozak_tiktok_videos',JSON.stringify(next))}catch{}renderSavedTikTok()});
+  row.append(n,info,open,remove);tiktokSavedList.append(row);
+ });
+}
+function saveTikTokUrl(url){
+ try{const old=getSavedTikTok().filter(x=>x!==url);localStorage.setItem('khkozak_tiktok_videos',JSON.stringify([url,...old].slice(0,8)))}catch{}
+ renderSavedTikTok();
+}
 function loadTikTok(raw){
- let u;try{u=new URL(raw.trim())}catch{u=null}
- if(!u||!/(^|\.)tiktok\.com$/i.test(u.hostname)){if(tiktokMessage)tiktokMessage.textContent='Встав повне посилання з TikTok, наприклад '+PROFILE_URL;return}
- const videoPart=u.pathname.split('/video/')[1]||'';
- const videoId=videoPart.split('/')[0].split('?')[0];
- if(videoId&&/^[0-9]+$/.test(videoId)){
-  if(tiktokEmbed)tiktokEmbed.innerHTML='<iframe title="TikTok video" src="https://www.tiktok.com/embed/v2/'+videoId+'" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe><p><a class="btn btn-ghost" href="'+u.href.replace(/&/g,'&amp;')+'" target="_self">Якщо відео не завантажилось — відкрити в TikTok ↗</a></p>';
-  if(tiktokMessage)tiktokMessage.textContent='Пробую показати ролик тут. Якщо TikTok блокує вбудований перегляд, натисни посилання під ним.';
+ const u=safeTikTokUrl(raw);
+ if(!u){if(tiktokMessage)tiktokMessage.textContent='Встав повне посилання TikTok, наприклад https://www.tiktok.com/@khkozak4/video/1234567890';return}
+ const videoId=getTikTokVideoId(u);
+ if(videoId){
+  if(tiktokEmbed){
+   tiktokEmbed.innerHTML='';
+   const iframe=document.createElement('iframe');iframe.title='TikTok video';iframe.src='https://www.tiktok.com/embed/v2/'+videoId;iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allow='encrypted-media; fullscreen; picture-in-picture';iframe.allowFullscreen=true;iframe.loading='lazy';
+   tiktokEmbed.append(iframe);
+   const fallback=document.createElement('p');fallback.className='tiktok-open-fallback';
+   const link=document.createElement('a');link.className='btn btn-yellow';link.href=u.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent='▶ ВІДКРИТИ ВІДЕО В TIKTOK';
+   fallback.append(link);tiktokEmbed.append(fallback);
+  }
+  if(tiktokMessage)tiktokMessage.textContent='Відео завантажується у вбудованому плеєрі. Якщо TikTok не показує ролик у браузері, кнопка нижче відкриє його безпосередньо в TikTok.';
  }else if(u.pathname.startsWith('/@')){
   const clean='https://www.tiktok.com'+u.pathname;
-  if(tiktokEmbed)tiktokEmbed.innerHTML='<div class="media-empty"><span>♪</span><b>Профіль @khkozak4</b><small>Профіль відкриється на TikTok</small><a class="btn btn-yellow" href="'+clean+'" target="_self" rel="noopener">ВІДКРИТИ ПРОФІЛЬ ↗</a></div>';
-  if(tiktokMessage)tiktokMessage.textContent='Натисни кнопку, щоб відкрити профіль у браузері або застосунку TikTok.';
- }else{if(tiktokMessage)tiktokMessage.textContent='Не вдалося визначити профіль або ролик. Перевір посилання.';return}
+  if(tiktokEmbed){
+   tiktokEmbed.innerHTML='';
+   const card=document.createElement('div');card.className='media-empty';card.innerHTML='<span>♪</span><b>Профіль @khkozak4</b><small>У TikTok профілі видно всі опубліковані ролики. Для вбудованого перегляду встав посилання на конкретне відео.</small>';
+   const link=document.createElement('a');link.className='btn btn-yellow';link.href=clean;link.target='_blank';link.rel='noopener noreferrer';link.textContent='ВІДКРИТИ ПРОФІЛЬ ↗';card.append(link);tiktokEmbed.append(card);
+  }
+  if(tiktokMessage)tiktokMessage.textContent='Посилання на профіль відкриває всі твої відео. Щоб показати окремий ролик прямо в хабі, скопіюй посилання саме на відео.';
+ }else{
+  if(tiktokEmbed){tiktokEmbed.innerHTML='';const card=document.createElement('div');card.className='media-empty';card.innerHTML='<span>↗</span><b>Коротке посилання TikTok</b><small>Браузер має спершу відкрити це посилання, щоб TikTok перенаправив на ролик.</small>';const link=document.createElement('a');link.className='btn btn-yellow';link.href=u.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent='ВІДКРИТИ ПОСИЛАННЯ ↗';card.append(link);tiktokEmbed.append(card)}
+  if(tiktokMessage)tiktokMessage.textContent='Це коротке посилання. Відкрий його кнопкою нижче; після переходу скопіюй повне посилання на відео, якщо хочеш вбудований перегляд.';
+ }
  try{localStorage.setItem('khkozak_tiktok_url',u.href)}catch{}
+ if(videoId)saveTikTokUrl(u.href);
 }
 tiktokForm?.addEventListener('submit',e=>{e.preventDefault();loadTikTok(tiktokInput?.value||'')});
-if(tiktokInput){tiktokInput.value=PROFILE_URL;loadTikTok(PROFILE_URL)}
+if(tiktokInput){let previous='';try{previous=localStorage.getItem('khkozak_tiktok_url')||''}catch{}tiktokInput.value=previous||PROFILE_URL;loadTikTok(tiktokInput.value)}
+renderSavedTikTok();
 try{if(youtubeInput)youtubeInput.value=localStorage.getItem('khkozak_youtube_url')||''}catch{}
 
 const musicSearch=$('#musicSearch'),musicCategory=$('#musicCategory'),musicList=$('#musicLibraryList'),musicCount=$('#musicCount'),musicStatus=$('#musicLibraryStatus'),musicMore=$('#musicLoadMore');
