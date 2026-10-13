@@ -190,7 +190,43 @@ class MainActivity : Activity() {
         content.addView(voicePanel)
         addGap(content, 20)
 
-        content.addView(sectionTitle("ДОСТУП ДО ФАЙЛІВ", "04"))
+        content.addView(sectionTitle("РОЗУМНІ ВІДПОВІДІ AI", "04"))
+        addGap(content, 10)
+        val aiPanel = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = rounded(panel, 22)
+            setPadding(dp(16), dp(14), dp(16), dp(14))
+        }
+        aiPanel.addView(text("Щоб помічник міг вільно відповідати на запитання як AI-чат і читати відповіді вголос, додай адресу свого захищеного AI-сервера. API-ключ має зберігатися тільки на сервері.", 13f, muted, false))
+        addGap(aiPanel, 10)
+        val aiEndpointInput = EditText(this).apply {
+            hint = "https://твій-worker.workers.dev/chat"
+            textSize = 13f
+            singleLine = true
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
+            setTextColor(white)
+            setHintTextColor(muted)
+            setPadding(dp(12), dp(12), dp(12), dp(12))
+            background = rounded(Color.rgb(12, 15, 28), 12)
+            setText(getSharedPreferences("kh_assistant_ai", MODE_PRIVATE).getString("endpoint", "") ?: "")
+        }
+        aiPanel.addView(aiEndpointInput, LinearLayout.LayoutParams(-1, dp(48)))
+        addGap(aiPanel, 8)
+        val saveAi = actionButton("💬  Зберегти AI-сервер", purple, white)
+        saveAi.setOnClickListener {
+            val endpoint = aiEndpointInput.text.toString().trim()
+            if (endpoint.isNotEmpty() && !endpoint.startsWith("https://")) {
+                Toast.makeText(this, "Адреса має починатися з https://", Toast.LENGTH_LONG).show()
+            } else {
+                getSharedPreferences("kh_assistant_ai", MODE_PRIVATE).edit().putString("endpoint", endpoint).apply()
+                Toast.makeText(this, if (endpoint.isBlank()) "AI-сервер вимкнено. Команди продовжать працювати." else "AI-сервер збережено. Вільні відповіді озвучуватимуться.", Toast.LENGTH_LONG).show()
+            }
+        }
+        aiPanel.addView(saveAi, LinearLayout.LayoutParams(-1, dp(48)))
+        content.addView(aiPanel)
+        addGap(content, 20)
+
+        content.addView(sectionTitle("ДОСТУП ДО ФАЙЛІВ", "05"))
         addGap(content, 10)
         val filePanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
