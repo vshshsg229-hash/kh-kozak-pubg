@@ -83,6 +83,11 @@ function Invoke-KHCommand([string]$Text) {
   if ($t -match 'екран|дисплей') { Start-Process "ms-settings:display"; return "Відкриваю налаштування екрана." }
   if ($t -match 'батарея|акумулятор|живлення') { Start-Process "ms-settings:powersleep"; return "Відкриваю параметри живлення." }
   if ($t -match 'налаштування') { Start-Process "ms-settings:"; return "Відкриваю налаштування Windows." }
+  if ($t -match 'сайт|gaming hub|головна сторінка|kh.?kozak') { Start-Process "https://vshshsg229-hash.github.io/kh-kozak-pubg/"; return "Відкриваю KH Kozak Gaming Hub." }
+  if ($t -match 'друзі|рейтинг|чат') { Start-Process "https://vshshsg229-hash.github.io/kh-kozak-pubg/community.html"; return "Відкриваю друзів, рейтинг і чат KH Kozak." }
+  if ($t -match 'мінігр|аркада|ігри сайту') { Start-Process "https://vshshsg229-hash.github.io/kh-kozak-pubg/minigames.html"; return "Відкриваю мініігри KH Kozak." }
+  if ($t -match 'музика|плейлист') { Start-Process "https://vshshsg229-hash.github.io/kh-kozak-pubg/music.html"; return "Відкриваю музичний розділ KH Kozak." }
+  if ($t -match 'акаунт|профіль гравця') { Start-Process "https://vshshsg229-hash.github.io/kh-kozak-pubg/account.html"; return "Відкриваю профіль і синхронізацію прогресу KH Kozak." }
   if ($t -match 'ютуб|youtube') { Start-Process "https://www.youtube.com"; return "Відкриваю YouTube." }
   if ($t -match 'гугл|google') { Start-Process "https://www.google.com"; return "Відкриваю Google." }
   if ($t -match 'телеграм|telegram') { Start-Process "https://t.me/tt_KH_Kozak"; return "Відкриваю Telegram." }
