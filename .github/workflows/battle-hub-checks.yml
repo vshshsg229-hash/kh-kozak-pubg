@@ -35,6 +35,7 @@ jobs:
         run: |
           node --check app-v6/app.js
           node --check app-v6/i18n.js
+          node --check app-v6/media.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
