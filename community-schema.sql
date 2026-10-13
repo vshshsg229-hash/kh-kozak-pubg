@@ -36,3 +36,23 @@ create policy "Players can send friend requests" on public.kozak_friend_requests
 drop policy if exists "Recipients can accept friend requests" on public.kozak_friend_requests;
 create policy "Recipients can accept friend requests" on public.kozak_friend_requests for update to authenticated using ((select auth.uid()) = addressee and status = 'pending') with check ((select auth.uid()) = addressee and status = 'accepted');
 grant select, insert, update on public.kozak_friend_requests to authenticated;
+grant usage, select on sequence public.kozak_friend_requests_id_seq to authenticated;
+
+create or replace function public.kozak_protect_friend_request()
+returns trigger language plpgsql security invoker set search_path = public
+as $
+begin
+ if auth.uid() is distinct from old.addressee
+    or new.requester is distinct from old.requester
+    or new.addressee is distinct from old.addressee
+    or old.status <> 'pending'
+    or new.status <> 'accepted' then
+   raise exception 'Only the recipient can accept a pending friend request.';
+ end if;
+ return new;
+end;
+$;
+drop trigger if exists kozak_friend_request_guard on public.kozak_friend_requests;
+create trigger kozak_friend_request_guard
+ before update on public.kozak_friend_requests
+ for each row execute function public.kozak_protect_friend_request();
