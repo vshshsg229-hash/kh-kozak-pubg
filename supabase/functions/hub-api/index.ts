@@ -313,7 +313,7 @@ Deno.serve(async (req: Request) => {
       if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_WEBHOOK_SECRET) {
         return response({ error: "Спочатку додай TELEGRAM_BOT_TOKEN і TELEGRAM_WEBHOOK_SECRET у secrets Supabase Edge Function." }, 503, origin);
       }
-      const webhookUrl = SUPABASE_URL.replace(/\\/$/, "") + "/functions/v1/hub-api/api/telegram/webhook";
+      const webhookUrl = SUPABASE_URL.replace(/\/$/, "") + "/functions/v1/hub-api/api/telegram/webhook";
       const result = await telegramCall("setWebhook", {
         url: webhookUrl,
         secret_token: TELEGRAM_WEBHOOK_SECRET,
