@@ -3,11 +3,11 @@ const links=[['index.html','⌂ Головна'],['music.html','♫ Музика
 const path=location.pathname.split('/').pop()||'index.html';
 const nav=document.querySelector('.site-header .nav');
 if(nav){nav.setAttribute('aria-label','Навігація KH Gaming Hub');nav.innerHTML=links.map(([href,label])=>'<a href="'+href+'"'+(path===href?' aria-current="page"':'')+'>'+label+'</a>').join('');}
-document.querySelectorAll('.v3-brand-badge').forEach(el=>el.textContent='4.0');
+document.querySelectorAll('.v3-brand-badge').forEach(el=>el.textContent='4.1');
 const brand=document.querySelector('.site-header .brand');
-if(brand&&!brand.querySelector('.v3-brand-badge')){const badge=document.createElement('span');badge.className='v3-brand-badge';badge.textContent='4.0';brand.appendChild(badge);}
+if(brand&&!brand.querySelector('.v3-brand-badge')){const badge=document.createElement('span');badge.className='v3-brand-badge';badge.textContent='4.1';brand.appendChild(badge);}
 const appBrand=document.querySelector('.kh-app-brand');
-if(appBrand){const small=appBrand.querySelector('small');if(small)small.textContent='GAMING HUB 4.0 · ГРА · МУЗИКА';}
+if(appBrand){const small=appBrand.querySelector('small');if(small)small.textContent='GAMING HUB 4.1 · ГРА · МУЗИКА';}
 const footer=document.querySelector('.footer');
 if(footer&&!footer.querySelector('.site-v4-footer-nav')){const navFooter=document.createElement('nav');navFooter.className='site-v4-footer-nav';navFooter.setAttribute('aria-label','Розділи сайту');navFooter.innerHTML=links.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join('');footer.appendChild(navFooter);}
 
@@ -31,7 +31,7 @@ document.querySelectorAll('.avatar-tile').forEach(tile=>{
  }
 });
 
-// Load optional cloud sync on all 4.0 pages. It safely falls back to local-only mode until configured.
+// Load optional cloud sync on all 4.1 pages. It safely falls back to local-only mode until configured.
 if(!window.__kozakCloudLoaderStarted){
  window.__kozakCloudLoaderStarted=true;
  const loadScript=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=()=>next&&next();s.onerror=()=>{};document.head.appendChild(s);};
