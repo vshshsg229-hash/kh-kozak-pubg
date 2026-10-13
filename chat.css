@@ -1,0 +1,19 @@
+/* KH么Kozak private friend chat */
+.community-chat{position:relative;overflow:hidden}
+.community-chat:before{content:"";position:absolute;right:-80px;top:-100px;width:230px;height:230px;border-radius:50%;background:rgba(155,109,255,.08);filter:blur(24px);pointer-events:none}
+.chat-toolbar{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:end;margin:18px 0 12px}
+.chat-toolbar label{grid-column:1/-1;font-size:.8rem;font-weight:800;color:#c7aaff}
+.chat-toolbar select,.chat-form textarea{width:100%;min-width:0;border:1px solid rgba(180,145,255,.24);border-radius:13px;padding:12px 13px;background:#0b0a13;color:#f6f1ff;font:inherit;outline:none}
+.chat-toolbar select:focus,.chat-form textarea:focus{border-color:#9b6dff;box-shadow:0 0 0 3px rgba(155,109,255,.14)}
+.chat-toolbar select:disabled,.chat-form textarea:disabled{opacity:.6;cursor:not-allowed}
+.chat-messages{display:flex;flex-direction:column;gap:9px;min-height:180px;max-height:420px;overflow:auto;padding:14px;border:1px solid rgba(180,145,255,.15);border-radius:17px;background:linear-gradient(180deg,rgba(155,109,255,.035),rgba(255,255,255,.015));scroll-behavior:smooth}
+.chat-bubble{max-width:min(84%,620px);padding:10px 12px;border:1px solid rgba(180,145,255,.16);border-radius:15px 15px 15px 5px;background:#171522;color:#f4efff;overflow-wrap:anywhere;white-space:pre-wrap;align-self:flex-start}
+.chat-bubble.is-mine{align-self:flex-end;border-color:rgba(155,109,255,.35);border-radius:15px 15px 5px 15px;background:linear-gradient(145deg,rgba(112,74,187,.36),rgba(44,28,72,.72))}
+.chat-bubble p{margin:0;font-size:.9rem;line-height:1.55}
+.chat-bubble time{display:block;margin-top:6px;font-size:.66rem;color:#a8a0bd;text-align:right}
+.chat-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:9px;margin-top:12px}
+.chat-form textarea{resize:vertical;min-height:48px;max-height:160px}
+.chat-form .btn{min-height:48px}
+.community-chat .community-note{position:relative}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:520px){.chat-toolbar{grid-template-columns:1fr}.chat-toolbar label{grid-column:auto}.chat-toolbar .btn{width:100%}.chat-form{grid-template-columns:1fr}.chat-form .btn{width:100%}.chat-messages{padding:10px;max-height:48dvh}.chat-bubble{max-width:92%}}
