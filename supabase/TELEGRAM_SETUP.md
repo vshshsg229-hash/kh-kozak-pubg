@@ -4,7 +4,7 @@ The Telegram code is implemented in `supabase/functions/hub-api/index.ts`. It wi
 
 ## 1. Apply the database changes
 
-Open Supabase Dashboard → SQL Editor and run the complete current `supabase/schema.sql` file. It creates the Telegram link-code/link tables and the atomic daily reward function. Re-running it is intended to be safe.
+Open Supabase Dashboard → SQL Editor and run the complete current `supabase/schema.sql` file. It creates Telegram linking and daily-reward tables, the server-authoritative shop catalog/inventory, persistent achievements, and the purchase/equipment RPCs. Re-running it is intended to be safe.
 
 ## 2. Configure Edge Function secrets
 
@@ -18,7 +18,7 @@ Set these custom function secrets:
 - `TELEGRAM_WEBHOOK_SECRET` — a random 32+ character string using only A–Z, a–z, 0–9, underscore or hyphen.
 - `ADMIN_USER_IDS` — comma-separated Supabase Auth user UUIDs allowed into the admin panel. This is **not** a Telegram username or email.
 
-Redeploy the `hub-api` Edge Function after updating the code/secrets. A manual GitHub Actions workflow is available at **Actions → Deploy Supabase Hub API**. Before using it, add repository Actions secrets `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` in GitHub Settings → Secrets and variables → Actions, then run the workflow with its confirmation checkbox enabled. Apply the SQL schema first; the workflow only deploys the Edge Function.
+Redeploy the `hub-api` Edge Function after updating the code/secrets. A manual GitHub Actions workflow is available at **Actions → Deploy Supabase Hub API**. Before using it, add repository Actions secrets `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` (this project's ref is `xacqretciujzrcqjvvgz`) in GitHub Settings → Secrets and variables → Actions, then run the workflow with its confirmation checkbox enabled. Apply the SQL schema first; the workflow only deploys the Edge Function.
 
 ## 3. Register Telegram webhook
 
