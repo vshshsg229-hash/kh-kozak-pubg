@@ -28,6 +28,8 @@ class WakeWordService : Service(), RecognitionListener {
     private val handler = Handler(Looper.getMainLooper())
     private var recognizer: SpeechRecognizer? = null
     private var textToSpeech: TextToSpeech? = null
+    private var ttsReady = false
+    private var pendingSpeech: String? = null
     private var armed = false
     private var running = false
 
@@ -37,6 +39,11 @@ class WakeWordService : Service(), RecognitionListener {
         textToSpeech = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 textToSpeech?.language = Locale("uk", "UA")
+                ttsReady = true
+                pendingSpeech?.let { message ->
+                    textToSpeech?.speak(message, TextToSpeech.QUEUE_FLUSH, null, "kh_assistant_reply")
+                    pendingSpeech = null
+                }
             }
         }
         val openApp = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -297,9 +304,15 @@ class WakeWordService : Service(), RecognitionListener {
         } catch (_: Exception) {
             speakOrShow("Не вдалося відкрити: $label.")
         }
-    }    private fun speakOrShow(message: String) {
+    }
+
+    private fun speakOrShow(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        textToSpeech?.speak(message, TextToSpeech.QUEUE_FLUSH, null, "kh_assistant_reply")
+        if (ttsReady) {
+            textToSpeech?.speak(message, TextToSpeech.QUEUE_FLUSH, null, "kh_assistant_reply")
+        } else {
+            pendingSpeech = message
+        }
     }
 
     private fun launchPackage(packageName: String, label: String): Boolean {
