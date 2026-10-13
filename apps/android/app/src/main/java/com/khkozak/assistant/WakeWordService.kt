@@ -60,17 +60,35 @@ class WakeWordService : Service(), RecognitionListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == "STOP") { stopSelf(); return START_NOT_STICKY }
-        if (!running) {
-            if (!SpeechRecognizer.isRecognitionAvailable(this)) {
-                Toast.makeText(this, "На пристрої немає служби розпізнавання мовлення.", Toast.LENGTH_LONG).show()
-                stopSelf()
-                return START_NOT_STICKY
+        if (intent?.action == "TEXT_COMMAND") {
+            val typedCommand = intent.getStringExtra("command").orEmpty().trim()
+            if (typedCommand.isNotBlank()) {
+                recognizer?.cancel()
+                runCommand(typedCommand)
+                val isStopCommand = typedCommand.contains("вимкни слухання", ignoreCase = true) ||
+                    typedCommand.contains("зупини слухання", ignoreCase = true) ||
+                    typedCommand.contains("вимкни помічника", ignoreCase = true)
+                if (!isStopCommand) {
+                    if (!running) startVoiceRecognition()
+                    else handler.postDelayed({ startRecognition() }, 700)
+                }
             }
-            running = true
-            recognizer = SpeechRecognizer.createSpeechRecognizer(this).also { it.setRecognitionListener(this) }
-            startRecognition()
+            return START_STICKY
         }
+        startVoiceRecognition()
         return START_STICKY
+    }
+
+    private fun startVoiceRecognition() {
+        if (running) return
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Toast.makeText(this, "На пристрої немає служби розпізнавання мовлення.", Toast.LENGTH_LONG).show()
+            stopSelf()
+            return
+        }
+        running = true
+        recognizer = SpeechRecognizer.createSpeechRecognizer(this).also { it.setRecognitionListener(this) }
+        startRecognition()
     }
 
     private fun createChannel() {
