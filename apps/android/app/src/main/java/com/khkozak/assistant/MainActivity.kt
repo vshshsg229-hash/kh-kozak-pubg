@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +19,7 @@ class MainActivity : Activity() {
     private val requestCode = 1402
     private val filePickerRequestCode = 1403
     private lateinit var fileStatus: TextView
+    private lateinit var commandInput: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,25 @@ class MainActivity : Activity() {
             text = "Запустити слухання"
             setOnClickListener { ensurePermissionsAndStart() }
         }
+        val commandLabel = TextView(this).apply {
+            text = "Або напиши команду помічнику:"
+            textSize = 16f
+            setTextColor(0xFFF3F6FC.toInt())
+            gravity = Gravity.CENTER
+            setPadding(0, 18, 0, 6)
+        }
+        commandInput = EditText(this).apply {
+            hint = "Наприклад: відкрий калькулятор"
+            textSize = 16f
+            setSingleLine(true)
+            setTextColor(0xFFF3F6FC.toInt())
+            setHintTextColor(0xFF9AA4B2.toInt())
+            setPadding(16, 10, 16, 10)
+        }
+        val sendCommand = Button(this).apply {
+            text = "Надіслати команду"
+            setOnClickListener { sendTypedCommand() }
+        }
         val stop = Button(this).apply {
             text = "Зупинити слухання"
             setOnClickListener { stopService(Intent(this@MainActivity, WakeWordService::class.java)) }
@@ -62,11 +83,34 @@ class MainActivity : Activity() {
         root.addView(title)
         root.addView(desc)
         root.addView(start)
+        root.addView(commandLabel)
+        root.addView(commandInput)
+        root.addView(sendCommand)
         root.addView(stop)
         root.addView(chooseFile)
         root.addView(fileStatus)
         setContentView(root)
         restoreSelectedFile()
+    }
+
+    private fun sendTypedCommand() {
+        val command = commandInput.text.toString().trim()
+        if (command.isBlank()) {
+            Toast.makeText(this, "Спочатку напиши команду.", Toast.LENGTH_SHORT).show()
+            commandInput.requestFocus()
+            return
+        }
+        val intent = Intent(this, WakeWordService::class.java).apply {
+            action = "TEXT_COMMAND"
+            putExtra("command", command)
+        }
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(intent) else startService(intent)
+            Toast.makeText(this, "Команду надіслано: $command", Toast.LENGTH_SHORT).show()
+            commandInput.text.clear()
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не вдалося надіслати команду. Спробуй запустити помічника ще раз.", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun chooseFileForAccess() {
