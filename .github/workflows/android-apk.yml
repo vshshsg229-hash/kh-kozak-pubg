@@ -1,0 +1,61 @@
+name: Build Android APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app-v6/**'
+      - 'android-wrapper/**'
+      - '.github/workflows/android-apk.yml'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Package the current web app into Android assets
+        run: |
+          mkdir -p android-wrapper/app/src/main/assets/www
+          cp -R app-v6/. android-wrapper/app/src/main/assets/www/
+      - name: Build installable debug APK
+        working-directory: android-wrapper
+        run: gradle --no-daemon assembleDebug
+      - name: Prepare download name
+        run: cp android-wrapper/app/build/outputs/apk/debug/app-debug.apk KH-Kozak-Battle-Hub.apk
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KH-Kozak-Battle-Hub-APK
+          path: KH-Kozak-Battle-Hub.apk
+          retention-days: 30
+      - name: Publish APK release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-build-${{ github.run_number }}
+          name: KH么Kozak Battle Hub Android build ${{ github.run_number }}
+          body: |
+            Installable Android debug APK built automatically from the current KH么Kozak Battle Hub web app.
+            The app stores local progress on this device. Online server features are not required for local mini-games.
+          files: KH-Kozak-Battle-Hub.apk
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
