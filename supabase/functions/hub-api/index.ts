@@ -123,12 +123,17 @@ async function telegramWebhook(req: Request, origin: string | null) {
         if (!pending) {
           await telegramSend(chat.id, "Код не знайдено або він прострочений. Створи новий код на сайті.");
         } else {
+          const { data: claimedCode, error: claimError } = await admin.from("hub_telegram_link_codes").delete().eq("user_id", pending.user_id).eq("code_hash", codeHash).gt("expires_at", new Date().toISOString()).select("user_id").maybeSingle();
+          if (claimError) throw claimError;
+          if (!claimedCode) {
+            await telegramSend(chat.id, "Цей код уже використано або він прострочений. Створи новий код на сайті.");
+            return response({ ok: true }, 200, origin);
+          }
           const { error: linkError } = await admin.from("hub_telegram_links").upsert({
             user_id: pending.user_id, telegram_user_id: from.id, chat_id: chat.id,
             username: typeof from.username === "string" ? from.username.slice(0, 64) : null, linked_at: new Date().toISOString(),
           }, { onConflict: "user_id" });
           if (linkError) throw linkError;
-          await admin.from("hub_telegram_link_codes").delete().eq("user_id", pending.user_id);
           await telegramSend(chat.id, "Готово! Telegram прив’язано до твого KH么Kozak акаунта. Тепер працюють /profile, /daily і /top.");
           await notifyTelegram(pending.user_id, "🔗 Telegram успішно прив’язано до твого акаунта KH么Kozak Battle Hub.");
         }
