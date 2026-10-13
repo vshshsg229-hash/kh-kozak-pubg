@@ -120,6 +120,45 @@
       if (!event.detail.signedIn && profile.hidden) show(event.detail.message, event.detail.enabled ? '' : 'warning');
     }
   });
+
+  // Portable local save: only export/import KH Kozak game keys, never auth/session values.
+  const saveKeyAllowed = key => typeof key === 'string' && /^khkozak:[a-z0-9:_-]+$/i.test(key) && !/(auth|session|token|secret|api.?key|endpoint|assistant.?chat|ai.?chat|conversation)/i.test(key);
+  $('account-export').addEventListener('click', () => {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (saveKeyAllowed(key)) data[key] = localStorage.getItem(key);
+    }
+    const blob = new Blob([JSON.stringify({format:'khkozak-save',version:1,exportedAt:new Date().toISOString(),data},null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'khkozak-progress-' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    show('Файл прогресу створено. Перенеси його на інший пристрій, а потім імпортуй тут.', 'success');
+  });
+  $('account-import-trigger').addEventListener('click', () => $('account-import-file').click());
+  $('account-import-file').addEventListener('change', async event => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    try {
+      if (file.size > 2 * 1024 * 1024) throw new Error('Файл завеликий (максимум 2 МБ).');
+      const payload = JSON.parse(await file.text());
+      if (!payload || payload.format !== 'khkozak-save' || payload.version !== 1 || !payload.data || typeof payload.data !== 'object' || Array.isArray(payload.data)) throw new Error('Це не файл збереження KH么Kozak.');
+      const entries = Object.entries(payload.data).filter(([key,value]) => saveKeyAllowed(key) && typeof value === 'string');
+      if (!entries.length) throw new Error('У файлі немає сумісного ігрового прогресу.');
+      if (!window.confirm('Імпортувати ' + entries.length + ' записів? Існуючі значення з такими самими ключами будуть замінені.')) return;
+      entries.forEach(([key,value]) => localStorage.setItem(key,value));
+      show('Імпортовано ' + entries.length + ' записів. Оновлюємо сторінку, щоб завантажити прогрес…', 'success');
+      setTimeout(() => window.location.reload(), 500);
+    } catch (error) {
+      show(error && error.message ? error.message : 'Не вдалося імпортувати файл.', 'error');
+    } finally {
+      event.target.value = '';
+    }
+  });
+
   showMode('signup');
   waitForClient();
 })();
