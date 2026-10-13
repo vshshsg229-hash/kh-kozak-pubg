@@ -21,6 +21,8 @@ try{
  if(!data.session){const signed=await client.auth.signInAnonymously();if(signed.error)throw signed.error;data={session:signed.data.session};}
  const user=data.session?.user;if(!user)throw new Error('Не вдалося створити профіль гравця.');
  window.KozakCommunity.user=user;
+ // Start cross-device progress sync only after Supabase config, SDK and guest session are ready.
+ try { await loadScript('cloud-sync.js?v=1',()=>!!window.KozakCloudSync); if(window.KozakCloudSync?.syncNow) window.KozakCloudSync.syncNow().catch(()=>{}); } catch (_) { /* The shared community remains usable if optional progress sync is unavailable. */ }
  const authStatus=$('community-auth-status');
  if(authStatus){authStatus.textContent=user.is_anonymous?'Гостьовий профіль активний ✓ · Прив’яжи email в акаунті, щоб не втратити доступ.':'Ти увійшов у свій акаунт ✓';authStatus.dataset.state='success';}
  const savedNickname=localStorage.getItem('khkozak:community-nickname')||user.user_metadata?.nickname||('Kozak-'+user.id.slice(0,5));
