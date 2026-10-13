@@ -93,7 +93,7 @@ jobs:
             assert(threeD.includes(control), '3D control/reward hook exists: ' + control);
           }
           assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
-for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
+          for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
           assert(html.includes('games-3d.js?v=1.0.6'), 'HTML loads current 3D engine version with ammo update');
 
           console.log(`Passed ${checks.length} Battle Hub static checks.`);
