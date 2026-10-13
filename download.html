@@ -9,6 +9,7 @@
 <style>
 .khd-downloads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0 34px}.khd-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:22px;border:1px solid #ffffff18;border-radius:20px;background:linear-gradient(150deg,#171923,#0c0e14);min-width:0}.khd-card .emoji{font-size:2rem}.khd-card h2{font-size:1.25rem;margin:0}.khd-card p{color:#a0a9b7;font-size:.92rem;line-height:1.6;margin:0;flex:1}.khd-card .btn{display:inline-flex;justify-content:center;align-items:center;text-align:center;width:100%;text-decoration:none;min-height:46px}.khd-note{max-width:880px;padding:18px 20px;border:1px solid #d6ff5730;border-radius:16px;background:#d6ff5708;color:#c9d0dd;line-height:1.7;margin:18px 0}.khd-note strong{color:#d6ff57}.khd-steps{max-width:880px;padding-left:22px;color:#a0a9b7;line-height:1.8}.khd-install{display:none}.khd-install.ready{display:inline-flex}@media(max-width:800px){.khd-downloads{grid-template-columns:1fr}.khd-card{padding:18px}}
 </style>
+<link rel="stylesheet" href="navigation-v5.css?v=1">
 </head>
 <body><a class="skip-link" href="#main">До вмісту</a>
 <header class="site-header"><div class="wrap header-inner"><a class="brand" href="index.html"><span class="brand-mark">K</span>KH么Kozak</a><nav class="nav" aria-label="Навігація"><a href="index.html">Головна</a><a href="assistant.html">Помічник</a><a href="minigames.html">Мініігри</a><a href="community.html">🏆 Рейтинг і друзі</a></nav><div class="header-tools"><button class="icon-btn" id="theme-toggle" type="button" aria-label="Перемкнути тему">☀</button></div></div></header>
@@ -29,4 +30,5 @@
 (()=>{let promptEvent=null;const install=document.getElementById('install-app'),hint=document.getElementById('install-hint');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;install.classList.add('ready');hint.textContent='Цей браузер дозволяє встановити вебзастосунок на пристрій.'});install.addEventListener('click',async()=>{if(!promptEvent){hint.textContent='Відкрий меню браузера й обери «Встановити застосунок» або «Додати на головний екран».';return}promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;install.classList.remove('ready')});if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));})();
 </script>
 <script src="community.js?v=2"></script>
+<script src="navigation-v5.js?v=1"></script>
 </body></html>
