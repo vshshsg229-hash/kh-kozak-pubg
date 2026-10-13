@@ -37,7 +37,11 @@ function safeUser(row: any) {
   return {
     id: String(row.id), username: row.username, coins: row.coins,
     points: row.points, xp: row.xp, played: row.played,
-    games: row.games ?? {}, inventory: row.inventory ?? [], achievements: row.achievements ?? [], createdAt: row.created_at,
+    games: row.games ?? {}, inventory: row.inventory ?? [], achievements: row.achievements ?? [],
+    equipped_title: row.equipped_title ?? null, equipped_frame: row.equipped_frame ?? null,
+    equipped_avatar: row.equipped_avatar ?? null, equipped_theme: row.equipped_theme ?? null,
+    equipped_badge: row.equipped_badge ?? null, equipped_banner: row.equipped_banner ?? null,
+    createdAt: row.created_at,
   };
 }
 function validEmail(value: unknown): value is string {
@@ -219,6 +223,21 @@ Deno.serve(async (req: Request) => {
     }
 
 
+
+    if (req.method === "POST" && path === "/api/shop/equip") {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в онлайн-акаунт, щоб синхронізувати екіпірування." }, 401, origin);
+      const body = await req.json().catch(() => ({}));
+      const itemId = typeof body.itemId === "string" ? body.itemId.trim().slice(0, 64) : "";
+      if (!/^[a-z0-9_]+$/.test(itemId)) return response({ error: "Некоректний ідентифікатор предмета." }, 400, origin);
+      const { data: equipped, error } = await admin.rpc("hub_equip_item", { p_user_id: user.id, p_item_id: itemId });
+      if (error) throw error;
+      const equipMessages: Record<string, string> = { profile_not_found: "Профіль не знайдено.", item_not_equipable: "Цей предмет не можна екіпірувати.", not_owned: "Спочатку придбай цей предмет у магазині." };
+      if (equipped?.error) return response({ error: equipMessages[equipped.error] ?? "Не вдалося екіпірувати предмет." }, 400, origin);
+      const snapshot = await getUserSnapshot(user.id);
+      return response({ user: safeUser(snapshot), itemId, equipped: true }, 200, origin);
+    }
+
     if (req.method === "POST" && path === "/api/shop/purchase") {
       const user = await getUser(req);
       if (!user) return response({ error: "Увійди в онлайн-акаунт, щоб купувати нагороди на сервері." }, 401, origin);
@@ -320,7 +339,7 @@ Deno.serve(async (req: Request) => {
       if (error || !data.session || !data.user) return response({ error: "Неправильна пошта/пароль або пошта ще не підтверджена." }, 401, origin);
       const profile = await getProfile(data.user.id);
       if (!profile) return response({ error: "Профіль не створився. Перевір SQL-тригер у Supabase." }, 500, origin);
-      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 200, origin);
+      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(await getUserSnapshot(data.user.id)) }, 200, origin);
     }
 
     if (req.method === "GET" && path === "/api/auth/me") {
