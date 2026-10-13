@@ -1,8 +1,8 @@
 /* KH么Kozak Gaming Hub 4.1
- * Paste ONLY your Supabase project URL and publishable/anon key here.
- * Never put a service_role key or any private secret in this public file.
+ * Public client configuration. Only use a publishable/anon key here.
+ * Never put a service_role/secret key in this public file.
  */
 window.KOZAK_SUPABASE_CONFIG = {
-  url: "",
+  url: "https://xacqretciujzrcqjvvgz.supabase.co",
   anonKey: ""
 };
