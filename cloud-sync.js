@@ -37,8 +37,7 @@
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (!isProgressKey(key)) continue;
-      try { result[key] = JSON.parse(localStorage.getItem(key)); }
-      catch (_) { result[key] = localStorage.getItem(key); }
+      result[key] = localStorage.getItem(key);
     }
     return result;
   }
@@ -46,7 +45,7 @@
     if (!data || typeof data !== 'object' || Array.isArray(data)) return;
     Object.entries(data).forEach(([key, value]) => {
       if (!isProgressKey(key)) return;
-      try { localStorage.setItem(key, JSON.stringify(value)); }
+      try { localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value)); }
       catch (_) { /* Keep the current page usable if storage is full. */ }
     });
   }
