@@ -24,7 +24,7 @@
 <section class="khd-note"><strong>🖥️ Як установити на ПК</strong><ol class="khd-steps"><li>Відкрий цю сторінку в Chrome або Edge через HTTPS.</li><li>Натисни «Встановити застосунок», якщо кнопка доступна, або знайди пункт встановлення в меню браузера.</li><li>Для Windows-компаньйона окремо завантаж скрипт та прочитай інструкцію. Не запускай скрипти, якщо не довіряєш джерелу.</li></ol></section>
 </main>
 <footer class="wrap footer"><span>© 2026 <strong>KH么Kozak</strong> · KH Assistant</span><a href="assistant.html">До помічника ↗</a></footer>
-<script src="script.js"></script><script src="site-i18n.js"></script><script src="site-v4.js?v=8"></script>
+<script src="script.js"></script><script src="site-i18n.js"></script><script src="site-v4.js?v=9"></script>
 <script>
 (()=>{let promptEvent=null;const install=document.getElementById('install-app'),hint=document.getElementById('install-hint');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;install.classList.add('ready');hint.textContent='Цей браузер дозволяє встановити вебзастосунок на пристрій.'});install.addEventListener('click',async()=>{if(!promptEvent){hint.textContent='Відкрий меню браузера й обери «Встановити застосунок» або «Додати на головний екран».';return}promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;install.classList.remove('ready')});if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));})();
 </script>
