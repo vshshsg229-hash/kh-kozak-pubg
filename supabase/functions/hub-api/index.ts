@@ -193,9 +193,23 @@ Deno.serve(async (req: Request) => {
   const path = new URL(req.url).pathname.split("/hub-api").pop() || "/";
   try {
     if (req.method === "GET" && path === "/api/health") {
-      const { error } = await admin.from("hub_profiles").select("id").limit(1);
-      if (error) return response({ ok: false, database: "unavailable", error: "Перевір таблиці Supabase: SQL schema ще не застосована." }, 503, origin);
-      return response({ ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.0.0" }, 200, origin);
+      const checks = await Promise.all([
+        admin.from("hub_profiles").select("id").limit(1),
+        admin.from("hub_telegram_links").select("user_id").limit(1),
+        admin.from("hub_telegram_link_codes").select("user_id").limit(1),
+        admin.from("hub_telegram_daily_claims").select("user_id").limit(1),
+        admin.from("hub_shop_catalog").select("item_id").limit(1),
+        admin.from("hub_inventory").select("item_id").limit(1),
+        admin.from("hub_daily_shop_purchases").select("item_id").limit(1),
+        admin.from("hub_achievements").select("achievement_id").limit(1),
+      ]);
+      if (checks.some((result) => result.error)) {
+        return response({ ok: false, database: "unavailable", error: "Потрібна актуальна схема: запусти повний supabase/schema.sql, щоб увімкнути Telegram, магазин та досягнення." }, 503, origin);
+      }
+      return response({
+        ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.1.0",
+        features: { telegramConfigured: Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_WEBHOOK_SECRET), serverShop: true, serverAchievements: true, adminConfigured: ADMIN_USER_IDS.size > 0 },
+      }, 200, origin);
     }
 
     if (req.method === "POST" && path === "/api/telegram/webhook") return await telegramWebhook(req, origin);
