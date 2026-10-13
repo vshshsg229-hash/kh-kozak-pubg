@@ -103,3 +103,21 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .mode-result.result-win{border-color:#9a853e;background:radial-gradient(circle at 50% 0,#b79c3024,transparent 50%),#141a17}
 .result-emblem{font-size:42px;margin-bottom:10px}.result-kicker{font-size:9px;letter-spacing:2px;color:#d6b94e;font-weight:900}.mode-result h3{font-size:24px;margin:9px 0}.mode-result p{font-size:12px;line-height:1.6;color:#b6c0b4;max-width:420px;margin:0 auto 16px}.result-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.result-stats span{padding:10px 4px;border:1px solid #343e32;border-radius:5px;font-size:8px;letter-spacing:.8px;color:#a8b29f}.result-stats b{display:block;font-size:17px;color:#f4f5f0;margin-top:5px}
 @media(max-width:680px){.classic-scene{height:132px}.result-stats{gap:4px}.result-stats span{font-size:7px}.result-stats b{font-size:15px}}
+
+/* 2D playable Classic + Metro controls */
+.game2d-wrap{display:flex;flex-direction:column;gap:10px;width:100%;min-width:0}
+.game2d-hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.game2d-hud span{background:#151c20;border:1px solid #35413d;border-radius:9px;padding:10px 8px;color:#cbd8d0;font-size:12px;text-align:center}
+.game2d-hud b{color:#fff;font-size:14px}
+.game2d-canvas{display:block;width:100%;height:auto;aspect-ratio:900/520;border:1px solid #43574b;border-radius:12px;background:#243b2c;touch-action:none}
+.game2d-hint{font-size:12px;color:#aab7b0;line-height:1.5}
+.game2d-controls{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px;background:#11171a;border:1px solid #2e3b35;border-radius:13px}
+.game2d-dpad{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.game2d-dpad>div{display:flex;gap:5px}
+.game2d-controls button{touch-action:none;user-select:none;-webkit-user-select:none;min-width:48px;min-height:46px;border:1px solid #49584e;border-radius:11px;background:#252f2a;color:#fff;font-size:19px;font-weight:800;box-shadow:inset 0 -3px 0 rgba(0,0,0,.22)}
+.game2d-controls button:active{background:#506b53;transform:scale(.96)}
+.game2d-actions{display:flex;gap:7px;align-items:center}
+.game2d-actions button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:6px;min-width:65px;font-size:20px}
+.game2d-actions button small{font-size:9px;letter-spacing:.4px;white-space:nowrap}
+.game2d-actions .g2-fire{background:#70412e;border-color:#a66c4d}
+@media(max-width:520px){.game2d-hud{gap:4px}.game2d-hud span{padding:8px 3px;font-size:10px}.game2d-hud b{font-size:12px}.game2d-controls{gap:8px;padding:8px}.game2d-controls button{min-width:40px;min-height:42px}.game2d-actions{gap:4px}.game2d-actions button{min-width:51px;padding:5px 3px;font-size:17px}.game2d-actions button small{font-size:8px}.game2d-hint{font-size:11px}}
