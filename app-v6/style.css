@@ -376,3 +376,53 @@ body{background:linear-gradient(145deg,#fffafd,#f8f0f8);color:var(--text)}
 .assistant-connect{background:#fff;border-color:#f0dfe8;border-radius:16px}.assistant-connect-row input{background:#fff8fb;color:#302632;border-color:#ead6e1;border-radius:12px}#assistantConnectionStatus{color:#8b7886}
 @media(max-width:900px){.sidebar{width:100%;height:76px;inset:auto 0 0;padding:7px 8px calc(7px + env(safe-area-inset-bottom));border-top:1px solid #ead8e3;border-right:0;background:#fffafd;box-shadow:0 -8px 24px #8b557014}.brand,.side-label,.side-bottom{display:none}.sidebar .nav{height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;align-items:center}.sidebar .nav-item{display:none;min-width:0;padding:7px 2px;border-radius:12px;flex-direction:column;justify-content:center;gap:3px;font-size:10px;line-height:1.2;text-align:center;white-space:normal}.sidebar .nav-item>span{font-size:19px;width:auto}.sidebar .nav-item[data-tab="home"],.sidebar .nav-item[data-tab="games"],.sidebar .nav-item[data-tab="missions"],.sidebar .nav-item[data-tab="profile"]{display:flex}.sidebar .nav-item.active{background:#f8e5ee;color:#a64f76}.sidebar .nav-item em{display:none}.main{margin-left:0;padding:0 15px 96px}.topbar{height:64px;margin-bottom:17px}.season{display:none}.mobile-brand{display:block;border:0;background:transparent;font-weight:900;font-size:16px;color:#312733}.mobile-brand span{color:#c86f93}.top-actions{gap:10px}.currency{gap:5px}.currency small{display:none}.language-control{max-width:95px;font-size:12px}.language-control select{max-width:72px}.hero{grid-template-columns:1fr;min-height:300px;border-radius:22px}.hero-copy{padding:25px 21px 20px}.hero h1{font-size:45px;margin:17px 0 12px}.hero-copy>p{max-width:270px}.hero-art{position:absolute;right:0;top:0;width:43%;height:100%;min-height:0;opacity:.5;border-radius:0 22px 22px 0}.hero:before{background:linear-gradient(90deg,#f8e8effa 0%,#f8e8eff0 53%,#f8e8ef40 100%)}.hero-actions{max-width:290px}.hero-foot{font-size:7px;gap:10px}.welcome-row,.section-heading{align-items:flex-start;margin-top:23px}.welcome-row h2,.section-heading h2{font-size:17px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat-card{padding:15px}.daily-drop{display:grid;grid-template-columns:55px 1fr;padding:16px;gap:12px}.drop-art{width:55px;height:55px}.drop-copy{min-width:0}.drop-copy h2{font-size:18px}.drop-claim{grid-column:1/-1;width:100%}.drop-rewards{flex-wrap:wrap;gap:5px}.drop-rewards span{font-size:10px}.quick-links{grid-template-columns:1fr;gap:8px}.feature-grid,.games-grid{grid-template-columns:1fr}.feature-card{min-height:200px}.bottom-panels{grid-template-columns:1fr}.page-heading h1{font-size:34px}.topbar .avatar-mini{width:32px;height:32px}.language-control{padding:5px 7px;background:#fff;border:1px solid #ead8e3;border-radius:10px}}
 @media(min-width:901px){.main{max-width:1600px}.hero{border-radius:24px}.feature-card,.game-tile{transition:transform .2s,box-shadow .2s}.feature-card:hover,.game-tile:hover{transform:translateY(-3px);box-shadow:0 14px 28px #98647b12}}
+
+/* KH KOZAK esports redesign inspired by approved concept */
+:root{--bg:#080b10;--panel:#0d131c;--panel2:#121b26;--line:#263341;--text:#f3f5f8;--muted:#9aa7b7;--yellow:#ffc928;--yellow2:#ffdf72;--green:#8be34b;--blue:#52b8ff;--orange:#ff884d;--sidebar:240px}
+body{background:radial-gradient(ellipse at 65% 0%,#202a36 0,transparent 42%),#080b10;color:var(--text)}
+.app-shell{background:transparent}
+.sidebar{background:linear-gradient(180deg,#0b111a,#080c12);border-color:#263341;box-shadow:8px 0 30px #0006}
+.brand-mark{background:linear-gradient(145deg,#ffe36a,#f6a900);color:#12161d;clip-path:none;border-radius:8px;box-shadow:0 0 20px #ffc92822}
+.brand b{letter-spacing:.8px}.brand small i,.side-label,.eyebrow,.season b{color:#ffc928}
+.nav-item{color:#a9b4c3;border-radius:9px;border:1px solid transparent}
+.nav-item:hover{background:#19232e;color:#fff}.nav-item.active{background:linear-gradient(90deg,#ffc928,#ffb900);color:#15191f;box-shadow:0 7px 22px #ffc92825;font-weight:900}
+.nav-item.active em{background:#191d23;color:#ffcf39}.nav-item em{background:#202a36;color:#aeb9c7}
+.side-bottom{border-color:#263341;color:#93a1b1}.online-dot{box-shadow:0 0 12px #8be34b}
+.main{background:transparent}.topbar{border-color:#263341}.season-line{background:#33404e}.currency .coin{color:#ffc928}
+.avatar-mini{clip-path:none;border-radius:50%;background:#1a2532;color:#ffd13a;border-color:#ffc928}
+.hero{border:1px solid #374454;border-radius:15px;background:#111a25;box-shadow:0 18px 50px #0005;overflow:hidden}
+.hero:before{background:linear-gradient(90deg,#0b121cee 0%,#0c141ce0 43%,#0c141c40 100%)}
+.hero-grid{background-image:linear-gradient(#ffc9280b 1px,transparent 1px),linear-gradient(90deg,#ffc9280b 1px,transparent 1px)}
+.hero-copy>p{color:#c1cad5}.hero h1,.page-heading h1{font-family:Inter,system-ui,sans-serif;letter-spacing:-1.8px;font-weight:950}.hero h1 strong{color:#ffc928}
+.hero-art{border-radius:0 14px 14px 0;background:linear-gradient(145deg,#9a6334,#39404b 48%,#111a23)}
+.sun{background:#ffb82e66;box-shadow:0 0 90px #ffb82e55}.mountain{background:#39434f}.m2{background:#242e3b}
+.helmet{background:linear-gradient(120deg,#65717e,#1c2732);border-bottom-color:#10161d}.head{background:linear-gradient(90deg,#8c6551,#c39a76,#604d43)}.body{background:linear-gradient(90deg,#26313b,#59616a 45%,#202a34)}.gun{background:#161c23}.gun:after{background:#161c23}
+.art-stamp{color:#fff}.art-stamp b{color:#ffc928}
+.btn{border-radius:8px;letter-spacing:.45px;font-weight:850}.btn-yellow{background:linear-gradient(120deg,#ffdb43,#ffb900);color:#15191f;box-shadow:0 5px 18px #ffc92820}.btn-yellow:hover{background:#ffe36a}.btn-ghost{border-color:#3a4654;background:#111923;color:#e5ebf2}.btn-ghost:hover{border-color:#ffc928;color:#ffc928}
+.stat-card,.panel,.game-tile,.feature-card,.daily-drop,.quick-link{border-color:#263341;background:linear-gradient(150deg,#121b26,#0c121a);box-shadow:0 10px 28px #0003;border-radius:13px}
+.stat-card{padding:21px}.stat-icon{border-radius:9px}.stat-icon.gold,.stat-icon.blue,.stat-icon.green,.stat-icon.orange{background:#29291f;color:#ffc928}
+.xp-bar{background:#25303c;border-radius:99px;overflow:hidden}.xp-bar i{background:linear-gradient(90deg,#ffb900,#ffe16a)}
+.daily-drop{background:linear-gradient(110deg,#191c20,#111923)}.drop-art{background:linear-gradient(145deg,#49351b,#242c35);border-radius:12px;color:#ffc928}.drop-rewards span{background:#202833;border-radius:6px;color:#ffd14b}.streak-note{color:#9eacbc}
+.quick-link{border-radius:11px}.quick-link>b{background:#242b32;color:#ffc928;border-radius:8px}.feature-card{color:var(--text)}.feature-card:before{opacity:.15}.feature-tag,.feature-bottom{color:#c1cad5}.feature-symbol,.target-art{color:#ffc928}
+.panel-head{border-color:#263341}.mission-row,.mission-item,.daily-mission-card{border-color:#263341}.page-heading p,.tile-content p{color:#9aa7b7}
+.tile-visual{border-radius:11px;background:linear-gradient(145deg,#253442,#111923);color:#ffc928}.social-link{border-color:#263341;border-radius:10px}
+.assistant-connect{background:#0e151e;border-color:#2a3745;border-radius:12px}.assistant-connect-row input{background:#080d13;color:#f3f5f8;border-color:#334150;border-radius:8px}#assistantConnectionStatus{color:#9aa7b7}
+.profile-cover{background:linear-gradient(110deg,#1e2936,#332719,#111923)}.profile-card,.rank-panel,.edit-panel,.profile-progression,.profile-stat{border-color:#263341;background:#101720}
+input,textarea,select{color-scheme:dark}
+@media(max-width:900px){
+.sidebar{width:100%;height:76px;inset:auto 0 0;padding:7px 8px calc(7px + env(safe-area-inset-bottom));border-top:1px solid #263341;border-right:0;background:#080d14f5;backdrop-filter:blur(18px);box-shadow:0 -8px 24px #0008}
+.brand,.side-label,.side-bottom{display:none}.sidebar .nav{height:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;align-items:center}
+.sidebar .nav-item{display:none;min-width:0;padding:7px 2px;border-radius:9px;flex-direction:column;justify-content:center;gap:3px;font-size:10px;line-height:1.2;text-align:center;white-space:normal}
+.sidebar .nav-item>span{font-size:19px;width:auto}
+.sidebar .nav-item[data-tab="home"],.sidebar .nav-item[data-tab="games"],.sidebar .nav-item[data-tab="missions"],.sidebar .nav-item[data-tab="rewards"],.sidebar .nav-item[data-tab="profile"]{display:flex}
+.sidebar .nav-item.active{background:#ffc928;color:#15191f}.sidebar .nav-item em{display:none}
+.main{margin-left:0;padding:0 13px 98px}.topbar{height:62px;margin-bottom:15px}.season{display:none}.mobile-brand{display:block;border:0;background:transparent;font-weight:950;font-size:16px;color:#fff}.mobile-brand span{color:#ffc928}
+.top-actions{gap:8px}.currency{gap:5px}.currency small{display:none}.language-control{max-width:90px;font-size:11px}.language-control select{max-width:67px}
+.hero{grid-template-columns:1fr;min-height:320px;border-radius:13px}.hero-copy{padding:24px 18px 20px}.hero h1{font-size:43px;margin:17px 0 12px}.hero-copy>p{max-width:250px}.hero-art{position:absolute;right:0;top:0;width:52%;height:100%;min-height:0;opacity:.52;border-radius:0 13px 13px 0}
+.hero:before{background:linear-gradient(90deg,#0b121cf8 0%,#0b121ced 48%,#0b121c40 100%)}.hero-actions{max-width:290px;gap:8px}.hero-foot{font-size:7px;gap:10px}
+.welcome-row,.section-heading{align-items:flex-start;margin-top:23px}.welcome-row h2,.section-heading h2{font-size:17px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat-card{padding:14px}
+.daily-drop{display:grid;grid-template-columns:54px 1fr;padding:14px;gap:12px}.drop-art{width:54px;height:54px}.drop-copy{min-width:0}.drop-copy h2{font-size:17px}.drop-claim{grid-column:1/-1;width:100%}.drop-rewards{flex-wrap:wrap;gap:5px}.drop-rewards span{font-size:10px}
+.quick-links{grid-template-columns:1fr;gap:8px}.feature-grid,.games-grid{grid-template-columns:1fr}.feature-card{min-height:190px}.bottom-panels{grid-template-columns:1fr}.page-heading h1{font-size:33px}.topbar .avatar-mini{width:32px;height:32px}
+.language-control{padding:5px 7px;background:#101720;border:1px solid #263341;border-radius:8px}
+}
+@media(min-width:901px){.main{max-width:1600px}.hero{border-radius:15px}.feature-card,.game-tile{transition:transform .2s,border-color .2s,box-shadow .2s}.feature-card:hover,.game-tile:hover{transform:translateY(-3px);border-color:#806b32;box-shadow:0 16px 32px #0005}}
