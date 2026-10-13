@@ -871,3 +871,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
  .hero h1{font-size:clamp(38px,4vw,54px)}
 }
 @keyframes khDesktopIn{from{opacity:.78;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Featured game-mode launch panel */
+.mode-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 24px}
+.mode-shortcut{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;padding:16px;border:1px solid #35414b;border-radius:10px;background:linear-gradient(145deg,#18212a,#0d1319);color:#f5f6f7;cursor:pointer;transition:transform .18s ease,border-color .18s ease}
+.mode-shortcut:hover,.mode-shortcut:focus-visible{transform:translateY(-2px);border-color:#f5c342;outline:none}
+.mode-shortcut>span{font-size:27px}.mode-shortcut strong{font-size:13px;letter-spacing:.5px}.mode-shortcut small{color:#aab5c0;font-size:11px;line-height:1.5;flex:1}.mode-shortcut em{font-size:10px;font-style:normal;font-weight:900;color:#f5c342;letter-spacing:.7px}
+.mode-shortcut-arena{background:linear-gradient(145deg,#352c19,#12171b)}.mode-shortcut-classic{background:linear-gradient(145deg,#1d3426,#11171b)}.mode-shortcut-metro{background:linear-gradient(145deg,#25302e,#11171b)}.mode-shortcut-zombie{background:linear-gradient(145deg,#23381f,#11171b)}
+@media(max-width:900px){.mode-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.mode-shortcut{padding:13px}}
+@media(max-width:420px){.mode-shortcut small{font-size:10px}.mode-shortcut strong{font-size:12px}.mode-shortcut{padding:11px}}
