@@ -70,13 +70,19 @@ function loadTikTok(raw){
   if(tiktokMessage)tiktokMessage.textContent='Відео завантажується у вбудованому плеєрі. Якщо TikTok не показує ролик у браузері, кнопка нижче відкриє його безпосередньо в TikTok.';
  }else if(u.pathname.startsWith('/@')){
   const clean='https://www.tiktok.com'+u.pathname;
+  const creatorId=u.pathname.slice(2).split('/')[0];
   if(tiktokEmbed){
    tiktokEmbed.innerHTML='';
-   const card=document.createElement('div');card.className='media-empty';card.innerHTML='<span>♪</span><b>Профіль @khkozak4</b><small>У TikTok профілі видно всі опубліковані ролики. Для вбудованого перегляду встав посилання на конкретне відео.</small>';
-   const link=document.createElement('a');link.className='btn btn-yellow';link.href=clean;link.target='_blank';link.rel='noopener noreferrer';link.textContent='ВІДКРИТИ ПРОФІЛЬ ↗';card.append(link);tiktokEmbed.append(card);
+   const quote=document.createElement('blockquote');
+   quote.className='tiktok-embed';quote.setAttribute('cite',clean);quote.setAttribute('data-unique-id',creatorId);quote.setAttribute('data-embed-type','creator');quote.style.maxWidth='720px';quote.style.minWidth='288px';
+   const section=document.createElement('section');const profileLink=document.createElement('a');profileLink.href=clean;profileLink.target='_blank';profileLink.rel='noopener noreferrer';profileLink.textContent='@'+creatorId;section.append(profileLink);quote.append(section);tiktokEmbed.append(quote);
+   const script=document.createElement('script');script.async=true;script.src='https://www.tiktok.com/embed.js';
+   script.onload=()=>{if(tiktokMessage)tiktokMessage.textContent='Профіль TikTok завантажено. Прокручуй вбудовані ролики та натискай на відео для перегляду.'};
+   script.onerror=()=>{if(tiktokMessage)tiktokMessage.textContent='TikTok не дозволив завантажити вбудований профіль у цьому браузері. Скористайся кнопкою нижче.'};
+   tiktokEmbed.append(script);
+   const fallback=document.createElement('p');fallback.className='tiktok-open-fallback';const link=document.createElement('a');link.className='btn btn-yellow';link.href=clean;link.target='_blank';link.rel='noopener noreferrer';link.textContent='ВІДКРИТИ ПРОФІЛЬ У TIKTOK ↗';fallback.append(link);tiktokEmbed.append(fallback);
   }
-  if(tiktokMessage)tiktokMessage.textContent='Посилання на профіль відкриває всі твої відео. Щоб показати окремий ролик прямо в хабі, скопіюй посилання саме на відео.';
- }else{
+  if(tiktokMessage)tiktokMessage.textContent='Завантажую офіційний TikTok-віджет профілю з останніми відео…'; }else{
   if(tiktokEmbed){tiktokEmbed.innerHTML='';const card=document.createElement('div');card.className='media-empty';card.innerHTML='<span>↗</span><b>Коротке посилання TikTok</b><small>Браузер має спершу відкрити це посилання, щоб TikTok перенаправив на ролик.</small>';const link=document.createElement('a');link.className='btn btn-yellow';link.href=u.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent='ВІДКРИТИ ПОСИЛАННЯ ↗';card.append(link);tiktokEmbed.append(card)}
   if(tiktokMessage)tiktokMessage.textContent='Це коротке посилання. Відкрий його кнопкою нижче; після переходу скопіюй повне посилання на відео, якщо хочеш вбудований перегляд.';
  }
