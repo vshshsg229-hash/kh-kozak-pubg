@@ -30,7 +30,7 @@ function response(body: unknown, status = 200, origin: string | null = null) {
   headers.set("Access-Control-Allow-Headers", "authorization, apikey, content-type, x-client-info");
   headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   headers.set("Cache-Control", "no-store");
-  return new Response(JSON.stringify(body), { status, headers });
+  return new Response(status === 204 ? null : JSON.stringify(body), { status, headers });
 }
 function safeError(message: string, status = 400) { return { error: message, status }; }
 function safeUser(row: any) {
@@ -95,7 +95,7 @@ Deno.serve(async (req: Request) => {
         }, 201, origin);
       }
       const profile = await getProfile(data.user.id);
-      return response({ token: data.session.access_token, user: safeUser(profile) }, 201, origin);
+      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 201, origin);
     }
 
     if (req.method === "POST" && path === "/api/auth/login") {
@@ -108,7 +108,7 @@ Deno.serve(async (req: Request) => {
       if (error || !data.session || !data.user) return response({ error: "Неправильна пошта/пароль або пошта ще не підтверджена." }, 401, origin);
       const profile = await getProfile(data.user.id);
       if (!profile) return response({ error: "Профіль не створився. Перевір SQL-тригер у Supabase." }, 500, origin);
-      return response({ token: data.session.access_token, user: safeUser(profile) }, 200, origin);
+      return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(profile) }, 200, origin);
     }
 
     if (req.method === "GET" && path === "/api/auth/me") {
