@@ -48,7 +48,7 @@ The webhook URL must be HTTPS and reachable. Telegram documents `setWebhook`, th
 1. Open the published Battle Hub and sign into an online account.
 2. Open **Telegram і бот** and press **Створити код зв’язування**.
 3. Open the bot's private chat and send `/link 12345678` with the generated code instead of the example.
-4. Test `/profile`, `/daily`, `/top`, and `/help`.
+4. Test `/profile`, `/daily`, `/top`, `/help`, and `/unlink`.
 5. Finish a mini-game while logged in; the bot should notify the linked Telegram chat if the notification send succeeds.
 6. The admin panel appears only for an account whose Supabase Auth UUID is included in `ADMIN_USER_IDS`. It can show hub counts and broadcast a message to linked chats.
 
