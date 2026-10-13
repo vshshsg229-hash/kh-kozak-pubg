@@ -84,7 +84,7 @@ document.querySelectorAll('[data-music-genre]').forEach(btn=>btn.addEventListene
 renderMusic();
 
 const khPlaylist=[
-['Murder In My Mind','Kordhell'],['METAMORPHOSIS','INTERWORLD'],['NEON BLADE','MoonDeity'],['Close Eyes','DVRST'],['RAVE','Dxrk ダーク'],['Override','KSLV Noh'],['Scopin','Kordhell'],['Live Another Day','The Score'],['Enemy','Imagine Dragons'],['The Search','NF'],['Legends Never Die','Against The Current'],['Invincible','NEFFEX'],['Spectre','Alan Walker'],['Faded','Alan Walker'],['The Nights','Avicii'],['Animals','Martin Garrix'],['Tremor','Dimitri Vegas & Like Mike'],['Numb','Linkin Park'],['Believer','Imagine Dragons'],['Силуети','SadSvit']
+['Faded','Alan Walker','60ItHLz5WEA'],['The Nights','Avicii','UtF6Jej8yb4'],['Believer','Imagine Dragons','7wtfhZwyrcc'],['Enemy','Imagine Dragons','D9G1VOjN_84'],['Numb','Linkin Park','kXYiU_JCYtU'],['In the End','Linkin Park','eVTXPUF4Oz4'],['Wake Me Up','Avicii','IcrbM1l_BoI'],['Thunder','Imagine Dragons','fKopy74weus'],['Legends Never Die','Against The Current','4Q46xYqUwZQ'],['On My Way','Alan Walker, Sabrina Carpenter & Farruko','dhYOPzcsbGM'],['Alone','Alan Walker','1-xGerv5FOk'],['Unity','TheFatRat','n8X9_MgEdCg'],['Monody','TheFatRat','B7xai5u_tnk'],['The Spectre','Alan Walker','wJnBTPUQS5A'],['Darkside','Alan Walker','M-P4QBt-FWw'],['Stefania','Kalush Orchestra','Z8Z51no1TD0'],['Обійми','Океан Ельзи','--Wokwe4-i0'],['Погляд','YAKTAK feat. SOBOL','WHQygkIG8xs'],['Хай пишуть','DOROFEEVA','jfKfPfyJRdk'],['Силуети','SadSvit',''],['Murder In My Mind','Kordhell',''],['METAMORPHOSIS','INTERWORLD',''],['NEON BLADE','MoonDeity',''],['Close Eyes','DVRST',''],['RAVE','Dxrk ダーク',''],['Override','KSLV Noh',''],['Scopin','Kordhell','']
 ];
 const khUkrainianTracks=[
 ['Stefania','Kalush Orchestra','Z8Z51no1TD0'],
@@ -126,13 +126,13 @@ function renderKhPlaylist(){
   const artist=document.createElement('small');artist.textContent=track[1];
   info.append(title,artist);
   const btn=document.createElement('button');btn.type='button';btn.className='music-play-btn';btn.textContent='▶ СЛУХАТИ';
-  btn.addEventListener('click',()=>{const q=track[1]+' '+track[0]+' official audio';window.location.href='https://www.youtube.com/results?search_query='+encodeURIComponent(q)});
+  btn.addEventListener('click',()=>playTrack(track));
   row.append(n,info,btn);khPlaylistTracks.append(row);
  });
 }
 $('#shuffleKhPlaylist')?.addEventListener('click',()=>{
  const track=khPlaylist[Math.floor(Math.random()*khPlaylist.length)];
- if(track)window.location.href='https://www.youtube.com/results?search_query='+encodeURIComponent(track[1]+' '+track[0]+' official audio');
+ if(track)playTrack(track);
 });
 renderKhPlaylist();
 renderUkrainianTracks();
