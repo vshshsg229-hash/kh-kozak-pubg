@@ -21,11 +21,11 @@ const PROFILE_URL='https://www.tiktok.com/@khkozak4';
 const tiktokSavedList=$('#tiktokSavedList');
 function safeTikTokUrl(raw){
  let u;try{u=new URL((raw||'').trim())}catch{return null}
- if(!/^https?:$/.test(u.protocol)||!/(^|\\.)tiktok\\.com$/i.test(u.hostname))return null;
+ if(!/^https?:$/.test(u.protocol)||!/(^|\.)tiktok\.com$/i.test(u.hostname))return null;
  return u;
 }
 function getTikTokVideoId(u){
- const m=u.pathname.match(/\\/video\\/(\\d+)/);
+ const m=u.pathname.match(/\/video\/(\d+)/);
  return m?m[1]:'';
 }
 function getSavedTikTok(){
@@ -61,7 +61,7 @@ function loadTikTok(raw){
  if(videoId){
   if(tiktokEmbed){
    tiktokEmbed.innerHTML='';
-   const iframe=document.createElement('iframe');iframe.title='TikTok video';iframe.src='https://www.tiktok.com/embed/v2/'+videoId;iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allow='encrypted-media; fullscreen; picture-in-picture';iframe.allowFullscreen=true;iframe.loading='lazy';
+   const iframe=document.createElement('iframe');iframe.title='TikTok video';iframe.src='https://www.tiktok.com/player/v1/'+videoId+'?controls=1&music_info=1&description=1';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allow='encrypted-media; fullscreen; picture-in-picture';iframe.allowFullscreen=true;iframe.loading='lazy';
    tiktokEmbed.append(iframe);
    const fallback=document.createElement('p');fallback.className='tiktok-open-fallback';
    const link=document.createElement('a');link.className='btn btn-yellow';link.href=u.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent='▶ ВІДКРИТИ ВІДЕО В TIKTOK';
