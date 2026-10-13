@@ -38,6 +38,7 @@ jobs:
           node --check app-v6/media.js
           node --check app-v6/arcade-100.js
           node --check app-v6/games-3d.js
+          node --check app-v6/bunker.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
@@ -69,7 +70,7 @@ jobs:
           }
 
           for (const id of ['tab-home', 'tab-games', 'tab-missions', 'tab-rewards',
-            'tab-profile', 'tab-pass', 'tab-telegram', 'tab-admin', 'tab-assistant', 'tab-3d',
+            'tab-profile', 'tab-pass', 'tab-bunker', 'tab-telegram', 'tab-admin', 'tab-assistant', 'tab-3d',
             'gameModal', 'installPwa', 'checkInstall']) {
             assert(html.includes(`id="${id}"`), `Required interface element exists: ${id}`);
           }
@@ -95,6 +96,9 @@ jobs:
           assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
           for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
           assert(html.includes('games-3d.js?v=1.1.0'), 'HTML loads current 3D engine version with ammo update');
+          assert(html.includes('bunker.js?v=1.0.0'), 'HTML loads Bunker mode');
+          const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
+          for (const feature of ['data-bunker-upgrade', 'bunkerScavenge', 'bunkerClaim', 'bunkerTrophyGrid']) assert(bunker.includes(feature), 'Bunker feature exists: ' + feature);
 
           console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
