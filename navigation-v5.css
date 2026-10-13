@@ -1,4 +1,5 @@
 /* KH么Kozak Gaming Hub 5.0 — navigation and motion layer; additive, preserves existing page styles */
+:root{--red:#ff4655;--gold:#c7aaff;--hub-red:#ff4655;--hub-lime:#c7aaff;--acid:#b48cff;--glow:rgba(155,109,255,.13)}
 :root{--kh5-purple:#9b6dff;--kh5-purple-soft:#c7aaff;--kh5-red:#ff4655;--kh5-glass:rgba(14,13,24,.88);--kh5-line:rgba(180,145,255,.2)}
 html{scroll-behavior:smooth;scroll-padding-top:96px}
 body{isolation:isolate}
