@@ -228,6 +228,16 @@ async function refreshAdminData(){
  }catch(error){nav.hidden=true;if(mobileNav)mobileNav.hidden=true;if(error.status&&error.status!==403)console.warn('Admin panel unavailable:',error.message)}
 }
 $('#refreshAdmin')?.addEventListener('click',refreshAdminData);
+$('#setupTelegramWebhook')?.addEventListener('click',async()=>{
+ const button=$('#setupTelegramWebhook'),msg=$('#adminWebhookMessage');
+ if(!confirm('Зареєструвати або оновити webhook Telegram для цього проєкту?'))return;
+ button.disabled=true;msg.textContent='Перевіряю секрети та налаштовую webhook…';
+ try{
+  const data=await apiRequest('/api/admin/telegram/setup-webhook',{method:'POST',body:JSON.stringify({})});
+  msg.textContent=data.ok?'Webhook Telegram успішно зареєстровано. Тепер перевір /start у боті.':'Telegram не підтвердив налаштування.';
+ }catch(error){msg.textContent=error.message}
+ finally{button.disabled=false}
+});
 $('#sendAdminBroadcast')?.addEventListener('click',async()=>{
  const field=$('#adminBroadcastText'),msg=$('#adminMessage'),button=$('#sendAdminBroadcast'),text=(field?.value||'').trim();
  if(text.length<2){msg.textContent='Напиши повідомлення довжиною щонайменше 2 символи.';return}
