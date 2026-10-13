@@ -1,8 +1,8 @@
 {
   "id": "./minigames.html?app=1",
-  "name": "KH么Kozak: Гра • Музика",
-  "short_name": "KH Kozak",
-  "description": "Гра, українська музика та твій профіль в одному Gaming Hub 4.6 із оновленим інтерфейсом, швидким меню та фіолетовими акцентами.",
+  "name": "KH么Kozak Gaming Hub 4.6",
+  "short_name": "KH Kozak 4.6",
+  "description": "Глобальна ігрова спільнота, PUBG, мініігри, музика та профіль у Gaming Hub 4.6.",
   "lang": "uk",
   "start_url": "./minigames.html?app=1",
   "scope": "./",
