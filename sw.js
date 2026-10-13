@@ -1,7 +1,7 @@
 'use strict';
-const CACHE = 'kh-kozak-shell-v53';
+const CACHE = 'kh-kozak-shell-v54';
 const CORE = [
- './','./index.html','./account.html','./account.css?v=1','./account.js?v=1','./supabase-config.js?v=1','./cloud-sync.js?v=1','./community.html','./community.css?v=1','./community.js?v=1','./community-schema.sql','./index-v3.html','./avatars.html','./videos.html','./minigames.html','./locker.html','./music.html','./battlehub.html','./assistant.html','./download.html','./assistant.css?v=3','./assistant.js?v=5','./assistant-manifest.webmanifest',
+ './','./index.html','./account.html','./account.css?v=1','./account.js?v=1','./supabase-config.js?v=1','./cloud-sync.js?v=1','./community.html','./community.css?v=1','./community.js?v=2','./community-schema.sql','./index-v3.html','./avatars.html','./videos.html','./minigames.html','./locker.html','./music.html','./battlehub.html','./assistant.html','./download.html','./assistant.css?v=3','./assistant.js?v=5','./assistant-manifest.webmanifest',
  './style.css','./script.js','./tab-search.js','./new-home.css','./new-home.js','./site-v4.css','./site-v4.js','./extra-games.css','./extra-games.js','./victor-game.css','./victor-game.js','./quick-tools.css','./quick-tools.js',
  './squad-lab.css','./squad-lab.js','./ai-helper.css','./ai-helper.js','./kh-v3.css','./kh-v3.js',
  './site-i18n.css','./site-i18n.js','./lucky-drop.css','./lucky-drop.js',
