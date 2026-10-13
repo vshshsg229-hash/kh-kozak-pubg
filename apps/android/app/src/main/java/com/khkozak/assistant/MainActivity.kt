@@ -26,12 +26,13 @@ class MainActivity : Activity() {
     private lateinit var fileStatus: TextView
     private lateinit var commandInput: EditText
     private lateinit var statusText: TextView
+    private lateinit var historyContainer: LinearLayout
 
     private val bg = Color.rgb(10, 12, 22)
     private val panel = Color.rgb(22, 26, 43)
     private val muted = Color.rgb(160, 170, 192)
     private val white = Color.rgb(246, 248, 255)
-    private val lime = Color.rgb(207, 255, 87)
+    private val lime = Color.rgb(255, 199, 55)
     private val purple = Color.rgb(143, 110, 255)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +97,10 @@ class MainActivity : Activity() {
         statusRow.addView(statusText)
         hero.addView(statusRow)
         content.addView(hero)
+        addGap(content, 12)
+        val openHub = actionButton("🌐  Відкрити KH么Kozak Gaming Hub", Color.rgb(48, 38, 26), lime)
+        openHub.setOnClickListener { openWebPage("https://vshshsg229-hash.github.io/kh-kozak-pubg/", "KH么Kozak Gaming Hub") }
+        content.addView(openHub, LinearLayout.LayoutParams(-1, dp(50)))
         addGap(content, 20)
 
         content.addView(sectionTitle("НАПИШИ ПОМІЧНИКУ", "01"))
@@ -119,6 +124,12 @@ class MainActivity : Activity() {
             imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEND
         }
         chatPanel.addView(commandInput, LinearLayout.LayoutParams(-1, dp(82)))
+        commandInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEND) {
+                sendTypedCommand()
+                true
+            } else false
+        }
         addGap(chatPanel, 10)
         val send = actionButton("➤   Надіслати команду", lime, bg)
         send.setOnClickListener { sendTypedCommand() }
@@ -167,7 +178,52 @@ class MainActivity : Activity() {
         }
         addGap(content, 12)
 
-        content.addView(sectionTitle("ГОЛОСОВИЙ РЕЖИМ", "03"))
+        content.addView(sectionTitle("ОСТАННІ КОМАНДИ", "03"))
+        addGap(content, 10)
+        val historyPanel = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = rounded(panel, 20)
+            setPadding(dp(12), dp(12), dp(12), dp(12))
+        }
+        historyContainer = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        historyPanel.addView(historyContainer)
+        val clearHistory = actionButton("Очистити історію", Color.rgb(55, 35, 42), Color.rgb(255, 175, 185))
+        clearHistory.setOnClickListener {
+            getSharedPreferences("kh_assistant_history", MODE_PRIVATE).edit().remove("commands").apply()
+            renderCommandHistory()
+            Toast.makeText(this, "Історію команд очищено", Toast.LENGTH_SHORT).show()
+        }
+        addGap(historyPanel, 8)
+        historyPanel.addView(clearHistory, LinearLayout.LayoutParams(-1, dp(44)))
+        content.addView(historyPanel)
+        renderCommandHistory()
+        addGap(content, 20)
+
+        content.addView(sectionTitle("KH么KOZAK — ШВИДКИЙ ДОСТУП", "04"))
+        addGap(content, 10)
+        val links = listOf(
+            "🏆  Друзі та чат" to "https://vshshsg229-hash.github.io/kh-kozak-pubg/community.html",
+            "🎮  Мініігри" to "https://vshshsg229-hash.github.io/kh-kozak-pubg/minigames.html",
+            "🎵  Музика" to "https://vshshsg229-hash.github.io/kh-kozak-pubg/music.html",
+            "👤  Мій акаунт" to "https://vshshsg229-hash.github.io/kh-kozak-pubg/account.html",
+            "✈  Telegram" to "https://t.me/tt_KH_Kozak",
+            "♪  TikTok" to "https://www.tiktok.com/@khkozak4"
+        )
+        links.chunked(2).forEach { pair ->
+            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            pair.forEachIndexed { index, item ->
+                val button = actionButton(item.first, Color.rgb(34, 39, 60), white).apply { textSize = 12f }
+                button.setOnClickListener { openWebPage(item.second, item.first.substringAfter("  ")) }
+                row.addView(button, LinearLayout.LayoutParams(0, dp(48), 1f).apply {
+                    if (index == 0) marginEnd = dp(8)
+                })
+            }
+            content.addView(row)
+            addGap(content, 8)
+        }
+        addGap(content, 12)
+
+        content.addView(sectionTitle("ГОЛОСОВИЙ РЕЖИМ", "05"))
         addGap(content, 10)
         val voicePanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -190,7 +246,7 @@ class MainActivity : Activity() {
         content.addView(voicePanel)
         addGap(content, 20)
 
-        content.addView(sectionTitle("РОЗУМНІ ВІДПОВІДІ AI", "04"))
+        content.addView(sectionTitle("РОЗУМНІ ВІДПОВІДІ AI", "06"))
         addGap(content, 10)
         val aiPanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -226,7 +282,7 @@ class MainActivity : Activity() {
         content.addView(aiPanel)
         addGap(content, 20)
 
-        content.addView(sectionTitle("ДОСТУП ДО ФАЙЛІВ", "05"))
+        content.addView(sectionTitle("ДОСТУП ДО ФАЙЛІВ", "07"))
         addGap(content, 10)
         val filePanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -300,6 +356,7 @@ class MainActivity : Activity() {
             commandInput.requestFocus()
             return
         }
+        rememberCommand(command)
         val intent = Intent(this, WakeWordService::class.java).apply {
             action = "TEXT_COMMAND"
             putExtra("command", command)
@@ -310,6 +367,55 @@ class MainActivity : Activity() {
             commandInput.text.clear()
         } catch (_: Exception) {
             Toast.makeText(this, "Не вдалося надіслати команду. Спробуй запустити помічника ще раз.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun loadCommandHistory(): MutableList<String> {
+        val raw = getSharedPreferences("kh_assistant_history", MODE_PRIVATE).getString("commands", "[]") ?: "[]"
+        return try {
+            val json = org.json.JSONArray(raw)
+            (0 until json.length()).map { json.optString(it).trim() }
+                .filter { it.isNotBlank() }.distinctBy { it.lowercase(Locale.ROOT) }.take(8).toMutableList()
+        } catch (_: Exception) { mutableListOf() }
+    }
+
+    private fun rememberCommand(command: String) {
+        val items = loadCommandHistory()
+        items.removeAll { it.equals(command, ignoreCase = true) }
+        items.add(0, command)
+        val json = org.json.JSONArray()
+        items.take(8).forEach { json.put(it) }
+        getSharedPreferences("kh_assistant_history", MODE_PRIVATE).edit().putString("commands", json.toString()).apply()
+        renderCommandHistory()
+    }
+
+    private fun renderCommandHistory() {
+        if (!::historyContainer.isInitialized) return
+        historyContainer.removeAllViews()
+        val items = loadCommandHistory()
+        if (items.isEmpty()) {
+            historyContainer.addView(text("Тут з’являться твої останні команди. Натисни команду, щоб повторити її.", 12f, muted, false))
+            return
+        }
+        items.forEach { savedCommand ->
+            val button = actionButton("↻   $savedCommand", Color.rgb(29, 33, 49), white).apply {
+                gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                textSize = 13f
+            }
+            button.setOnClickListener {
+                commandInput.setText(savedCommand)
+                commandInput.setSelection(commandInput.text.length)
+                sendTypedCommand()
+            }
+            historyContainer.addView(button, LinearLayout.LayoutParams(-1, dp(44)).apply { bottomMargin = dp(6) })
+        }
+    }
+
+    private fun openWebPage(url: String, label: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (_: Exception) {
+            Toast.makeText(this, "Не вдалося відкрити $label. Перевір браузер та інтернет.", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -355,7 +461,8 @@ class MainActivity : Activity() {
     }
 
     private fun ensurePermissionsAndStart() {
-        val permissions = mutableListOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
+        // Voice recognition needs microphone access; camera access is handled by Android camera intents when required.
+        val permissions = mutableListOf(Manifest.permission.RECORD_AUDIO)
         if (Build.VERSION.SDK_INT >= 33) permissions.add(Manifest.permission.POST_NOTIFICATIONS)
         val missing = permissions.filter { checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED }
         if (missing.isNotEmpty()) requestPermissions(missing.toTypedArray(), requestCode) else startWakeService()
