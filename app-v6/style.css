@@ -60,3 +60,8 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .mobile-nav button span{font-size:17px}
 .mobile-nav button.active{color:#f2c449}
 @media(max-width:380px){.mobile-nav button{font-size:7px}.mobile-nav button span{font-size:15px}.mobile-nav{padding-left:2px;padding-right:2px}}
+
+/* Battle Hub 7.4 — seasonal pass and equipped avatars */
+.profile-avatar.cosmetic-avatar{font-size:34px;color:#ffe18a;background:radial-gradient(circle at 35% 25%,#67613d,#25291e 65%,#151811);border:2px solid #d4a936;box-shadow:0 0 0 4px #d4a93626,0 0 25px #d4a9362b;text-shadow:0 2px 8px #000}
+.pass-reward:nth-child(20){border-color:#a78937;background:linear-gradient(150deg,#3c321a,#1b1d16);box-shadow:inset 0 0 0 1px #d9b94b22}
+.pass-reward:nth-child(20) .pass-art{color:#ffe27b;background:linear-gradient(145deg,#5b4820,#2b291b);font-size:36px}
