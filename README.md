@@ -69,3 +69,9 @@ The 4.1 update adds a dark PUBG black-and-gold theme, an account page, and an op
 5. Publish the main branch and open `account.html`. Create an account, confirm the email if required, then sign in and press “Синхронізувати прогрес”.
 
 Only selected localStorage keys that look like game/progress keys are eligible for sync; auth tokens, AI chat history, API keys and endpoint settings are excluded. Existing game pages may use different key names, so additional keys can be added to the allowlist in `cloud-sync.js` after checking each game’s storage keys. This sync does not connect to official PUBG inventory or UC.
+
+
+## Global Community — Gaming Hub 4.6
+- Public community feed, online presence heartbeat, searchable feed, editable local nickname, and support reactions.
+- Run `global-community-schema.sql` in the configured Supabase SQL Editor to create the posts, presence, and reactions tables with row-level security. Anonymous Sign-Ins must be enabled for guest profiles.
+- Community posts and presence are shared across users only after the schema is applied to the same Supabase project configured in `supabase-config.js`.
