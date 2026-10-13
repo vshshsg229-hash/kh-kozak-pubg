@@ -203,6 +203,7 @@ Deno.serve(async (req: Request) => {
     if (req.method === "GET" && path === "/api/health") {
       const checks = await Promise.all([
         admin.from("hub_profiles").select("id").limit(1),
+        admin.from("hub_game_events").select("id").limit(1),
         admin.from("hub_telegram_links").select("user_id").limit(1),
         admin.from("hub_telegram_link_codes").select("user_id").limit(1),
         admin.from("hub_telegram_daily_claims").select("user_id").limit(1),
@@ -211,11 +212,18 @@ Deno.serve(async (req: Request) => {
         admin.from("hub_daily_shop_purchases").select("item_id").limit(1),
         admin.from("hub_achievements").select("achievement_id").limit(1),
       ]);
-      if (checks.some((result) => result.error)) {
+      const rpcChecks = await Promise.all([
+        admin.rpc("hub_refresh_achievements", { p_user_id: "00000000-0000-4000-8000-000000000000" }),
+        admin.rpc("hub_claim_telegram_daily", { p_user_id: "00000000-0000-4000-8000-000000000000" }),
+        admin.rpc("hub_purchase_item", { p_user_id: "00000000-0000-4000-8000-000000000000", p_item_id: "health_probe", p_daily: false }),
+        admin.rpc("hub_equip_item", { p_user_id: "00000000-0000-4000-8000-000000000000", p_item_id: "health_probe" }),
+        admin.rpc("hub_finish_game", { p_user_id: "00000000-0000-4000-8000-000000000000", p_event_id: "00000000-0000-4000-8000-000000000001", p_game: "health_probe", p_base_coins: 0, p_base_points: 0, p_base_xp: 0 }),
+      ]);
+      if (checks.some((result) => result.error) || rpcChecks.some((result) => result.error)) {
         return response({ ok: false, database: "unavailable", error: "Потрібна актуальна схема: запусти повний supabase/schema.sql, щоб увімкнути Telegram, магазин та досягнення." }, 503, origin);
       }
       return response({
-        ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.1.0",
+        ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.2.0",
         features: { telegramConfigured: Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_WEBHOOK_SECRET), serverShop: true, serverAchievements: true, adminConfigured: ADMIN_USER_IDS.size > 0 },
       }, 200, origin);
     }
@@ -297,6 +305,22 @@ Deno.serve(async (req: Request) => {
       ]);
       for (const result of [profiles, links, events, recent]) if (result.error) throw result.error;
       return response({ admin: true, profiles: profiles.count ?? 0, linkedTelegram: links.count ?? 0, gameEvents: events.count ?? 0, recentPlayers: recent.data ?? [] }, 200, origin);
+    }
+
+    if (req.method === "POST" && path === "/api/admin/telegram/setup-webhook") {
+      const user = await isAdmin(req);
+      if (!user) return response({ error: "Адмін-доступ не налаштований для цього акаунта." }, 403, origin);
+      if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_WEBHOOK_SECRET) {
+        return response({ error: "Спочатку додай TELEGRAM_BOT_TOKEN і TELEGRAM_WEBHOOK_SECRET у secrets Supabase Edge Function." }, 503, origin);
+      }
+      const webhookUrl = SUPABASE_URL.replace(/\\/$/, "") + "/functions/v1/hub-api/api/telegram/webhook";
+      const result = await telegramCall("setWebhook", {
+        url: webhookUrl,
+        secret_token: TELEGRAM_WEBHOOK_SECRET,
+        allowed_updates: ["message"],
+        drop_pending_updates: false,
+      });
+      return response({ ok: true, webhookConfigured: true, webhookUrl, telegramResult: result }, 200, origin);
     }
 
     if (req.method === "POST" && path === "/api/admin/broadcast") {
