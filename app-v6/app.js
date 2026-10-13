@@ -446,6 +446,7 @@ progressFile?.addEventListener('change',async()=>{
  }catch(error){if(backupMessage)backupMessage.textContent='Файл не схожий на резервну копію KH么Kozak.';showToast('Не вдалося прочитати резервну копію.')}
  finally{progressFile.value=''}
 });
+window.addEventListener('kh100-finished',e=>{const d=e.detail||{};finishGame('aim',Math.max(10,Number(d.coins)||10),Math.max(15,Number(d.points)||15),Math.max(20,Number(d.xp)||20));});
 render();
 loadTelegramStatus();refreshAdminData();
 })();
