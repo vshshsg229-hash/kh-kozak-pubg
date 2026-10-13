@@ -1,4 +1,4 @@
-const CACHE_NAME = "kh-kozak-hub-v8.11";
+const CACHE_NAME = "kh-kozak-hub-v8.12";
 const CORE = ["./", "./index.html", "./style.css?v=8.9.0", "./app.js?v=8.9.0", "./i18n.js?v=8.7.0", "./manifest.webmanifest", "./icon.svg"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
