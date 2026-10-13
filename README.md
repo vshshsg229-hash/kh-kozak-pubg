@@ -43,3 +43,17 @@ Publish the repository's main branch with GitHub Pages. The public Pages URL dep
 6. Для відключення введи `/ai-off`. Команда `/forget` очищає локальну історію чату.
 
 Адреса Worker зберігається лише в локальному сховищі браузера цього пристрою. Для роботи на іншому пристрої команду потрібно повторити. Генеративний AI потребує окремого API-ключа та може створювати витрати залежно від використання.
+
+
+## Gaming Hub 4.1 — акаунт і хмарне збереження
+
+The 4.1 update adds a dark PUBG black-and-gold theme, an account page, and an optional Supabase-backed save sync. GitHub Pages alone cannot host a private database, so cloud sync stays in local-only mode until a Supabase project is configured.
+
+### One-time Supabase setup
+1. Create a project at https://supabase.com/.
+2. In the Supabase SQL Editor, run `account-schema.sql`. It creates `public.kozak_player_saves` and row-level security policies so authenticated users can read/write only their own row.
+3. In `supabase-config.js`, set `url` to the project URL and `anonKey` to the project's publishable/anon key. Never use a `service_role` key in browser code.
+4. In Supabase Authentication URL settings, set the Site URL to the published GitHub Pages origin and add the exact account page URL as a Redirect URL.
+5. Publish the main branch and open `account.html`. Create an account, confirm the email if required, then sign in and press “Синхронізувати прогрес”.
+
+Only selected localStorage keys that look like game/progress keys are eligible for sync; auth tokens, AI chat history, API keys and endpoint settings are excluded. Existing game pages may use different key names, so additional keys can be added to the allowlist in `cloud-sync.js` after checking each game’s storage keys. This sync does not connect to official PUBG inventory or UC.
