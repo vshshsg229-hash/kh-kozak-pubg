@@ -23,6 +23,8 @@ import android.widget.Toast
 class MainActivity : Activity() {
     private val requestCode = 1402
     private val filePickerRequestCode = 1403
+    private val cameraRequestCode = 1404
+    private var pendingPermissionCommand: String? = null
     private lateinit var fileStatus: TextView
     private lateinit var commandInput: EditText
     private lateinit var statusText: TextView
@@ -304,6 +306,9 @@ class MainActivity : Activity() {
 
         setContentView(page)
         restoreSelectedFile()
+        if (intent.getBooleanExtra("request_camera_for_torch", false)) {
+            requestTorchPermission(intent.getStringExtra("torch_command") ?: "увімкни ліхтарик")
+        }
     }
 
     private fun sectionTitle(title: String, number: String): View {
@@ -354,6 +359,12 @@ class MainActivity : Activity() {
         if (command.isBlank()) {
             Toast.makeText(this, "Спочатку напиши команду.", Toast.LENGTH_SHORT).show()
             commandInput.requestFocus()
+            return
+        }
+        if (Regex("(ліхтарик|фонарик)", RegexOption.IGNORE_CASE).containsMatchIn(command) &&
+            checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            pendingPermissionCommand = command
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), cameraRequestCode)
             return
         }
         rememberCommand(command)
@@ -470,7 +481,31 @@ class MainActivity : Activity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == this.requestCode && grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) startWakeService()
+        if (requestCode == cameraRequestCode) {
+            val command = pendingPermissionCommand
+            pendingPermissionCommand = null
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && !command.isNullOrBlank()) {
+                commandInput.setText(command)
+                sendTypedCommand()
+            } else {
+                Toast.makeText(this, "Без дозволу камери ліхтариком керувати не можна.", Toast.LENGTH_LONG).show()
+            }
+            return
+        }
+        if (requestCode == this.requestCode && grantResults.isNotEmpty() &&
+            permissions.indices.filter { permissions[it] == Manifest.permission.RECORD_AUDIO || permissions[it] == Manifest.permission.POST_NOTIFICATIONS }
+                .all { grantResults[it] == PackageManager.PERMISSION_GRANTED }) startWakeService()
+    }
+
+    private fun requestTorchPermission(command: String) {
+        commandInput.setText(command)
+        pendingPermissionCommand = command
+        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            pendingPermissionCommand = null
+            sendTypedCommand()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), cameraRequestCode)
+        }
     }
 
     private fun startWakeService() {
