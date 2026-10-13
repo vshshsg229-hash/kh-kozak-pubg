@@ -290,3 +290,26 @@ body{background:radial-gradient(ellipse at 75% 0%,#303322 0%,#171a14 38%,var(--b
 .telegram-music-link b{font-size:12px;letter-spacing:.04em}
 .telegram-music-link small{font-size:10px;color:var(--muted,#aab3c0)}
 .telegram-music-link .external-arrow{margin-left:auto;color:#66c5ff}
+
+/* KH Music Library */
+.music-library-panel{margin:18px 0;padding:clamp(14px,2.5vw,22px)}
+.music-library-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+.music-library-head h2{margin:5px 0;font-size:clamp(20px,3vw,27px)}
+.music-library-head p{margin:5px 0;color:var(--muted,#aab3c0);font-size:12px;line-height:1.6}
+.music-count{flex-shrink:0;border:1px solid var(--line,#343b46);border-radius:20px;padding:7px 10px;color:var(--yellow,#ffc43d);font-size:11px}
+.music-library-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,220px);gap:10px}
+.music-library-controls input,.music-library-controls select{min-width:0;width:100%;padding:12px;border:1px solid var(--line,#343b46);border-radius:8px;background:#0d1116;color:var(--text,#f4f6f8);font:inherit;font-size:13px}
+.music-quick-genres{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.music-genre-chip{border:1px solid var(--line,#343b46);border-radius:20px;padding:8px 11px;background:rgba(255,255,255,.03);color:var(--text,#f4f6f8);font-size:11px;cursor:pointer}
+.music-genre-chip:hover{border-color:var(--yellow,#ffc43d)}
+.music-library-list{display:grid;gap:7px}
+.music-track-row{display:flex;align-items:center;gap:12px;min-width:0;padding:10px;border:1px solid var(--line,#343b46);border-radius:8px;background:rgba(255,255,255,.02)}
+.music-track-number{flex:0 0 27px;color:var(--muted,#aab3c0);font-size:11px;font-variant-numeric:tabular-nums}
+.music-track-info{display:grid;gap:4px;min-width:0;flex:1}
+.music-track-info b{overflow-wrap:anywhere;font-size:12px;font-weight:650}
+.music-track-info small{color:var(--muted,#aab3c0);font-size:10px}
+.music-play-btn{flex-shrink:0;text-decoration:none;border-radius:6px;padding:9px 10px;background:var(--yellow,#ffc43d);color:#141414;font-size:10px;font-weight:800;white-space:nowrap}
+.music-library-footer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.music-library-footer span{color:var(--muted,#aab3c0);font-size:11px;line-height:1.5}
+.music-library-footer #musicLoadMore[hidden]{display:none}
+@media(max-width:560px){.music-library-controls{grid-template-columns:1fr}.music-library-head{gap:8px}.music-count{font-size:10px;padding:6px 8px}.music-track-row{gap:8px;padding:8px}.music-play-btn{padding:9px 8px;font-size:9px}}
