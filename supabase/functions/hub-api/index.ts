@@ -19,6 +19,7 @@ const rewards: Record<string, { coins: number; points: number; xp: number }> = {
   metro: { coins: 25, points: 35, xp: 35 },
   classic: { coins: 25, points: 35, xp: 35 },
   arena: { coins: 25, points: 35, xp: 35 },
+  zombie: { coins: 30, points: 40, xp: 45 },
 };
 
 function response(body: unknown, status = 200, origin: string | null = null) {
