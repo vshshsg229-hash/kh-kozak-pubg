@@ -492,9 +492,14 @@ class MainActivity : Activity() {
             }
             return
         }
-        if (requestCode == this.requestCode && grantResults.isNotEmpty() &&
-            permissions.indices.filter { permissions[it] == Manifest.permission.RECORD_AUDIO || permissions[it] == Manifest.permission.POST_NOTIFICATIONS }
-                .all { grantResults[it] == PackageManager.PERMISSION_GRANTED }) startWakeService()
+        if (requestCode == this.requestCode) {
+            val audioIndex = permissions.indexOf(Manifest.permission.RECORD_AUDIO)
+            if (audioIndex >= 0 && grantResults.size > audioIndex && grantResults[audioIndex] == PackageManager.PERMISSION_GRANTED) {
+                startWakeService()
+            } else {
+                Toast.makeText(this, "Для голосового режиму потрібен дозвіл на мікрофон.", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun requestTorchPermission(command: String) {
