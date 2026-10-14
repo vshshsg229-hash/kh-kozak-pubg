@@ -457,7 +457,7 @@ begin
     order by random() limit 1;
     if not found then return jsonb_build_object('error','collection_complete'); end if;
     insert into public.hub_inventory(user_id,item_id) values(p_user_id,v_won.item_id) on conflict do nothing;
-  elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner') then
+  elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') then
     insert into public.hub_inventory(user_id,item_id) values(p_user_id,p_item_id);
   end if;
 
