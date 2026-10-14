@@ -5,11 +5,14 @@ on:
     paths:
       - "desktop/**"
       - ".github/workflows/build-windows-pc.yml"
-      - "app-v6/**"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: kh-kozak-windows-pc-release-v8-67-0
+  cancel-in-progress: true
 
 jobs:
   build-windows:
