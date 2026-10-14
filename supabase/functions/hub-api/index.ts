@@ -85,6 +85,8 @@ async function getUserSnapshot(userId: string) {
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") ?? "";
 const ADMIN_TELEGRAM_CHAT_ID = Deno.env.get("ADMIN_TELEGRAM_CHAT_ID") ?? "";
+const MONOBANK_ACQUIRING_TOKEN = Deno.env.get("MONOBANK_ACQUIRING_TOKEN") ?? "";
+let monoPublicKey: CryptoKey | null = null;
 const ADMIN_USER_IDS = new Set((Deno.env.get("ADMIN_USER_IDS") ?? "").split(",").map((x) => x.trim()).filter(Boolean));
 
 async function telegramCall(method: string, payload: Record<string, unknown>) {
@@ -98,6 +100,69 @@ async function telegramCall(method: string, payload: Record<string, unknown>) {
 }
 async function telegramSend(chatId: number | string, text: string) {
   return await telegramCall("sendMessage", { chat_id: chatId, text: text.slice(0, 4000), disable_web_page_preview: true });
+}
+function decodeBase64(value: string) { return Uint8Array.from(atob(value), c => c.charCodeAt(0)); }
+function derSignatureToRaw(signature: Uint8Array) {
+  if (signature.length === 64) return signature;
+  if (signature[0] !== 0x30) throw new Error("Invalid ECDSA signature.");
+  let i = 2;
+  if (signature[i++] !== 0x02) throw new Error("Invalid ECDSA r.");
+  let rLen = signature[i++], r = signature.slice(i, i + rLen); i += rLen;
+  if (signature[i++] !== 0x02) throw new Error("Invalid ECDSA s.");
+  const sLen = signature[i++], ss = signature.slice(i, i + sLen);
+  const trim = (v: Uint8Array) => { let j = 0; while (j < v.length - 1 && v[j] === 0) j++; return v.slice(j); };
+  const pad = (v: Uint8Array) => { const x = trim(v); if (x.length > 32) throw new Error("Invalid ECDSA integer."); const out = new Uint8Array(32); out.set(x, 32 - x.length); return out; };
+  const rr = pad(r), sv = pad(ss), out = new Uint8Array(64); out.set(rr, 0); out.set(sv, 32); return out;
+}
+async function getMonoPublicKey() {
+  if (monoPublicKey) return monoPublicKey;
+  if (!MONOBANK_ACQUIRING_TOKEN) throw new Error("Monobank acquiring token is not configured.");
+  const responseKey = await fetch("https://api.monobank.ua/api/merchant/pubkey", { headers: { "X-Token": MONOBANK_ACQUIRING_TOKEN } });
+  if (!responseKey.ok) throw new Error("Unable to fetch Monobank webhook verification key.");
+  const payload = await responseKey.json();
+  const pem = atob(String(payload.key ?? ""));
+  const base64 = pem.replace(/-----[^-]+-----/g, "").replace(/\\s/g, "");
+  const der = decodeBase64(base64);
+  monoPublicKey = await crypto.subtle.importKey("spki", der, { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
+  return monoPublicKey;
+}
+async function verifyMonoWebhook(body: Uint8Array, signature: string) {
+  const key = await getMonoPublicKey();
+  return await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, key, derSignatureToRaw(decodeBase64(signature)), body);
+}
+async function monobankWebhook(req: Request, origin: string | null) {
+  if (!MONOBANK_ACQUIRING_TOKEN) return response({ error: "Monobank acquiring is not configured." }, 503, origin);
+  const signature = req.headers.get("x-sign") ?? "";
+  if (!signature) return response({ error: "Missing payment signature." }, 401, origin);
+  const raw = new Uint8Array(await req.arrayBuffer());
+  let valid = false;
+  try { valid = await verifyMonoWebhook(raw, signature); } catch (error) { console.error("Monobank signature verification failed:", error?.message ?? error); }
+  if (!valid) return response({ error: "Invalid payment signature." }, 401, origin);
+  const event = JSON.parse(new TextDecoder().decode(raw));
+  const invoiceId = typeof event.invoiceId === "string" ? event.invoiceId : "";
+  if (!invoiceId) return response({ error: "Missing invoice ID." }, 400, origin);
+  const { data: order, error: orderError } = await admin.from("hub_payment_orders").select("*").eq("invoice_id", invoiceId).maybeSingle();
+  if (orderError) throw orderError;
+  if (!order) return response({ error: "Payment order not found." }, 404, origin);
+  if (order.status === "paid") return response({ ok: true, duplicate: true }, 200, origin);
+  const eventAmount = Number(event.amount ?? event.finalAmount ?? -1);
+  if (eventAmount !== Number(order.amount) || Number(event.ccy ?? 980) !== 980) return response({ error: "Payment amount mismatch." }, 400, origin);
+  if (event.status !== "success") {
+    await admin.from("hub_payment_orders").update({ status: String(event.status ?? "unknown"), provider_event: event }).eq("id", order.id).eq("status", "pending");
+    return response({ ok: true, paid: false }, 200, origin);
+  }
+  const days = order.plan_id === "supporter" ? 30 : order.plan_id === "elite" ? 90 : 365;
+  const { data: profile, error: profileError } = await admin.from("hub_profiles").select("elite_expires_at").eq("id", order.user_id).maybeSingle();
+  if (profileError) throw profileError;
+  if (!profile) return response({ error: "Player profile not found." }, 404, origin);
+  const base = profile.elite_expires_at && new Date(profile.elite_expires_at).getTime() > Date.now() ? new Date(profile.elite_expires_at).getTime() : Date.now();
+  const expiresAt = new Date(base + days * 86400000).toISOString();
+  const { error: profileUpdateError } = await admin.from("hub_profiles").update({ elite_verified: true, elite_expires_at: expiresAt, updated_at: new Date().toISOString() }).eq("id", order.user_id);
+  if (profileUpdateError) throw profileUpdateError;
+  const { error: orderUpdateError } = await admin.from("hub_payment_orders").update({ status: "paid", paid_at: new Date().toISOString(), provider_event: event }).eq("id", order.id).eq("status", "pending");
+  if (orderUpdateError) throw orderUpdateError;
+  try { await notifyTelegram(order.user_id, "✦ Elite підтверджено! Пакет " + order.plan_id + " активовано до " + expiresAt + "."); } catch (error) { console.error("Elite payment notification failed:", error?.message ?? error); }
+  return response({ ok: true, paid: true }, 200, origin);
 }
 async function notifyTelegram(userId: string, text: string) {
   if (!TELEGRAM_BOT_TOKEN) return;
@@ -238,6 +303,7 @@ Deno.serve(async (req: Request) => {
       }, 200, origin);
     }
 
+    if (req.method === "POST" && path === "/api/payments/monobank/webhook") return await monobankWebhook(req, origin);
     if (req.method === "POST" && path === "/api/telegram/webhook") return await telegramWebhook(req, origin);
 
     if (req.method === "POST" && path === "/api/telegram/link-code") {
@@ -302,6 +368,38 @@ Deno.serve(async (req: Request) => {
       try { await notifyTelegram(user.id, `🛒 Магазин KH: придбання успішне. ${purchase.won_item_id ? "Із кейса випав " + purchase.won_item_id : itemId}. Витрачено ${purchase.cost} монет.`); }
       catch (notifyError) { console.error("Telegram purchase notification failed:", notifyError?.message ?? notifyError); }
       return response({ user: safeUser(snapshot), purchased: true, itemId: purchase.item_id, itemKind: purchase.item_kind, wonItemId: purchase.won_item_id ?? null, cost: purchase.cost, daily: purchase.daily }, 200, origin);
+    }
+
+    if (req.method === "POST" && path === "/api/payments/checkout") {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в акаунт, щоб підтримати проєкт і отримати Elite." }, 401, origin);
+      if (!MONOBANK_ACQUIRING_TOKEN) return response({ error: "Платіжний провайдер ще не налаштований. Додай MONOBANK_ACQUIRING_TOKEN у Supabase Edge Function Secrets." }, 503, origin);
+      const body = await req.json().catch(() => ({}));
+      const plans: Record<string, { amount: number; title: string; days: number }> = {
+        supporter: { amount: 9900, title: "KH Supporter", days: 30 },
+        elite: { amount: 24900, title: "KH Elite", days: 90 },
+        legend: { amount: 49900, title: "KH Legend", days: 365 },
+      };
+      const planId = typeof body.plan === "string" ? body.plan : "";
+      const plan = plans[planId];
+      if (!plan) return response({ error: "Невідомий пакет підтримки." }, 400, origin);
+      const reference = crypto.randomUUID();
+      const { data: order, error: orderError } = await admin.from("hub_payment_orders").insert({ user_id: user.id, plan_id: planId, amount: plan.amount, reference, status: "pending" }).select("id").single();
+      if (orderError) throw orderError;
+      const webhookUrl = SUPABASE_URL.replace(/\\/$/, "") + "/functions/v1/hub-api/api/payments/monobank/webhook";
+      const redirectUrl = (allowedOrigins[0] ?? "https://vshshsg229-hash.github.io") + "/kh-kozak-pubg/app-v6/?payment=return";
+      const invoiceResponse = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
+        method: "POST", headers: { "X-Token": MONOBANK_ACQUIRING_TOKEN, "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: plan.amount, ccy: 980, merchantPaymInfo: { reference, destination: plan.title + " · KH Kozak Battle Hub", comment: "Підтримка проєкту та Elite-переваги", basketOrder: [{ name: plan.title, qty: 1, sum: plan.amount, total: plan.amount, unit: "послуга", code: planId }] }, redirectUrl, webHookUrl: webhookUrl, validity: 3600 }),
+      });
+      const invoice = await invoiceResponse.json().catch(() => ({}));
+      if (!invoiceResponse.ok || typeof invoice.invoiceId !== "string" || typeof invoice.pageUrl !== "string") {
+        await admin.from("hub_payment_orders").update({ status: "failed", provider_event: invoice }).eq("id", order.id);
+        return response({ error: "Не вдалося створити рахунок Monobank. Перевір merchant token та налаштування еквайрингу." }, 502, origin);
+      }
+      const { error: updateError } = await admin.from("hub_payment_orders").update({ invoice_id: invoice.invoiceId, provider_event: { pageUrl: invoice.pageUrl } }).eq("id", order.id);
+      if (updateError) throw updateError;
+      return response({ ok: true, pageUrl: invoice.pageUrl, invoiceId: invoice.invoiceId, plan: planId }, 201, origin);
     }
 
     if (req.method === "GET" && path === "/api/premium/status") {
