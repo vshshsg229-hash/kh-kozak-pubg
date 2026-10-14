@@ -169,3 +169,25 @@
   body.sidebar-hidden .main { margin-left: 0; }
   .sidebar, .main { transition: margin-left .22s ease, width .22s ease, transform .22s ease; }
 }
+
+@media (min-width: 1024px) {
+ .desktop-command-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:38px;padding:0 13px;margin-right:12px;border:1px solid #54356d;border-radius:10px;color:#e7caff;background:linear-gradient(135deg,#21132f,#130d20);font-size:12px;font-weight:700;white-space:nowrap}
+ .desktop-command-button:hover{border-color:#c78aff;box-shadow:0 0 20px #b66cff2a}
+ .desktop-command-backdrop{position:fixed;inset:0;z-index:1000;display:grid;place-items:start center;padding:min(15vh,130px) 20px 24px;background:#05030bd9;backdrop-filter:blur(12px)}
+ .desktop-command-backdrop[hidden]{display:none}
+ .desktop-command{width:min(620px,100%);overflow:hidden;border:1px solid #75499b;border-radius:18px;background:linear-gradient(145deg,#1a1028,#0d0916);box-shadow:0 28px 100px #000a,0 0 50px #a44aff18;color:#f7efff}
+ .desktop-command-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid #382448}
+ .desktop-command-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#9d4ce8;color:#170921;font-weight:900;box-shadow:0 0 22px #b66cff44}
+ .desktop-command-head strong,.desktop-command-head small{display:block}.desktop-command-head strong{font-size:15px}.desktop-command-head small{color:#aa9abb;margin-top:4px;font-size:11px}.desktop-command-head kbd{margin-left:auto}
+ .desktop-command-search{display:flex;align-items:center;gap:10px;margin:14px 16px;padding:0 12px;border:1px solid #62417d;border-radius:12px;background:#0d0915}
+ .desktop-command-search>span{font-size:22px;color:#d9a9ff}.desktop-command-search input{flex:1;min-width:0;height:48px;border:0!important;outline:0!important;background:transparent!important;color:#fff;font-size:14px}.desktop-command-search input:focus{outline:0!important}
+ .desktop-command kbd{display:inline-flex;align-items:center;justify-content:center;min-width:22px;padding:3px 6px;border:1px solid #503665;border-radius:5px;background:#21162d;color:#d4b7ee;font:600 10px Inter,Arial,sans-serif}
+ .desktop-command-list{max-height:min(48vh,420px);overflow:auto;padding:0 10px 10px}
+ .desktop-command-item{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:10px;background:transparent;color:#eee2fb;text-align:left;cursor:pointer}
+ .desktop-command-item:hover,.desktop-command-item[aria-selected=true]{background:#a04be824;border-color:#7b4aa0;color:#fff}
+ .desktop-command-icon{display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:9px;background:#2b1a3b;color:#dfb8ff;font-size:17px}
+ .desktop-command-copy{flex:1;min-width:0}.desktop-command-copy strong,.desktop-command-copy small{display:block}.desktop-command-copy strong{font-size:12px}.desktop-command-copy small{color:#9d8bab;font-size:10px;margin-top:3px}
+ .desktop-command-item .desktop-command-enter{color:#bca1d4}.desktop-command-empty{padding:26px 12px;text-align:center;color:#ad9abb;font-size:12px}
+ .desktop-command-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid #382448;color:#9e8cad;font-size:10px}
+}
+@media (max-width:1023px){.desktop-command-button,.desktop-command-backdrop{display:none!important}}
