@@ -77,6 +77,25 @@ async function ensureSchema() {
       UNIQUE (user_id, event_id)
     );
     CREATE INDEX IF NOT EXISTS game_events_user_date_idx ON game_events (user_id, created_at DESC);
+    CREATE TABLE IF NOT EXISTS friendships (
+      id BIGSERIAL PRIMARY KEY,
+      requester_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      addressee_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      status VARCHAR(16) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','accepted','rejected')),
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      CHECK (requester_id <> addressee_id),
+      UNIQUE (requester_id, addressee_id)
+    );
+    CREATE INDEX IF NOT EXISTS friendships_addressee_status_idx ON friendships (addressee_id, status);
+    CREATE TABLE IF NOT EXISTS community_messages (
+      id BIGSERIAL PRIMARY KEY,
+      friendship_id BIGINT NOT NULL REFERENCES friendships(id) ON DELETE CASCADE,
+      sender_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      body VARCHAR(2000) NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS community_messages_friendship_idx ON community_messages (friendship_id, created_at);
   `);
 }
 
@@ -183,6 +202,112 @@ app.get("/api/leaderboard", async (req, res) => {
       [limit]
     );
     res.json({ leaderboard: result.rows.map((r, i) => ({ rank: i + 1, username: r.username, points: r.points, xp: r.xp, played: r.played })) });
+  } catch (error) { handleDbError(error, res); }
+});
+
+
+app.get("/api/community/players", authRequired, async (req, res) => {
+  const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, 20) : "";
+  if (q.length < 2) return res.json({ players: [] });
+  try {
+    const result = await pool.query(
+      "SELECT id, username, points, xp, played FROM users WHERE id<>$1 AND username ILIKE $2 ORDER BY points DESC, xp DESC LIMIT 20",
+      [req.userId, "%" + q.replace(/[\\%_]/g, "\\const gameRewards = {") + "%"]
+    );
+    res.json({ players: result.rows.map(r => ({ id: String(r.id), username: r.username, points: r.points, xp: r.xp, played: r.played })) });
+  } catch (error) { handleDbError(error, res); }
+});
+
+app.get("/api/community/friends", authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT f.id::text AS id, f.requester_id::text AS requester_id,
+        f.addressee_id::text AS addressee_id, f.status, f.created_at,
+        json_build_object('id', requester.id::text, 'username', requester.username,
+          'points', requester.points, 'xp', requester.xp, 'played', requester.played) AS requester,
+        json_build_object('id', addressee.id::text, 'username', addressee.username,
+          'points', addressee.points, 'xp', addressee.xp, 'played', addressee.played) AS addressee
+      FROM friendships f
+      JOIN users requester ON requester.id=f.requester_id
+      JOIN users addressee ON addressee.id=f.addressee_id
+      WHERE f.requester_id=$1 OR f.addressee_id=$1
+      ORDER BY CASE WHEN f.status='pending' THEN 0 ELSE 1 END, f.updated_at DESC
+      LIMIT 100
+    `, [req.userId]);
+    res.json({ userId: String(req.userId), friendships: result.rows });
+  } catch (error) { handleDbError(error, res); }
+});
+
+app.post("/api/community/friends/request", authRequired, async (req, res) => {
+  const username = cleanUsername(req.body?.username);
+  if (username.length < 2) return res.status(400).json({ error: "Вкажи нік гравця." });
+  try {
+    const target = await pool.query("SELECT id, username FROM users WHERE lower(username)=lower($1) AND id<>$2", [username, req.userId]);
+    if (!target.rows[0]) return res.status(404).json({ error: "Гравця не знайдено." });
+    const targetId = target.rows[0].id;
+    const existing = await pool.query(
+      "SELECT id, status FROM friendships WHERE (requester_id=$1 AND addressee_id=$2) OR (requester_id=$2 AND addressee_id=$1) LIMIT 1",
+      [req.userId, targetId]
+    );
+    if (existing.rows[0]) {
+      const row = existing.rows[0];
+      if (row.status === "accepted") return res.status(409).json({ error: "Ви вже друзі." });
+      if (row.status === "pending") return res.status(409).json({ error: "Запит дружби вже існує." });
+      await pool.query("DELETE FROM friendships WHERE id=$1", [row.id]);
+    }
+    await pool.query("INSERT INTO friendships (requester_id, addressee_id) VALUES ($1,$2)", [req.userId, targetId]);
+    res.status(201).json({ ok: true, message: "Запит на дружбу надіслано." });
+  } catch (error) { handleDbError(error, res); }
+});
+
+app.post("/api/community/friends/respond", authRequired, async (req, res) => {
+  const requestId = String(req.body?.requestId || "");
+  const accept = req.body?.accept === true;
+  if (!/^\\d{1,20}$/.test(requestId)) return res.status(400).json({ error: "Некоректний запит дружби." });
+  try {
+    const result = await pool.query(
+      "UPDATE friendships SET status=$3, updated_at=NOW() WHERE id=$1 AND addressee_id=$2 AND status='pending' RETURNING id",
+      [requestId, req.userId, accept ? "accepted" : "rejected"]
+    );
+    if (!result.rowCount) return res.status(404).json({ error: "Запит не знайдено або його вже оброблено." });
+    if (!accept) await pool.query("DELETE FROM friendships WHERE id=$1", [requestId]);
+    res.json({ ok: true, message: accept ? "Тепер ви друзі!" : "Запит відхилено." });
+  } catch (error) { handleDbError(error, res); }
+});
+
+app.get("/api/community/messages", authRequired, async (req, res) => {
+  const friendId = String(req.query.friendId || "");
+  if (!/^\\d{1,20}$/.test(friendId)) return res.status(400).json({ error: "Некоректний співрозмовник." });
+  try {
+    const friendship = await pool.query(
+      "SELECT id FROM friendships WHERE status='accepted' AND ((requester_id=$1 AND addressee_id=$2) OR (requester_id=$2 AND addressee_id=$1))",
+      [req.userId, friendId]
+    );
+    if (!friendship.rows[0]) return res.status(403).json({ error: "Чат доступний лише друзям." });
+    const result = await pool.query(
+      "SELECT id::text AS id, sender_id::text AS sender_id, body, created_at FROM community_messages WHERE friendship_id=$1 ORDER BY created_at DESC LIMIT 100",
+      [friendship.rows[0].id]
+    );
+    res.json({ messages: result.rows.reverse() });
+  } catch (error) { handleDbError(error, res); }
+});
+
+app.post("/api/community/messages", authRequired, async (req, res) => {
+  const friendId = String(req.body?.friendId || "");
+  const body = typeof req.body?.message === "string" ? req.body.message.trim() : "";
+  if (!/^\\d{1,20}$/.test(friendId)) return res.status(400).json({ error: "Некоректний співрозмовник." });
+  if (!body || body.length > 2000) return res.status(400).json({ error: "Повідомлення має містити 1–2000 символів." });
+  try {
+    const friendship = await pool.query(
+      "SELECT id FROM friendships WHERE status='accepted' AND ((requester_id=$1 AND addressee_id=$2) OR (requester_id=$2 AND addressee_id=$1))",
+      [req.userId, friendId]
+    );
+    if (!friendship.rows[0]) return res.status(403).json({ error: "Чат доступний лише друзям." });
+    const result = await pool.query(
+      "INSERT INTO community_messages (friendship_id, sender_id, body) VALUES ($1,$2,$3) RETURNING id::text AS id, sender_id::text AS sender_id, body, created_at",
+      [friendship.rows[0].id, req.userId, body]
+    );
+    res.status(201).json({ message: result.rows[0] });
   } catch (error) { handleDbError(error, res); }
 });
 
