@@ -161,6 +161,9 @@ async function monobankWebhook(req: Request, origin: string | null) {
   const expiresAt = new Date(base + days * 86400000).toISOString();
   const { error: profileUpdateError } = await admin.from("hub_profiles").update({ elite_verified: true, elite_expires_at: expiresAt, updated_at: new Date().toISOString() }).eq("id", order.user_id);
   if (profileUpdateError) throw profileUpdateError;
+  const tierItems: Record<string, string[]> = { supporter: ["title_pathfinder", "frame_crimson"], elite: ["title_ace", "frame_crimson", "skin_shadow", "weapon_ember", "badge_ace"], legend: ["title_loot", "banner_ember", "skin_commander", "weapon_ice", "avatar_commander", "badge_ace"] };
+  const { error: inventoryError } = await admin.from("hub_inventory").upsert((tierItems[order.plan_id] ?? []).map(item_id => ({ user_id: order.user_id, item_id })), { onConflict: "user_id,item_id", ignoreDuplicates: true });
+  if (inventoryError) throw inventoryError;
   const { error: orderUpdateError } = await admin.from("hub_payment_orders").update({ status: "paid", paid_at: new Date().toISOString(), provider_event: event }).eq("id", order.id).eq("status", "pending");
   if (orderUpdateError) throw orderUpdateError;
   try { await notifyTelegram(order.user_id, "✦ Elite підтверджено! Пакет " + order.plan_id + " активовано до " + expiresAt + "."); } catch (error) { console.error("Elite payment notification failed:", error?.message ?? error); }
@@ -411,7 +414,8 @@ Deno.serve(async (req: Request) => {
       if (error) throw error;
       if (!data) return response({ error: "Профіль не знайдено." }, 404, origin);
       const active = data.elite_verified === true && (!data.elite_expires_at || new Date(data.elite_expires_at).getTime() > Date.now());
-      return response({ eliteVerified: active, expiresAt: data.elite_expires_at ?? null }, 200, origin);
+      const snapshot = await getUserSnapshot(user.id);
+      return response({ eliteVerified: active, expiresAt: data.elite_expires_at ?? null, user: snapshot ? safeUser(snapshot) : null }, 200, origin);
     }
 
     if (req.method === "POST" && path === "/api/premium/ideas") {
