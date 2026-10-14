@@ -121,7 +121,7 @@ async function getMonoPublicKey() {
   if (!responseKey.ok) throw new Error("Unable to fetch Monobank webhook verification key.");
   const payload = await responseKey.json();
   const pem = atob(String(payload.key ?? ""));
-  const base64 = pem.replace(/-----[^-]+-----/g, "").replace(/\\s/g, "");
+  const base64 = pem.replace(/-----[^-]+-----/g, "").replace(/\s/g, "");
   const der = decodeBase64(base64);
   monoPublicKey = await crypto.subtle.importKey("spki", der, { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
   return monoPublicKey;
@@ -386,7 +386,7 @@ Deno.serve(async (req: Request) => {
       const reference = crypto.randomUUID();
       const { data: order, error: orderError } = await admin.from("hub_payment_orders").insert({ user_id: user.id, plan_id: planId, amount: plan.amount, reference, status: "pending" }).select("id").single();
       if (orderError) throw orderError;
-      const webhookUrl = SUPABASE_URL.replace(/\\/$/, "") + "/functions/v1/hub-api/api/payments/monobank/webhook";
+      const webhookUrl = SUPABASE_URL.replace(/\/$/, "") + "/functions/v1/hub-api/api/payments/monobank/webhook";
       const redirectUrl = (allowedOrigins[0] ?? "https://vshshsg229-hash.github.io") + "/kh-kozak-pubg/app-v6/?payment=return";
       const invoiceResponse = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
         method: "POST", headers: { "X-Token": MONOBANK_ACQUIRING_TOKEN, "Content-Type": "application/json" },
