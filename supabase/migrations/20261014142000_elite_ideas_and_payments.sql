@@ -41,6 +41,10 @@ on conflict (item_id) do update set
   item_name=excluded.item_name,item_kind=excluded.item_kind,cost=excluded.cost,
   rarity=excluded.rarity,daily_order=excluded.daily_order,active=true;
 
+-- Give every existing and new profile a basic field uniform and starter rifle finish.
+insert into public.hub_inventory(user_id,item_id) select id,'skin_recruit' from auth.users on conflict (user_id,item_id) do nothing;
+insert into public.hub_inventory(user_id,item_id) select id,'weapon_olive' from auth.users on conflict (user_id,item_id) do nothing;
+
 create or replace function public.hub_purchase_item(p_user_id uuid, p_item_id text, p_daily boolean default false)
 returns jsonb
 language plpgsql
