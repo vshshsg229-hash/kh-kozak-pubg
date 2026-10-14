@@ -1,6 +1,6 @@
 {
   "name": "kh-kozak-battle-hub",
-  "version": "8.67.0",
+  "version": "8.68.0",
   "description": "KH么Kozak Battle Hub desktop app",
   "main": "main.cjs",
   "author": "KH么Kozak",
@@ -28,11 +28,15 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
