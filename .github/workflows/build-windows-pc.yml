@@ -1,4 +1,4 @@
-name: Build Windows PC app
+name: Build Windows PC app # v2
 
 on:
   push:
