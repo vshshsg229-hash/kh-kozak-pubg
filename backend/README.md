@@ -10,9 +10,37 @@ Node.js + PostgreSQL backend for real accounts, shared game rewards, public lead
 - Server-defined rewards for supported games, event-ID deduplication and a 40-game-reward daily limit.
 - Shared top-20 leaderboard.
 - Rate limits, input validation, security headers and a database health check.
-- Existing optional AI chat and Telegram webhook routes.
+- AI chat through an OpenAI-compatible Chat Completions API, including Ollama's OpenAI-compatible endpoint.
+- Optional Telegram webhook.
 
 The daily shop, cosmetic inventory, secret-code redemption and some missions remain browser-local for now. Do not describe those as server-synced or as secure online rewards yet. Game rewards submitted while signed in are assigned by the server; browser-only/offline play continues using local progress.
+
+## Connect the assistant to Ollama
+
+Ollama is the model runtime; `https://ollama.com/install.ps1` is a Windows installer script, not a server address. Installing it on your own PC does not make it available to the public GitHub Pages website automatically.
+
+The backend already uses the OpenAI-compatible `/chat/completions` format, which Ollama supports. Configure the backend environment:
+
+```env
+AI_BASE_URL=http://127.0.0.1:11434/v1
+AI_API_KEY=ollama
+AI_MODEL=llama3.2
+```
+
+Then, on the computer that runs Ollama, install Ollama and pull the model (example):
+
+```powershell
+ollama pull llama3.2
+ollama serve
+```
+
+**Important networking distinction:**
+- If the Node backend runs on the same computer as Ollama, `127.0.0.1:11434` can work.
+- If the backend is deployed on Render, `127.0.0.1` points to the Render container, not your PC. For a public website, the Ollama host must be reachable from the backend over a secure network endpoint/VPN/tunnel. Do not expose port 11434 directly to the public internet.
+- For the browser's assistant to work, its existing **Порадник KH → Підключення AI-сервера** field must point to the Node backend URL, not to the Ollama installer URL. The backend URL must be HTTPS for the public HTTPS website.
+- Keep any API credentials in the backend environment only. The Ollama key above is a placeholder for the OpenAI-compatible client; it is not a secret.
+
+Ollama setup and model choice depend on your computer's available memory and hardware. The values above are an example, not a claim that Ollama is already running or publicly connected.
 
 ## Deploy with Render + PostgreSQL
 
@@ -39,7 +67,7 @@ Requires Node.js 20+ and a PostgreSQL database.
 - `DATABASE_URL` — required PostgreSQL connection string.
 - `JWT_SECRET` — required signing secret, at least 32 characters.
 - `FRONTEND_ORIGIN` — allowed frontend origin(s), comma-separated if needed.
-- `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL` — optional AI-compatible provider settings.
+- `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL` — optional AI-compatible provider settings. For Ollama, use its OpenAI-compatible `/v1` base URL and a model you have pulled.
 - `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET` — optional Telegram integration secrets.
 
 Never put database passwords, JWT secrets, AI keys, or Telegram tokens into frontend HTML/JavaScript. The API does not connect to or modify an official PUBG Mobile account.
