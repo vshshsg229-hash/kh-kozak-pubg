@@ -919,3 +919,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 
 /* Season countdown and profile cosmetic collection */
 .pass-section-heading small b{display:inline-block;color:var(--yellow,#ffd84d);font-variant-numeric:tabular-nums;white-space:nowrap}.profile-cosmetic-collection{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}.profile-cosmetic-item{display:flex;align-items:center;gap:12px;min-width:0;padding:12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.025)}.profile-cosmetic-art{display:grid;place-items:center;flex:0 0 56px;width:56px;height:56px;border-radius:10px;background:rgba(255,210,70,.08);font-size:22px}.profile-cosmetic-info{display:flex;flex-direction:column;gap:4px;min-width:0}.profile-cosmetic-info b{overflow-wrap:anywhere}.profile-cosmetic-info small{font-size:10px;letter-spacing:.08em;opacity:.72}.profile-cosmetic-info time{font-size:11px;line-height:1.4;opacity:.78}.profile-cosmetic-empty{padding:16px;border:1px dashed rgba(255,255,255,.18);border-radius:12px;opacity:.75}@media(max-width:600px){.profile-cosmetic-collection{grid-template-columns:1fr}.profile-cosmetic-item{padding:10px}}
+
+
+/* Fast, always-visible personal Telegram contact */
+.telegram-top-quick{display:flex;align-items:center;gap:8px;flex-shrink:0;padding:9px 12px;border:1px solid rgba(67,180,255,.55);border-radius:10px;background:linear-gradient(135deg,rgba(24,119,242,.22),rgba(20,184,166,.10));color:#eaf7ff;text-decoration:none;box-shadow:0 0 18px rgba(24,119,242,.10);transition:transform .18s,border-color .18s,background .18s}
+.telegram-top-quick>span{display:grid;place-items:center;width:27px;height:27px;border-radius:8px;background:#229ed9;color:white;font-size:16px}
+.telegram-top-quick b{font-size:12px;white-space:nowrap}
+.telegram-top-quick small{font-size:9px;letter-spacing:.07em;color:#8bd7ff;white-space:nowrap}
+.telegram-top-quick:hover{transform:translateY(-1px);border-color:#59c9ff;background:rgba(24,119,242,.25)}
+.telegram-fast-link{display:flex!important;align-items:center;text-decoration:none;color:inherit;border:1px solid rgba(34,158,217,.35);background:rgba(34,158,217,.07)}
+.telegram-fast-link em{margin-left:auto;color:#8bd7ff;font-size:9px;font-style:normal;white-space:nowrap}
+@media(max-width:1050px){.telegram-top-quick small{display:none}.telegram-top-quick{padding:7px 9px}}
+@media(max-width:720px){.telegram-top-quick{gap:5px;padding:6px 7px;margin-left:auto}.telegram-top-quick>span{width:25px;height:25px}.telegram-top-quick b{font-size:10px}.topbar{gap:7px}.telegram-fast-link{order:-1}}
+@media(max-width:390px){.telegram-top-quick b{font-size:9px}.telegram-top-quick{padding:5px}.telegram-top-quick>span{width:22px;height:22px}.season small{display:none}}
