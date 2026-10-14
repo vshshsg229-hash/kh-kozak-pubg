@@ -18,7 +18,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: kh-kozak-windows-pc-release-v8-69-0
+  group: kh-kozak-windows-pc-release-v9-0-0
   cancel-in-progress: true
 
 jobs:
