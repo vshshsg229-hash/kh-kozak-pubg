@@ -5,18 +5,22 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 ## Implemented in this branch
 - Added the supplied Firebase Web App configuration.
 - Initializes Firebase App, Authentication, and Firestore SDK when the CDN SDKs load.
-- Exposes an additive profile adapter for loading/creating `users/{uid}` and updating a small allowlist of public profile fields.
-- Emits `kh-firebase-auth-state` when Firebase Authentication changes state.
-- Added `app-v6/firebase-auth.js`, which routes the existing register/login/logout buttons through Firebase Email/Password Authentication and creates the user's Firestore profile.
-- The auth adapter keeps Firebase sessions separate from the legacy REST API token and explicitly warns that game progression is not yet synced.
-- Added restrictive starter rules in `firebase/firestore.rules`: profile owner access only, zeroed progression at profile creation, cosmetic-only client updates, and no client-side profile deletion.
-- Added `firebase/README.md` with console setup steps and current security boundaries.
+- Added an additive Firestore profile adapter for `users/{uid}`.
+- Added Email/Password registration, login and logout wiring for the existing account controls.
+- Added restrictive Firestore rules: profile owner access only, zeroed progression at profile creation, cosmetic-only client edits, and no client-side profile deletion.
+- Added Firebase Cloud Functions source:
+  - `finishGame` applies fixed server-side rewards, uses event IDs for duplicate prevention, and adds a short cooldown.
+  - `getLeaderboard` returns the top 10 without direct client reads of other users' private profile documents.
+- Updated authenticated game reward and leaderboard calls to use Firebase callable functions.
+- Disabled the legacy Render API request path in `app-v6/app.js` on this branch.
+- Added `firebase.json`, Functions package metadata, a setup/deployment guide, and a GitHub Actions syntax-check workflow.
 
 ## Not yet verified
-- Browser runtime against the live Firebase project.
-- Whether Email/Password is enabled and the rules have been published in the Firebase console.
-- Live end-to-end test of the existing account form against the Firebase project.
-- Connecting coins, XP, purchases, rewards, leaderboard and community to Firebase.
-- Cloud Functions or server-side validation for reward operations.
+- Live browser registration, login, and profile creation against the Firebase project.
+- Whether Email/Password and Firestore are enabled and the Firestore rules are published.
+- Cloud Functions deployment and live reward/leaderboard calls.
+- The shop, inventory, achievements, community, admin features, and all progression sync are not fully migrated.
+- The reward cooldown and event ID checks are a baseline, not a complete anti-cheat system.
 
-The current app still uses its existing REST API for its online features. Do not switch production until Firebase Authentication, Firestore rules, and trusted reward functions have been tested. Client code must never directly grant itself coins, XP, inventory, or leaderboard points.
+## Before production
+Deploy rules and functions to the Firebase project from a trusted machine, run end-to-end tests on staging, and inspect the CI result. Do not merge this branch into `main` until the live tests pass. Never place service-account credentials in browser code or commit them to the repository.
