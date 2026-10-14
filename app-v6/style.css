@@ -966,3 +966,58 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 @media(max-width:900px){#tab-bunker{padding-left:clamp(10px,2vw,18px);padding-right:clamp(10px,2vw,18px)}.bunker-overview{grid-template-columns:repeat(3,minmax(0,1fr))}.bunker-upgrades{grid-template-columns:1fr}.bunker-upgrade{grid-template-columns:52px minmax(0,1fr) auto;align-items:center}.bunker-upgrade .btn{grid-column:2 / 4;justify-self:stretch}.bunker-upgrade-level{grid-column:1;grid-row:2;justify-self:center}}
 @media(max-width:560px){.bunker-hero{margin-bottom:12px}.bunker-hero-content{padding:16px}.bunker-visual{min-height:150px}.bunker-overview{grid-template-columns:repeat(3,minmax(0,1fr))}.bunker-stat{padding:10px 7px}.bunker-stat small{letter-spacing:.4px}.bunker-stat em{font-size:9px}.bunker-upgrade{grid-template-columns:40px minmax(0,1fr);padding:12px}.bunker-upgrade .btn{grid-column:1 / -1;width:100%}.bunker-upgrade-level{grid-column:2;grid-row:2;justify-self:start}.bunker-lower-grid{gap:12px}.bunker-mission-panel,.bunker-trophy-panel{min-width:0;padding:13px}.bunker-trophies{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:561px) and (max-width:900px){.bunker-lower-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.bunker-hero{grid-template-columns:minmax(0,1.1fr) minmax(160px,.9fr)}.bunker-hero-content{padding:20px}.bunker-visual{min-height:210px}}
+
+
+/* 8.50.0 — Desktop-style tablet layout and complete Bunker controls on touch devices */
+@media (min-width:721px) and (max-width:1100px){
+  :root{--sidebar:190px}
+  .main{padding-left:18px;padding-right:18px}
+  .topbar{height:72px}
+  .top-actions{gap:10px}
+  .hero{grid-template-columns:minmax(0,1.05fr) minmax(190px,.95fr)}
+  .hero-copy{padding-left:22px}
+  .hero h1{font-size:clamp(38px,5vw,54px)}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .games-grid,.rewards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sidebar{padding:20px 12px 16px}
+  .brand{padding-bottom:22px}
+  .nav-item{gap:10px;padding:11px 9px}
+  #tab-bunker .bunker-hero{grid-template-columns:minmax(0,1.1fr) minmax(155px,.9fr)}
+  #tab-bunker .bunker-hero-content{padding:22px}
+  #tab-bunker .bunker-upgrades{grid-template-columns:minmax(0,1fr)}
+  #tab-bunker .bunker-upgrade{grid-template-columns:48px minmax(0,1fr) auto;gap:12px;padding:14px}
+  #tab-bunker .bunker-upgrade-icon{width:46px;height:46px;font-size:24px}
+  #tab-bunker .bunker-upgrade .btn{grid-column:2 / 4;width:100%;min-height:44px}
+  #tab-bunker .bunker-upgrade-level{grid-column:3;grid-row:1;justify-self:end}
+  #tab-bunker .bunker-lower-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  #tab-bunker .bunker-mission-panel,#tab-bunker .bunker-trophy-panel{padding:16px}
+  #tab-bunker .bunker-trophies{gap:7px}
+  #tab-bunker .bunker-trophy{padding:10px}
+}
+@media (min-width:901px) and (max-width:1100px){
+  .stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .feature-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (min-width:721px) and (max-width:900px){
+  .main{padding-left:14px;padding-right:14px}
+  .topbar{gap:8px}
+  .season{font-size:9px;gap:6px}
+  .season-line{width:20px}
+  .top-actions{gap:7px}
+  .language-control{max-width:130px}
+  .language-control select{max-width:105px}
+  #tab-bunker .bunker-hero{grid-template-columns:minmax(0,1fr) minmax(125px,.65fr)}
+  #tab-bunker .bunker-hero-content{padding:18px}
+  #tab-bunker .bunker-visual{min-height:205px}
+  #tab-bunker .bunker-lower-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:720px){
+  #tab-bunker .bunker-hero{grid-template-columns:minmax(0,1fr)}
+  #tab-bunker .bunker-visual{position:absolute;inset:0 0 0 35%;min-height:0;opacity:.42;pointer-events:none}
+  #tab-bunker .bunker-hero-content{z-index:2}
+  #tab-bunker .bunker-lower-grid{grid-template-columns:minmax(0,1fr)}
+  #tab-bunker .bunker-upgrades{grid-template-columns:minmax(0,1fr)}
+  #tab-bunker .bunker-upgrade .btn{min-height:46px}
+  #tab-bunker .bunker-mission-panel .btn{min-height:46px}
+}
