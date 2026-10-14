@@ -5,7 +5,7 @@ const state=(()=>{try{return {...{font:100,focus:false,contrast:false,drills:0,b
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch{}};
 const style=document.createElement('link');style.rel='stylesheet';style.href='global-refresh.css?v='+VERSION;document.head.append(style);
 document.documentElement.dataset.khVersion=VERSION;
-const classify=()=>{const w=innerWidth;document.documentElement.dataset.khDevice=w<700?'phone':w<1200?'tablet':'pc'};
+const classify=()=>{const w=innerWidth,ua=navigator.userAgent||'',tabletUA=/iPad|Tablet|PlayBook|Silk/i.test(ua)||(/Android/i.test(ua)&&!/Mobile/i.test(ua))||(/Macintosh/i.test(ua)&&navigator.maxTouchPoints>1),tablet=tabletUA||(w>=540&&w<1024&&navigator.maxTouchPoints>0);document.documentElement.dataset.khDevice=tablet?'tablet':w<700?'phone':w<1200?'tablet':'pc';document.documentElement.classList.toggle('kh-device-tablet',tablet);};
 classify();addEventListener('resize',classify,{passive:true});
 document.documentElement.style.setProperty('--kh-user-scale',String(state.font/100));
 document.documentElement.style.fontSize=state.font+'%';
