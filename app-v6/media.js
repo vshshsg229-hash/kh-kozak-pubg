@@ -130,7 +130,7 @@ function renderMusic(){
   const btn=document.createElement('a');btn.className='music-play-btn';btn.href='https://www.youtube.com/results?search_query='+encodeURIComponent(item.query);btn.target='_self';btn.rel='noopener';btn.textContent='▶ ЗНАЙТИ ТРЕК';
   row.append(num,info,btn);musicList.append(row);
  });
- if(musicCount)musicCount.textContent=filtered.length+' треків/пошукових варіантів';
+ if(musicCount)musicCount.textContent=filtered.length+' пошукових варіантів';
  if(musicStatus)musicStatus.textContent=filtered.length?'Показано '+Math.min(musicShown,filtered.length)+' із '+filtered.length+'. Натисни «Знайти трек»; YouTube відкриється у цій вкладці.':'Нічого не знайдено — спробуй інший запит.';
  if(musicMore)musicMore.hidden=filtered.length<=musicShown;
 }
