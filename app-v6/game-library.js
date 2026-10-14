@@ -35,6 +35,7 @@ function apply(){
  toolbar.querySelectorAll('[data-library-filter]').forEach(b=>b.classList.toggle('active',b.dataset.libraryFilter===filter));
 }
 grid.addEventListener('click',e=>{
+ const launch=e.target.closest('[data-game]');if(launch&&!e.target.closest('[data-favorite-game]')){const key='khkozak_game_played_'+launch.dataset.game;try{localStorage.setItem(key,String(Number(localStorage.getItem(key)||0)+1));apply()}catch(_){}}
  const b=e.target.closest('[data-favorite-game]');if(!b)return;
  e.preventDefault();e.stopPropagation();const id=b.dataset.favoriteGame;
  if(favorites.has(id))favorites.delete(id);else favorites.add(id);
