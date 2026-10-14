@@ -140,7 +140,7 @@ $('#onlinePassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')authenti
 if($('#onlineNickname'))$('#onlineNickname').value=state.name||'KH么Kozak';
 renderOnlineStatus();
 if(getAuthToken()&&apiBase())refreshOnlineAccount();
-if(apiBase())loadLeaderboard();
+if(apiBase())connectOnlineApi();
 
 function cleanup(){cleanups.forEach(f=>{try{f()}catch(e){}});cleanups=[]}
 function openModal(type){cleanup();modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';message.textContent='';area.innerHTML='';if(type==='reaction')startReaction();if(type==='aim')startAim();if(type==='quiz')startQuiz();if(type==='memory')startMemory();if(type==='loot')startLoot();if(type==='pubg')startPubg();if(type==='arena')startArena();if(type==='classic')startClassic();if(type==='metro')startMetro();if(type==='zombie')startZombie();if(type.startsWith('arcade-'))startArcadeGame(type.slice(7))}
