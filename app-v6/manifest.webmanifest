@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub",
+  "name": "KH么Kozak Battle Hub 9.0",
   "short_name": "KH Kozak",
-  "description": "Ігровий хаб KH么Kozak: мініігри, місії, монети та нагороди.",
+  "description": "KH么Kozak Battle Hub 9.0: ігри, тренування, місії, нагороди та універсальне керування.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
@@ -12,8 +12,8 @@
     "minimal-ui"
   ],
   "orientation": "any",
-  "background_color": "#0b0e12",
-  "theme_color": "#11151a",
+  "background_color": "#080b13",
+  "theme_color": "#101725",
   "prefer_related_applications": false,
   "icons": [
     {
