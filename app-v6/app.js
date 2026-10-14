@@ -140,6 +140,7 @@ if($('#onlineNickname'))$('#onlineNickname').value=state.name||'KH么Kozak';
 renderOnlineStatus();
 if(getAuthToken()&&apiBase())refreshOnlineAccount();
 if(apiBase())connectOnlineApi();
+window.addEventListener('kh-firebase-auth-state',event=>{if(event.detail?.user){loadLeaderboard()}else{const el=$('#onlineLeaderboard');if(el)el.innerHTML='<p class="online-empty">Увійди через Firebase, щоб завантажити онлайн-рейтинг.</p>'}});
 
 function cleanup(){cleanups.forEach(f=>{try{f()}catch(e){}});cleanups=[]}
 function openModal(type){cleanup();modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';message.textContent='';area.innerHTML='';if(type==='reaction')startReaction();if(type==='aim')startAim();if(type==='quiz')startQuiz();if(type==='memory')startMemory();if(type==='loot')startLoot();if(type==='pubg')startPubg();if(type==='arena')startArena();if(type==='classic')startClassic();if(type==='metro')startMetro();if(type==='zombie')startZombie();if(type.startsWith('arcade-'))startArcadeGame(type.slice(7))}
