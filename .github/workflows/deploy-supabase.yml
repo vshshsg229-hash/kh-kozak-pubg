@@ -32,7 +32,15 @@ jobs:
             echo "::error::Missing repository secret SUPABASE_PROJECT_REF"
             exit 1
           fi
-          echo "Deployment secrets are present."
+          if [[ "$SUPABASE_ACCESS_TOKEN" != sbp_* ]]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN has the wrong format. Create a new Supabase Personal Access Token beginning with sbp_ and replace the GitHub Actions secret. Never use a project anon/publishable key or service_role key here."
+            exit 1
+          fi
+          if [ "$SUPABASE_PROJECT_REF" != "xacqretciujzrcqjvvgz" ]; then
+            echo "::error::SUPABASE_PROJECT_REF does not match the app's configured Supabase project."
+            exit 1
+          fi
+          echo "Deployment secrets have the expected format and project reference."
 
       - name: Set up Supabase CLI
         uses: supabase/setup-cli@v1
