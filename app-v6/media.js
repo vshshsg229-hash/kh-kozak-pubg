@@ -8,7 +8,7 @@ function playYouTube(raw){
  const video=host==='youtu.be'?u.pathname.split('/').filter(Boolean)[0]:(u.searchParams.get('v')||'');
  const list=u.searchParams.get('list')||'';
  if(!video&&!list){if(youtubeMessage)youtubeMessage.textContent='У посиланні не знайдено відео або плейлист.';return false}
- const params=new URLSearchParams();params.set('playsinline','1');params.set('rel','0');if(list)params.set('list',list);
+ const params=new URLSearchParams();params.set('playsinline','1');params.set('rel','0');params.set('autoplay','1');params.set('controls','1');if(list)params.set('list',list);
  const src=video?'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(video)+'?'+params.toString():'https://www.youtube-nocookie.com/embed/videoseries?'+params.toString();
  if(youtubeWrap)youtubeWrap.innerHTML='<iframe title="YouTube music player" src="'+src+'" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>';
  if(youtubeMessage)youtubeMessage.textContent='Плеєр завантажено. Натисни ▶ у відео. Якщо відтворення заблоковане, відкрий трек на YouTube.';
@@ -193,4 +193,34 @@ $('#shuffleKhPlaylist')?.addEventListener('click',()=>{
 });
 renderKhPlaylist();
 renderUkrainianTracks();
+
+// Ukrainian archive: 1,400+ songs curated across nine Spotify decade playlists.
+const uaMusicPlaylistSelect=$('#uaMusicPlaylistSelect');
+const uaMusicEmbed=$('#uaMusicEmbed');
+const uaMusicSources={
+ youtube:{url:'https://www.youtube-nocookie.com/embed/videoseries?list=PLZo_HKQnItNuvXb0bJ3n4XrgWd4P6r73G&playsinline=1&rel=0',title:'Українські хіти — YouTube'},
+ '1920':{url:'https://open.spotify.com/embed/playlist/4NKtCF5tcoVxbCsFG2lfCT?utm_source=generator&theme=0',title:'Українські пісні 1920-х'},
+ '1930':{url:'https://open.spotify.com/embed/playlist/4romy12Z4v5bQ8L3jdVgHy?utm_source=generator&theme=0',title:'Українські пісні 1930-х'},
+ '1940':{url:'https://open.spotify.com/embed/playlist/2UpIDqXpi0l7WZa7GPuT5X?utm_source=generator&theme=0',title:'Українські пісні 1940-х'},
+ '1950':{url:'https://open.spotify.com/embed/playlist/0tENMFDGw46whWLegoZqbs?utm_source=generator&theme=0',title:'Українські пісні 1950-х'},
+ '1960':{url:'https://open.spotify.com/embed/playlist/79HclhNvbzXku2hAYQhiJX?utm_source=generator&theme=0',title:'Українські пісні 1960-х'},
+ '1970':{url:'https://open.spotify.com/embed/playlist/6y1UH21LyvzttsknxCGcPt?utm_source=generator&theme=0',title:'Українські пісні 1970-х'},
+ '1980':{url:'https://open.spotify.com/embed/playlist/3eJ3l9fbIDk8EBN1f6wK4k?utm_source=generator&theme=0',title:'Українські пісні 1980-х'},
+ '1990':{url:'https://open.spotify.com/embed/playlist/3XbjPibnpFyJYsPV9Aluwj?utm_source=generator&theme=0',title:'Українські пісні 1990-х'},
+ '2000':{url:'https://open.spotify.com/embed/playlist/3aavjJRpn8JXfXjZQZ7s3F?utm_source=generator&theme=0',title:'Українські пісні 2000-х'}
+};
+function setUaMusicSource(key){
+ const source=uaMusicSources[key]||uaMusicSources.youtube;
+ if(!uaMusicEmbed)return;
+ uaMusicEmbed.src=source.url;
+ uaMusicEmbed.title=source.title;
+ uaMusicEmbed.dataset.provider=key==='youtube'?'youtube':'spotify';
+ try{localStorage.setItem('khkozak_ua_music_source',key)}catch{}
+}
+uaMusicPlaylistSelect?.addEventListener('change',()=>setUaMusicSource(uaMusicPlaylistSelect.value));
+if(uaMusicPlaylistSelect&&uaMusicEmbed){
+ let saved='youtube';try{saved=localStorage.getItem('khkozak_ua_music_source')||'youtube'}catch{}
+ if(uaMusicSources[saved])uaMusicPlaylistSelect.value=saved;
+ setUaMusicSource(uaMusicPlaylistSelect.value);
+}
 })();
