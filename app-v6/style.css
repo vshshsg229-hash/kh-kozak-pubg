@@ -1096,3 +1096,22 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   .mobile-nav{display:none!important}
   .sidebar{display:flex}
 }
+
+
+/* 8.52.0 — Full PC navigation drawer on mobile */
+.mobile-menu-toggle{display:none;border:1px solid #34404c;background:#151c24;color:var(--yellow);border-radius:8px;width:40px;height:40px;flex:0 0 40px;font-size:22px;align-items:center;justify-content:center}
+.mobile-menu-backdrop{display:none}
+@media(max-width:720px){
+  .mobile-menu-toggle{display:flex}
+  .topbar{justify-content:flex-start}
+  .mobile-brand{min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .sidebar{display:flex!important;position:fixed;inset:0 auto 0 0;width:min(86vw,310px);max-height:100dvh;overflow-x:hidden;overflow-y:auto;padding:20px 14px calc(22px + env(safe-area-inset-bottom));z-index:130;transform:translateX(-105%);transition:transform .24s ease;box-shadow:none;overscroll-behavior:contain}
+  body.mobile-menu-open .sidebar{transform:translateX(0);box-shadow:18px 0 50px #0009}
+  body.mobile-menu-open .mobile-menu-backdrop{display:block;position:fixed;inset:0;z-index:120;background:#020509b8;backdrop-filter:blur(3px);border:0;width:100%;height:100%;padding:0}
+  .sidebar .brand{padding-bottom:22px}
+  .sidebar .nav{gap:4px}
+  .sidebar .nav-item{min-height:43px;padding:11px 10px;font-size:12px}
+  .sidebar .side-bottom{margin-top:22px}
+  .mobile-nav{z-index:110}
+}
+@media(prefers-reduced-motion:reduce){.sidebar{transition:none!important}}
