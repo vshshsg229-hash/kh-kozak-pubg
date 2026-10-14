@@ -1115,3 +1115,68 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   .mobile-nav{z-index:110}
 }
 @media(prefers-reduced-motion:reduce){.sidebar{transition:none!important}}
+
+
+/* 8.53.0 — Tablet uses phone bottom navigation; landscape phone uses full PC interface */
+@media (min-width:721px) and (max-width:1100px){
+  .sidebar{display:none!important}
+  .main{margin-left:0;width:100%;padding:0 22px}
+  .mobile-nav{position:fixed;z-index:100;left:0;right:0;bottom:0;display:flex;align-items:stretch;gap:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x;padding:7px 10px max(7px,env(safe-area-inset-bottom));background:rgba(8,13,20,.97);border-top:1px solid #293541;backdrop-filter:blur(16px)}
+  .mobile-nav::-webkit-scrollbar{display:none}
+  .mobile-nav button{flex:0 0 66px;min-width:66px;min-height:52px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:8px;background:transparent;color:#8e9ba9;font-size:9px;line-height:1.15;white-space:nowrap}
+  .mobile-nav button span{font-size:20px;line-height:1}
+  .mobile-nav button.active{color:var(--yellow);background:#f5c34212;border-color:#f5c34232}
+  .main{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  .mobile-menu-toggle,.mobile-menu-backdrop{display:none!important}
+}
+@media (max-width:720px) and (orientation:landscape){
+  /* Landscape phone: restore PC-style sidebar and desktop navigation */
+  .mobile-menu-toggle,.mobile-menu-backdrop{display:none!important}
+  .sidebar{display:flex!important;position:fixed;inset:0 auto 0 0;width:190px;max-height:100dvh;overflow-x:hidden;overflow-y:auto;padding:14px 10px 12px;transform:none!important;transition:none;z-index:30;box-shadow:none}
+  .sidebar .brand{gap:8px;padding:0 4px 16px}
+  .sidebar .brand-mark{width:32px;height:32px;font-size:21px}
+  .sidebar .brand b{font-size:14px}
+  .sidebar .brand small{font-size:7px;letter-spacing:1px}
+  .sidebar .side-label{padding:0 8px 8px;font-size:8px}
+  .sidebar .nav{gap:2px}
+  .sidebar .nav-item{gap:8px;min-height:32px;padding:7px 7px;font-size:10px;border-radius:5px}
+  .sidebar .nav-item>span{font-size:15px;width:16px}
+  .sidebar .nav-item em{font-size:8px;padding:2px 4px}
+  .sidebar .side-bottom{margin-top:10px;padding:10px 4px 0;font-size:8px}
+  .main{margin-left:190px;width:auto;min-width:0;padding:0 16px 18px}
+  .topbar{height:54px;min-height:54px;margin-bottom:12px;padding:5px 0;position:relative;top:auto;justify-content:space-between}
+  .mobile-brand{display:none!important}
+  .season{display:flex;font-size:9px;gap:5px}
+  .season-line{width:18px}
+  .season small{font-size:7px}
+  .top-actions{gap:6px}
+  .language-control{max-width:125px;overflow:visible}
+  .language-control select{width:auto;max-width:95px;min-width:75px;color:inherit}
+  .currency{gap:5px;padding:5px 7px}
+  .currency small{display:inline}
+  .avatar-mini{width:30px;height:30px;flex:0 0 30px}
+  .mobile-nav{display:none!important}
+  .view{padding:8px 0 20px}
+  .hero{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:245px}
+  .hero-copy{padding:20px 18px}
+  .hero h1{font-size:clamp(28px,5vw,42px)}
+  .hero-art{min-height:0;max-height:none}
+  .stats-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .stat-card{padding:10px}
+  .stat-card>b{font-size:22px}
+  .quick-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .games-grid,.rewards-grid,.community-grid,.profile-grid,.pass-grid,.events-grid,.arsenal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #tab-bunker .bunker-hero{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);min-height:210px}
+  #tab-bunker .bunker-visual{position:relative;inset:auto;min-height:190px;opacity:1}
+  #tab-bunker .bunker-hero-content{padding:16px}
+  #tab-bunker .bunker-lower-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #tab-bunker .bunker-upgrades{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:390px) and (orientation:landscape){
+  .sidebar{width:166px;padding-left:7px;padding-right:7px}
+  .main{margin-left:166px;padding-left:10px;padding-right:10px}
+  .sidebar .nav-item{font-size:9px;gap:6px;padding:6px 5px}
+  .sidebar .nav-item em{display:none}
+  .hero{min-height:205px}
+}
