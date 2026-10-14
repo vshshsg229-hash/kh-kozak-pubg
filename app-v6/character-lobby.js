@@ -48,7 +48,7 @@ function render(){
  panel.querySelectorAll('[data-fighter-role]').forEach(b=>b.onclick=()=>{localWrite(scopedKey(ROLE_KEY),b.dataset.fighterRole);render()});
  panel.querySelectorAll('[data-fighter-scene]').forEach(b=>b.onclick=()=>{localWrite(scopedKey(SCENE_KEY),b.dataset.fighterScene);render()});
  $('#khMissionDone').onclick=()=>{localWrite(scopedKey(MISSION_KEY),{date:today,done:true,mission:mission.title});render()};
- let rot=Number(panel.dataset.rotation)||-12;const apply=()=>{model.style.transform='rotateY('+rot+'deg) rotateX(1deg)';panel.dataset.rotation=String(rot)};apply();
+ let rot=Number(panel.dataset.rotation)||-12;const apply=()=>{model.style.transform='translateX(-50%) rotateY('+rot+'deg) rotateX(1deg)';panel.dataset.rotation=String(rot)};apply();
  let down=false,lastX=0;model.onpointerdown=e=>{down=true;lastX=e.clientX;model.setPointerCapture?.(e.pointerId);model.classList.add('dragging')};model.onpointermove=e=>{if(!down)return;rot+=(e.clientX-lastX)*.75;lastX=e.clientX;apply()};const stop=()=>{down=false;model.classList.remove('dragging')};model.onpointerup=stop;model.onpointercancel=stop;
  panel.querySelectorAll('[data-turn]').forEach(b=>b.onclick=()=>{rot+=Number(b.dataset.turn);apply()});$('#khResetRotation').onclick=()=>{rot=0;apply()};
  $('#khWeaponLab').onclick=()=>{document.querySelector('[data-tab="arsenal"]')?.click()};
