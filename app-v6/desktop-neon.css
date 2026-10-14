@@ -191,3 +191,21 @@
  .desktop-command-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid #382448;color:#9e8cad;font-size:10px}
 }
 @media (max-width:1023px){.desktop-command-button,.desktop-command-backdrop{display:none!important}}
+
+
+/* Ukrainian music archive — desktop-first neon player */
+.ua-music-hub-panel{margin:18px 0;padding:clamp(16px,2.2vw,26px);border:1px solid #51316c;background:linear-gradient(145deg,rgba(31,16,47,.96),rgba(12,10,19,.98));box-shadow:0 0 32px #a855f715}
+.ua-music-hub-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}
+.ua-music-hub-head h2{margin:6px 0;font-size:clamp(22px,2.5vw,30px)}
+.ua-music-hub-head p{max-width:780px;margin:6px 0;color:var(--muted,#b9aec7);font-size:12px;line-height:1.65}
+.ua-music-live{flex-shrink:0;border:1px solid #7546a0;border-radius:30px;padding:8px 12px;color:#d9b5ff;background:#8b45b51a;font-size:10px;font-weight:900;letter-spacing:.12em}
+.ua-music-select-label{display:block;margin:16px 0 7px;color:#c7a8e7;font-size:10px;font-weight:900;letter-spacing:.13em}
+.ua-music-playlist-select{width:100%;max-width:560px;min-height:46px;padding:11px 14px;border:1px solid #62417d;border-radius:9px;background:#110c19;color:#f8f0ff;font:inherit;font-size:13px}
+.ua-music-embed-wrap{margin-top:14px;overflow:hidden;border:1px solid #4d2c66;border-radius:12px;background:#09070e;box-shadow:0 0 24px #9d4ce81a}
+.ua-music-embed-wrap iframe{display:block;width:100%;height:380px;border:0}
+.ua-music-source-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
+.ua-music-source-links a{color:#d8b0ff;font-size:11px;text-decoration:none}
+.ua-music-source-links a:hover{color:#fff;text-decoration:underline}
+#tab-music .ua-music-hub-panel .media-note{line-height:1.6}
+@media(min-width:1024px){#tab-music .ua-music-hub-panel{margin-top:8px}#tab-music .ua-music-embed-wrap iframe{height:420px}}
+@media(max-width:700px){.ua-music-hub-head{display:block}.ua-music-live{display:inline-flex;margin-top:8px}.ua-music-embed-wrap iframe{height:352px}.ua-music-source-links{display:grid;gap:9px}}
