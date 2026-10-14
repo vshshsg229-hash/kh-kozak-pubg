@@ -1,0 +1,17 @@
+@media (min-width:1024px){
+.pc-companion-launch{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 13px;margin-right:10px;border:1px solid #654080;border-radius:10px;background:linear-gradient(135deg,#241335,#130d20);color:#e7caff;font-weight:750;cursor:pointer}
+.pc-companion-launch:hover{border-color:#d2a1ff;box-shadow:0 0 20px #b66cff33}
+.pc-companion-panel{position:fixed;z-index:950;right:24px;top:82px;width:min(390px,calc(100vw - 48px));max-height:calc(100vh - 110px);overflow:auto;padding:18px;border:1px solid #704594;border-radius:18px;background:linear-gradient(150deg,#1b1028f7,#0d0916f7);box-shadow:0 24px 80px #000a,0 0 40px #9b4de522;color:#f7f1ff;backdrop-filter:blur(18px)}
+.pc-companion-panel[hidden],.pc-companion-launch[hidden]{display:none}
+.pc-companion-panel header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #39264b;padding-bottom:12px}
+.pc-companion-panel header small{font-size:10px;letter-spacing:.13em;color:#c18aff}
+.pc-companion-panel h2{font-size:21px;margin:5px 0 0}.pc-companion-panel header [data-close]{border:1px solid #54376c;background:#21132f;color:#fff;border-radius:9px;width:34px;height:34px;font-size:23px;cursor:pointer}
+.pc-companion-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.pc-companion-stats div{display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #3e2a53;border-radius:12px;background:#170f23}.pc-companion-stats b{font-size:23px;color:#d9a9ff}.pc-companion-stats span,.pc-muted{font-size:12px;color:#b7a8c8}
+.pc-companion-panel section{padding:13px 0;border-top:1px solid #30203f}.pc-companion-panel h3{font-size:14px;margin:0 0 9px}.pc-companion-panel p{margin:0 0 9px}
+.pc-timer{text-align:center;font-size:35px;font-weight:800;letter-spacing:.06em;color:#d7a0ff;padding:5px}
+.pc-actions{display:flex;align-items:center;gap:8px;margin-top:9px}.pc-actions button{border:1px solid #78509a;border-radius:9px;background:#2a183c;color:#f4e9ff;padding:9px 12px;font-weight:700;cursor:pointer}.pc-actions button:hover{background:#482465}
+.pc-checks{display:grid;gap:9px}.pc-checks label{display:flex;align-items:center;gap:9px;font-size:12px;color:#e5d9f0}.pc-checks input{accent-color:#b66cff}
+.pc-companion-panel textarea{box-sizing:border-box;width:100%;min-height:90px;resize:vertical;border:1px solid #49315f;border-radius:10px;background:#100b1a;color:#f7f1ff;padding:10px;font:inherit;font-size:12px}
+.pc-saved{font-size:11px;color:#67f5c2}.pc-companion-panel footer{border-top:1px solid #30203f;padding-top:12px;color:#a99ab8;font-size:10px;line-height:1.5}
+}
