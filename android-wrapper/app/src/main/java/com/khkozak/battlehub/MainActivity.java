@@ -2,6 +2,8 @@ package com.khkozak.battlehub;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Build;
+import android.view.WindowInsets;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -22,8 +24,21 @@ public class MainActivity extends Activity {
         getWindow().setStatusBarColor(Color.rgb(17, 21, 26));
         getWindow().setNavigationBarColor(Color.rgb(11, 14, 18));
         getWindow().getDecorView().setSystemUiVisibility(0);
+        if (Build.VERSION.SDK_INT >= 35) {
+            // Android 15/16 enforce edge-to-edge for apps targeting recent SDKs.
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+            getWindow().setDecorFitsSystemWindows(false);
+        }
         webView = new WebView(this);
         webView.setBackgroundColor(Color.rgb(11, 14, 18));
+        if (Build.VERSION.SDK_INT >= 35) {
+            webView.setOnApplyWindowInsetsListener((view, insets) -> {
+                android.graphics.Insets bars = insets.getInsets(WindowInsets.Type.systemBars());
+                view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+                return insets;
+            });
+        }
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
