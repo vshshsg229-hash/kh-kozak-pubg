@@ -153,20 +153,13 @@ async function monobankWebhook(req: Request, origin: string | null) {
     await admin.from("hub_payment_orders").update({ status: String(event.status ?? "unknown"), provider_event: event }).eq("id", order.id).eq("status", "pending");
     return response({ ok: true, paid: false }, 200, origin);
   }
-  const days = order.plan_id === "supporter" ? 30 : order.plan_id === "elite" ? 90 : 365;
-  const { data: profile, error: profileError } = await admin.from("hub_profiles").select("elite_expires_at").eq("id", order.user_id).maybeSingle();
-  if (profileError) throw profileError;
-  if (!profile) return response({ error: "Player profile not found." }, 404, origin);
-  const base = profile.elite_expires_at && new Date(profile.elite_expires_at).getTime() > Date.now() ? new Date(profile.elite_expires_at).getTime() : Date.now();
-  const expiresAt = new Date(base + days * 86400000).toISOString();
-  const { error: profileUpdateError } = await admin.from("hub_profiles").update({ elite_verified: true, elite_expires_at: expiresAt, updated_at: new Date().toISOString() }).eq("id", order.user_id);
-  if (profileUpdateError) throw profileUpdateError;
-  const tierItems: Record<string, string[]> = { supporter: ["title_pathfinder", "frame_crimson"], elite: ["title_ace", "frame_crimson", "skin_shadow", "weapon_ember", "badge_ace"], legend: ["title_loot", "banner_ember", "skin_commander", "weapon_ice", "avatar_commander", "badge_ace"] };
-  const { error: inventoryError } = await admin.from("hub_inventory").upsert((tierItems[order.plan_id] ?? []).map(item_id => ({ user_id: order.user_id, item_id })), { onConflict: "user_id,item_id", ignoreDuplicates: true });
-  if (inventoryError) throw inventoryError;
-  const { error: orderUpdateError } = await admin.from("hub_payment_orders").update({ status: "paid", paid_at: new Date().toISOString(), provider_event: event }).eq("id", order.id).eq("status", "pending");
-  if (orderUpdateError) throw orderUpdateError;
-  try { await notifyTelegram(order.user_id, "✦ Elite підтверджено! Пакет " + order.plan_id + " активовано до " + expiresAt + "."); } catch (error) { console.error("Elite payment notification failed:", error?.message ?? error); }
+  const { data: fulfillment, error: fulfillmentError } = await admin.rpc("hub_fulfill_payment", { p_invoice_id: invoiceId, p_amount: eventAmount, p_ccy: Number(event.ccy ?? 980), p_provider_event: event });
+  if (fulfillmentError) throw fulfillmentError;
+  if (fulfillment?.error === "amount_mismatch") return response({ error: "Payment amount mismatch." }, 400, origin);
+  if (fulfillment?.error === "order_not_found") return response({ error: "Payment order not found." }, 404, origin);
+  if (fulfillment?.error) return response({ error: "Payment could not be fulfilled." }, 400, origin);
+  if (fulfillment?.duplicate) return response({ ok: true, duplicate: true }, 200, origin);
+  try { await notifyTelegram(String(fulfillment.user_id), "✦ Elite підтверджено! Пакет " + String(fulfillment.plan_id) + " активовано до " + String(fulfillment.expires_at) + "."); } catch (error) { console.error("Elite payment notification failed:", error?.message ?? error); }
   return response({ ok: true, paid: true }, 200, origin);
 }
 async function notifyTelegram(userId: string, text: string) {
