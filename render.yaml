@@ -16,12 +16,16 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      - key: AI_PROVIDER
+        value: ollama
       - key: AI_API_KEY
         sync: false
       - key: AI_BASE_URL
-        value: https://api.openai.com/v1
+        sync: false
       - key: AI_MODEL
-        value: gpt-4o-mini
+        value: llama3.2
+      - key: AI_TIMEOUT_MS
+        value: "45000"
       - key: TELEGRAM_BOT_TOKEN
         sync: false
       - key: TELEGRAM_WEBHOOK_SECRET
