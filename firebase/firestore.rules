@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsUser(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      // Initial profile: clients may create only a fresh, zero-progress profile.
+      allow create: if ownsUser(uid)
+        && request.resource.data.keys().hasOnly([
+          'uid', 'username', 'email', 'coins', 'points', 'xp', 'played',
+          'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.uid == uid
+        && request.resource.data.coins == 0
+        && request.resource.data.points == 0
+        && request.resource.data.xp == 0
+        && request.resource.data.played == 0
+        && request.resource.data.username is string
+        && request.resource.data.username.size() <= 32;
+
+      // Until trusted server functions are added, clients can read only their own profile.
+      allow read: if ownsUser(uid);
+
+      // Client edits are restricted to cosmetic/public profile fields.
+      // Coins, XP, points, played count, inventory, and achievements cannot be client-edited.
+      allow update: if ownsUser(uid)
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['username', 'avatar', 'bio', 'updatedAt'])
+        && (!('username' in request.resource.data)
+          || (request.resource.data.username is string
+            && request.resource.data.username.size() <= 64))
+        && (!('avatar' in request.resource.data)
+          || (request.resource.data.avatar is string
+            && request.resource.data.avatar.size() <= 64))
+        && (!('bio' in request.resource.data)
+          || (request.resource.data.bio is string
+            && request.resource.data.bio.size() <= 240));
+
+      allow delete: if false;
+    }
+  }
+}
