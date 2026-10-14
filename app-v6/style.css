@@ -1307,3 +1307,24 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 @media(min-width:801px){
   #tab-music .media-layout{grid-template-columns:minmax(0,1.65fr) minmax(260px,.8fr)}
 }
+
+
+/* 8.58.0 — desktop sidebar controls: full, compact, hidden */
+.desktop-sidebar-toggle{display:none;flex:0 0 38px;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid #34404c;border-radius:8px;background:#151c24;color:var(--yellow);font-size:19px;line-height:1}
+@media(min-width:901px){
+  .desktop-sidebar-toggle{display:inline-flex}
+  body.sidebar-compact{--sidebar:76px!important}
+  body.sidebar-compact .sidebar{width:76px!important;padding-left:9px;padding-right:9px}
+  body.sidebar-compact .sidebar .brand{justify-content:center;padding-left:0;padding-right:0;padding-bottom:26px}
+  body.sidebar-compact .sidebar .brand>span:last-child,
+  body.sidebar-compact .sidebar .side-label,
+  body.sidebar-compact .sidebar .nav-item em,
+  body.sidebar-compact .sidebar .side-bottom>span,
+  body.sidebar-compact .sidebar .side-bottom small{display:none!important}
+  body.sidebar-compact .sidebar .nav-item{justify-content:center;gap:0;padding:12px 4px;font-size:0;text-align:center}
+  body.sidebar-compact .sidebar .nav-item>span{width:auto;font-size:21px}
+  body.sidebar-compact .sidebar .side-bottom{display:flex;justify-content:center;padding:16px 0 0}
+  body.sidebar-hidden{--sidebar:0px!important}
+  body.sidebar-hidden .sidebar{display:none!important}
+  body.sidebar-hidden .main{margin-left:0!important}
+}
