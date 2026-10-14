@@ -22,7 +22,8 @@ Configure these in Supabase → Edge Functions → Secrets:
 - `MONOBANK_ACQUIRING_TOKEN` — merchant acquiring token from the project's Monobank merchant account.
 - `TELEGRAM_BOT_TOKEN` — bot token used for notifications and account linking.
 - `TELEGRAM_WEBHOOK_SECRET` — strong random secret for the Telegram webhook.
-- `ADMIN_TELEGRAM_CHAT_ID` — the Telegram chat ID where premium ideas should be delivered.
+- `ADMIN_TELEGRAM_CHAT_ID` — the existing admin notification chat ID, if needed.
+- `ELITE_IDEA_TELEGRAM_CHAT_ID` — destination for ELITE IDEA LAB submissions; defaults to `@rryy899` if omitted. Add the bot to the `@rryy899` Telegram channel as an administrator with permission to post messages.
 - Existing `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` must remain available to the function.
 
 The Monobank merchant account must be approved and configured to settle funds to the account you control. The site cannot route money directly to an arbitrary card number; payout destination is controlled by the merchant/payment provider.
@@ -37,7 +38,7 @@ The checkout endpoint creates a Monobank invoice. The server grants entitlements
 
 ## 5. Premium ideas
 
-Only a server-confirmed `elite_verified` entitlement can submit up to three ideas per day. The function stores the idea in `hub_premium_ideas` and sends it to `ADMIN_TELEGRAM_CHAT_ID` when the Telegram token and chat ID are configured. If the Telegram settings are missing, the idea can still be saved, but the response reports that the notification was not sent.
+Only a server-confirmed `elite_verified` entitlement can submit up to three ideas per day. The function stores the idea in `hub_premium_ideas` and sends it to `ELITE_IDEA_TELEGRAM_CHAT_ID` (default `@rryy899`) when `TELEGRAM_BOT_TOKEN` is configured. The bot must be an administrator in the target channel with permission to post. If the bot is not configured or cannot post, the idea can still be saved, but the response reports that the notification was not sent.
 
 ## 6. Safe activation checklist
 
