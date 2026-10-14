@@ -28,3 +28,5 @@
 #khReplicaFighterSlot:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#070b16 0%,transparent 24%,transparent 78%,#070b16 100%),linear-gradient(0deg,#070b16 0%,transparent 18%,transparent 90%,#070b16 100%);z-index:3}
 #khReplicaFighterSlot #khLobby{display:none!important}
 @media(max-width:620px){#khReplicaFighterSlot .kh-real-soldier{left:57%;top:18%;height:67%;max-width:94%}}
+
+#khReplicaFighterSlot .kh-real-soldier{z-index:1}#khReplicaFighterSlot:after{z-index:2}.kh-replica-signature{z-index:4!important}
