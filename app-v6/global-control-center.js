@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const VERSION='9.0.0',STORE='khkozak_control_center_v1';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const state=(()=>{try{return {...{font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0},...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch{return{font:100,focus:false,contrast:false,drills:0,best:0}}})();
+const state=(()=>{try{return {...{font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0},...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch{return{font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0}}})();
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch{}};
 const style=document.createElement('link');style.rel='stylesheet';style.href='global-refresh.css?v='+VERSION;document.head.append(style);
 document.documentElement.dataset.khVersion=VERSION;
