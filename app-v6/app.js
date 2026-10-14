@@ -116,7 +116,7 @@ document.addEventListener('click',e=>{const add=e.target.closest('[data-communit
 const AUTH_TOKEN_KEY='khkozak_online_token_v1',REFRESH_TOKEN_KEY='khkozak_supabase_refresh_v1',API_BASE_KEY='khkozak_api_base',SUPABASE_KEY_STORAGE='khkozak_supabase_anon_key';const API_HEALTH_KEY='khkozak_api_health_ok';
 const DEFAULT_API_URL='https://khkozak-battle-hub-api-uftt.onrender.com';
 function apiBase(){return DEFAULT_API_URL}
-function isRenderApi(base=apiBase()){return String(base).replace(/\\/$/,'')===DEFAULT_API_URL}
+function isRenderApi(base=apiBase()){return base===DEFAULT_API_URL}
 function supabasePublicKey(){return ''}
 function getAuthToken(){try{return localStorage.getItem(AUTH_TOKEN_KEY)||''}catch{return ''}}
 function setOnlineMessage(text,isError=false){const el=$('#onlineAccountMessage');if(el){el.textContent=text;el.classList.toggle('error',!!isError)}}
