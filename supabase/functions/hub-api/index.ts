@@ -218,6 +218,8 @@ Deno.serve(async (req: Request) => {
         admin.from("hub_inventory").select("item_id").limit(1),
         admin.from("hub_daily_shop_purchases").select("item_id").limit(1),
         admin.from("hub_achievements").select("achievement_id").limit(1),
+        admin.from("hub_friendships").select("id").limit(1),
+        admin.from("hub_chat_messages").select("id").limit(1),
       ]);
       const rpcChecks = await Promise.all([
         admin.rpc("hub_refresh_achievements", { p_user_id: "00000000-0000-4000-8000-000000000000" }),
@@ -401,6 +403,84 @@ Deno.serve(async (req: Request) => {
       const profile = await getUserSnapshot(user.id);
       if (!profile) return response({ error: "Профіль не знайдено." }, 404, origin);
       return response({ user: safeUser(profile) }, 200, origin);
+    }
+
+    if (path.startsWith("/api/community/")) {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в акаунт, щоб користуватися спільнотою." }, 401, origin);
+
+      if (req.method === "GET" && path === "/api/community/players") {
+        const query = (new URL(req.url).searchParams.get("q") ?? "").trim().replace(/[<>]/g, "").slice(0, 20);
+        let request = admin.from("hub_profiles").select("id,username,points,xp,played").neq("id", user.id).order("points", { ascending: false }).limit(20);
+        if (query.length >= 2) request = request.ilike("username", "%" + query.replace(/[%_,]/g, "") + "%");
+        const { data, error } = await request;
+        if (error) throw error;
+        return response({ players: data ?? [] }, 200, origin);
+      }
+
+      if (req.method === "GET" && path === "/api/community/friends") {
+        const { data, error } = await admin.from("hub_friendships").select("id,requester_id,addressee_id,status,created_at,updated_at,requester:hub_profiles!hub_friendships_requester_id_fkey(username,points,xp,played),addressee:hub_profiles!hub_friendships_addressee_id_fkey(username,points,xp,played)").or("requester_id.eq." + user.id + ",addressee_id.eq." + user.id).order("updated_at", { ascending: false }).limit(100);
+        if (error) throw error;
+        return response({ friendships: data ?? [] }, 200, origin);
+      }
+
+      if (req.method === "POST" && path === "/api/community/friends/request") {
+        const body = await req.json().catch(() => ({}));
+        const username = cleanName(body.username);
+        if (username.length < 3) return response({ error: "Введи нік гравця (мінімум 3 символи)." }, 400, origin);
+        const { data: target, error: targetError } = await admin.from("hub_profiles").select("id,username").ilike("username", username).maybeSingle();
+        if (targetError) throw targetError;
+        if (!target) return response({ error: "Гравця з таким ніком не знайдено." }, 404, origin);
+        if (target.id === user.id) return response({ error: "Не можна додати самого себе." }, 400, origin);
+        const { data: existing, error: existingError } = await admin.from("hub_friendships").select("id,status,requester_id,addressee_id").or("and(requester_id.eq." + user.id + ",addressee_id.eq." + target.id + "),and(requester_id.eq." + target.id + ",addressee_id.eq." + user.id + ")").maybeSingle();
+        if (existingError) throw existingError;
+        if (existing?.status === "accepted") return response({ error: "Ви вже друзі." }, 409, origin);
+        if (existing?.status === "pending") return response({ error: existing.requester_id === user.id ? "Запит уже надіслано." : "Цей гравець уже надіслав тобі запит — прийми його у списку друзів." }, 409, origin);
+        const { data: friendship, error } = await admin.from("hub_friendships").insert({ requester_id: user.id, addressee_id: target.id, status: "pending" }).select("id,status,requester_id,addressee_id,created_at").single();
+        if (error) throw error;
+        return response({ friendship, message: "Запит у друзі надіслано." }, 201, origin);
+      }
+
+      if (req.method === "POST" && path === "/api/community/friends/respond") {
+        const body = await req.json().catch(() => ({}));
+        const id = typeof body.requestId === "string" ? body.requestId : "";
+        const accept = body.accept === true;
+        if (!/^[0-9a-f-]{36}$/i.test(id)) return response({ error: "Некоректний запит у друзі." }, 400, origin);
+        if (accept) {
+          const { data, error } = await admin.from("hub_friendships").update({ status: "accepted", updated_at: new Date().toISOString() }).eq("id", id).eq("addressee_id", user.id).eq("status", "pending").select("id").maybeSingle();
+          if (error) throw error;
+          if (!data) return response({ error: "Запит не знайдено або його вже оброблено." }, 404, origin);
+        } else {
+          const { data, error } = await admin.from("hub_friendships").delete().eq("id", id).eq("addressee_id", user.id).eq("status", "pending").select("id").maybeSingle();
+          if (error) throw error;
+          if (!data) return response({ error: "Запит не знайдено або його вже оброблено." }, 404, origin);
+        }
+        return response({ ok: true, message: accept ? "Запит прийнято. Тепер ви друзі!" : "Запит відхилено." }, 200, origin);
+      }
+
+      if (req.method === "GET" && path === "/api/community/messages") {
+        const friendId = new URL(req.url).searchParams.get("friendId") ?? "";
+        if (!/^[0-9a-f-]{36}$/i.test(friendId)) return response({ error: "Обери друга для чату." }, 400, origin);
+        const { data: friendship, error: friendError } = await admin.from("hub_friendships").select("id").eq("status", "accepted").or("and(requester_id.eq." + user.id + ",addressee_id.eq." + friendId + "),and(requester_id.eq." + friendId + ",addressee_id.eq." + user.id + ")").maybeSingle();
+        if (friendError) throw friendError;
+        if (!friendship) return response({ error: "Чат доступний лише між друзями." }, 403, origin);
+        const { data, error } = await admin.from("hub_chat_messages").select("id,sender_id,recipient_id,body,created_at").or("and(sender_id.eq." + user.id + ",recipient_id.eq." + friendId + "),and(sender_id.eq." + friendId + ",recipient_id.eq." + user.id + ")").order("created_at", { ascending: true }).limit(100);
+        if (error) throw error;
+        return response({ messages: data ?? [] }, 200, origin);
+      }
+
+      if (req.method === "POST" && path === "/api/community/messages") {
+        const body = await req.json().catch(() => ({}));
+        const friendId = typeof body.friendId === "string" ? body.friendId : "";
+        const message = typeof body.message === "string" ? body.message.trim().replace(/[<>]/g, "").slice(0, 1000) : "";
+        if (!/^[0-9a-f-]{36}$/i.test(friendId) || message.length < 1) return response({ error: "Напиши повідомлення (до 1000 символів) і обери друга." }, 400, origin);
+        const { data: friendship, error: friendError } = await admin.from("hub_friendships").select("id").eq("status", "accepted").or("and(requester_id.eq." + user.id + ",addressee_id.eq." + friendId + "),and(requester_id.eq." + friendId + ",addressee_id.eq." + user.id + ")").maybeSingle();
+        if (friendError) throw friendError;
+        if (!friendship) return response({ error: "Спершу прийми запит у друзі." }, 403, origin);
+        const { data, error } = await admin.from("hub_chat_messages").insert({ sender_id: user.id, recipient_id: friendId, body: message }).select("id,sender_id,recipient_id,body,created_at").single();
+        if (error) throw error;
+        return response({ message: data }, 201, origin);
+      }
     }
 
     if (req.method === "GET" && path === "/api/leaderboard") {
