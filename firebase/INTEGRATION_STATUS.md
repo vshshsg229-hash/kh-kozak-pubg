@@ -7,10 +7,12 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 - Initializes Firebase App, Authentication, and Firestore SDK when the CDN SDKs load.
 - Exposes an additive profile adapter for loading/creating `users/{uid}` and updating a small allowlist of public profile fields.
 - Emits `kh-firebase-auth-state` when Firebase Authentication changes state.
+- Added restrictive starter rules in `firebase/firestore.rules`: profile owner access only, zeroed progression at profile creation, cosmetic-only client updates, and no client-side profile deletion.
+- Added `firebase/README.md` with console setup steps and current security boundaries.
 
 ## Not yet verified
 - Browser runtime against the live Firebase project.
-- Email/password provider status and Firestore database/rules.
+- Whether Email/Password is enabled and the rules have been published in the Firebase console.
 - Connecting existing account forms, coins, XP, purchases, rewards, leaderboard and community to Firebase.
 - Cloud Functions or server-side validation for reward operations.
 
