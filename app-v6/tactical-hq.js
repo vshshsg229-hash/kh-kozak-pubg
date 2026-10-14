@@ -1,0 +1,30 @@
+(()=>{'use strict';
+const KEY='khkozak_tactical_hq_v1';
+const $=s=>document.querySelector(s);
+const operations=[
+{title:'Зачистка гарячої точки',desc:'Висадись у людному POI, зберіть спорядження та виграйте першу сутичку.',goal:'1 перемога у стартовій сутичці',risk:'Високий',time:12,maps:['Erangel','Livik','Rondo']},
+{title:'Тихий рейд за припасами',desc:'Уникай зайвих перестрілок, перевір укриття та винеси команду з хорошим лутом.',goal:'Повний комплект лікування + обвіси',risk:'Середній',time:18,maps:['Erangel','Vikendi','Sanhok']},
+{title:'Мисливець на дальній дистанції',desc:'Займи позицію з оглядом, працюй від укриття та змінюй позицію після пострілу.',goal:'3 влучні дальні постріли',risk:'Високий',time:15,maps:['Miramar','Erangel','Rondo']},
+{title:'Ротація до безпечної зони',desc:'Плануй маршрут завчасно, не затримуйся на луті та тримай запасний шлях.',goal:'Дійти до зони без хаотичної ротації',risk:'Тактичний',time:10,maps:['Erangel','Miramar','Vikendi']},
+{title:'Підтримка загону',desc:'Тримай команду в ресурсах, прикривай союзників і не відривайся від групи.',goal:'Допомогти союзнику та зберегти позицію',risk:'Командний',time:14,maps:['Будь-яка мапа','Livik','Sanhok']},
+{title:'Тренування контролю віддачі',desc:'Проведи коротку серію на полігоні: одна зброя, одна дистанція, стабільна черга.',goal:'3 контрольовані серії по мішені',risk:'Тренування',time:8,maps:['Полігон','Erangel','Livik']},
+{title:'Фінальне коло',desc:'Грай від укриттів, не відкривайся без потреби та стеж за звуками суперників.',goal:'Пережити наступну ротацію у топ-10',risk:'Високий',time:12,maps:['Erangel','Miramar','Rondo']}
+];
+let data;try{data=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{data={}}
+data.history=Array.isArray(data.history)?data.history:[];data.totalMinutes=Number(data.totalMinutes)||0;data.completed=Number(data.completed)||0;data.active=!!data.active;data.startedAt=Number(data.startedAt)||0;data.op=data.op||null;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch{};renderStats();renderHistory()};
+const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function currentOp(){return data.op||operations[0]}
+function generate(){const map=$('#tqhMap').value,style=$('#tqhStyle').value;let choices=operations.filter(o=>(map==='Будь-яка мапа'||o.maps.includes(map))&&(style==='Будь-який стиль'||(style==='Безпечна гра'?['Тихий рейд за припасами','Ротація до безпечної зони','Підтримка загону'].includes(o.title):style==='Агресивно'?['Зачистка гарячої точки','Мисливець на дальній дистанції','Фінальне коло'].includes(o.title):o.title==='Тренування контролю віддачі')));if(!choices.length)choices=operations;data.op=choices[Math.floor(Math.random()*choices.length)];renderOp();save()}
+function renderOp(){const o=currentOp();$('#tqhOp').innerHTML='<small>ЗАВДАННЯ ОПЕРАЦІЇ</small><h3>'+safe(o.title)+'</h3><p>'+safe(o.desc)+'</p><div class="tactical-hq-pills"><span>🎯 '+safe(o.goal)+'</span><span>⚠️ Ризик: '+safe(o.risk)+'</span><span>⏱ Орієнтир: '+o.time+' хв</span></div>'}
+function renderStats(){$('#tqhCompleted').textContent=data.completed;$('#tqhMinutes').textContent=data.totalMinutes;$('#tqhBest').textContent=data.history.length?Math.max(...data.history.map(x=>Number(x.minutes)||0))+' хв':'—';$('#tqhStart').disabled=data.active;$('#tqhFinish').disabled=!data.active;$('#tqhSessionStatus').textContent=data.active?'Операція триває. Заверши її, коли закінчиш грати.':'Готовий до наступного виходу.';$('#tqhClock').textContent=fmt(data.active?Date.now()-data.startedAt:0)}
+function fmt(ms){const n=Math.max(0,Math.floor(ms/1000));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
+function renderHistory(){const el=$('#tqhHistory');if(!el)return;if(!data.history.length){el.innerHTML='<div class="tactical-hq-empty">Тут з’являться твої завершені операції. Запусти першу сесію!</div>';return}el.innerHTML=data.history.slice(0,8).map(x=>'<div class="tactical-hq-history-row"><div><b>'+safe(x.title)+'</b><small>'+safe(x.map)+' · '+safe(x.date)+' · '+safe(x.goal)+'</small></div><strong>'+x.minutes+' хв</strong></div>').join('')}
+$('#tqhGenerate').addEventListener('click',generate);
+$('#tqhStart').addEventListener('click',()=>{if(data.active)return;data.active=true;data.startedAt=Date.now();save()});
+$('#tqhFinish').addEventListener('click',()=>{if(!data.active)return;const ms=Math.max(60000,Date.now()-data.startedAt),minutes=Math.max(1,Math.round(ms/60000)),o=currentOp();data.history.unshift({title:o.title,map:$('#tqhMap').value,goal:o.goal,minutes,date:new Date().toLocaleString('uk-UA',{dateStyle:'short',timeStyle:'short'})});data.history=data.history.slice(0,30);data.totalMinutes+=minutes;data.completed++;data.active=false;data.startedAt=0;save();$('#tqhSessionStatus').textContent='Операцію записано! Прогрес збережено на цьому пристрої.';});
+$('#tqhClear').addEventListener('click',()=>{if(!confirm('Очистити історію тактичного штабу? Цю дію не можна скасувати.'))return;data.history=[];data.totalMinutes=0;data.completed=0;save()});
+$('#tqhRosterSave').addEventListener('click',()=>{data.roster={assault:$('#tqhAssault').value.trim(),sniper:$('#tqhSniper').value.trim(),support:$('#tqhSupport').value.trim(),scout:$('#tqhScout').value.trim()};try{localStorage.setItem(KEY,JSON.stringify(data))}catch{};$('#tqhRosterStatus').textContent='Склад загону збережено на цьому пристрої.'});
+const roster=data.roster||{};$('#tqhAssault').value=roster.assault||'';$('#tqhSniper').value=roster.sniper||'';$('#tqhSupport').value=roster.support||'';$('#tqhScout').value=roster.scout||'';
+if(data.active&&data.startedAt>Date.now())data.startedAt=Date.now();if(!data.op)data.op=operations[0];renderOp();renderStats();renderHistory();setInterval(()=>{if(data.active)$('#tqhClock').textContent=fmt(Date.now()-data.startedAt)},1000);
+})();
