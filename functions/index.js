@@ -59,6 +59,7 @@ exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (r
       points: Number(user.points || 0) + reward.points,
       xp: Number(user.xp || 0) + reward.xp,
       played: Number(user.played || 0) + 1,
+      games: { ...(user.games || {}), [game]: Number(user.games?.[game] || 0) + 1 },
       lastGameAtMs: now,
       updatedAt: FieldValue.serverTimestamp()
     };
