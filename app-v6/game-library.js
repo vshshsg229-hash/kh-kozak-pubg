@@ -1,51 +1,58 @@
 (()=>{'use strict';
 const KEY='khkozak_game_favorites_v1';
-const grid=document.querySelector('#tab-games .games-grid');
+const grid=document.querySelector('#kh100Grid')||document.querySelector('#tab-games .games-grid');
 if(!grid)return;
+const arcade=grid.id==='kh100Grid';
 let favorites=new Set();
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(raw))favorites=new Set(raw.filter(x=>typeof x==='string'))}catch(_){}
-let filter='all',query='';
+let filter='all';
 const toolbar=document.createElement('section');
 toolbar.className='game-library-tools';
-toolbar.setAttribute('aria-label','Пошук і вибране');
-toolbar.innerHTML='<div class="game-library-top"><label class="game-library-search"><span aria-hidden="true">⌕</span><input type="search" id="gameLibrarySearch" placeholder="Знайти мінігру..." autocomplete="off" aria-label="Пошук ігор"><kbd>⌘ / Ctrl K</kbd></label><div class="game-library-count" id="gameLibraryCount" aria-live="polite">100 режимів</div></div><div class="game-library-filters" role="group" aria-label="Фільтр ігор"><button type="button" class="game-filter active" data-library-filter="all">Усі ігри</button><button type="button" class="game-filter" data-library-filter="favorites">★ Обрані <span id="gameFavoriteCount">0</span></button><button type="button" class="game-filter" data-library-filter="played">Зіграні</button></div><p class="game-library-hint">★ Збережи улюблені режими — список залишиться на цьому пристрої.</p>';
-grid.parentNode.insertBefore(toolbar,grid);
-function idFor(card){const launch=card.querySelector('[data-game]');return launch?.dataset.game||''}
+toolbar.setAttribute('aria-label','Фільтр улюблених і зіграних ігор');
+toolbar.innerHTML='<div class="game-library-top"><strong class="game-library-title">ТВОЯ ІГРОВА БІБЛІОТЕКА</strong><div class="game-library-count" id="gameLibraryCount" aria-live="polite">100 режимів</div></div><div class="game-library-filters" role="group" aria-label="Фільтр ігор"><button type="button" class="game-filter active" data-library-filter="all">Усі ігри</button><button type="button" class="game-filter" data-library-filter="favorites">★ Обрані <span id="gameFavoriteCount">0</span></button><button type="button" class="game-filter" data-library-filter="played">Зіграні</button></div><p class="game-library-hint">★ Додавай ігри в обране. Твої позначки зберігаються на цьому пристрої.</p>';
+if(arcade){const base=document.querySelector('#kh100Toolbar');if(base)base.insertAdjacentElement('afterend',toolbar);else grid.before(toolbar)}else grid.before(toolbar);
+function idFor(card){if(arcade){const b=card.querySelector('[data-kh100]');return b?'kh100-'+(Number(b.dataset.kh100)+1):''}const b=card.querySelector('[data-game]');return b?.dataset.game||''}
 function decorate(){
- const cards=[...grid.querySelectorAll('.game-tile')];
+ const cards=[...grid.querySelectorAll(arcade?'.kh100-card':'.game-tile')];
  cards.forEach(card=>{
   const id=idFor(card);if(!id)return;
   let b=card.querySelector('.game-favorite-toggle');
-  if(!b){b=document.createElement('button');b.type='button';b.className='game-favorite-toggle';b.setAttribute('aria-label','Додати до обраного');b.title='Додати до обраного';b.dataset.favoriteGame=id;const content=card.querySelector('.tile-content')||card;content.insertBefore(b,content.firstChild)}
-  const active=favorites.has(id);b.classList.toggle('is-favorite',active);const glyph=active?'★':'☆';if(b.textContent!==glyph)b.textContent=glyph;b.setAttribute('aria-pressed',String(active));b.setAttribute('aria-label',active?'Прибрати з обраного':'Додати до обраного');b.title=active?'Прибрати з обраного':'Додати до обраного';
+  if(!b){b=document.createElement('button');b.type='button';b.className='game-favorite-toggle';b.dataset.favoriteGame=id;const content=card.querySelector(arcade?'.kh100-art':'.tile-content')||card;b.setAttribute('aria-pressed','false');content.appendChild(b)}
+  const active=favorites.has(id),glyph=active?'★':'☆';
+  if(b.textContent!==glyph)b.textContent=glyph;
+  b.classList.toggle('is-favorite',active);b.setAttribute('aria-pressed',String(active));b.setAttribute('aria-label',active?'Прибрати з обраного':'Додати до обраного');b.title=active?'Прибрати з обраного':'Додати до обраного';
  });
 }
 function apply(){
- const cards=[...grid.querySelectorAll('.game-tile')];
+ const cards=[...grid.querySelectorAll(arcade?'.kh100-card':'.game-tile')];
+ const search=arcade?document.querySelector('#kh100Search'):document.querySelector('#gameLibrarySearch');
+ const category=arcade?document.querySelector('#kh100Category'):null;
+ const q=(search?.value||'').trim().toLocaleLowerCase(),cat=category?.value||'all';
  let shown=0;
  cards.forEach(card=>{
-  const id=idFor(card),text=(card.textContent||'').toLocaleLowerCase();
-  const matches=text.includes(query.toLocaleLowerCase());
+  const id=idFor(card),name=(arcade?(card.dataset.name||card.textContent):(card.textContent||'')).toLocaleLowerCase();
+  const matches=name.includes(q)&&(cat==='all'||!category||card.dataset.category===cat);
   const fav=filter!=='favorites'||favorites.has(id);
-  const played=filter!=='played'||(Number(localStorage.getItem('khkozak_game_played_'+id)||0)>0);
+  let plays=0;try{plays=Number(localStorage.getItem('khkozak_game_played_'+id)||0)}catch(_){}
+  const played=filter!=='played'||plays>0;
   const visible=matches&&fav&&played;card.hidden=!visible;if(visible)shown++;
  });
- const count=document.querySelector('#gameLibraryCount');if(count)count.textContent=shown+' / '+cards.length+' режимів';
+ const count=document.querySelector('#gameLibraryCount');if(count)count.textContent=shown+' / '+cards.length+' ігор';
  const fc=document.querySelector('#gameFavoriteCount');if(fc)fc.textContent=String(favorites.size);
  toolbar.querySelectorAll('[data-library-filter]').forEach(b=>b.classList.toggle('active',b.dataset.libraryFilter===filter));
+ const oldCount=document.querySelector('#kh100Count');if(oldCount)oldCount.textContent=shown+' ігор';
 }
 grid.addEventListener('click',e=>{
- const launch=e.target.closest('[data-game]');if(launch&&!e.target.closest('[data-favorite-game]')){const key='khkozak_game_played_'+launch.dataset.game;try{localStorage.setItem(key,String(Number(localStorage.getItem(key)||0)+1));apply()}catch(_){}}
- const b=e.target.closest('[data-favorite-game]');if(!b)return;
- e.preventDefault();e.stopPropagation();const id=b.dataset.favoriteGame;
- if(favorites.has(id))favorites.delete(id);else favorites.add(id);
- try{localStorage.setItem(KEY,JSON.stringify([...favorites]))}catch(_){}
- decorate();apply();
+ const fav=e.target.closest('[data-favorite-game]');
+ if(fav){e.preventDefault();e.stopPropagation();const id=fav.dataset.favoriteGame;if(favorites.has(id))favorites.delete(id);else favorites.add(id);try{localStorage.setItem(KEY,JSON.stringify([...favorites]))}catch(_){}decorate();apply();return}
+ const launch=e.target.closest(arcade?'[data-kh100]':'[data-game]');
+ if(launch){const id=arcade?'kh100-'+(Number(launch.dataset.kh100)+1):launch.dataset.game;try{const key='khkozak_game_played_'+id;localStorage.setItem(key,String(Number(localStorage.getItem(key)||0)+1));apply()}catch(_){}}
 });
 toolbar.addEventListener('click',e=>{const b=e.target.closest('[data-library-filter]');if(!b)return;filter=b.dataset.libraryFilter;apply()});
-const search=toolbar.querySelector('#gameLibrarySearch');
-search.addEventListener('input',()=>{query=search.value.trim();apply()});
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus()}});
+const search=arcade?document.querySelector('#kh100Search'):toolbar.querySelector('#gameLibrarySearch');
+if(search)search.addEventListener('input',apply);
+const category=arcade?document.querySelector('#kh100Category'):null;if(category)category.addEventListener('change',apply);
+document.addEventListener('kh100-finished',apply);
 const observer=new MutationObserver(()=>{decorate();apply()});observer.observe(grid,{childList:true});
 decorate();apply();
 })();
