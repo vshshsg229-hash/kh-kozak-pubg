@@ -4,7 +4,12 @@ The app now contains a Monobank acquiring adapter, signed-webhook verification, 
 
 ## 1. Database migration
 
-Apply `supabase/migrations/20261014142000_elite_ideas_and_payments.sql` to the configured Supabase project. It adds verified Elite entitlements, the payment-order ledger, skin-aware online inventory/equipment, and the premium idea inbox. Use the Supabase SQL Editor or `supabase db push --project-ref xacqretciujzrcqjvvgz` from an authenticated CLI session. Review the migration before applying it to production.
+Apply migrations in timestamp order to the configured Supabase project:
+
+1. `supabase/migrations/20261014142000_elite_ideas_and_payments.sql` — verified Elite entitlements, payment-order ledger, skin-aware inventory/equipment, and premium idea inbox.
+2. `supabase/migrations/20261014173000_fix_skin_inventory_purchase.sql` — hotfix ensuring online purchases of character and weapon skins are actually granted to inventory.
+
+Use the Supabase SQL Editor or `supabase db push --project-ref xacqretciujzrcqjvvgz` from an authenticated CLI session. Review the migrations before applying them to production. The second migration is safe to apply after the first and replaces the purchase RPC without resetting player data.
 
 ## 2. Deploy permissions
 
