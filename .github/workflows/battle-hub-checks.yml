@@ -153,7 +153,7 @@ jobs:
           assert(api.includes('zombie: { coins: 30, points: 40, xp: 45 }'),
             'Zombie mode has a server-side reward policy');
 
-          for (const [name, source] of [['schema.sql', sql], ['elite migration', fs.readFileSync('supabase/migrations/20261014142000_elite_ideas_and_payments.sql', 'utf8').toLowerCase()]]) {
+          for (const [name, source] of [['schema.sql', sql], ['elite migration', fs.readFileSync('supabase/migrations/20261014142000_elite_ideas_and_payments.sql', 'utf8').toLowerCase()], ['skin inventory hotfix migration', fs.readFileSync('supabase/migrations/20261014173000_fix_skin_inventory_purchase.sql', 'utf8').toLowerCase()]]) {
             assert(source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin') then"),
               name + ' grants purchased character and weapon skins to inventory');
           }
