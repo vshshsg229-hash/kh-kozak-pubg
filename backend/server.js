@@ -212,7 +212,7 @@ app.get("/api/community/players", authRequired, async (req, res) => {
   try {
     const result = await pool.query(
       "SELECT id, username, points, xp, played FROM users WHERE id<>$1 AND username ILIKE $2 ORDER BY points DESC, xp DESC LIMIT 20",
-      [req.userId, "%" + q.replace(/[\\%_]/g, "\\const gameRewards = {") + "%"]
+      [req.userId, "%" + q.replace(/[\\%_]/g, ch => "\\" + ch) + "%"]
     );
     res.json({ players: result.rows.map(r => ({ id: String(r.id), username: r.username, points: r.points, xp: r.xp, played: r.played })) });
   } catch (error) { handleDbError(error, res); }
