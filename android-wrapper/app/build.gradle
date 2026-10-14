@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'com.khkozak.battlehub'
-    compileSdk 37
+    compileSdk 36
 
     defaultConfig {
         applicationId 'com.khkozak.battlehub'
         minSdk 23
-        targetSdk 37
-        versionCode 92
-        versionName '9.2.0'
+        targetSdk 36
+        versionCode 94
+        versionName '9.4.0'
     }
 
     buildTypes {
