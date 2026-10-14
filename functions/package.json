@@ -1,0 +1,12 @@
+{
+  "name": "kh-kozak-battle-hub-functions",
+  "private": true,
+  "description": "Trusted Firebase Cloud Functions for KH么Kozak Battle Hub",
+  "main": "index.js",
+  "engines": { "node": "20" },
+  "scripts": { "lint": "node --check index.js" },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.3.2"
+  }
+}
