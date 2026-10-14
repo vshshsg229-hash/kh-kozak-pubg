@@ -113,10 +113,7 @@
     </section>
     <section class="view" id="tab-profile"><div class="page-heading"><div class="eyebrow muted">ТВОЯ ІГРОВА КАРТКА</div><h1>ПРОФІЛЬ<span class="yellow-dot">.</span></h1><p>Зміни нік та переглянь статистику хабу.</p></div><article class="panel online-panel">
   <div class="panel-head"><h3>ОНЛАЙН-СЕРВЕР</h3><span id="onlineStatusPill" class="live-pill">НЕ ПІДКЛЮЧЕНО</span></div>
-  <p class="online-help">Підключи сервер, щоб створити справжній акаунт, зберігати онлайн-прогрес і потрапити до спільного рейтингу. Старий локальний прогрес залишиться резервною копією на цьому пристрої.</p>
-  <label for="onlineApiUrl">URL сервера Battle Hub</label>
-  <input id="onlineApiUrl" type="url" inputmode="url" placeholder="https://khkozak-battle-hub-api-uftt.onrender.com" autocomplete="url">
-  <button id="connectOnlineApi" class="btn btn-ghost full" type="button">ПЕРЕВІРИТИ / ПІДКЛЮЧИТИ СЕРВЕР</button>
+  <p class="online-help">Сервер KH么Kozak підключено за замовчуванням. Адреса сервера зафіксована й недоступна для зміни в інтерфейсі. Акаунти, спільнота, приватний чат, ігрові нагороди та рейтинг використовують спільну базу даних.</p>
   <div class="online-auth-fields">
     <label for="onlineNickname">Ігровий нік для нового акаунта</label>
     <input id="onlineNickname" maxlength="20" placeholder="KH么Kozak" autocomplete="nickname">
@@ -126,7 +123,7 @@
     <input id="onlinePassword" type="password" minlength="8" maxlength="72" placeholder="Не використовуй пароль від інших сервісів" autocomplete="current-password">
     <div class="online-auth-actions"><button id="onlineRegister" class="btn btn-yellow" type="button">СТВОРИТИ АКАУНТ</button><button id="onlineLogin" class="btn btn-ghost" type="button">УВІЙТИ</button><button id="onlineLogout" class="btn btn-ghost" type="button" hidden>ВИЙТИ</button></div>
   </div>
-  <div id="onlineAccountMessage" class="form-message" aria-live="polite">Сервер KH么Kozak Battle Hub підключається автоматично. Перевір URL у разі проблем.</div>
+  <div id="onlineAccountMessage" class="form-message" aria-live="polite">Сервер KH么Kozak Battle Hub підключається автоматично.</div>
   <div class="panel-divider"></div>
   <div class="panel-head"><h3>ГЛОБАЛЬНИЙ РЕЙТИНГ</h3><button id="refreshLeaderboard" class="text-link" type="button">ОНОВИТИ ↻</button></div>
   <div id="onlineLeaderboard" class="online-leaderboard"><p class="online-empty">Після підключення сервера тут з’являться гравці.</p></div>
