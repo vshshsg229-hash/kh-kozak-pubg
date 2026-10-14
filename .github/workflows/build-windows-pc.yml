@@ -7,6 +7,10 @@ on:
       - "app-v6/index.html"
       - "app-v6/pc-companion.js"
       - "app-v6/pc-companion.css"
+      - "app-v6/global-refresh.css"
+      - "app-v6/global-control-center.js"
+      - "app-v6/sw.js"
+      - "app-v6/manifest.webmanifest"
       - ".github/workflows/build-windows-pc.yml"
   workflow_dispatch:
 
@@ -40,6 +44,9 @@ jobs:
       - name: Check PC companion JavaScript syntax
         run: node --check app-v6/pc-companion.js
 
+      - name: Check universal control center JavaScript syntax
+        run: node --check app-v6/global-control-center.js
+
       - name: Install dependencies
         working-directory: desktop
         run: npm install
@@ -51,7 +58,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: KH-Kozak-Battle-Hub-Windows-8.69.0
+          name: KH-Kozak-Battle-Hub-Windows-9.0.0
           path: |
             desktop/dist/*.exe
             desktop/dist/*.blockmap
@@ -61,13 +68,13 @@ jobs:
       - name: Publish downloadable Windows release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: pc-v8.69.0
-          name: KH么Kozak Battle Hub for Windows 8.69.0
+          tag_name: pc-v9.0.0
+          name: KH么Kozak Battle Hub for Windows 9.0.0
           body: |
             Windows PC release of KH么Kozak Battle Hub.
             
-            - KH-Kozak-Battle-Hub-Setup-8.69.0.exe: installer with Start Menu and desktop shortcuts.
-            - KH-Kozak-Battle-Hub-8.69.0.exe: portable build, no installation required.
+            - KH-Kozak-Battle-Hub-Setup-9.0.0.exe: installer with Start Menu and desktop shortcuts.
+            - KH-Kozak-Battle-Hub-9.0.0.exe: portable build, no installation required.
             
             Windows x64.
           files: |
