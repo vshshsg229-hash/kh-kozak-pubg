@@ -7,7 +7,7 @@ function createWindow() {
     height: 900,
     minWidth: 900,
     minHeight: 620,
-    title: "KH么Kozak Battle Hub 8.68.0",
+    title: "KH么Kozak Battle Hub 8.69.0",
     autoHideMenuBar: true,
     backgroundColor: "#090b12",
     webPreferences: {
