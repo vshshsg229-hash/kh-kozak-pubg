@@ -421,7 +421,7 @@ Deno.serve(async (req: Request) => {
       if (req.method === "GET" && path === "/api/community/friends") {
         const { data, error } = await admin.from("hub_friendships").select("id,requester_id,addressee_id,status,created_at,updated_at,requester:hub_profiles!hub_friendships_requester_id_fkey(username,points,xp,played),addressee:hub_profiles!hub_friendships_addressee_id_fkey(username,points,xp,played)").or("requester_id.eq." + user.id + ",addressee_id.eq." + user.id).order("updated_at", { ascending: false }).limit(100);
         if (error) throw error;
-        return response({ friendships: data ?? [] }, 200, origin);
+        return response({ userId: user.id, friendships: data ?? [] }, 200, origin);
       }
 
       if (req.method === "POST" && path === "/api/community/friends/request") {
