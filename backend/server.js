@@ -78,10 +78,14 @@ async function ensureSchema() {
       xp INTEGER NOT NULL DEFAULT 0 CHECK (xp >= 0),
       played INTEGER NOT NULL DEFAULT 0 CHECK (played >= 0),
       games JSONB NOT NULL DEFAULT '{}'::jsonb,
+      fighter_kits JSONB NOT NULL DEFAULT '["ranger"]'::jsonb,
+      equipped_fighter_kit VARCHAR(24) NOT NULL DEFAULT 'ranger',
       last_daily_bonus_date DATE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS fighter_kits JSONB NOT NULL DEFAULT '["ranger"]'::jsonb;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS equipped_fighter_kit VARCHAR(24) NOT NULL DEFAULT 'ranger';
     CREATE INDEX IF NOT EXISTS users_leaderboard_points_idx ON users (points DESC, xp DESC);
     CREATE TABLE IF NOT EXISTS game_events (
       id BIGSERIAL PRIMARY KEY,
@@ -126,6 +130,8 @@ function safeUser(row) {
     xp: row.xp,
     played: row.played,
     games: row.games || {},
+    fighterKits: Array.isArray(row.fighter_kits) ? row.fighter_kits : ['ranger'],
+    equippedFighterKit: row.equipped_fighter_kit || 'ranger',
     createdAt: row.created_at
   };
 }
@@ -327,6 +333,54 @@ app.post("/api/community/messages", authRequired, async (req, res) => {
     );
     res.status(201).json({ message: result.rows[0] });
   } catch (error) { handleDbError(error, res); }
+});
+
+const fighterKitCatalog = {
+  ranger: { price: 0, level: 1 },
+  heavy: { price: 350, level: 2 },
+  scavenger: { price: 500, level: 3 },
+  ghost: { price: 700, level: 4 }
+};
+app.get("/api/fighter-kits", authRequired, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT coins, xp, fighter_kits, equipped_fighter_kit FROM users WHERE id=$1", [req.userId]);
+    if (!result.rowCount) return res.status(404).json({ error: "Акаунт не знайдено." });
+    const user = result.rows[0];
+    res.json({ coins: user.coins, level: Math.floor((Number(user.xp) || 0) / 100) + 1, owned: Array.isArray(user.fighter_kits) ? user.fighter_kits : ["ranger"], equipped: user.equipped_fighter_kit || "ranger" });
+  } catch (error) { handleDbError(error, res); }
+});
+app.post("/api/fighter-kits", authRequired, gameLimiter, async (req, res) => {
+  const kit = typeof req.body?.kit === "string" ? req.body.kit : "";
+  const action = typeof req.body?.action === "string" ? req.body.action : "";
+  if (!fighterKitCatalog[kit] || !["buy", "equip"].includes(action)) return res.status(400).json({ error: "Некоректний комплект або дія." });
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await client.query("SELECT coins, xp, fighter_kits, equipped_fighter_kit FROM users WHERE id=$1 FOR UPDATE", [req.userId]);
+    if (!result.rowCount) { await client.query("ROLLBACK"); return res.status(404).json({ error: "Акаунт не знайдено." }); }
+    const user = result.rows[0], catalog = fighterKitCatalog[kit];
+    const owned = Array.isArray(user.fighter_kits) ? [...new Set(user.fighter_kits.filter(id => fighterKitCatalog[id]))] : ["ranger"];
+    if (!owned.includes("ranger")) owned.unshift("ranger");
+    const level = Math.floor((Number(user.xp) || 0) / 100) + 1;
+    if (action === "buy") {
+      if (owned.includes(kit)) { await client.query("ROLLBACK"); return res.status(409).json({ error: "Цей комплект уже є у твоїй колекції." }); }
+      if (level < catalog.level) { await client.query("ROLLBACK"); return res.status(403).json({ error: "Потрібен рівень " + catalog.level + " для цього комплекту." }); }
+      if (Number(user.coins) < catalog.price) { await client.query("ROLLBACK"); return res.status(400).json({ error: "Не вистачає монет. Зіграй ще кілька мініігор." }); }
+      owned.push(kit);
+      const updated = await client.query("UPDATE users SET coins=coins-$2, fighter_kits=$3::jsonb, equipped_fighter_kit=$4, updated_at=NOW() WHERE id=$1 RETURNING coins, xp, fighter_kits, equipped_fighter_kit", [req.userId, catalog.price, JSON.stringify(owned), kit]);
+      const row = updated.rows[0];
+      await client.query("COMMIT");
+      return res.json({ ok: true, action, kit, price: catalog.price, coins: row.coins, level: Math.floor((Number(row.xp) || 0) / 100) + 1, owned: row.fighter_kits, equipped: row.equipped_fighter_kit });
+    }
+    if (!owned.includes(kit)) { await client.query("ROLLBACK"); return res.status(403).json({ error: "Спочатку придбай цей комплект." }); }
+    const updated = await client.query("UPDATE users SET fighter_kits=$2::jsonb, equipped_fighter_kit=$3, updated_at=NOW() WHERE id=$1 RETURNING coins, xp, fighter_kits, equipped_fighter_kit", [req.userId, JSON.stringify(owned), kit]);
+    const row = updated.rows[0];
+    await client.query("COMMIT");
+    return res.json({ ok: true, action, kit, coins: row.coins, level: Math.floor((Number(row.xp) || 0) / 100) + 1, owned: row.fighter_kits, equipped: row.equipped_fighter_kit });
+  } catch (error) {
+    await client.query("ROLLBACK").catch(() => {});
+    handleDbError(error, res);
+  } finally { client.release(); }
 });
 
 const gameRewards = {
