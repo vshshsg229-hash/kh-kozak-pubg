@@ -84,6 +84,7 @@ async function getUserSnapshot(userId: string) {
   return { ...profile, inventory: (inventory.data ?? []).map((row) => row.item_id), achievements: (achievements.data ?? []).map((row) => row.achievement_id) };
 }
 
+const HUB_VERSION = "8.46.0";
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") ?? "";
 const ADMIN_TELEGRAM_CHAT_ID = Deno.env.get("ADMIN_TELEGRAM_CHAT_ID") ?? "";
@@ -194,7 +195,11 @@ async function telegramWebhook(req: Request, origin: string | null) {
   const args = text.split(/\s+/).slice(1);
   try {
     if (command === "/start" || command === "/help") {
-      await telegramSend(chat.id, "Вітаю в KH么Kozak Battle Hub! Команди:\n/link КОД — зв’язати Telegram з акаунтом на сайті\n/profile — твоя статистика\n/daily — щоденна нагорода (+25 монет, +20 очок, +20 XP)\n/top — топ гравців\n/help — допомога\n\nСпочатку увійди на сайті, відкрий вкладку Telegram і створи код зв’язування.");
+      await telegramSend(chat.id, "Вітаю в KH么Kozak Battle Hub! 🎮\n\n/version — версія хабу\n/site — відкрити сайт\n/link КОД — зв’язати Telegram з акаунтом\n/profile — твоя статистика\n/daily — щоденна нагорода (+25 монет, +20 очок, +20 XP)\n/top — топ гравців\n/unlink — відв’язати Telegram\n/help — допомога\n\nСпочатку увійди на сайті, відкрий вкладку Telegram і створи код зв’язування.");
+    } else if (command === "/version") {
+      await telegramSend(chat.id, `KH么Kozak Battle Hub ${HUB_VERSION}\\nAndroid 16 / API 36 compatibility build\\nhttps://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=${HUB_VERSION}`);
+    } else if (command === "/site") {
+      await telegramSend(chat.id, `Відкрий KH么Kozak Battle Hub ${HUB_VERSION}:\\nhttps://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=${HUB_VERSION}`);
     } else if (command === "/link") {
       const code = (args[0] ?? "").toUpperCase();
       if (!/^[0-9]{8}$/.test(code)) {
@@ -297,7 +302,7 @@ Deno.serve(async (req: Request) => {
         return response({ ok: false, database: "unavailable", error: "Потрібна актуальна схема: запусти повний supabase/schema.sql, щоб увімкнути Telegram, магазин та досягнення." }, 503, origin);
       }
       return response({
-        ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.2.0",
+        ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.3.0", appVersion: HUB_VERSION,
         features: { telegramConfigured: Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_WEBHOOK_SECRET), serverShop: true, serverAchievements: true, adminConfigured: ADMIN_USER_IDS.size > 0 },
       }, 200, origin);
     }
