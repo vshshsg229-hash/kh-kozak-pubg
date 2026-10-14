@@ -1337,3 +1337,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .tiktok-creator-feed{min-width:0;overflow:auto;border:1px solid var(--line,#343b46);border-radius:9px;background:#090c10;padding:8px}
 .tiktok-creator-feed .tiktok-embed{margin:0 auto!important}
 @media(max-width:900px){.tiktok-profiles-grid{grid-template-columns:1fr}}
+
+/* 8.66.0 — visible fallback when TikTok blocks creator embeds */
+.kh-tiktok-embed-fallback{margin:12px auto;padding:16px;border:1px dashed var(--line,#343b46);border-radius:10px;background:#111720;color:var(--text,#f4f6fa);text-align:center;max-width:560px}.kh-tiktok-embed-fallback p{font-size:13px;opacity:.8}.kh-tiktok-embed-fallback a{display:inline-block;margin-top:8px;color:#ffd447;font-weight:700;text-decoration:underline}
