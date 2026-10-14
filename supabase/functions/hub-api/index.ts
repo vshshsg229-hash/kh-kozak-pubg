@@ -84,6 +84,7 @@ async function getUserSnapshot(userId: string) {
 
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") ?? "";
+const ADMIN_TELEGRAM_CHAT_ID = Deno.env.get("ADMIN_TELEGRAM_CHAT_ID") ?? "";
 const ADMIN_USER_IDS = new Set((Deno.env.get("ADMIN_USER_IDS") ?? "").split(",").map((x) => x.trim()).filter(Boolean));
 
 async function telegramCall(method: string, payload: Record<string, unknown>) {
@@ -301,6 +302,44 @@ Deno.serve(async (req: Request) => {
       try { await notifyTelegram(user.id, `🛒 Магазин KH: придбання успішне. ${purchase.won_item_id ? "Із кейса випав " + purchase.won_item_id : itemId}. Витрачено ${purchase.cost} монет.`); }
       catch (notifyError) { console.error("Telegram purchase notification failed:", notifyError?.message ?? notifyError); }
       return response({ user: safeUser(snapshot), purchased: true, itemId: purchase.item_id, itemKind: purchase.item_kind, wonItemId: purchase.won_item_id ?? null, cost: purchase.cost, daily: purchase.daily }, 200, origin);
+    }
+
+    if (req.method === "GET" && path === "/api/premium/status") {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в акаунт, щоб перевірити Elite." }, 401, origin);
+      const { data, error } = await admin.from("hub_profiles").select("elite_verified,elite_expires_at").eq("id", user.id).maybeSingle();
+      if (error) throw error;
+      if (!data) return response({ error: "Профіль не знайдено." }, 404, origin);
+      const active = data.elite_verified === true && (!data.elite_expires_at || new Date(data.elite_expires_at).getTime() > Date.now());
+      return response({ eliteVerified: active, expiresAt: data.elite_expires_at ?? null }, 200, origin);
+    }
+
+    if (req.method === "POST" && path === "/api/premium/ideas") {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в онлайн-акаунт." }, 401, origin);
+      const { data: profile, error: profileError } = await admin.from("hub_profiles").select("username,elite_verified,elite_expires_at").eq("id", user.id).maybeSingle();
+      if (profileError) throw profileError;
+      if (!profile) return response({ error: "Профіль не знайдено." }, 404, origin);
+      const active = profile.elite_verified === true && (!profile.elite_expires_at || new Date(profile.elite_expires_at).getTime() > Date.now());
+      if (!active) return response({ error: "Пропозиції доступні лише підтвердженим Elite Supporter. Преміум-пропуск за монети не є платною Elite-підпискою." }, 403, origin);
+      const body = await req.json().catch(() => ({}));
+      const ideaTitle = typeof body.title === "string" ? body.title.trim().replace(/[<>]/g, "").slice(0, 100) : "";
+      const ideaBody = typeof body.body === "string" ? body.body.trim().replace(/[<>]/g, "").slice(0, 1200) : "";
+      if (ideaTitle.length < 5 || ideaBody.length < 20) return response({ error: "Заголовок — від 5 символів, опис — від 20." }, 400, origin);
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { count, error: countError } = await admin.from("hub_premium_ideas").select("id", { count: "exact", head: true }).eq("user_id", user.id).gte("created_at", since);
+      if (countError) throw countError;
+      if ((count ?? 0) >= 3) return response({ error: "Ліміт: 3 ідеї на добу." }, 429, origin);
+      const { data: saved, error: insertError } = await admin.from("hub_premium_ideas").insert({ user_id: user.id, title: ideaTitle, body: ideaBody }).select("id,created_at").single();
+      if (insertError) throw insertError;
+      let telegramNotified = false;
+      if (TELEGRAM_BOT_TOKEN && ADMIN_TELEGRAM_CHAT_ID) {
+        try {
+          await telegramSend(ADMIN_TELEGRAM_CHAT_ID, "💡 НОВА ELITE-ІДЕЯ KH么KOZAK\\nГравець: " + String(profile.username).slice(0, 20) + "\\n" + ideaTitle + "\\n\\n" + ideaBody + "\\nID: " + saved.id);
+          telegramNotified = true;
+        } catch (notifyError) { console.error("Premium idea Telegram notification failed:", notifyError?.message ?? notifyError); }
+      }
+      return response({ ok: true, id: saved.id, telegramNotified, message: telegramNotified ? "Ідею збережено й надіслано адміністратору в Telegram." : "Ідею збережено на сервері. Telegram-сповіщення потребує ADMIN_TELEGRAM_CHAT_ID та TELEGRAM_BOT_TOKEN." }, 201, origin);
     }
 
     if (req.method === "GET" && path === "/api/admin/overview") {
