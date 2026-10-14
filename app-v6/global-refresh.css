@@ -45,7 +45,7 @@ button,a,input,select,textarea{transition:color .18s ease,border-color .18s ease
 .game-modal,.desktop-command{background:linear-gradient(145deg,#151f32,#0b111d);border:1px solid #4c5578;border-radius:20px;box-shadow:0 25px 100px #0009}
 input,select,textarea{accent-color:var(--kh-aqua)}
 input:not([type=checkbox]):not([type=radio]),select,textarea{border-radius:10px}
-@media(min-width:700px) and (max-width:1199px){
+@media(min-width:721px) and (max-width:1199px){
  :root{--sidebar:228px}
  .main{padding:0 22px}
  .hero{grid-template-columns:1.2fr .8fr;min-height:330px}
@@ -56,7 +56,7 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{border-radius:10px}
  .topbar{gap:12px}
  .season small{display:none}
 }
-@media(max-width:699px){
+@media(max-width:720px){
  :root{--sidebar:0px;--kh-radius:15px}
  body{font-size:14px}
  .main{margin-left:0;padding:0 13px 100px}
@@ -112,3 +112,13 @@ html.kh-focus-mode .sidebar,html.kh-focus-mode .topbar .season,html.kh-focus-mod
 html.kh-focus-mode .main{filter:saturate(.75)}
 html.kh-high-contrast{--kh-muted:#d1d9e8;--kh-stroke:#788aa7}
 html.kh-high-contrast .panel,html.kh-high-contrast .stat-card,html.kh-high-contrast .feature-card{border-color:#a5b5d3}
+
+/* Tablet portrait: retain the desktop-style sidebar requested for larger touch screens. */
+@media (min-width:721px) and (max-width:1100px) and (min-height:501px){
+  .sidebar{display:flex!important;position:fixed!important;inset:0 auto 0 0!important;width:var(--sidebar)!important;max-height:100dvh;overflow-y:auto;transform:none!important;z-index:40}
+  .main{margin-left:var(--sidebar)!important;width:auto!important;min-width:0;padding:0 18px 24px!important}
+  .mobile-nav{display:none!important}
+  .mobile-menu-toggle,.mobile-menu-backdrop{display:none!important}
+  .topbar{gap:10px}
+  .topbar .season{display:flex}
+}
