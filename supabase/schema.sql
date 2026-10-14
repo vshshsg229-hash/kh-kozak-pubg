@@ -250,7 +250,7 @@ grant execute on function public.hub_claim_telegram_daily(uuid) to service_role;
 create table if not exists public.hub_shop_catalog (
   item_id text primary key,
   item_name text not null,
-  item_kind text not null check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case')),
+  item_kind text not null check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin')),
   cost integer not null check (cost >= 0),
   rarity text not null default 'COMMON',
   daily_order integer unique,
@@ -289,28 +289,35 @@ grant select, insert, update, delete on public.hub_daily_shop_purchases to servi
 grant select, insert, update, delete on public.hub_achievements to service_role;
 
 insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order) values
-('title_shadow','Тінь Ерангелю','title',120,'RARE',0),
-('frame_neon','Неонова рамка','frame',150,'RARE',1),
-('theme_gold','Золота тактика','theme',200,'EPIC',2),
-('badge_sniper','Знак снайпера','badge',180,'EPIC',3),
-('banner_legend','Банер «Легенда»','banner',250,'LEGENDARY',4),
-('title_loot','Король луту','title',300,'LEGENDARY',5),
-('badge_veteran','Ветеран хабу','badge',100,'RARE',6),
-('frame_steel','Сталева рамка','frame',90,'COMMON',7),
-('title_raider','Рейдер','title',80,'COMMON',8),
-('boost_xp','XP-бустер +100','boost',110,'EPIC',null),
-('supply_case','Сезонний кейс','case',160,'EPIC',null),
-('title_ace','ACE мисливець','title',220,'LEGENDARY',9),
-('avatar_royal','Аватар «Королівський шолом»','avatar',190,'EPIC',10),
-('avatar_phantom','Аватар «Фантом»','avatar',210,'EPIC',11),
-('avatar_frost','Аватар «Мороз»','avatar',220,'EPIC',12),
-('avatar_commander','Аватар «Командир»','avatar',260,'LEGENDARY',13),
-('frame_crimson','Багряна рамка','frame',175,'EPIC',14),
-('title_pathfinder','Слідопит','title',135,'RARE',15),
-('badge_ace','Знак ACE','badge',280,'LEGENDARY',16),
-('theme_ice','Крижана операція','theme',240,'EPIC',17),
-('banner_ember','Банер «Жар бою»','banner',320,'LEGENDARY',18),
-('avatar_recon','Аватар «Розвідник»','avatar',160,'RARE',19)
+('title_shadow','Тінь Ерангелю','title',2500,'RARE',0),
+('frame_neon','Неонова рамка','frame',3000,'RARE',1),
+('theme_gold','Золота тактика','theme',5500,'EPIC',2),
+('badge_sniper','Знак снайпера','badge',3500,'EPIC',3),
+('banner_legend','Банер «Легенда»','banner',9000,'LEGENDARY',4),
+('title_loot','Король луту','title',15000,'LEGENDARY',5),
+('badge_veteran','Ветеран хабу','badge',2000,'RARE',6),
+('frame_steel','Сталева рамка','frame',1800,'COMMON',7),
+('title_raider','Рейдер','title',1800,'COMMON',8),
+('boost_xp','XP-бустер +100','boost',1500,'EPIC',null),
+('supply_case','Сезонний кейс','case',2500,'EPIC',null),
+('title_ace','ACE мисливець','title',12000,'LEGENDARY',9),
+('avatar_royal','Аватар «Королівський шолом»','avatar',4500,'EPIC',10),
+('avatar_phantom','Аватар «Фантом»','avatar',6000,'EPIC',11),
+('avatar_frost','Аватар «Мороз»','avatar',6000,'EPIC',12),
+('avatar_commander','Аватар «Командир»','avatar',12000,'LEGENDARY',13),
+('frame_crimson','Багряна рамка','frame',4500,'EPIC',14),
+('title_pathfinder','Слідопит','title',7000,'RARE',15),
+('badge_ace','Знак ACE','badge',15000,'LEGENDARY',16),
+('theme_ice','Крижана операція','theme',6500,'EPIC',17),
+('banner_ember','Банер «Жар бою»','banner',18000,'LEGENDARY',18),
+('avatar_recon','Аватар «Розвідник»','avatar',4000,'RARE',19),
+('skin_recruit','Рекрут — польова форма','skin',12000,'EPIC',null),
+('skin_urban','Urban Ghost','skin',28000,'LEGENDARY',null),
+('skin_shadow','Shadow Ops','skin',65000,'LEGENDARY',null),
+('skin_commander','Gold Commander','skin',120000,'LEGENDARY',null),
+('weapon_olive','M416 · Olive Tactical','weaponSkin',18000,'EPIC',null),
+('weapon_ember','M416 · Ember Core','weaponSkin',48000,'LEGENDARY',null),
+('weapon_ice','M416 · Cryo Steel','weaponSkin',90000,'LEGENDARY',null)
 on conflict (item_id) do update set
   item_name=excluded.item_name,item_kind=excluded.item_kind,cost=excluded.cost,
   rarity=excluded.rarity,daily_order=excluded.daily_order,active=true;
@@ -393,14 +400,14 @@ begin
     v_price := floor(v_item.cost * 0.75)::integer;
   end if;
 
-  if v_item.item_kind in ('title','frame','avatar','theme','badge','banner') and exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
+  if v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') and exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
     return jsonb_build_object('error','already_owned');
   end if;
   if v_profile.coins < v_price then return jsonb_build_object('error','insufficient_coins'); end if;
 
   if v_item.item_kind='case' then
     select * into v_won from public.hub_shop_catalog c
-    where c.active=true and c.item_kind in ('title','frame','avatar','theme','badge','banner')
+    where c.active=true and c.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin')
       and not exists(select 1 from public.hub_inventory i where i.user_id=p_user_id and i.item_id=c.item_id)
     order by random() limit 1;
     if not found then return jsonb_build_object('error','collection_complete'); end if;
@@ -441,6 +448,8 @@ alter table public.hub_profiles
   add column if not exists equipped_theme text,
   add column if not exists equipped_badge text,
   add column if not exists equipped_banner text;
+  add column if not exists equipped_skin text,
+  add column if not exists equipped_weapon_skin text;
 
 create or replace function public.hub_equip_item(p_user_id uuid, p_item_id text)
 returns jsonb
@@ -456,7 +465,7 @@ begin
   select * into v_profile from public.hub_profiles where id=p_user_id for update;
   if not found then return jsonb_build_object('error','profile_not_found'); end if;
   select * into v_item from public.hub_shop_catalog where item_id=p_item_id and active=true;
-  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner') then
+  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') then
     return jsonb_build_object('error','item_not_equipable');
   end if;
   if not exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
@@ -468,7 +477,9 @@ begin
   elsif v_item.item_kind='avatar' then v_current:=v_profile.equipped_avatar;
   elsif v_item.item_kind='theme' then v_current:=v_profile.equipped_theme;
   elsif v_item.item_kind='badge' then v_current:=v_profile.equipped_badge;
-  else v_current:=v_profile.equipped_banner;
+  elsif v_item.item_kind='banner' then v_current:=v_profile.equipped_banner;
+  elsif v_item.item_kind='skin' then v_current:=v_profile.equipped_skin;
+  else v_current:=v_profile.equipped_weapon_skin;
   end if;
 
   update public.hub_profiles set
@@ -478,6 +489,8 @@ begin
     equipped_theme=case when v_item.item_kind='theme' then case when v_current=p_item_id then null else p_item_id end else equipped_theme end,
     equipped_badge=case when v_item.item_kind='badge' then case when v_current=p_item_id then null else p_item_id end else equipped_badge end,
     equipped_banner=case when v_item.item_kind='banner' then case when v_current=p_item_id then null else p_item_id end else equipped_banner end,
+    equipped_skin=case when v_item.item_kind='skin' then case when v_current=p_item_id then null else p_item_id end else equipped_skin end,
+    equipped_weapon_skin=case when v_item.item_kind='weaponSkin' then case when v_current=p_item_id then null else p_item_id end else equipped_weapon_skin end,
     updated_at=now()
   where id=p_user_id returning * into v_profile;
   return jsonb_build_object('user',to_jsonb(v_profile),'item_id',p_item_id);
