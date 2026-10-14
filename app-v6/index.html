@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080d14"><meta name="kh-api-base" content="https://xacqretciujzrcqjvvgz.supabase.co"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="KH Kozak Hub"><meta name="description" content="KH么Kozak — PUBG Mobile gaming hub">
+<meta name="theme-color" content="#080d14"><meta name="kh-api-base" content="https://khkozak-battle-hub-api-uftt.onrender.com"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="KH Kozak Hub"><meta name="description" content="KH么Kozak — PUBG Mobile gaming hub">
 <title>KH么Kozak — Battle Hub 9.2.0</title>
 <link rel="stylesheet" href="style.css?v=9.2.1"><link rel="stylesheet" href="tactical-hq.css?v=9.2.1"><link rel="stylesheet" href="event-center.css?v=1.0.0"><link rel="stylesheet" href="arsenal.css?v=1.0.0"><link rel="stylesheet" href="game-library.css?v=1.1.0"><link rel="stylesheet" href="character-lobby.css?v=1.2.1">
 <link rel="stylesheet" href="desktop-neon.css?v=1.1.0">
@@ -114,10 +114,8 @@
     <section class="view" id="tab-profile"><div class="page-heading"><div class="eyebrow muted">ТВОЯ ІГРОВА КАРТКА</div><h1>ПРОФІЛЬ<span class="yellow-dot">.</span></h1><p>Зміни нік та переглянь статистику хабу.</p></div><article class="panel online-panel">
   <div class="panel-head"><h3>ОНЛАЙН-СЕРВЕР</h3><span id="onlineStatusPill" class="live-pill">НЕ ПІДКЛЮЧЕНО</span></div>
   <p class="online-help">Підключи сервер, щоб створити справжній акаунт, зберігати онлайн-прогрес і потрапити до спільного рейтингу. Старий локальний прогрес залишиться резервною копією на цьому пристрої.</p>
-  <label for="onlineApiUrl">URL проєкту Supabase</label>
-  <input id="onlineApiUrl" type="url" inputmode="url" placeholder="https://твій-project-ref.supabase.co" autocomplete="url">
-  <label for="onlineSupabaseKey">Публічний ключ Supabase (publishable/anon)</label>
-  <input id="onlineSupabaseKey" type="password" autocomplete="off" placeholder="sb_publishable_… або anon key">
+  <label for="onlineApiUrl">URL сервера Battle Hub</label>
+  <input id="onlineApiUrl" type="url" inputmode="url" placeholder="https://khkozak-battle-hub-api-uftt.onrender.com" autocomplete="url">
   <button id="connectOnlineApi" class="btn btn-ghost full" type="button">ПЕРЕВІРИТИ / ПІДКЛЮЧИТИ СЕРВЕР</button>
   <div class="online-auth-fields">
     <label for="onlineNickname">Ігровий нік для нового акаунта</label>
@@ -128,7 +126,7 @@
     <input id="onlinePassword" type="password" minlength="8" maxlength="72" placeholder="Не використовуй пароль від інших сервісів" autocomplete="current-password">
     <div class="online-auth-actions"><button id="onlineRegister" class="btn btn-yellow" type="button">СТВОРИТИ АКАУНТ</button><button id="onlineLogin" class="btn btn-ghost" type="button">УВІЙТИ</button><button id="onlineLogout" class="btn btn-ghost" type="button" hidden>ВИЙТИ</button></div>
   </div>
-  <div id="onlineAccountMessage" class="form-message" aria-live="polite">Встав URL проєкту Supabase та його публічний ключ. Секретний service-role key сюди не вводь.</div>
+  <div id="onlineAccountMessage" class="form-message" aria-live="polite">Сервер KH么Kozak Battle Hub підключається автоматично. Перевір URL у разі проблем.</div>
   <div class="panel-divider"></div>
   <div class="panel-head"><h3>ГЛОБАЛЬНИЙ РЕЙТИНГ</h3><button id="refreshLeaderboard" class="text-link" type="button">ОНОВИТИ ↻</button></div>
   <div id="onlineLeaderboard" class="online-leaderboard"><p class="online-empty">Після підключення сервера тут з’являться гравці.</p></div>
