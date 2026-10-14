@@ -1,0 +1,46 @@
+{
+  "name": "kh-kozak-battle-hub",
+  "version": "8.67.0",
+  "description": "KH么Kozak Battle Hub desktop app",
+  "main": "main.cjs",
+  "author": "KH么Kozak",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dist:win": "electron-builder --win nsis portable"
+  },
+  "devDependencies": {
+    "electron": "^38.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.khkozak.battlehub",
+    "productName": "KH Kozak Battle Hub",
+    "asar": true,
+    "files": [
+      "main.cjs",
+      "web/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
