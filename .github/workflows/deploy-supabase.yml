@@ -2,6 +2,12 @@ name: Deploy Supabase Hub API
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+      - 'supabase/config.toml'
+      - '.github/workflows/deploy-supabase.yml'
 
 permissions:
   contents: read
