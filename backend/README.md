@@ -15,32 +15,50 @@ Node.js + PostgreSQL backend for real accounts, shared game rewards, public lead
 
 The daily shop, cosmetic inventory, secret-code redemption and some missions remain browser-local for now. Do not describe those as server-synced or as secure online rewards yet. Game rewards submitted while signed in are assigned by the server; browser-only/offline play continues using local progress.
 
-## Connect the assistant to Ollama
+## Hosted Ollama integration
 
-Ollama is the model runtime; `https://ollama.com/install.ps1` is a Windows installer script, not a server address. Installing it on your own PC does not make it available to the public GitHub Pages website automatically.
+Ollama is the model runtime; `https://ollama.com/install.ps1` is a Windows installer script, not a server address. Installing it on one PC does not automatically make it reachable by the public GitHub Pages website.
 
-The backend already uses the OpenAI-compatible `/chat/completions` format, which Ollama supports. Configure the backend environment:
+The backend's `/api/chat` route calls the OpenAI-compatible `/v1/chat/completions` endpoint. The backend now supports `AI_PROVIDER=ollama`, a configurable model, a bounded request timeout, and rejects insecure non-local HTTP AI endpoints in production.
 
-```env
-AI_BASE_URL=http://127.0.0.1:11434/v1
-AI_API_KEY=ollama
-AI_MODEL=llama3.2
-```
+### 1. Prepare the Ollama host
 
-Then, on the computer that runs Ollama, install Ollama and pull the model (example):
+On a dedicated computer/server with enough RAM/VRAM, install Ollama from the official site and pull a model, for example:
 
 ```powershell
 ollama pull llama3.2
-ollama serve
+ollama list
 ```
 
-**Important networking distinction:**
-- If the Node backend runs on the same computer as Ollama, `127.0.0.1:11434` can work.
-- If the backend is deployed on Render, `127.0.0.1` points to the Render container, not your PC. For a public website, the Ollama host must be reachable from the backend over a secure network endpoint/VPN/tunnel. Do not expose port 11434 directly to the public internet.
-- For the browser's assistant to work, its existing **Порадник KH → Підключення AI-сервера** field must point to the Node backend URL, not to the Ollama installer URL. The backend URL must be HTTPS for the public HTTPS website.
-- Keep any API credentials in the backend environment only. The Ollama key above is a placeholder for the OpenAI-compatible client; it is not a secret.
+For Linux, use the official Ollama Linux installation instructions. Verify locally that the model responds before connecting the hosted backend.
 
-Ollama setup and model choice depend on your computer's available memory and hardware. The values above are an example, not a claim that Ollama is already running or publicly connected.
+### 2. Connect the backend securely
+
+In the Render service environment, set:
+
+```env
+AI_PROVIDER=ollama
+AI_BASE_URL=https://YOUR-SECURE-OLLAMA-ENDPOINT/v1
+AI_API_KEY=ollama
+AI_MODEL=llama3.2
+AI_TIMEOUT_MS=45000
+```
+
+Replace the placeholder with the real HTTPS endpoint reachable from Render. This may be a private service-to-service network or a properly authenticated VPN/tunnel. **Do not expose Ollama's port 11434 directly to the public internet.** A generic public HTTPS URL alone is not sufficient security: restrict access to the backend where possible and use authenticated tunnel/network access. If your tunnel supports an access token/header, configure it through a server-side secret and implement the matching header support before enabling it; do not put tunnel credentials in the website.
+
+Ollama's OpenAI-compatible endpoint generally accepts `ollama` as a placeholder bearer key; this is not an authentication boundary. The actual network path must be protected separately.
+
+### 3. Connect the website to the backend
+
+In the website, open **Профіль → Онлайн-сервер** and set the base URL to the deployed Node backend, e.g. `https://YOUR-SERVICE.onrender.com`, then press **ПІДКЛЮЧИТИ**. Do not paste the Ollama URL or installer URL into the website. The browser should call the backend's `/api/chat`; only the backend talks to Ollama.
+
+### 4. Verify
+
+- Confirm the Render backend `/api/health` reports `ok: true` and `database: connected`.
+- Sign in on the site, open the assistant, and send a simple test prompt.
+- Check Render logs for provider connectivity errors. The assistant returns a generic service-unavailable message to visitors if the provider is unavailable.
+
+The repository changes configure the backend's integration path but cannot provision your Ollama machine, create a secure tunnel, fill in your hosting environment secrets, or prove the model is reachable. Those require the actual host and endpoint details.
 
 ## Deploy with Render + PostgreSQL
 
