@@ -335,7 +335,7 @@ Deno.serve(async (req: Request) => {
       let telegramNotified = false;
       if (TELEGRAM_BOT_TOKEN && ADMIN_TELEGRAM_CHAT_ID) {
         try {
-          await telegramSend(ADMIN_TELEGRAM_CHAT_ID, "💡 НОВА ELITE-ІДЕЯ KH么KOZAK\\nГравець: " + String(profile.username).slice(0, 20) + "\\n" + ideaTitle + "\\n\\n" + ideaBody + "\\nID: " + saved.id);
+          await telegramSend(ADMIN_TELEGRAM_CHAT_ID, "💡 НОВА ELITE-ІДЕЯ KH么KOZAK\nГравець: " + String(profile.username).slice(0, 20) + "\n" + ideaTitle + "\n\n" + ideaBody + "\nID: " + saved.id);
           telegramNotified = true;
         } catch (notifyError) { console.error("Premium idea Telegram notification failed:", notifyError?.message ?? notifyError); }
       }
