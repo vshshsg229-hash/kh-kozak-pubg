@@ -932,3 +932,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 @media(max-width:1050px){.telegram-top-quick small{display:none}.telegram-top-quick{padding:7px 9px}}
 @media(max-width:720px){.telegram-top-quick{gap:5px;padding:6px 7px;margin-left:auto}.telegram-top-quick>span{width:25px;height:25px}.telegram-top-quick b{font-size:10px}.topbar{gap:7px}.telegram-fast-link{order:-1}}
 @media(max-width:390px){.telegram-top-quick b{font-size:9px}.telegram-top-quick{padding:5px}.telegram-top-quick>span{width:22px;height:22px}.season small{display:none}}
+
+
+/* High-visibility personal Telegram contact: fixed on every tab and clear on mobile */
+.telegram-float{position:fixed;z-index:10000;right:22px;bottom:24px;display:flex;align-items:center;gap:11px;max-width:calc(100vw - 28px);padding:11px 15px 11px 11px;border:1px solid #36baf0;border-radius:15px;background:linear-gradient(120deg,#10243a 0%,#0b1727 70%,#102d3c 100%);box-shadow:0 8px 34px #0009,0 0 0 3px #229ed91c,0 0 25px #229ed933;color:#f3fbff;text-decoration:none;transition:transform .18s,box-shadow .18s}
+.telegram-float:hover{transform:translateY(-2px);box-shadow:0 10px 36px #000b,0 0 0 4px #229ed926,0 0 30px #229ed955}
+.telegram-float-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;background:#229ed9;color:white;font-size:21px}
+.telegram-float-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.telegram-float-copy b{font-size:13px;letter-spacing:.02em;white-space:nowrap}
+.telegram-float-copy small{font-size:9px;letter-spacing:.06em;color:#8edcff;white-space:nowrap}
+.telegram-float-arrow{font-size:18px;color:#8edcff;margin-left:2px}
+.btn-telegram-main{border:1px solid #229ed9!important;background:linear-gradient(120deg,#167db4,#14517a)!important;color:#fff!important;font-weight:800;box-shadow:0 0 22px #229ed926}
+@media(max-width:720px){.telegram-float{right:12px;bottom:calc(78px + env(safe-area-inset-bottom));padding:9px 12px 9px 9px;border-radius:13px;gap:9px}.telegram-float-icon{width:35px;height:35px;flex-basis:35px}.telegram-float-copy b{font-size:12px}.telegram-float-copy small{font-size:8px}.telegram-top-quick{display:none!important}}
+@media(max-width:390px){.telegram-float{right:8px;bottom:calc(76px + env(safe-area-inset-bottom));padding:8px 10px 8px 8px}.telegram-float-copy small{letter-spacing:0;font-size:7px}.hero-actions .btn-telegram-main{font-size:10px;padding:10px 11px}}
