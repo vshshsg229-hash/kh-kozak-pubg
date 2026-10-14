@@ -1,17 +1,17 @@
 plugins {
-    id 'com.android.application' version '8.5.2'
+    id 'com.android.application' version '8.10.1'
 }
 
 android {
     namespace 'com.khkozak.battlehub'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId 'com.khkozak.battlehub'
         minSdk 23
-        targetSdk 35
-        versionCode 87
-        versionName '8.7.0'
+        targetSdk 36
+        versionCode 88
+        versionName '8.46.0'
     }
 
     buildTypes {
