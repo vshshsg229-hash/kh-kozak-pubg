@@ -197,9 +197,9 @@ async function telegramWebhook(req: Request, origin: string | null) {
     if (command === "/start" || command === "/help") {
       await telegramSend(chat.id, "Вітаю в KH么Kozak Battle Hub! 🎮\n\n/version — версія хабу\n/site — відкрити сайт\n/link КОД — зв’язати Telegram з акаунтом\n/profile — твоя статистика\n/daily — щоденна нагорода (+25 монет, +20 очок, +20 XP)\n/top — топ гравців\n/unlink — відв’язати Telegram\n/help — допомога\n\nСпочатку увійди на сайті, відкрий вкладку Telegram і створи код зв’язування.");
     } else if (command === "/version") {
-      await telegramSend(chat.id, `KH么Kozak Battle Hub ${HUB_VERSION}\\nAndroid 16 / API 36 compatibility build\\nhttps://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=${HUB_VERSION}`);
+      await telegramSend(chat.id, `KH么Kozak Battle Hub ${HUB_VERSION}\nAndroid 16 / API 36 compatibility build\nhttps://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=${HUB_VERSION}`);
     } else if (command === "/site") {
-      await telegramSend(chat.id, `Відкрий KH么Kozak Battle Hub ${HUB_VERSION}:\\nhttps://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=${HUB_VERSION}`);
+      await telegramSend(chat.id, `Відкрий KH么Kozak Battle Hub ${HUB_VERSION}:\nhttps://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=${HUB_VERSION}`);
     } else if (command === "/link") {
       const code = (args[0] ?? "").toUpperCase();
       if (!/^[0-9]{8}$/.test(code)) {
