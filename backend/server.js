@@ -9,7 +9,25 @@ import crypto from "node:crypto";
 const { Pool } = pg;
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
-const FRONTEND_ORIGINS = (process.env.FRONTEND_ORIGIN || "https://vshshsg229-hash.github.io").split(",").map(x => x.trim()).filter(Boolean);
+const FRONTEND_ORIGINS = new Set([
+  "https://vshshsg229-hash.github.io",
+  "https://localhost",
+  "http://localhost",
+  "capacitor://localhost",
+  "ionic://localhost",
+  "null",
+  ...(process.env.FRONTEND_ORIGIN || "").split(",").map(x => x.trim()).filter(Boolean)
+]);
+function isAllowedFrontendOrigin(origin) {
+  if (FRONTEND_ORIGINS.has(origin)) return true;
+  try {
+    const parsed = new URL(origin);
+    return ["localhost", "127.0.0.1"].includes(parsed.hostname)
+      && ["http:", "https:"].includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+}
 const DATABASE_URL = process.env.DATABASE_URL || "";
 const JWT_SECRET = process.env.JWT_SECRET || "";
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
@@ -34,7 +52,7 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(express.json({ limit: "20kb" }));
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin && FRONTEND_ORIGINS.includes(origin)) {
+  if (origin && isAllowedFrontendOrigin(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
     res.setHeader("Access-Control-Allow-Credentials", "false");
