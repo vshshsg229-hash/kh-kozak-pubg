@@ -58,7 +58,7 @@ jobs:
           name: KH么Kozak Battle Hub Android build ${{ github.run_number }}
           body: |
             Installable Android debug APK built automatically from the current KH么Kozak Battle Hub web app.
-            Version 9.2.0 daily missions expansion for phone, tablet and desktop layouts. Android versionCode 92, targetSdk 37.
+            Version 9.4.0 Battle Evolution update for phone, tablet and desktop layouts. Android versionCode 94, targetSdk 36 (Android 16).
             The app stores local progress on this device. Online server features are not required for local mini-games.
           files: KH-Kozak-Battle-Hub.apk
           make_latest: true
