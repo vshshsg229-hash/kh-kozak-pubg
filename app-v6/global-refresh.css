@@ -125,7 +125,7 @@ html.kh-high-contrast .panel,html.kh-high-contrast .stat-card,html.kh-high-contr
 
 
 /* PERMANENT TABLET NAVIGATION RULE — keep the PC sidebar on tablets. */
-@media (min-width:540px) {
+@media (min-width:0px) {
   html.kh-device-tablet .sidebar {
     display:flex!important;
     position:fixed!important;
