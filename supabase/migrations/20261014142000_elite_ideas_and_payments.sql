@@ -194,3 +194,42 @@ create index if not exists hub_premium_ideas_user_date_idx on public.hub_premium
 alter table public.hub_premium_ideas enable row level security;
 revoke all on public.hub_premium_ideas from anon, authenticated;
 grant select, insert, update, delete on public.hub_premium_ideas to service_role;
+
+
+create or replace function public.hub_fulfill_payment(p_invoice_id text, p_amount integer, p_ccy integer, p_provider_event jsonb)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_order public.hub_payment_orders%rowtype;
+  v_profile public.hub_profiles%rowtype;
+  v_expires timestamptz;
+  v_days integer;
+  v_items text[];
+begin
+  select * into v_order from public.hub_payment_orders where invoice_id=p_invoice_id for update;
+  if not found then return jsonb_build_object('error','order_not_found'); end if;
+  if v_order.status='paid' then return jsonb_build_object('ok',true,'duplicate',true,'user_id',v_order.user_id); end if;
+  if v_order.amount<>p_amount or p_ccy<>980 then return jsonb_build_object('error','amount_mismatch'); end if;
+  v_days := case v_order.plan_id when 'supporter' then 30 when 'elite' then 90 when 'legend' then 365 else 0 end;
+  if v_days=0 then return jsonb_build_object('error','invalid_plan'); end if;
+  select * into v_profile from public.hub_profiles where id=v_order.user_id for update;
+  if not found then return jsonb_build_object('error','profile_not_found'); end if;
+  v_expires := greatest(coalesce(v_profile.elite_expires_at,now()),now()) + make_interval(days => v_days);
+  update public.hub_profiles set elite_verified=true,elite_expires_at=v_expires,updated_at=now() where id=v_order.user_id;
+  v_items := case v_order.plan_id
+    when 'supporter' then array['title_pathfinder','frame_crimson']
+    when 'elite' then array['title_ace','frame_crimson','skin_shadow','weapon_ember','badge_ace']
+    else array['title_loot','banner_ember','skin_commander','weapon_ice','avatar_commander','badge_ace']
+  end;
+  insert into public.hub_inventory(user_id,item_id)
+  select v_order.user_id, unnest(v_items)
+  on conflict (user_id,item_id) do nothing;
+  update public.hub_payment_orders set status='paid',paid_at=now(),provider_event=p_provider_event where id=v_order.id;
+  return jsonb_build_object('ok',true,'duplicate',false,'user_id',v_order.user_id,'plan_id',v_order.plan_id,'expires_at',v_expires);
+end;
+$$;
+revoke all on function public.hub_fulfill_payment(text,integer,integer,jsonb) from public, anon, authenticated;
+grant execute on function public.hub_fulfill_payment(text,integer,integer,jsonb) to service_role;
