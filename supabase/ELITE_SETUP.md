@@ -13,7 +13,7 @@ Use the Supabase SQL Editor or `supabase db push --project-ref xacqretciujzrcqjv
 
 ## 2. Deploy permissions
 
-GitHub Actions deploys `hub-api` from `.github/workflows/deploy-supabase.yml`. The current run fails because the existing `SUPABASE_ACCESS_TOKEN` does not have permission to list/deploy functions for this project. Replace the repository secret with a Supabase Personal Access Token that has the required organization/project permissions (the token format begins with `sbp_`). Keep `SUPABASE_PROJECT_REF` set to `xacqretciujzrcqjvvgz`. Never use the anon/publishable key or service-role key as this token.
+GitHub Actions deploys `hub-api` from `.github/workflows/deploy-supabase.yml`. The current deployment is blocked because the configured `SUPABASE_ACCESS_TOKEN` cannot list/deploy functions for this project. Open [GitHub Actions secrets](https://github.com/vshshsg229-hash/kh-kozak-pubg/settings/secrets/actions) and replace `SUPABASE_ACCESS_TOKEN` with a Supabase Personal Access Token that belongs to an account with access to the correct organization and project (the token format begins with `sbp_`). A correct-looking `sbp_` prefix alone does not guarantee project permissions. Keep `SUPABASE_PROJECT_REF` set to `xacqretciujzrcqjvvgz`. Never use the anon/publishable key or service-role key as this token, and do not paste tokens into chat.
 
 ## 3. Supabase Edge Function secrets
 
