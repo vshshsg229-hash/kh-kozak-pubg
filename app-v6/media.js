@@ -17,7 +17,7 @@ function playYouTube(raw){
 }
 youtubeForm?.addEventListener('submit',e=>{e.preventDefault();playYouTube(youtubeInput?.value||'')});
 const tiktokForm=$('#tiktokForm'),tiktokInput=$('#tiktokUrl'),tiktokEmbed=$('#tiktokEmbed'),tiktokMessage=$('#tiktokMessage');
-const PROFILE_URL='https://www.tiktok.com/@khkozak4';
+const PROFILE_URL='https://www.tiktok.com/@baggy8364';
 const tiktokSavedList=$('#tiktokSavedList');
 function safeTikTokUrl(raw){
  let u;try{u=new URL((raw||'').trim())}catch{return null}
