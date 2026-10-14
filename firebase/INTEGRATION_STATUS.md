@@ -6,7 +6,8 @@ Branch: `firebase-integration-setup` (based on `firebase-migration`).
 - Production `main` is unchanged.
 - Existing Render API and Supabase resources are unchanged.
 - The supplied Firebase Web App config has been saved to `firebase/firebase-config.js` on this branch only.
-- Firebase is **not yet initialized by the app**, and this does not switch the app's API or claim Firebase is connected.
+- A guarded Firebase SDK bootstrap is now included in `app-v6/index.html` and `app-v6/firebase-init.js` on this branch. It initializes Firebase App/Auth if the SDK and config load; otherwise it logs a warning and lets the existing app continue.
+- This bootstrap is groundwork only: browser-based runtime tests have not yet been run, account registration/login UI is not yet connected to Firebase, and the app's existing API is unchanged.
 - The existing app uses a custom REST API for accounts, rewards, leaderboard and community. Replacing its URL with Firebase would break those flows; a compatibility adapter and trusted server-side reward functions are required.
 
 ## Web configuration received
