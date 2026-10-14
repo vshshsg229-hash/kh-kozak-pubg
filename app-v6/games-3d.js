@@ -48,7 +48,7 @@ for(let i=0;i<28;i++){const x=(Math.random()-.5)*75,z=(Math.random()-.5)*75;if(M
 if(mode==='drive'){player=new T.Group();const body=new T.Mesh(new T.BoxGeometry(1.8,.7,3),mat(T,0xd4a92e));body.position.y=.7;player.add(body);const cabin=new T.Mesh(new T.BoxGeometry(1.2,.7,1.3),mat(T,0x243a4b));cabin.position.set(0,1.25,-.15);player.add(cabin);for(const x of [-.95,.95])for(const z of [-.95,.95]){const w=new T.Mesh(new T.CylinderGeometry(.28,.28,.18,12),mat(T,0x151719));w.rotation.z=Math.PI/2;w.position.set(x,.35,z);player.add(w)}scene.add(player);player.position.set(0,0,0)}else{
 player=new T.Group();player.userData.limbs=[];
 const part=(geometry,color,x,y,z,rx=0,ry=0,rz=0,rough=.86)=>{const mesh=new T.Mesh(geometry,mat(T,color,rough));mesh.position.set(x,y,z);mesh.rotation.set(rx,ry,rz);mesh.castShadow=true;mesh.receiveShadow=true;player.add(mesh);return mesh};
-const uniform=0x454b35,uniformLight=0x62654a,armor=0x242b2b,armorEdge=0x414747,skin=0xb98768,metal=0x171c20;
+const cosmetics=(()=>{try{const p=JSON.parse(localStorage.getItem('khkozak_hub_v6')||'{}');return {skin:p.equippedSkin||'skin_recruit',weapon:p.equippedWeaponSkin||'weapon_olive'}}catch{return {skin:'skin_recruit',weapon:'weapon_olive'}}})();const palettes={skin_recruit:{uniform:0x454b35,light:0x62654a,armor:0x242b2b,edge:0x414747},skin_urban:{uniform:0x414a55,light:0x788390,armor:0x20252b,edge:0x5c6874},skin_shadow:{uniform:0x382f48,light:0x61506f,armor:0x1a1722,edge:0x8d64c7},skin_commander:{uniform:0x78602d,light:0xb59a53,armor:0x2c2518,edge:0xf4ce62}};const weaponPalettes={weapon_olive:{base:0x5e7047,accent:0x99a76d},weapon_ember:{base:0x842f1f,accent:0xff713e},weapon_ice:{base:0x3f718a,accent:0x8bdcf4}};const pal=palettes[cosmetics.skin]||palettes.skin_recruit,gun=weaponPalettes[cosmetics.weapon]||weaponPalettes.weapon_olive;const uniform=pal.uniform,uniformLight=pal.light,armor=pal.armor,armorEdge=pal.edge,skin=0xb98768,metal=0x171c20,weaponBase=gun.base,weaponAccent=gun.accent;
 // Boots and articulated legs
 for(const side of [-1,1]){
 player.userData.limbs.push(part(new T.CapsuleGeometry(.145,.62,5,10),uniform,side*.22,.57,0,0,0,side*.035));
@@ -93,9 +93,11 @@ part(new T.BoxGeometry(.15,.23,.1),0x282f2a,-.15,1.28,.405);
 part(new T.BoxGeometry(.15,.23,.1),0x282f2a,.15,1.28,.405);
 part(new T.CylinderGeometry(.018,.018,.48,7),0x202722,-.17,1.78,.31,0,0,-.12);
 // Rifle: stock, receiver, handguard, barrel, grip, magazine and sight
-part(new T.BoxGeometry(.13,.13,.38),0x202522,.32,1.42,-.36);
-part(new T.BoxGeometry(.15,.16,.46),0x292f2e,.32,1.43,-.68);
-part(new T.BoxGeometry(.11,.12,.35),0x3a403b,.32,1.43,-1.06);
+part(new T.BoxGeometry(.13,.13,.38),weaponBase,.32,1.42,-.36);
+part(new T.BoxGeometry(.15,.16,.46),weaponBase,.32,1.43,-.68);
+part(new T.BoxGeometry(.11,.12,.35),weaponBase,.32,1.43,-1.06);
+part(new T.BoxGeometry(.17,.035,.24),weaponAccent,.32,1.52,-.7);
+part(new T.BoxGeometry(.12,.035,.13),weaponAccent,.32,1.5,-1.03);
 part(new T.CylinderGeometry(.027,.027,.42,8),metal,.32,1.44,-1.39,Math.PI/2,0,0);
 part(new T.BoxGeometry(.09,.2,.13),0x202522,.32,1.29,-.67,.22);
 part(new T.BoxGeometry(.08,.22,.14),0x202522,.32,1.27,-.84,-.12);
