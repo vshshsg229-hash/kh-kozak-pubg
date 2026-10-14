@@ -1,27 +1,40 @@
 # Firebase setup — KH么Kozak Battle Hub
 
-This folder contains the client configuration loader and initial Firestore security rules for the Firebase integration branch.
+This integration branch uses Firebase Authentication, Firestore, and callable Cloud Functions. The production `main` branch has not been changed.
 
-## Before testing
+## One-time Firebase Console setup
 
-1. Open the Firebase console for project `kh-kozak-battle-hub`.
-2. In **Authentication → Sign-in method**, enable **Email/Password** if it is not already enabled.
-3. In **Firestore Database**, create the database if one does not exist yet.
-4. Open **Firestore Database → Rules**, paste the contents of `firestore.rules`, and publish the rules.
-5. In **Authentication → Settings → Authorized domains**, confirm the GitHub Pages domain is authorized:
-   `vshshsg229-hash.github.io`.
-6. Test only on the staging branch/deployment until sign-up, sign-in, profile creation, and denied progress edits have been verified.
+1. Open Firebase Console for project `kh-kozak-battle-hub`.
+2. In **Authentication → Sign-in method**, enable **Email/Password**.
+3. Create a **Cloud Firestore** database if one does not exist.
+4. In **Authentication → Settings → Authorized domains**, confirm `vshshsg229-hash.github.io` is authorized.
+5. Confirm the project is on the **Blaze billing plan** before deploying Cloud Functions; Firebase requires billing for deployed Functions. Set budget alerts before enabling production traffic.
+6. Do not publish the app to production until the staging browser checks below pass.
 
-## Current security boundary
+## Deploy from a trusted development machine
 
-- Each signed-in user can read only their own `users/{uid}` document.
-- A client can create a profile only with zero initial coins, points, XP, and played count.
-- A client can edit only `username`, `avatar`, `bio`, and `updatedAt`.
-- A client cannot delete a profile or change progression fields through these rules.
-- Public leaderboards, community profile discovery, purchases, rewards, and game-result updates need trusted server-side functions/rules before being enabled. Do not weaken the rules to make those features work.
+Install Node.js 20 and the Firebase CLI, authenticate with an account that has access to this Firebase project, then run from the repository root:
 
-## Important
+```sh
+npm --prefix functions install
+firebase use kh-kozak-battle-hub
+firebase deploy --only firestore:rules,functions
+```
 
-The Firebase web configuration is public client configuration, not an Admin SDK credential. Never put a service-account private key in this repository or in browser code.
+If the project is not selected in the CLI, use `firebase projects:list` and then `firebase use kh-kozak-battle-hub`. Never place an Admin SDK service-account private key in browser code or commit it to this repository.
 
-The existing app REST API flow has deliberately not been replaced in this branch. Firebase initialization and the profile adapter are additive; live Firebase access and end-to-end login still need testing before merging into `main`.
+## What is implemented in this branch
+
+- Email/password registration, login and logout through Firebase Authentication.
+- Firestore profile creation with initial coins, points, XP and played count set to zero.
+- `finishGame` callable function applies fixed server-side rewards, checks for duplicate event IDs and enforces a short cooldown.
+- `getLeaderboard` callable function returns a top-10 public leaderboard without granting browsers direct read access to other users' private profile documents.
+- Firestore rules restrict profile reads to the owner, allow only cosmetic profile edits from the browser, and deny client profile deletion.
+- The legacy Render API request path is disabled in `app-v6/app.js` on this branch.
+
+## Security notes / known limitations
+
+- Game rewards are calculated by the server, not accepted from client-supplied coin/XP values. However, the current game-completion call is still initiated by browser code. The cooldown and idempotency checks are a baseline, **not a complete anti-cheat system**. Do not use this for valuable purchases, cash prizes, or competitive rankings without stronger server-verifiable gameplay validation and App Check.
+- The old REST API's community, inventory, shop purchases, achievements and admin flows have not all been migrated. Those features must not be assumed to synchronize with Firebase yet.
+- The Firebase web config is public client config; it is not a secret. Never commit service-account credentials.
+- Live authentication, Firestore rules, Functions deployment and end-to-end game reward tests have not been performed by this repository edit. Deploy and verify on staging before merging to `main`.
