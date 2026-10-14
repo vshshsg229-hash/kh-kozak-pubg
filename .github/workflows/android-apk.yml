@@ -38,6 +38,8 @@ jobs:
         run: |
           mkdir -p android-wrapper/app/src/main/assets/www
           cp -R app-v6/. android-wrapper/app/src/main/assets/www/
+      - name: Check universal control center JavaScript syntax
+        run: node --check app-v6/global-control-center.js
       - name: Build installable debug APK
         working-directory: android-wrapper
         run: gradle --no-daemon assembleDebug
@@ -56,6 +58,7 @@ jobs:
           name: KH么Kozak Battle Hub Android build ${{ github.run_number }}
           body: |
             Installable Android debug APK built automatically from the current KH么Kozak Battle Hub web app.
+            Version 9.0.0 universal refresh for phone, tablet and desktop layouts. Android versionCode 90, targetSdk 36.
             The app stores local progress on this device. Online server features are not required for local mini-games.
           files: KH-Kozak-Battle-Hub.apk
           make_latest: true
