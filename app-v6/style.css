@@ -1328,3 +1328,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   body.sidebar-hidden .sidebar{display:none!important}
   body.sidebar-hidden .main{margin-left:0!important}
 }
+
+
+/* 8.63.0 — two separate TikTok creator feeds */
+.tiktok-profiles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:18px 0 24px;align-items:start}
+.tiktok-profile-unit{min-width:0;overflow:hidden;padding:12px}
+.tiktok-profile-unit .tiktok-profile-card{margin:0 0 12px;padding:14px;background:radial-gradient(circle at 0 0,rgba(254,44,85,.12),transparent 55%),linear-gradient(130deg,#1d2028,#12161c)}
+.tiktok-creator-feed{min-width:0;overflow:auto;border:1px solid var(--line,#343b46);border-radius:9px;background:#090c10;padding:8px}
+.tiktok-creator-feed .tiktok-embed{margin:0 auto!important}
+@media(max-width:900px){.tiktok-profiles-grid{grid-template-columns:1fr}}
