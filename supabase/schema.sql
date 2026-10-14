@@ -13,6 +13,23 @@ create table if not exists public.hub_profiles (
   updated_at timestamptz not null default now()
 );
 create index if not exists hub_profiles_leaderboard_idx on public.hub_profiles(points desc, xp desc, played desc);
+
+-- Verified paid Elite entitlement; only trusted payment webhooks/admin operations may set this.
+alter table public.hub_profiles add column if not exists elite_verified boolean not null default false;
+alter table public.hub_profiles add column if not exists elite_expires_at timestamptz;
+
+create table if not exists public.hub_premium_ideas (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text not null check (char_length(title) between 5 and 100),
+  body text not null check (char_length(body) between 20 and 1200),
+  status text not null default 'new' check (status in ('new','reviewing','planned','done','declined')),
+  created_at timestamptz not null default now()
+);
+create index if not exists hub_premium_ideas_user_date_idx on public.hub_premium_ideas(user_id, created_at desc);
+alter table public.hub_premium_ideas enable row level security;
+revoke all on public.hub_premium_ideas from anon, authenticated;
+grant select, insert, update, delete on public.hub_premium_ideas to service_role;
 create table if not exists public.hub_game_events (
   id bigint generated always as identity primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
