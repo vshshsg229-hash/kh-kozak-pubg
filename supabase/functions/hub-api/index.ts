@@ -87,6 +87,7 @@ async function getUserSnapshot(userId: string) {
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") ?? "";
 const ADMIN_TELEGRAM_CHAT_ID = Deno.env.get("ADMIN_TELEGRAM_CHAT_ID") ?? "";
+const ELITE_IDEA_TELEGRAM_CHAT_ID = Deno.env.get("ELITE_IDEA_TELEGRAM_CHAT_ID") || "@rryy899";
 const MONOBANK_ACQUIRING_TOKEN = Deno.env.get("MONOBANK_ACQUIRING_TOKEN") ?? "";
 let monoPublicKey: CryptoKey | null = null;
 const ADMIN_USER_IDS = new Set((Deno.env.get("ADMIN_USER_IDS") ?? "").split(",").map((x) => x.trim()).filter(Boolean));
@@ -430,13 +431,13 @@ Deno.serve(async (req: Request) => {
       const { data: saved, error: insertError } = await admin.from("hub_premium_ideas").insert({ user_id: user.id, title: ideaTitle, body: ideaBody }).select("id,created_at").single();
       if (insertError) throw insertError;
       let telegramNotified = false;
-      if (TELEGRAM_BOT_TOKEN && ADMIN_TELEGRAM_CHAT_ID) {
+      if (TELEGRAM_BOT_TOKEN && ELITE_IDEA_TELEGRAM_CHAT_ID) {
         try {
-          await telegramSend(ADMIN_TELEGRAM_CHAT_ID, "💡 НОВА ELITE-ІДЕЯ KH么KOZAK\nГравець: " + String(profile.username).slice(0, 20) + "\n" + ideaTitle + "\n\n" + ideaBody + "\nID: " + saved.id);
+          await telegramSend(ELITE_IDEA_TELEGRAM_CHAT_ID, "💡 НОВА ELITE-ІДЕЯ KH么KOZAK\nГравець: " + String(profile.username).slice(0, 20) + "\n" + ideaTitle + "\n\n" + ideaBody + "\nID: " + saved.id);
           telegramNotified = true;
         } catch (notifyError) { console.error("Premium idea Telegram notification failed:", notifyError?.message ?? notifyError); }
       }
-      return response({ ok: true, id: saved.id, telegramNotified, message: telegramNotified ? "Ідею збережено й надіслано адміністратору в Telegram." : "Ідею збережено на сервері. Telegram-сповіщення потребує ADMIN_TELEGRAM_CHAT_ID та TELEGRAM_BOT_TOKEN." }, 201, origin);
+      return response({ ok: true, id: saved.id, telegramNotified, message: telegramNotified ? "Ідею збережено й надіслано адміністратору в Telegram." : "Ідею збережено на сервері. Telegram-сповіщення потребує ELITE_IDEA_TELEGRAM_CHAT_ID (за замовчуванням @rryy899) та TELEGRAM_BOT_TOKEN." }, 201, origin);
     }
 
     if (req.method === "GET" && path === "/api/admin/overview") {
