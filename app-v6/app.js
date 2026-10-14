@@ -481,6 +481,25 @@ progressFile?.addEventListener('change',async()=>{
 window.addEventListener('kh100-finished',e=>{const d=e.detail||{};finishGame('aim',Math.max(10,Number(d.coins)||10),Math.max(15,Number(d.points)||15),Math.max(20,Number(d.xp)||20));});
 window.addEventListener('kh3d-finished',e=>{const d=e.detail||{};finishGame(d.mode==='zombie'?'zombie':'arena',Math.max(20,Number(d.coins)||20),Math.max(30,Number(d.points)||30),Math.max(25,Number(d.xp)||25));const status=document.querySelector('#kh3dStatus');if(status)status.textContent='Запит на нарахування нагороди надіслано. Перевір баланс у профілі.';});
 window.addEventListener('khkozak-bunker-update',()=>{try{const fresh=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...fresh,games:{...defaultState.games,...(fresh.games||{})}};state.owned=Array.isArray(state.owned)?state.owned:[];state.completed=Array.isArray(state.completed)?state.completed:[];render();showToast('Прогрес бункера синхронізовано з профілем.')}catch(e){}});
+
+const desktopSidebarToggle=document.getElementById('desktopSidebarToggle');
+function setDesktopSidebarMode(mode){
+  document.body.classList.toggle('sidebar-compact',mode==='compact');
+  document.body.classList.toggle('sidebar-hidden',mode==='hidden');
+  if(desktopSidebarToggle){
+    const labels={expanded:'Зменшити бічну панель',compact:'Сховати бічну панель',hidden:'Відкрити бічну панель'};
+    const icons={expanded:'◧',compact:'◁',hidden:'☰'};
+    desktopSidebarToggle.setAttribute('aria-label',labels[mode]);
+    desktopSidebarToggle.setAttribute('title','Зменшити / сховати / відкрити бічну панель');
+    desktopSidebarToggle.setAttribute('aria-expanded',String(mode!=='hidden'));
+    desktopSidebarToggle.textContent=icons[mode];
+  }
+}
+desktopSidebarToggle?.addEventListener('click',()=>{
+  const mode=document.body.classList.contains('sidebar-hidden')?'hidden':document.body.classList.contains('sidebar-compact')?'compact':'expanded';
+  setDesktopSidebarMode(mode==='expanded'?'compact':mode==='compact'?'hidden':'expanded');
+});
+
 const mobileMenuToggle=document.getElementById('mobileMenuToggle');
 const mobileMenuBackdrop=document.getElementById('mobileMenuBackdrop');
 function setMobileMenu(open){
