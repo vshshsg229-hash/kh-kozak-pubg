@@ -84,7 +84,7 @@ async function getUserSnapshot(userId: string) {
   return { ...profile, inventory: (inventory.data ?? []).map((row) => row.item_id), achievements: (achievements.data ?? []).map((row) => row.achievement_id) };
 }
 
-const HUB_VERSION = "8.46.0";
+const HUB_VERSION = "8.47.0";
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") ?? "";
 const ADMIN_TELEGRAM_CHAT_ID = Deno.env.get("ADMIN_TELEGRAM_CHAT_ID") ?? "";
