@@ -1,5 +1,5 @@
-const CACHE_NAME = "kh-kozak-hub-v9.0.1";
-const CORE = ["./", "./index.html", "./style.css?v=9.0.0", "./event-center.css?v=1.0.0", "./app.js?v=9.0.0", "./arcade-100.js?v=1.0.1", "./progression-hub.js?v=1.1.0", "./media.js?v=9.0.0", "./i18n.js?v=8.26.0", "./manifest.webmanifest", "./icon.svg", "./games-3d.js?v=1.3.0", "./event-center.js?v=1.0.0", "./arsenal.css?v=1.0.0", "./arsenal.js?v=1.0.0", "./game-library.css?v=1.1.0", "./game-library.js?v=1.1.0", "./character-lobby.css?v=1.2.1", "./character-lobby.js?v=1.2.1", "./desktop-neon.css?v=1.1.0", "./global-refresh.css?v=9.0.1", "./global-control-center.js?v=9.0.1", "./desktop-tools.js?v=1.0.0", "./bunker.js?v=1.1.0"];
+const CACHE_NAME = "kh-kozak-hub-v9.1.0";
+const CORE = ["./", "./index.html", "./style.css?v=9.1.0", "./event-center.css?v=1.0.0", "./app.js?v=9.0.0", "./arcade-100.js?v=1.0.1", "./progression-hub.js?v=1.1.0", "./media.js?v=9.0.0", "./i18n.js?v=8.26.0", "./manifest.webmanifest", "./icon.svg", "./games-3d.js?v=1.3.0", "./event-center.js?v=1.0.0", "./arsenal.css?v=1.0.0", "./arsenal.js?v=1.0.0", "./tactical-hq.css?v=9.1.0", "./tactical-hq.js?v=9.1.0", "./game-library.css?v=1.1.0", "./game-library.js?v=1.1.0", "./character-lobby.css?v=1.2.1", "./character-lobby.js?v=1.2.1", "./desktop-neon.css?v=1.1.0", "./global-refresh.css?v=9.0.1", "./global-control-center.js?v=9.0.1", "./desktop-tools.js?v=1.0.0", "./bunker.js?v=1.1.0"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
