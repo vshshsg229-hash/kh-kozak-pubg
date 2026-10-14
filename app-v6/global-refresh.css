@@ -122,3 +122,29 @@ html.kh-high-contrast .panel,html.kh-high-contrast .stat-card,html.kh-high-contr
   .topbar{gap:10px}
   .topbar .season{display:flex}
 }
+
+
+/* PERMANENT TABLET NAVIGATION RULE — keep the PC sidebar on tablets. */
+@media (min-width:540px) {
+  html.kh-device-tablet .sidebar {
+    display:flex!important;
+    position:fixed!important;
+    inset:0 auto 0 0!important;
+    width:var(--sidebar,205px)!important;
+    max-height:100dvh;
+    overflow-y:auto;
+    transform:none!important;
+    z-index:40!important;
+  }
+  html.kh-device-tablet .main {
+    margin-left:var(--sidebar,205px)!important;
+    width:auto!important;
+    min-width:0;
+    padding:0 18px 24px!important;
+  }
+  html.kh-device-tablet .mobile-nav,
+  html.kh-device-tablet .mobile-menu-toggle,
+  html.kh-device-tablet .mobile-menu-backdrop {
+    display:none!important;
+  }
+}
