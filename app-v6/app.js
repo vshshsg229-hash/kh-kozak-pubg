@@ -546,6 +546,9 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape')setMobileMen
 window.matchMedia('(min-width:721px)').addEventListener('change',event=>{if(event.matches)setMobileMenu(false)});
 render();
 updateSeasonTimers();setInterval(updateSeasonTimers,1000);
+// Verify the fixed production API as soon as the app opens; keep local play available if the server is asleep.
+connectOnlineApi();
+if(getAuthToken())refreshOnlineAccount();
 if(new URLSearchParams(window.location.search).get('payment')==='return'&&getAuthToken()){apiRequest('/api/premium/status').then(data=>{if(data.user)applyOnlineUser(data.user);if(data.eliteVerified){showToast('Оплату підтверджено! Elite і нагороди активовано.');goTab('profile')}else showToast('Платіж ще перевіряється. Онови Elite-статус трохи пізніше.')}).catch(error=>showToast('Не вдалося перевірити оплату: '+error.message))}
 loadTelegramStatus();refreshAdminData();
 })();
