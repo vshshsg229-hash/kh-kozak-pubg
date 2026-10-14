@@ -1,0 +1,64 @@
+name: Build Windows PC app
+
+on:
+  push:
+    paths:
+      - "desktop/**"
+      - ".github/workflows/build-windows-pc.yml"
+      - "app-v6/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Prepare desktop package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force desktop/web | Out-Null
+          Copy-Item -Path app-v6/* -Destination desktop/web -Recurse -Force
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package.json
+
+      - name: Install dependencies
+        run: npm install --prefix desktop
+
+      - name: Build Windows installer and portable app
+        run: npm run --prefix desktop dist:win
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: KH-Kozak-Battle-Hub-Windows-8.67.0
+          path: |
+            desktop/dist/*.exe
+            desktop/dist/*.blockmap
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish downloadable Windows release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: pc-v8.67.0
+          name: KH么Kozak Battle Hub for Windows 8.67.0
+          body: |
+            Windows PC release of KH么Kozak Battle Hub.
+            
+            - KH-Kozak-Battle-Hub-Setup-8.67.0.exe: installer with Start Menu and desktop shortcuts.
+            - KH-Kozak-Battle-Hub-8.67.0.exe: portable build, no installation required.
+            
+            Windows x64.
+          files: |
+            desktop/dist/*.exe
+          fail_on_unmatched_files: true
