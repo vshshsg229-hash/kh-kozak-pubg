@@ -17,7 +17,7 @@ function decorate(){
   const id=idFor(card);if(!id)return;
   let b=card.querySelector('.game-favorite-toggle');
   if(!b){b=document.createElement('button');b.type='button';b.className='game-favorite-toggle';b.setAttribute('aria-label','Додати до обраного');b.title='Додати до обраного';b.dataset.favoriteGame=id;const content=card.querySelector('.tile-content')||card;content.insertBefore(b,content.firstChild)}
-  const active=favorites.has(id);b.classList.toggle('is-favorite',active);b.textContent=active?'★':'☆';b.setAttribute('aria-pressed',String(active));b.setAttribute('aria-label',active?'Прибрати з обраного':'Додати до обраного');b.title=active?'Прибрати з обраного':'Додати до обраного';
+  const active=favorites.has(id);b.classList.toggle('is-favorite',active);const glyph=active?'★':'☆';if(b.textContent!==glyph)b.textContent=glyph;b.setAttribute('aria-pressed',String(active));b.setAttribute('aria-label',active?'Прибрати з обраного':'Додати до обраного');b.title=active?'Прибрати з обраного':'Додати до обраного';
  });
 }
 function apply(){
