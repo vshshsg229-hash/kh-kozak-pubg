@@ -163,9 +163,9 @@
     outline-offset: 3px;
   }
   .live-pill, .online-dot { box-shadow: 0 0 12px #67f5c244; }
-  .desktop-sidebar-compact .sidebar { width: 76px; padding-inline: 10px; }
-  .desktop-sidebar-compact .main { margin-left: 76px; }
-  .desktop-sidebar-hidden .sidebar { transform: translateX(-105%); }
-  .desktop-sidebar-hidden .main { margin-left: 0; }
+  body.sidebar-compact .sidebar { width: 76px; padding-inline: 10px; }
+  body.sidebar-compact .main { margin-left: 76px; }
+  body.sidebar-hidden .sidebar { transform: translateX(-105%); }
+  body.sidebar-hidden .main { margin-left: 0; }
   .sidebar, .main { transition: margin-left .22s ease, width .22s ease, transform .22s ease; }
 }
