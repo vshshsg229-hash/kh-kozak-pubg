@@ -1,11 +1,10 @@
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
-const { defineString } = require('firebase-functions/params');
 
 initializeApp();
 const db = getFirestore();
-const region = defineString('KH_FUNCTIONS_REGION', { default: 'us-central1' });
+const REGION = 'us-central1';
 
 // Rewards are fixed on the trusted server. Client-provided coin/XP amounts are ignored.
 // This is a first secure baseline, not a complete anti-cheat system: game outcomes still
@@ -21,12 +20,12 @@ const ALLOWED_GAMES = new Set([
   'fuel','roadblock','convoy','duo','squad','revive','ping','radar','footprint','sound2',
   'reaction2','targetgrid','tracking','burst','peek','cover','grenade2','molotov','flash','trap',
   'escape','laststand','zone2','endgame2','rank2','training','dailyquest','memory2','logic',
-  'quickmath','cardbattle','coinrush','cratecode','boss2','arena2','escapezone'
+  'quickmath','cardbattle','coinrush','cratecode','boss2','arena2','escapezone','supply2','champion'
 ]);
 
 const REWARD = Object.freeze({ coins: 8, points: 5, xp: 10 });
 
-exports.finishGame = onCall({ region: region.value(), enforceAppCheck: false }, async (request) => {
+exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
   if (!request.auth) throw new HttpsError('unauthenticated', 'Спочатку увійди через Firebase.');
   const uid = request.auth.uid;
   const rawGame = String(request.data?.game || '');
