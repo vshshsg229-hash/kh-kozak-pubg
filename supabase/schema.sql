@@ -25,7 +25,7 @@ create table if not exists public.hub_payment_orders (
   amount integer not null check (amount in (9900,24900,49900)),
   reference uuid not null unique,
   invoice_id text unique,
-  status text not null default 'pending' check (status in ('pending','processing','success','failure','expired','failed','paid','unknown')),
+  status text not null default 'pending' check (status in ('pending','created','processing','hold','success','failure','reversed','expired','failed','paid','unknown')),
   provider_event jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
   paid_at timestamptz
