@@ -482,6 +482,7 @@ window.addEventListener('kh100-finished',e=>{const d=e.detail||{};finishGame('ai
 window.addEventListener('kh3d-finished',e=>{const d=e.detail||{};finishGame(d.mode==='zombie'?'zombie':'arena',Math.max(20,Number(d.coins)||20),Math.max(30,Number(d.points)||30),Math.max(25,Number(d.xp)||25));const status=document.querySelector('#kh3dStatus');if(status)status.textContent='Запит на нарахування нагороди надіслано. Перевір баланс у профілі.';});
 window.addEventListener('khkozak-bunker-update',()=>{try{const fresh=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...fresh,games:{...defaultState.games,...(fresh.games||{})}};state.owned=Array.isArray(state.owned)?state.owned:[];state.completed=Array.isArray(state.completed)?state.completed:[];render();showToast('Прогрес бункера синхронізовано з профілем.')}catch(e){}});
 render();
+updateSeasonTimers();setInterval(updateSeasonTimers,1000);
 if(new URLSearchParams(window.location.search).get('payment')==='return'&&getAuthToken()){apiRequest('/api/premium/status').then(data=>{if(data.user)applyOnlineUser(data.user);if(data.eliteVerified){showToast('Оплату підтверджено! Elite і нагороди активовано.');goTab('profile')}else showToast('Платіж ще перевіряється. Онови Elite-статус трохи пізніше.')}).catch(error=>showToast('Не вдалося перевірити оплату: '+error.message))}
 loadTelegramStatus();refreshAdminData();
 })();
