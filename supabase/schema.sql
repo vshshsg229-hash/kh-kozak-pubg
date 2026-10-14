@@ -256,6 +256,8 @@ create table if not exists public.hub_shop_catalog (
   daily_order integer unique,
   active boolean not null default true
 );
+alter table public.hub_shop_catalog drop constraint if exists hub_shop_catalog_item_kind_check;
+alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin'));
 create table if not exists public.hub_inventory (
   user_id uuid not null references auth.users(id) on delete cascade,
   item_id text not null references public.hub_shop_catalog(item_id),
