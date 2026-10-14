@@ -29,11 +29,11 @@ jobs:
         with:
           cmdline-tools-version: 'latest'
           accept-android-sdk-licenses: true
-          packages: 'platforms;android-35 build-tools;35.0.0'
+          packages: 'platforms;android-36 build-tools;36.0.0'
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.7'
+          gradle-version: '8.11.1'
       - name: Package the current web app into Android assets
         run: |
           mkdir -p android-wrapper/app/src/main/assets/www
