@@ -1,0 +1,171 @@
+/* KH么Kozak Battle Hub — PC neon refresh. Tablet/mobile intentionally unchanged. */
+@media (min-width: 1024px) {
+  :root {
+    color-scheme: dark;
+    --bg: #090711;
+    --panel: #131020;
+    --panel2: #1b1530;
+    --line: #34234f;
+    --text: #f7f1ff;
+    --muted: #aaa0bf;
+    --yellow: #b66cff;
+    --yellow2: #e2b8ff;
+    --green: #67f5c2;
+    --blue: #82a7ff;
+    --orange: #ff8de1;
+    --sidebar: 252px;
+    --neon-purple: #b66cff;
+    --neon-pink: #f06dff;
+  }
+  html { background: var(--bg); }
+  body {
+    background:
+      radial-gradient(ellipse at 80% -15%, #54218b35 0, transparent 38%),
+      radial-gradient(ellipse at 15% 40%, #28124a20 0, transparent 38%),
+      var(--bg);
+  }
+  .sidebar {
+    background: linear-gradient(180deg, #110b20 0%, #0c0915 100%);
+    border-right: 1px solid #7c42aa55;
+    box-shadow: 8px 0 34px #0004;
+    padding: 25px 14px 18px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #67418a transparent;
+  }
+  .brand-mark {
+    background: linear-gradient(135deg, #e0b0ff, #8e3bdf 75%);
+    color: #12071e;
+    filter: drop-shadow(0 0 12px #ad55ff66);
+  }
+  .brand small i, .season b, .eyebrow, .side-label { color: var(--yellow); }
+  .nav { gap: 6px; }
+  .nav-item {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    min-height: 42px;
+    padding: 11px 12px;
+    transition: background .18s ease, border-color .18s ease, transform .18s ease, color .18s ease;
+  }
+  .nav-item:hover {
+    background: #9d4de51c;
+    border-color: #b66cff44;
+    color: #f0d7ff;
+    transform: translateX(2px);
+  }
+  .nav-item.active {
+    color: #f5e6ff;
+    background: linear-gradient(100deg, #8e3bdc42, #52257824);
+    border-color: #b66cff66;
+    box-shadow: inset 3px 0 #d19aff, 0 0 22px #8e3bdc15;
+  }
+  .nav-item em { background: #38224d; color: #e8caff; }
+  .side-bottom { border-color: #51336c; }
+  .main { padding: 0 clamp(28px, 3vw, 52px); max-width: 1900px; }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    background: #0c0915eF;
+    backdrop-filter: blur(18px);
+    border-bottom-color: #39244e;
+    margin-bottom: 28px;
+  }
+  .desktop-sidebar-toggle {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #654080;
+    border-radius: 10px;
+    background: #21132f;
+    color: #e6c8ff;
+    font-size: 19px;
+    margin-right: 18px;
+    transition: .2s ease;
+  }
+  .desktop-sidebar-toggle:hover { background: #43205f; box-shadow: 0 0 18px #b66cff40; }
+  .season-line { background: #64427b; }
+  .language-control, .currency, .avatar-mini {
+    border-color: #3d2a54;
+  }
+  .currency .coin { color: #d5a2ff; }
+  .avatar-mini { box-shadow: 0 0 0 2px #b66cff35; }
+  .hero, .bunker-hero {
+    border: 1px solid #7541a166;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px #0004, inset 0 1px #ffffff08;
+  }
+  .hero {
+    background: linear-gradient(120deg, #1b1030 0%, #100c1c 55%, #251039 100%);
+  }
+  .hero:before, .panel:before { border-color: #b66cff25; }
+  .hero h1 strong, .hero .eyebrow { color: #d7a2ff; }
+  .hero .sun { background: #bd73ff; box-shadow: 0 0 65px #b66cff99; }
+  .art-stamp { border-color: #b66cff99; color: #e0bcff; }
+  .btn-yellow, .btn-primary, .drop-claim {
+    color: #170923;
+    background: linear-gradient(110deg, #e0b4ff, #a84ef0);
+    border: 1px solid #e2b9ff;
+    box-shadow: 0 5px 24px #a94ff02e;
+  }
+  .btn-yellow:hover, .btn-primary:hover, .drop-claim:hover {
+    background: linear-gradient(110deg, #f0d7ff, #c36dff);
+    box-shadow: 0 0 26px #b66cff55;
+    transform: translateY(-1px);
+  }
+  .btn-ghost, .btn, .text-link, .quick-link, .feature-card, .nav-item,
+  .panel, .stat-card, .daily-drop, .mission-row, .bunker-stat, .bunker-upgrade,
+  .event-card, .arsenal-card, .game-card, .reward-card, .profile-card {
+    transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .btn-ghost { border-color: #654080; }
+  .btn-ghost:hover { border-color: #c38bff; background: #8c43c71c; }
+  .panel, .stat-card, .daily-drop, .bunker-stat, .bunker-upgrade {
+    background: linear-gradient(145deg, #171126, #100d1a);
+    border-color: #3b2853;
+    box-shadow: 0 12px 32px #0002;
+  }
+  .stat-card:hover, .panel:hover, .bunker-upgrade:hover {
+    border-color: #8b55b3;
+    box-shadow: 0 10px 30px #9b4bd315;
+  }
+  .stat-icon.gold, .drop-rewards span, .xp-bar i { color: #d5a2ff; }
+  .xp-bar { background: #342343; }
+  .xp-bar i { background: linear-gradient(90deg, #8f3dd6, #e0a5ff); box-shadow: 0 0 12px #b66cff66; }
+  .feature-card {
+    border: 1px solid #4a3264;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #1d1430, #100d1a);
+  }
+  .feature-card:hover, .quick-link:hover {
+    border-color: #bd79ff;
+    box-shadow: 0 12px 35px #a84ef025;
+    transform: translateY(-3px);
+  }
+  .feature-tag, .feature-bottom, .quick-link i { color: #d9b0ff; }
+  .reaction-feature, .aim-feature, .quiz-feature { background-image: linear-gradient(145deg, #24143a, #100d1a); }
+  .quick-link { border-color: #3c2851; background: #151020; border-radius: 12px; }
+  .section-heading { margin-top: 34px; }
+  .section-heading h2, .welcome-row h2 { letter-spacing: -.025em; }
+  input, select, textarea {
+    accent-color: #b66cff;
+  }
+  input:not([type=checkbox]):not([type=radio]), select, textarea {
+    background-color: #100b1a;
+    border-color: #49315f;
+    color: #f7f1ff;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible {
+    outline: 2px solid #c78aff;
+    outline-offset: 3px;
+  }
+  .live-pill, .online-dot { box-shadow: 0 0 12px #67f5c244; }
+  .desktop-sidebar-compact .sidebar { width: 76px; padding-inline: 10px; }
+  .desktop-sidebar-compact .main { margin-left: 76px; }
+  .desktop-sidebar-hidden .sidebar { transform: translateX(-105%); }
+  .desktop-sidebar-hidden .main { margin-left: 0; }
+  .sidebar, .main { transition: margin-left .22s ease, width .22s ease, transform .22s ease; }
+}
