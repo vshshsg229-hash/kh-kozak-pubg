@@ -1,22 +1,17 @@
-# Firebase integration setup — isolated branch
+# Firebase integration status — isolated branch
 
-Branch: `firebase-integration-setup` (based on `firebase-migration`).
+Branch: `firebase-integration-setup`. Production `main` is intentionally unchanged.
 
-## Status
-- Production `main` is unchanged.
-- Existing Render API and Supabase resources are unchanged.
-- The supplied Firebase Web App config has been saved to `firebase/firebase-config.js` on this branch only.
-- A guarded Firebase SDK bootstrap is now included in `app-v6/index.html` and `app-v6/firebase-init.js` on this branch. It initializes Firebase App/Auth if the SDK and config load; otherwise it logs a warning and lets the existing app continue.
-- This bootstrap is groundwork only: browser-based runtime tests have not yet been run, account registration/login UI is not yet connected to Firebase, and the app's existing API is unchanged.
-- The existing app uses a custom REST API for accounts, rewards, leaderboard and community. Replacing its URL with Firebase would break those flows; a compatibility adapter and trusted server-side reward functions are required.
+## Implemented in this branch
+- Added the supplied Firebase Web App configuration.
+- Initializes Firebase App, Authentication, and Firestore SDK when the CDN SDKs load.
+- Exposes an additive profile adapter for loading/creating `users/{uid}` and updating a small allowlist of public profile fields.
+- Emits `kh-firebase-auth-state` when Firebase Authentication changes state.
 
-## Web configuration received
-The user supplied a Firebase Web SDK config for project ID `kh-kozak-battle-hub`, including the Web App ID. The values were copied into the branch config file. These client config values are not service-account credentials; never place service-account JSON, private keys, database passwords, or tokens in client files.
+## Not yet verified
+- Browser runtime against the live Firebase project.
+- Email/password provider status and Firestore database/rules.
+- Connecting existing account forms, coins, XP, purchases, rewards, leaderboard and community to Firebase.
+- Cloud Functions or server-side validation for reward operations.
 
-## Next integration stages
-1. Add Firebase SDK initialization in a way compatible with the app's current deployment and test it on this branch.
-2. Test Firebase Authentication separately without changing the current production API.
-3. Implement an adapter for the app's existing account API contract.
-4. Add restrictive Firestore rules and server-side Cloud Functions for rewards, coins, XP, inventory purchases and leaderboard writes.
-5. Test registration/login/logout/profile, game rewards, leaderboard, community, desktop browser and Android.
-6. Only after tests pass, propose a reviewed pull request; do not merge or deploy to production automatically.
+The current app still uses its existing REST API for its online features. Do not switch production until Firebase Authentication, Firestore rules, and trusted reward functions have been tested. Client code must never directly grant itself coins, XP, inventory, or leaderboard points.
