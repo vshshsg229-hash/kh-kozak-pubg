@@ -70,7 +70,7 @@ exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (r
   return result;
 });
 
-exports.getLeaderboard = onCall({ region: region.value() }, async (request) => {
+exports.getLeaderboard = onCall({ region: REGION }, async (request) => {
   if (!request.auth) throw new HttpsError('unauthenticated', 'Увійди, щоб переглянути рейтинг.');
   const snap = await db.collection('users').orderBy('points', 'desc').limit(10).get();
   const leaderboard = snap.docs.map((doc, index) => {
