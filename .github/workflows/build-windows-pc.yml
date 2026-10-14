@@ -4,16 +4,7 @@ on:
   push:
     paths:
       - "desktop/**"
-      - "app-v6/index.html"
-      - "app-v6/app.js"
-      - "app-v6/tactical-hq.js"
-      - "app-v6/tactical-hq.css"
-      - "app-v6/pc-companion.js"
-      - "app-v6/pc-companion.css"
-      - "app-v6/global-refresh.css"
-      - "app-v6/global-control-center.js"
-      - "app-v6/sw.js"
-      - "app-v6/manifest.webmanifest"
+      - "app-v6/**"
       - ".github/workflows/build-windows-pc.yml"
   workflow_dispatch:
 
@@ -21,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: kh-kozak-windows-pc-release-v9-0-0
+  group: kh-kozak-windows-pc-release-v9-4-1
   cancel-in-progress: true
 
 jobs:
@@ -61,7 +52,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: KH-Kozak-Battle-Hub-Windows-9.2.0
+          name: KH-Kozak-Battle-Hub-Windows-9.4.1
           path: |
             desktop/dist/*.exe
             desktop/dist/*.blockmap
@@ -71,13 +62,13 @@ jobs:
       - name: Publish downloadable Windows release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: pc-v9.2.0
-          name: KH么Kozak Battle Hub for Windows 9.2.0
+          tag_name: pc-v9.4.1
+          name: KH么Kozak Battle Hub for Windows 9.4.1
           body: |
             Windows PC release of KH么Kozak Battle Hub.
             
-            - KH-Kozak-Battle-Hub-Setup-9.2.0.exe: installer with Start Menu and desktop shortcuts.
-            - KH-Kozak-Battle-Hub-9.2.0.exe: portable build, no installation required.
+            - KH-Kozak-Battle-Hub-Setup-9.4.1.exe: installer with Start Menu and desktop shortcuts.
+            - KH-Kozak-Battle-Hub-9.4.1.exe: portable build, no installation required.
             
             Windows x64.
           files: |
