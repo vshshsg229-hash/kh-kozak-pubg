@@ -1021,3 +1021,78 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   #tab-bunker .bunker-upgrade .btn{min-height:46px}
   #tab-bunker .bunker-mission-panel .btn{min-height:46px}
 }
+
+
+/* 8.51.0 — Full desktop-style navigation and responsive layout on phones */
+@media(max-width:720px){
+  .app-shell{display:block;min-height:100dvh}
+  .sidebar{display:none!important}
+  .main{width:100%;min-width:0;margin:0;padding:0 0 calc(70px + env(safe-area-inset-bottom))}
+  .topbar{position:sticky;top:0;z-index:70;min-height:58px;height:auto;padding:8px 12px;gap:8px;flex-wrap:nowrap;background:rgba(8,13,20,.96);backdrop-filter:blur(16px);border-bottom:1px solid #25313d}
+  .mobile-brand{display:flex;flex:0 0 auto;white-space:nowrap;font-size:13px}
+  .season{display:none}
+  .top-actions{margin-left:auto;min-width:0;gap:7px}
+  .language-control{max-width:40px;overflow:hidden;gap:2px;padding:5px}
+  .language-control select{width:24px;max-width:24px;min-width:24px;background:transparent;border:0;color:transparent;font-size:10px}
+  .language-control select option{color:#111}
+  .currency{gap:3px;padding:5px 7px}
+  .currency small{display:none}
+  .currency b{font-size:12px}
+  .avatar-mini{width:32px;height:32px;flex:0 0 32px}
+  .mobile-nav{position:fixed;z-index:100;left:0;right:0;bottom:0;display:flex;align-items:stretch;gap:3px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x;padding:6px 8px max(6px,env(safe-area-inset-bottom));background:rgba(8,13,20,.97);border-top:1px solid #293541;backdrop-filter:blur(16px)}
+  .mobile-nav::-webkit-scrollbar{display:none}
+  .mobile-nav button{flex:0 0 61px;min-width:61px;min-height:48px;padding:6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid transparent;border-radius:8px;background:transparent;color:#8e9ba9;font-size:8px;line-height:1.15;white-space:nowrap}
+  .mobile-nav button span{font-size:18px;line-height:1}
+  .mobile-nav button.active{color:var(--yellow);background:#f5c34212;border-color:#f5c34232}
+  .mobile-nav button[data-tab="bunker"]{color:var(--yellow)}
+  .view{padding:12px 12px 26px;min-width:0;overflow-x:clip}
+  .hero{grid-template-columns:minmax(0,1fr);min-height:0;overflow:hidden}
+  .hero-copy{padding:24px 18px 18px}
+  .hero h1{font-size:clamp(31px,8.6vw,48px);overflow-wrap:anywhere}
+  .hero-art{min-height:170px;max-height:220px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:8px}
+  .hero-actions .btn{flex:1 1 calc(50% - 8px);min-width:0;justify-content:center;text-align:center;padding:11px 8px;font-size:10px}
+  .hero-foot{gap:8px;font-size:8px}
+  .welcome-row{align-items:flex-start;gap:8px;flex-wrap:wrap;margin:22px 0 14px}
+  .welcome-row h2,.section-heading h2{font-size:clamp(20px,5.5vw,27px)}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .stat-card{min-width:0;padding:13px}
+  .stat-card>b{font-size:25px}
+  .daily-drop{grid-template-columns:54px minmax(0,1fr);gap:12px;padding:14px}
+  .drop-art{width:54px;height:64px}
+  .drop-claim{grid-column:1/-1;width:100%;min-height:44px}
+  .quick-links{grid-template-columns:minmax(0,1fr);gap:8px}
+  .feature-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  .feature-card{min-height:190px}
+  .section-heading{gap:8px;align-items:flex-end}
+  .section-heading .text-link{font-size:9px;white-space:nowrap}
+  .games-grid,.rewards-grid,.community-grid,.profile-grid,.pass-grid,.events-grid,.arsenal-grid{grid-template-columns:minmax(0,1fr)!important}
+  .panel,.card,.feature-card{min-width:0}
+  .view h1{overflow-wrap:anywhere}
+  .view input,.view select,.view textarea{max-width:100%;min-width:0}
+  .view button,.view a.btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  #tab-bunker .bunker-hero{grid-template-columns:minmax(0,1fr);min-height:240px}
+  #tab-bunker .bunker-hero-content{padding:17px;max-width:100%}
+  #tab-bunker .bunker-hero h1{font-size:clamp(33px,9vw,46px)}
+  #tab-bunker .bunker-visual{position:absolute;inset:0 0 0 30%;min-height:0;opacity:.32;pointer-events:none}
+  #tab-bunker .bunker-overview{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  #tab-bunker .bunker-stat{padding:10px 6px;min-width:0}
+  #tab-bunker .bunker-stat>b{font-size:clamp(17px,5vw,23px)}
+  #tab-bunker .bunker-stat small{font-size:8px;letter-spacing:.3px}
+  #tab-bunker .bunker-upgrade{grid-template-columns:40px minmax(0,1fr);gap:9px;padding:12px}
+  #tab-bunker .bunker-upgrade .btn{grid-column:1/-1;width:100%;min-height:46px}
+  #tab-bunker .bunker-lower-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:390px){
+  .topbar{padding-left:8px;padding-right:8px}
+  .mobile-brand{font-size:11px}
+  .top-actions{gap:4px}
+  .view{padding-left:9px;padding-right:9px}
+  .hero-copy{padding:19px 13px 15px}
+  .hero-actions .btn{font-size:9px}
+  .mobile-nav button{flex-basis:55px;min-width:55px;font-size:7px}
+}
+@media(min-width:721px){
+  .mobile-nav{display:none!important}
+  .sidebar{display:flex}
+}
