@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const KEY='khkozak_hub_v6';
-try{['khkozak_online_token_v1','khkozak_supabase_refresh_v1','khkozak_api_base','khkozak_supabase_anon_key','khkozak_api_health_ok','kh_assistant_api_base'].forEach(k=>localStorage.removeItem(k))}catch{}
+// Online session keys are intentionally preserved between reloads for cross-device account sync.
 const defaultState={name:'KH么Kozak',coins:0,points:0,xp:0,passXp:0,passSeason:'',passSeasonStart:0,passSeasonNumber:1,ownedAt:{},premiumPass:false,premiumPassSeason:'',premiumPassClaimed:[],passOffersClaimed:[],played:0,bestReaction:null,owned:[],completed:[],dailyClaimDate:'',dailyStreak:0,lastDailyDate:'',dailyMissionDate:'',dailyMissionStartPlayed:0,dailyMissionStartPoints:0,dailyMissionBonusDate:'',dailyMissionClaims:[],passClaimed:[],equippedTitle:'',equippedFrame:'',equippedAvatar:'',equippedTheme:'',equippedBadge:'',equippedBanner:'',equippedSkin:'skin_recruit',equippedWeaponSkin:'weapon_olive',botUsername:'',funClaimDate:'',wheelClaimDate:'',dailyGameBonusDate:'',redeemedCodes:[],caseOpens:0,dailyShopBuys:0,games:{reaction:0,aim:0,quiz:0,memory:0,loot:0,pubg:0,metro:0,classic:0,arena:0}};
 let state;try{const storedState=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...storedState};if(!Object.prototype.hasOwnProperty.call(storedState,'dailyMissionStartPoints'))state.dailyMissionStartPoints=Number(state.points)||0;state.games={...defaultState.games,...(state.games||{})};state.owned=Array.isArray(state.owned)?state.owned:[];state.ownedAt=state.ownedAt&&typeof state.ownedAt==='object'?state.ownedAt:{};state.completed=state.completed||[];state.passClaimed=state.passClaimed||[];state.redeemedCodes=state.redeemedCodes||[];state.dailyMissionClaims=Array.isArray(state.dailyMissionClaims)?state.dailyMissionClaims:[];state.dailyMissionStartPlayed=Number.isFinite(state.dailyMissionStartPlayed)?state.dailyMissionStartPlayed:0;state.dailyMissionDate=state.dailyMissionDate||'';state.caseOpens=state.caseOpens||0;state.dailyShopBuys=state.dailyShopBuys||0;state.equippedTitle=state.equippedTitle||'';state.equippedFrame=state.equippedFrame||'';state.equippedTheme=state.equippedTheme||'';state.equippedBadge=state.equippedBadge||'';state.equippedBanner=state.equippedBanner||'';state.equippedSkin=state.equippedSkin||'skin_recruit';state.equippedWeaponSkin=state.equippedWeaponSkin||'weapon_olive';state.owned=state.owned.map(id=>({frame:'frame_steel',title:'title_raider',camo:'frame_neon'}[id]||id));if(!state.owned.includes('skin_recruit'))state.owned.push('skin_recruit');if(!state.owned.includes('weapon_olive'))state.owned.push('weapon_olive')}catch(e){state={...defaultState,owned:[],completed:[],games:{...defaultState.games}}}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -104,7 +104,8 @@ $('#closeModal').addEventListener('click',closeModal);modal.addEventListener('cl
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.game)));
 function finishGame(kind,coins,points,xp){
   const again=document.createElement('button');again.className='game-start';again.textContent='ЗІГРАТИ ЩЕ';again.addEventListener('click',()=>openModal(kind));
-  awardLocalGame(kind,coins,points,xp);area.appendChild(again)
+  awardLocalGame(kind,coins,points,xp);area.appendChild(again);
+  if(window.khOnlineSync?.finishGame)window.khOnlineSync.finishGame(kind).catch(()=>{});
  }
  function awardLocalGame(kind,coins,points,xp){state.played++;state.games[kind]=(state.games[kind]||0)+1;const dailyBonus=state.dailyGameBonusDate!==localDateKey();if(dailyBonus){state.dailyGameBonusDate=localDateKey();state.coins+=15;state.points+=10;addXP(10)}addReward(coins,points,xp);message.textContent='Нагорода: +'+coins+' монет · +'+points+' очок · +'+xp+' XP'+(dailyBonus?' — бонус першої гри дня: +15 монет · +10 очок · +10 XP':'');if(dailyBonus)showToast('Перша гра дня: бонус +15 монет, +10 очок і +10 XP!')}
 
@@ -442,7 +443,21 @@ window.khkozakProgression = {
     render();
     return true;
   },
-  refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; }
+  refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; },
+  applyRemoteUser: user => {
+    if(!user||typeof user!=='object')return false;
+    if(Number.isFinite(Number(user.coins)))state.coins=Math.max(0,Number(user.coins));
+    if(Number.isFinite(Number(user.points)))state.points=Math.max(0,Number(user.points));
+    if(Number.isFinite(Number(user.xp)))state.xp=Math.max(0,Number(user.xp));
+    if(Number.isFinite(Number(user.played)))state.played=Math.max(0,Number(user.played));
+    if(user.username)state.name=String(user.username).slice(0,20);
+    if(user.games&&typeof user.games==='object')state.games={...defaultState.games,...user.games};
+    if(user.eliteVerified!==undefined)state.eliteVerified=!!user.eliteVerified;
+    const map={equipped_title:'equippedTitle',equipped_frame:'equippedFrame',equipped_avatar:'equippedAvatar',equipped_theme:'equippedTheme',equipped_badge:'equippedBadge',equipped_banner:'equippedBanner',equipped_skin:'equippedSkin',equipped_weapon_skin:'equippedWeaponSkin'};
+    for(const [remote,local] of Object.entries(map))if(user[remote])state[local]=user[remote];
+    if(Array.isArray(user.inventory)){state.owned=[...new Set([...(state.owned||[]),...user.inventory])];}
+    save();render();document.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{source:'supabase-sync',userId:user.id}}));return true;
+  }
 };
 
 })();
