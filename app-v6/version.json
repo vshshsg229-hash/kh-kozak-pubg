@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.7.0",
+  "version": "16.8.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Cyberpunk v16.7: added a high-visibility override stylesheet with strong cyan, magenta and violet neon, grid textures and luminous panels. Navigation structure, labels and button order preserved."
+  "releaseNotes": "Cyberpunk v16.8: floating neon particles, drifting ambient glow, scanning sidebar light, shimmering card highlights, pulsing logo and gentle button hover effects. Navigation structure, labels and button order preserved."
 }
