@@ -177,3 +177,7 @@
 @media (prefers-reduced-motion: reduce) {
   .pubg-quick-link, .pubg-home-download, .kh-control-launch { transition: none !important; }
 }
+
+/* Reliable direct PUBG MOBILE store button inside quick panel */
+.kh-pubg-direct-mobile{position:relative;z-index:2;pointer-events:auto}
+@media(max-width:720px){.kh-pubg-direct-mobile{min-height:50px;font-size:12px;padding:13px 12px}}
