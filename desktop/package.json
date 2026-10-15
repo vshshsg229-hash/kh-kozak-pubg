@@ -1,7 +1,7 @@
 {
   "name": "kh-kozak-battle-hub",
-  "version": "9.4.6",
-  "description": "KH么Kozak Battle Hub 9.4.6 universal desktop app",
+  "version": "9.4.7",
+  "description": "KH么Kozak Battle Hub 9.4.7 universal desktop app",
   "main": "main.cjs",
   "author": "KH么Kozak",
   "license": "UNLICENSED",
