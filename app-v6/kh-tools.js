@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const root=$('#khToolsRoot'); if(!root||root.dataset.ready)return;root.dataset.ready='1';
-const KEY='khkozak.digitalspace.v2';let data={};try{data=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{}
+const KEY='khkozak.digitalspace.v2',OLD_KEY='khkozak.workspace.v1';let data={};try{const stored=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY)||'{}';data=JSON.parse(stored);if(!localStorage.getItem(KEY)&&localStorage.getItem(OLD_KEY))localStorage.setItem(KEY,stored)}catch{}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch{}};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sites=[['Google','Пошук в інтернеті','https://www.google.com/'],['YouTube','Відео та музика','https://www.youtube.com/'],['Gmail','Електронна пошта','https://mail.google.com/'],['Maps','Карти й маршрути','https://maps.google.com/'],['Translate','Перекладач','https://translate.google.com/'],['Drive','Файли й документи','https://drive.google.com/'],['TikTok','Короткі відео','https://www.tiktok.com/'],['Telegram','Повідомлення','https://web.telegram.org/'],['Discord','Спільноти','https://discord.com/app'],['Wikipedia','Знання','https://www.wikipedia.org/'],['GitHub','Код і проєкти','https://github.com/'],['ChatGPT','ШІ-помічник','https://chatgpt.com/'],['Canva','Дизайн','https://www.canva.com/'],['Spotify','Музика','https://open.spotify.com/'],['Twitch','Стримінг','https://www.twitch.tv/'],['DeepL','Переклад','https://www.deepl.com/translator']];
