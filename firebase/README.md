@@ -11,6 +11,18 @@ This integration branch uses Firebase Authentication, Firestore, and callable Cl
 5. Confirm the project is on the **Blaze billing plan** before deploying Cloud Functions; Firebase requires billing for deployed Functions. Set budget alerts before enabling production traffic.
 6. Do not publish the app to production until the staging browser checks below pass.
 
+## Optional one-click deployment through GitHub Actions
+
+A manual deployment workflow is included at **Actions → Deploy Firebase backend (manual)**. It is deliberately manual and requires you to choose `yes` before deploying.
+
+Before running it:
+1. In Google Cloud Console, create or select a service account with permission to deploy Firebase Functions and Firestore rules to `kh-kozak-battle-hub`.
+2. Store its JSON key in the GitHub repository as an Actions secret named `FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB`. Never paste the key into chat or commit it.
+3. Confirm Firebase is on the Blaze plan and that you intend to update the project's live rules and Functions.
+4. Open the repository's **Actions** tab, choose **Deploy Firebase backend (manual)**, select `yes`, and run the workflow.
+
+This workflow deploys to the real Firebase project. It does not publish the website or merge the code into `main`.
+
 ## Deploy from a trusted development machine
 
 Install Node.js 20 and the Firebase CLI, authenticate with an account that has access to this Firebase project, then run from the repository root:
