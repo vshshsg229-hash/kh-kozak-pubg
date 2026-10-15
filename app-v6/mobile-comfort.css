@@ -205,3 +205,62 @@
   .kh-replica-actions button { font-size: 7px !important; }
   .kh-replica-actions button > b { font-size: 19px !important; }
 }
+
+
+/* 9.7.2 — keep the fighter clear of the mobile action buttons */
+@media (max-width: 620px) {
+  .kh-replica-layout {
+    display: flex !important; flex-direction: column !important;
+    padding: 8px !important; gap: 10px !important;
+  }
+  .kh-replica-hero {
+    min-height: 920px !important; height: 920px !important;
+    overflow: hidden !important; position: relative !important;
+  }
+  .kh-replica-profile { top: 12px !important; left: 10px !important; right: 10px !important; }
+  .kh-replica-social { top: 74px !important; left: 12px !important; right: 12px !important; }
+  .kh-replica-stats {
+    top: 119px !important; left: 8px !important; right: 8px !important;
+    width: auto !important; padding: 7px 4px !important;
+  }
+  #khReplicaFighterSlot .kh-real-soldier {
+    left: 49% !important; top: 235px !important;
+    height: 490px !important; max-height: 490px !important;
+    width: auto !important; max-width: 84% !important;
+    object-fit: contain !important; object-position: center bottom !important;
+    transform: translateX(-50%) !important; z-index: 2 !important;
+  }
+  .kh-replica-signature { display: none !important; }
+  .kh-character-nameplate {
+    left: 12px !important; right: 62px !important; bottom: 178px !important;
+    width: auto !important; max-width: none !important;
+    z-index: 8 !important; text-align: center !important;
+  }
+  .kh-rotate-controls {
+    top: 43% !important; right: 7px !important; bottom: auto !important;
+    z-index: 10 !important;
+  }
+  .kh-drag-hint { display: none !important; }
+  .kh-replica-actions {
+    left: 8px !important; right: 8px !important; bottom: 8px !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 7px !important; z-index: 12 !important;
+  }
+  .kh-replica-actions button {
+    min-height: 72px !important; height: 72px !important;
+    display: flex !important; flex-direction: row !important;
+    justify-content: center !important; align-items: center !important;
+    gap: 9px !important; padding: 8px !important;
+    font-size: 10px !important; text-align: left !important;
+  }
+  .kh-replica-actions button > b { font-size: 23px !important; flex: 0 0 auto !important; }
+}
+@media (max-width: 390px) {
+  .kh-replica-hero { min-height: 900px !important; height: 900px !important; }
+  #khReplicaFighterSlot .kh-real-soldier {
+    left: 47% !important; top: 242px !important;
+    height: 460px !important; max-height: 460px !important;
+    max-width: 82% !important;
+  }
+  .kh-replica-actions button { min-height: 68px !important; height: 68px !important; }
+}
