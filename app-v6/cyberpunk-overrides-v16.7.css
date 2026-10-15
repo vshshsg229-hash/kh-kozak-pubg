@@ -99,3 +99,42 @@ button:not(.nav-item):not(.mobile-nav button):not(.modal-close),.btn,.button,.ac
 button:not(.nav-item):not(.mobile-nav button):not(.modal-close):hover,.btn:hover,.button:hover,.action-btn:hover,.primary-btn:hover{transform:translateY(-2px);filter:brightness(1.12)}
 @media(prefers-reduced-motion:reduce){body:after,.sidebar:after,.hero:after,.kh-replica-hero:after,.kh-replica-right article:after,.panel:after,.card:after,.stat-card:after,.game-card:after,.mission-card:after,.reward-card:after,.event-card:after,.arsenal-card:after,.tactical-hq-card:after,.creator-card:after,.profile-card:after,.shop-card:after,.pass-card:after,.section-card:after,.brand-mark,.online-dot,.sidebar .nav-item.active,.hero .eyebrow>span,.kh-replica-aircraft,.kh-replica-art-glow{animation:none!important}}
 @media(max-width:720px){body:after{opacity:.3;inset:-5%}.sidebar:after{opacity:.6}}
+
+
+/* KH么Kozak Battle Hub 16.9 — polish pass across phone, tablet and desktop.
+   Decorative and responsive only: keep approved navigation markup and behavior intact. */
+:root{color-scheme:dark}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #62f7ff;outline-offset:3px}
+.kh-replica-art,.kh-character-stage,.kh-character-3d,.kh-replica-fighter-slot{isolation:isolate}
+.kh-replica-art:before,.kh-character-stage:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 80%,rgba(0,246,255,.12),transparent 48%),linear-gradient(120deg,transparent 30%,rgba(255,46,209,.06),transparent 70%);background-size:180% 100%;animation:khBattleLightSweep 15s ease-in-out infinite alternate}
+@keyframes khBattleLightSweep{from{background-position:0% 0;opacity:.55}to{background-position:100% 0;opacity:1}}
+.kh-replica-fighter-slot .kh-real-soldier,.kh-character-stage .kh-character-3d{filter:drop-shadow(0 12px 22px rgba(0,0,0,.5))}
+.kh-replica-actions>button,.kh-replica-video-grid>button,.kh-role-picker>button,.kh-scene-picker>button,.khph-tier,.khph-record,.game-card,.mission-card,.reward-card,.event-card,.arsenal-card,.tactical-hq-card,.creator-card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background-color .22s ease}
+.kh-replica-actions>button:hover,.kh-replica-video-grid>button:hover,.kh-role-picker>button:hover,.kh-scene-picker>button:hover,.khph-tier:not(.claimed):hover,.khph-record:hover,.game-card:hover,.mission-card:hover,.reward-card:hover,.event-card:hover,.arsenal-card:hover,.tactical-hq-card:hover,.creator-card:hover{transform:translateY(-3px);border-color:rgba(0,246,255,.72);box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 18px rgba(0,246,255,.1)}
+.khph-tier.unlocked:not(.claimed){position:relative;overflow:hidden}
+.khph-tier.unlocked:not(.claimed):after{content:"";position:absolute;inset:-40% auto -40% -80%;width:42%;pointer-events:none;transform:rotate(18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:khRewardGlint 7s ease-in-out infinite}
+@keyframes khRewardGlint{0%,65%{left:-80%}85%,100%{left:140%}}
+.kh-replica-xpbar em,.kh-replica-progress-row i em,.xp-bar i{transition:width .65s cubic-bezier(.2,.8,.2,1)}
+.kh-replica-stats>div,.stat-card{backdrop-filter:blur(8px)}
+/* Keep controls comfortably tappable without changing the navigation menu. */
+@media(max-width:760px){
+ .kh-replica-actions>button,.kh-replica-video-grid>button,.kh-role-picker>button,.kh-scene-picker>button{touch-action:manipulation}
+ .kh-replica-actions>button{min-height:54px}
+ .kh-replica-video-grid>button{min-height:74px}
+ .khph-tier button{min-height:38px;font-size:11px}
+ .khph-panel{overflow:hidden}
+}
+@media(min-width:761px) and (max-width:1100px){
+ .kh-replica-layout{gap:14px}
+ .kh-replica-right{min-width:0}
+ .kh-replica-stats{gap:8px}
+ .khph-tiers{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(min-width:1101px){
+ .kh-replica-art{min-height:380px}
+ .kh-replica-fighter-slot .kh-real-soldier{transform-origin:50% 90%}
+}
+@media(prefers-reduced-motion:reduce){
+ .kh-replica-art:before,.kh-character-stage:before,.khph-tier.unlocked:not(.claimed):after{animation:none!important}
+ .kh-replica-actions>button,.kh-replica-video-grid>button,.kh-role-picker>button,.kh-scene-picker>button,.khph-tier,.khph-record,.game-card,.mission-card,.reward-card,.event-card,.arsenal-card,.tactical-hq-card,.creator-card{transition:none!important}
+}
