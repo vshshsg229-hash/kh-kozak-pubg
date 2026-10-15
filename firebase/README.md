@@ -29,6 +29,10 @@ If the project is not selected in the CLI, use `firebase projects:list` and then
 - Firestore profile creation with initial coins, points, XP and played count set to zero.
 - `finishGame` callable function applies fixed server-side rewards, checks for duplicate event IDs and enforces a short cooldown.
 - `getLeaderboard` callable function returns a top-10 public leaderboard without granting browsers direct read access to other users' private profile documents.
+- `searchCommunityPlayers`, `sendFriendRequest`, `respondFriendRequest`, and `listCommunityFriends` provide server-validated player search and friend requests.
+- `sendCommunityMessage` and `listCommunityMessages` provide private chat restricted to accepted friends.
+- `updateMyProfile` saves online nicknames and keeps the searchable lowercase nickname index synchronized.
+- The community interface, profile sync, and account status are wired to Firebase callable functions; legacy Render routes are not used for these features.
 - Firestore rules restrict profile reads to the owner, allow only cosmetic profile edits from the browser, and deny client profile deletion.
 - The legacy Render API request path is disabled in `app-v6/app.js` on this branch.
 
