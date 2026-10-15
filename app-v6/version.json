@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.15.0",
+  "version": "16.16.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.15: removed online accounts, server sync, server-backed rewards and shared server video uploads. Coins, XP, daily rewards, inventory and cosmetics run locally. Approved navigation is unchanged."
+  "releaseNotes": "Battle Hub v16.16: expanded offline arcade catalog to 1000 searchable mini-game variants, expanded 3D Arena to exactly 50 browser-playable modes, added random game launch and local app management/diagnostics shortcuts. No online server added; approved navigation unchanged."
 }
