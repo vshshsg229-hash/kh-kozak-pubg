@@ -19,6 +19,7 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 
 ## Validation status
 - GitHub Actions JavaScript syntax checks and PWA/local-asset checks pass on the current staging head.
+- A manual, confirmation-gated GitHub Actions workflow is available for deploying Firestore rules and Cloud Functions once the Firebase service-account secret is configured.
 - Live Firebase deployment and browser end-to-end behavior are still not verified.
 
 ## Not yet verified
