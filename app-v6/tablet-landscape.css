@@ -1,0 +1,112 @@
+/* KH么Kozak Battle Hub — tablet landscape control bar */
+@media (min-width: 721px) and (max-width: 1200px) and (orientation: landscape) {
+  html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+  .app-shell {
+    display: block !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* Replace the tall desktop sidebar with a landscape-ready horizontal control bar. */
+  .sidebar {
+    position: sticky !important;
+    inset: 0 0 auto 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 58px !important;
+    max-height: none !important;
+    box-sizing: border-box !important;
+    padding: 7px 12px !important;
+    gap: 12px !important;
+    overflow: hidden !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #35404c !important;
+    background: rgba(7,12,18,.97) !important;
+    backdrop-filter: blur(18px);
+    z-index: 1600 !important;
+  }
+  .sidebar .brand {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 4px !important;
+    gap: 7px !important;
+  }
+  .sidebar .brand-mark { width: 34px !important; height: 34px !important; font-size: 22px !important; }
+  .sidebar .brand b { font-size: 12px !important; white-space: nowrap; }
+  .sidebar .brand small { font-size: 7px !important; letter-spacing: .8px !important; white-space: nowrap; }
+  .sidebar .side-label, .sidebar .side-bottom { display: none !important; }
+  .sidebar .nav {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 0 0 2px !important;
+    margin: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+  .sidebar .nav-item {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: max-content !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 8px 11px !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+  }
+  .sidebar .nav-item > span { width: auto !important; min-width: 16px; font-size: 15px !important; }
+  .sidebar .nav-item em { margin-left: 2px !important; font-size: 8px !important; }
+  .main {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 18px 26px !important;
+    box-sizing: border-box !important;
+  }
+  .topbar { min-width: 0 !important; margin-bottom: 14px !important; }
+  .mobile-nav { display: none !important; }
+  .mobile-menu-toggle, .mobile-menu-backdrop { display: none !important; }
+  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(250px, .9fr) !important; min-height: 250px !important; }
+  .hero-copy { min-width: 0 !important; padding: 22px !important; }
+  .hero h1 { font-size: clamp(32px, 4vw, 52px) !important; }
+  .hero-art { min-width: 0 !important; min-height: 230px !important; max-height: 310px !important; }
+  .stats-grid, .stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .feature-grid, .games-grid, .game-grid, .rewards-grid, .events-grid, .arsenal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .panel, .card, .stat-card, .feature-card, .game-tile { min-width: 0 !important; }
+}
+@media (min-width: 721px) and (max-width: 900px) and (orientation: landscape) {
+  .sidebar { gap: 7px !important; padding-left: 7px !important; padding-right: 7px !important; }
+  .sidebar .brand { gap: 5px !important; }
+  .sidebar .brand b { font-size: 10px !important; }
+  .sidebar .brand small { display: none !important; }
+  .sidebar .nav { gap: 3px !important; }
+  .sidebar .nav-item { padding: 8px 8px !important; font-size: 10px !important; }
+  .main { padding-left: 12px !important; padding-right: 12px !important; }
+  .hero { grid-template-columns: minmax(0, 1fr) !important; }
+  .hero-art { min-height: 150px !important; max-height: 190px !important; }
+  .feature-grid, .games-grid, .game-grid, .rewards-grid, .events-grid, .arsenal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
