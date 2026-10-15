@@ -84,7 +84,7 @@ async function getUserSnapshot(userId: string) {
   return { ...profile, inventory: (inventory.data ?? []).map((row) => row.item_id), achievements: (achievements.data ?? []).map((row) => row.achievement_id) };
 }
 
-const HUB_VERSION = "8.47.0";
+const HUB_VERSION = "8.47.1";
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") ?? "";
 const ADMIN_TELEGRAM_CHAT_ID = Deno.env.get("ADMIN_TELEGRAM_CHAT_ID") ?? "";
@@ -278,6 +278,7 @@ Deno.serve(async (req: Request) => {
   const path = new URL(req.url).pathname.split("/hub-api").pop() || "/";
   try {
     if (req.method === "GET" && path === "/api/health") {
+      const checkNames = ["hub_profiles", "hub_game_events", "hub_telegram_links", "hub_telegram_link_codes", "hub_telegram_daily_claims", "hub_shop_catalog", "hub_inventory", "hub_daily_shop_purchases", "hub_achievements", "hub_friendships", "hub_chat_messages"];
       const checks = await Promise.all([
         admin.from("hub_profiles").select("id").limit(1),
         admin.from("hub_game_events").select("id").limit(1),
@@ -291,6 +292,7 @@ Deno.serve(async (req: Request) => {
         admin.from("hub_friendships").select("id").limit(1),
         admin.from("hub_chat_messages").select("id").limit(1),
       ]);
+      const rpcNames = ["hub_refresh_achievements", "hub_claim_telegram_daily", "hub_purchase_item", "hub_equip_item", "hub_finish_game"];
       const rpcChecks = await Promise.all([
         admin.rpc("hub_refresh_achievements", { p_user_id: "00000000-0000-4000-8000-000000000000" }),
         admin.rpc("hub_claim_telegram_daily", { p_user_id: "00000000-0000-4000-8000-000000000000" }),
@@ -298,8 +300,15 @@ Deno.serve(async (req: Request) => {
         admin.rpc("hub_equip_item", { p_user_id: "00000000-0000-4000-8000-000000000000", p_item_id: "health_probe" }),
         admin.rpc("hub_finish_game", { p_user_id: "00000000-0000-4000-8000-000000000000", p_event_id: "00000000-0000-4000-8000-000000000001", p_game: "health_probe", p_base_coins: 0, p_base_points: 0, p_base_xp: 0 }),
       ]);
-      if (checks.some((result) => result.error) || rpcChecks.some((result) => result.error)) {
-        return response({ ok: false, database: "unavailable", error: "Потрібна актуальна схема: запусти повний supabase/schema.sql, щоб увімкнути Telegram, магазин та досягнення." }, 503, origin);
+      const missingTables = checks.flatMap((result, index) => result.error ? [checkNames[index]] : []);
+      const missingFunctions = rpcChecks.flatMap((result, index) => result.error ? [rpcNames[index]] : []);
+      if (missingTables.length || missingFunctions.length) {
+        return response({
+          ok: false,
+          database: "unavailable",
+          error: "Потрібна актуальна схема: запусти повний supabase/schema.sql, щоб увімкнути всі функції Battle Hub.",
+          diagnostics: { missingTables, missingFunctions }
+        }, 503, origin);
       }
       return response({
         ok: true, database: "connected", service: "KH么Kozak Battle Hub Supabase API", version: "1.3.0", appVersion: HUB_VERSION,
