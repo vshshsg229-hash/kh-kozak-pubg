@@ -1356,3 +1356,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .official-game-card small{color:#aeb8c1;font-size:11px;line-height:1.5}
 .official-game-cta{margin-top:4px;color:var(--yellow,#f5c842);font-size:10px;font-weight:900;letter-spacing:.7px}
 @media(max-width:560px){.official-game-links{padding:13px}.official-game-grid{grid-template-columns:1fr}.official-game-card{padding:14px}.official-game-card strong{font-size:15px}}
+
+
+/* Always-visible official PUBG download shortcuts */
+.pubg-quick-links{position:fixed;z-index:100000;top:12px;right:16px;display:flex;gap:8px;max-width:calc(100vw - 32px);padding:7px;border:1px solid #3a4652;border-radius:12px;background:rgba(8,13,20,.96);box-shadow:0 8px 28px #0008;backdrop-filter:blur(12px)}
+.pubg-quick-link{display:flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:9px 12px;border-radius:8px;text-decoration:none!important;color:#fff!important;font-size:11px;font-weight:900;white-space:nowrap}
+.pubg-quick-link b{font-size:9px;letter-spacing:.5px}
+.pubg-quick-pc{background:#302819;border:1px solid #a98432}
+.pubg-quick-pc b{color:#f5c842}
+.pubg-quick-mobile{background:#102a29;border:1px solid #267f70}
+.pubg-quick-mobile b{color:#64dfc1}
+.pubg-quick-link:hover{filter:brightness(1.2);transform:translateY(-1px)}
+@media(max-width:700px){.pubg-quick-links{top:auto;right:8px;left:8px;bottom:calc(68px + env(safe-area-inset-bottom));justify-content:center;gap:6px;padding:6px}.pubg-quick-link{flex:1;gap:4px;padding:10px 7px;font-size:10px}.pubg-quick-link b{font-size:8px}}
+@media(max-width:380px){.pubg-quick-link{flex-direction:column;gap:3px}}
