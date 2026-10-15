@@ -13,7 +13,7 @@ service cloud.firestore {
       // Initial profile: clients may create only a fresh, zero-progress profile.
       allow create: if ownsUser(uid)
         && request.resource.data.keys().hasOnly([
-          'uid', 'username', 'email', 'coins', 'points', 'xp', 'played',
+          'uid', 'username', 'usernameLower', 'email', 'coins', 'points', 'xp', 'played',
           'createdAt', 'updatedAt'
         ])
         && request.resource.data.uid == uid
@@ -22,7 +22,9 @@ service cloud.firestore {
         && request.resource.data.xp == 0
         && request.resource.data.played == 0
         && request.resource.data.username is string
-        && request.resource.data.username.size() <= 32;
+        && request.resource.data.username.size() <= 32
+        && request.resource.data.usernameLower is string
+        && request.resource.data.usernameLower == request.resource.data.username.lower();
 
       // Until trusted server functions are added, clients can read only their own profile.
       allow read: if ownsUser(uid);
@@ -44,5 +46,10 @@ service cloud.firestore {
 
       allow delete: if false;
     }
+
+    // Social graph and chat are accessed only through authenticated callable Functions.
+    match /friendships/{friendshipId} { allow read, write: if false; }
+    match /conversations/{conversationId} { allow read, write: if false; }
+    match /conversations/{conversationId}/messages/{messageId} { allow read, write: if false; }
   }
 }
