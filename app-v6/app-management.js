@@ -1,0 +1,28 @@
+(()=>{'use strict';
+const $=s=>document.querySelector(s);
+const panel=$('.kh-control-panel');
+if(!panel||panel.querySelector('#kh-app-management'))return;
+const section=document.createElement('section');
+section.id='kh-app-management';
+section.className='kh-control-section';
+section.innerHTML='<h3>🧰 Керування додатком і програмами</h3><p class="kh-control-note">Локальні інструменти, стан браузера та швидкі переходи до твоїх програм. Без входу й без сервера.</p><div class="khm-status" data-khm-status>Перевірка стану…</div><div class="kh-control-buttons"><button type="button" data-khm-check>🔎 Перевірити</button><button type="button" data-khm-reload>↻ Оновити</button></div><div class="kh-control-buttons"><button type="button" data-khm-reset>↺ Скинути вигляд</button><button type="button" data-khm-diagnostics>⇩ Діагностика</button></div><div class="khm-app-links"><a href="https://store.steampowered.com/app/578080/PUBG_BATTLEGROUNDS/" target="_blank" rel="noopener noreferrer">🎮 PUBG PC / Steam ↗</a><a href="https://play.google.com/store/apps/details?id=com.tencent.ig" target="_blank" rel="noopener noreferrer">📱 PUBG MOBILE ↗</a><a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">♪ TikTok ↗</a><a href="https://web.telegram.org/" target="_blank" rel="noopener noreferrer">✈ Telegram Web ↗</a></div><p class="kh-control-note" data-khm-result aria-live="polite"></p>';
+const style=document.createElement('style');
+style.textContent='#kh-app-management .khm-status{padding:11px 12px;border:1px solid #34445e;border-radius:10px;background:#0e1726;color:#9eafc9;font-size:11px;line-height:1.6;margin:8px 0}#kh-app-management .khm-status strong{color:#65f5d2}#kh-app-management .khm-app-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}#kh-app-management .khm-app-links a{display:block;padding:10px 9px;border:1px solid #3a4d69;border-radius:10px;background:#17243a;color:#e8f1ff;font-size:11px;font-weight:700;text-align:center}#kh-app-management .khm-app-links a:hover{border-color:#65f5d2;background:#1c3543}@media(max-width:400px){#kh-app-management .khm-app-links{grid-template-columns:1fr}}';
+document.head.append(style);
+const footer=panel.querySelector('footer');if(footer)panel.insertBefore(section,footer);else panel.append(section);
+const status=section.querySelector('[data-khm-status]'),result=section.querySelector('[data-khm-result]');
+async function check(){
+ const standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+ let sw='не підтримується';try{if('serviceWorker'in navigator){const reg=await navigator.serviceWorker.getRegistration();sw=reg?(reg.waiting?'є готове оновлення':reg.active?'активний':'зареєстрований'):'не зареєстрований'}}catch{sw='помилка перевірки'}
+ status.innerHTML='<strong>Стан:</strong> '+(navigator.onLine?'інтернет доступний':'немає інтернету')+'<br><strong>Встановлення:</strong> '+(standalone?'додаток відкрито окремо':'відкрито у браузері')+'<br><strong>Офлайн-кеш:</strong> '+sw+'<br><strong>Екран:</strong> '+innerWidth+' × '+innerHeight+' · <strong>Версія:</strong> 16.16.0';
+}
+section.addEventListener('click',async e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.hasAttribute('data-khm-check')){await check();result.textContent='Перевірку завершено.'}
+ if(b.hasAttribute('data-khm-reload')){result.textContent='Оновлюю сторінку…';location.reload()}
+ if(b.hasAttribute('data-khm-reset')){try{localStorage.setItem('khkozak_control_center_v1',JSON.stringify({font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0}))}catch{};document.documentElement.style.fontSize='100%';document.documentElement.classList.remove('kh-focus-mode','kh-high-contrast');result.textContent='Масштаб, фокус і контраст скинуто. Прогрес і монети не видалялися.'}
+ if(b.hasAttribute('data-khm-diagnostics')){const d={app:'KH么Kozak Battle Hub',version:'16.16.0',createdAt:new Date().toISOString(),screen:{width:innerWidth,height:innerHeight,pixelRatio:devicePixelRatio||1},browser:{userAgent:navigator.userAgent,language:navigator.language,online:navigator.onLine,standalone:window.matchMedia('(display-mode: standalone)').matches},serviceWorker:'serviceWorker'in navigator};const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='KH-Kozak-Diagnostics.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);result.textContent='Файл діагностики збережено. Він не містить ігрового профілю чи монет.'}
+});
+window.addEventListener('online',check);window.addEventListener('offline',check);
+check();
+})();
