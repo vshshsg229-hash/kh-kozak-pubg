@@ -28,6 +28,7 @@ If the project is not selected in the CLI, use `firebase projects:list` and then
 - Email/password registration, login and logout through Firebase Authentication.
 - Firestore profile creation with initial coins, points, XP and played count set to zero.
 - `finishGame` callable function applies fixed server-side rewards, checks for duplicate event IDs and enforces a short cooldown.
+- `claimDailyReward` awards the daily drop and streak bonuses once per Kyiv calendar day; client-side reward amounts are not trusted.
 - `getLeaderboard` callable function returns a top-10 public leaderboard without granting browsers direct read access to other users' private profile documents.
 - `searchCommunityPlayers`, `sendFriendRequest`, `respondFriendRequest`, and `listCommunityFriends` provide server-validated player search and friend requests.
 - `sendCommunityMessage` and `listCommunityMessages` provide private chat restricted to accepted friends.
