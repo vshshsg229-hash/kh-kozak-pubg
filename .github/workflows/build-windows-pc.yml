@@ -44,6 +44,9 @@ jobs:
       - name: Check TikTok Creator Studio JavaScript syntax
         run: node --check app-v6/creator-studio.js
 
+      - name: Check TikTok video editor JavaScript syntax
+        run: node --check app-v6/creator-editor.js
+
       - name: Check PC companion JavaScript syntax
         run: node --check app-v6/pc-companion.js
 
