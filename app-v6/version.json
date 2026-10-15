@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.1.0",
+  "version": "16.2.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Direct Music and TikTok buttons; refreshed mobile navigation and media cache."
+  "releaseNotes": "Restored Royale Pass navigation; repaired phone and tablet menus; audited all 16 tab targets; refreshed cache."
 }
