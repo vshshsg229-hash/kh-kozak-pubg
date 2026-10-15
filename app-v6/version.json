@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.10.0",
+  "version": "16.11.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.10: daily fighter missions now grant +75 coins and +40 XP once per day, update the player profile, and refresh the service-worker cache. Responsive cyberpunk polish remains in place. Approved navigation labels, icons, order, layout and behavior preserved."
+  "releaseNotes": "Battle Hub v16.11: fighter inventory with rarity tiers, equipped skin/weapon selection, helmet/armor/backpack slots, and level-based item unlocks. Existing navigation/menu preserved. Daily fighter missions remain available."
 }
