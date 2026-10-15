@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.4.0",
+  "version": "16.5.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Reorganized the More menu into clear groups, moved personal Telegram into Contact, and simplified navigation styling for phone and portrait tablet."
+  "releaseNotes": "Added a cyberpunk neon-cyan and magenta visual theme with a dark futuristic background. Approved mobile menu structure and button order remain unchanged."
 }
