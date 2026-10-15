@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [firebase-integration-setup]
+    branches: [firebase-integration-staging]
 
 jobs:
   functions:
