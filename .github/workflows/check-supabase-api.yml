@@ -35,3 +35,21 @@ jobs:
             exit 1
           fi
           node -e 'const fs=require("fs");const d=JSON.parse(fs.readFileSync("/tmp/health.json","utf8"));if(d.ok!==true||d.database!=="connected"){console.error("Supabase API is not ready:",d);process.exit(1)}console.log("Supabase API and database are healthy. Version:",d.version||"unknown")'
+
+  render-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check existing Render API
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://khkozak-battle-hub-api-uftt.onrender.com/api/health"
+          code=$(curl --silent --show-error --location --max-time 25 --output /tmp/render-health.json --write-out "%{http_code}" "$url")
+          echo "Render HTTP status: $code"
+          cat /tmp/render-health.json
+          echo
+          if [ "$code" != "200" ]; then
+            echo "::error::Existing Render API health check returned HTTP $code."
+            exit 1
+          fi
