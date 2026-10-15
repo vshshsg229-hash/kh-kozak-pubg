@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const CURRENT_VERSION = '9.5.2';
+  const CURRENT_VERSION = '9.5.4';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v' + version;
