@@ -1,7 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.0.0",
+  "version": "16.1.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
-  "windowsVersion": "9.5.7"
+  "windowsVersion": "9.5.7",
+  "releaseNotes": "Direct Music and TikTok buttons; refreshed mobile navigation and media cache."
 }
