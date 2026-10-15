@@ -1,10 +1,14 @@
-# KH么Kozak Battle Hub — Supabase schema parts
+# KH么Kozak Battle Hub — короткі частини SQL для телефона
 
-Run these files in Supabase Dashboard → SQL Editor, in this exact order. For each file, open the file link, copy its entire contents, paste into a fresh SQL Editor query, and press Run. Wait for a success result before moving to the next part.
+У Supabase Dashboard відкрий SQL Editor. Для кожної частини: відкрий посилання, скопіюй увесь файл, встав у НОВИЙ запит SQL Editor і натисни Run. Дочекайся успішного виконання, перш ніж переходити далі.
 
-1. [Part 1 — Core profiles, game rewards and payment functions](01-core.sql)
-2. [Part 2 — Telegram linking and daily claims](02-telegram.sql)
-3. [Part 3 — Shop, achievements and equipment](03-store-achievements-equipment.sql)
-4. [Part 4 — Friends and private chat](04-friends-chat.sql)
+Виконуй строго по порядку:
+1. [Профілі та платежі](01-core-profiles-payments.sql)
+2. [Ігрові нагороди](02-game-rewards.sql)
+3. [Telegram](03-telegram.sql)
+4. [Каталог магазину](04-shop-catalog.sql)
+5. [Інвентар, досягнення та покупки](05-inventory-achievements-purchases.sql)
+6. [Екіпірування](06-equipment.sql)
+7. [Друзі та чат](07-friends-chat.sql)
 
-Do not skip parts or run them out of order. These parts are copied from `supabase/schema.sql`; the equipment ALTER TABLE statement is corrected here so the schema can execute.
+Не пропускай частини. Це повна схема, розділена між завершеними SQL-командами; у частині «Екіпірування» виправлено розбитий ALTER TABLE.
