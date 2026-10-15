@@ -9,6 +9,7 @@ create table if not exists public.hub_shop_catalog (
   active boolean not null default true,
   required_level integer not null default 1
 );
+alter table public.hub_shop_catalog add column if not exists required_level integer not null default 1;
 alter table public.hub_shop_catalog drop constraint if exists hub_shop_catalog_item_kind_check;
 alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack'));
 create table if not exists public.hub_inventory (
