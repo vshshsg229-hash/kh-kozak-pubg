@@ -26,7 +26,7 @@ service cloud.firestore {
         && request.resource.data.usernameLower is string
         && request.resource.data.usernameLower.size() <= 32;
 
-      // Until trusted server functions are added, clients can read only their own profile.
+      // Clients can read only their own private profile; public snippets come from callable Functions.
       allow read: if ownsUser(uid);
 
       // Client edits are restricted to cosmetic/public profile fields.
