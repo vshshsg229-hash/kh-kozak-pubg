@@ -35,6 +35,8 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check app-v6/app.js
+          node --check app-v6/online-sync-v16.13.js
+          node --check app-v6/fighter-inventory-v16.12.js
           node --check app-v6/i18n.js
           node --check app-v6/media.js
           node --check app-v6/arcade-100.js
@@ -69,7 +71,7 @@ jobs:
             checks.push(message);
           };
 
-          assert(html.includes('character-lobby.js?v=1.4.2') && html.includes('character-lobby.css?v=1.4.1'), 'Fighter 2.0 assets are referenced with fresh cache versions');
+          assert(html.includes('character-lobby.js?v=1.4.3') && html.includes('character-lobby.css?v=1.4.1'), 'Fighter 2.0 assets are referenced with fresh cache versions');
           const fighter = fs.readFileSync(path.join(root, 'character-lobby.js'), 'utf8');
           const fighterCss = fs.readFileSync(path.join(root, 'character-lobby.css'), 'utf8');
           for (const feature of ['ТАКТИЧНИЙ ПРОФІЛЬ','ШТУРМОВИК','РОЗВІДНИК','МЕДИК','СЦЕНА ОГЛЯДУ','ОСОБЛИВЕ ЗАВДАННЯ','khMissionDone']) {
@@ -90,7 +92,7 @@ jobs:
             'PWA manifest declares at least one icon');
 
           const media = fs.readFileSync(path.join(root, 'media.js'), 'utf8');
-          assert(html.includes('interface-refresh.css?v=13.9.1'), 'Refreshed interface stylesheet is loaded');
+          assert(html.includes('interface-refresh.css?v=13.9.2'), 'Refreshed interface stylesheet is loaded');
           assert(html.includes('id="tab-music"') && html.includes('id="tab-tiktok"'), 'Music and TikTok tabs exist');
           assert(html.includes('data-unique-id="tiktok.comkhkozak4"') && html.includes('data-unique-id="baggy8364"'), 'Both TikTok creator feeds exist');
           assert(html.includes('href="https://www.tiktok.com/@baggy8364"') && html.includes('href="https://www.tiktok.com/@tiktok.comkhkozak4"'), 'Both TikTok profile links exist');
@@ -197,6 +199,15 @@ jobs:
             assert(source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin') then"),
               name + ' grants purchased character and weapon skins to inventory');
           }
+          const onlineSync = fs.readFileSync('app-v6/online-sync-v16.13.js', 'utf8');
+          const fighterMigration = fs.readFileSync('supabase/migrations/20261015110000_online_fighter_shop_sync.sql', 'utf8').toLowerCase();
+          assert(html.includes('online-sync-v16.13.js?v=16.14.0') && html.includes('online-sync-v16.13.css?v=16.14.0'),
+            'Online sync assets are loaded with current cache versions');
+          assert(onlineSync.includes('/api/daily/claim') && api.includes('path === "/api/daily/claim"'),
+            'Daily reward is claimed through authenticated server endpoint');
+          assert(fighterMigration.includes('equipped_vest') && fighterMigration.includes('required_level') &&
+                 fighterMigration.includes("'helmet','vest','backpack'"),
+            'Server migration covers all fighter equipment slots and level unlocks');
           assert(api.includes('p_base_coins: base.coins') &&
                  api.includes('p_base_points: base.points') &&
                  api.includes('p_base_xp: base.xp'),
