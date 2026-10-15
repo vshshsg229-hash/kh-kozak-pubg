@@ -21,3 +21,7 @@ The navigation/menu structure currently shipped in `index.html` is the approved,
 6. **ЗВʼЯЗОК** — Особистий Telegram, Telegram, Напарник KH
 
 This contract applies to the phone interface first and should be respected for all future KH么Kozak Battle Hub work.
+
+## Permanent offline-only rule
+
+KH么Kozak Battle Hub is offline-only for account/progression features. Do not add a backend, online account, server login, remote sync, server-authoritative rewards, online shop, friend/community/leaderboard APIs, server upload feed, or deployment configuration for an app backend. Coins, XP, inventory, daily rewards, games and cosmetics stay on the current device/browser. Keep the approved navigation unchanged. This rule can only be changed if the user explicitly reverses it; the user has specifically instructed that the online server must never be added again.
