@@ -1,0 +1,55 @@
+/* KH么Kozak Battle Hub 13.9.0 — refreshed tactile interface */
+:root{--kh-ink:#080d14;--kh-glass:rgba(18,27,39,.84);--kh-line:rgba(143,169,197,.2);--kh-gold:#ffd166;--kh-cyan:#65e5d1;--kh-radius:16px}
+body{background:radial-gradient(ellipse at 80% -15%,rgba(30,93,104,.17),transparent 42%),radial-gradient(ellipse at 10% 0%,rgba(209,153,55,.09),transparent 38%),var(--bg,#0b0e12)}
+.sidebar{background:linear-gradient(180deg,rgba(14,22,32,.98),rgba(8,13,20,.98));border-right:1px solid var(--kh-line);box-shadow:12px 0 34px rgba(0,0,0,.14)}
+.brand-mark{border-radius:12px;box-shadow:0 0 0 1px rgba(255,209,102,.28),0 7px 22px rgba(255,190,70,.13)}
+.nav-item{border:1px solid transparent;border-radius:11px;transition:background .18s ease,border-color .18s ease,transform .18s ease,color .18s ease}
+.nav-item:hover{background:rgba(255,255,255,.055);border-color:var(--kh-line);transform:translateX(2px)}
+.nav-item.active{background:linear-gradient(100deg,rgba(255,209,102,.15),rgba(101,229,209,.055));border-color:rgba(255,209,102,.26);box-shadow:inset 3px 0 var(--kh-gold)}
+.topbar{border-bottom:1px solid rgba(143,169,197,.12)}
+.panel,.stat-card,.feature-card,.game-card,.event-card,.arsenal-card,.tactical-hq-card,.pass-offer,.premium-pass-panel,.kh-replica-match,.kh-replica-progress,.kh-replica-achievements,.kh-replica-videos{border:1px solid var(--kh-line);border-radius:var(--kh-radius);background:linear-gradient(145deg,rgba(23,33,47,.92),rgba(12,19,28,.94));box-shadow:0 12px 32px rgba(0,0,0,.12)}
+button,.btn,.music-play-btn,.kh-update-action,.pubg-quick-link{transition:transform .16s ease,filter .16s ease,box-shadow .16s ease,border-color .16s ease}
+button:not(:disabled):hover,.btn:hover,.music-play-btn:hover,.pubg-quick-link:hover{filter:brightness(1.08);box-shadow:0 7px 20px rgba(0,0,0,.18)}
+button:not(:disabled):active,.btn:active,.music-play-btn:active{transform:translateY(1px) scale(.99)}
+button:disabled{opacity:.48;cursor:not-allowed}
+.btn,.music-play-btn{min-height:42px;border-radius:11px;font-weight:800;letter-spacing:.025em}
+.btn-yellow,.music-play-btn,.kh-update-action{background:linear-gradient(135deg,#ffdc81,#f5bd3f);color:#171b22;border:1px solid rgba(255,236,174,.45)}
+.btn-ghost{border:1px solid rgba(143,169,197,.28);background:rgba(255,255,255,.035)}
+input,select,textarea{border:1px solid rgba(143,169,197,.25)!important;border-radius:11px!important;background:rgba(7,12,19,.78)!important;color:var(--text,#f4f5f6)!important}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(101,229,209,.55)!important;outline-offset:1px}
+:focus-visible{outline:2px solid var(--kh-cyan);outline-offset:3px}
+.hero,.kh-replica-hero,.events-hero,.tactical-hq-hero,.arsenal-hero{border-radius:20px;overflow:hidden}
+.section-heading{gap:14px}
+.live-pill,.event-tag,.music-count,.ua-music-live{border-radius:999px}
+.media-player-panel iframe,.ua-music-embed-wrap iframe,.tiktok-embed-wrap iframe{border:1px solid var(--kh-line);border-radius:14px;background:#080d14}
+.media-layout{gap:16px}
+.media-message{line-height:1.55}
+.tiktok-profiles-grid{grid-template-columns:minmax(0,1fr)!important}
+.tiktok-profile-unit{overflow:hidden}
+.tiktok-profile-card{gap:16px;padding:clamp(14px,2vw,22px)}
+.tiktok-profile-mark{display:grid;place-items:center;flex:0 0 54px;width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,rgba(255,209,102,.18),rgba(101,229,209,.12));border:1px solid var(--kh-line);font-size:28px}
+.tiktok-profile-copy h2{overflow-wrap:anywhere}
+.tiktok-creator-feed{min-width:0;max-width:100%;overflow:auto}
+.tiktok-creator-feed blockquote{margin:12px auto!important}
+.kh-playlist-track,.music-track-row{gap:12px;padding:12px;border-bottom:1px solid rgba(143,169,197,.11);border-radius:10px}
+.kh-playlist-track:hover,.music-track-row:hover{background:rgba(255,255,255,.035)}
+.music-track-info{min-width:0}
+.music-track-info b,.music-track-info small{overflow-wrap:anywhere}
+.music-play-btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;text-align:center;white-space:nowrap}
+.pubg-quick-links{gap:8px}
+.pubg-quick-link{border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.mobile-nav{border-top:1px solid rgba(143,169,197,.22)!important;background:rgba(8,13,20,.96)!important;box-shadow:0 -10px 32px rgba(0,0,0,.22)}
+.mobile-nav button{border-radius:11px!important;border:1px solid transparent!important}
+.mobile-nav button.active{color:var(--kh-gold);background:rgba(255,209,102,.1);border-color:rgba(255,209,102,.22)!important}
+.toast{border:1px solid rgba(101,229,209,.3);border-radius:12px;backdrop-filter:blur(18px)}
+@media(max-width:720px){
+ .panel,.stat-card,.feature-card,.game-card,.event-card,.arsenal-card,.tactical-hq-card{border-radius:14px}
+ .btn,.music-play-btn{min-height:44px}
+ .kh-playlist-track,.music-track-row{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center}
+ .kh-playlist-track .music-play-btn,.music-track-row .music-play-btn{grid-column:2;justify-self:stretch;width:100%;white-space:normal}
+ .tiktok-profile-card{align-items:flex-start}
+ .tiktok-profile-copy .btn{white-space:normal;max-width:100%}
+ .media-layout.tiktok-layout{grid-template-columns:minmax(0,1fr)}
+ .media-player-panel,.media-side-panel{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){button,.btn,.music-play-btn,.nav-item{transition:none!important}}

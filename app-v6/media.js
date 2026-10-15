@@ -5,8 +5,9 @@ function playYouTube(raw){
  let u;try{u=new URL(raw.trim())}catch{u=null}
  if(!u||!['youtube.com','www.youtube.com','music.youtube.com','youtu.be','m.youtube.com','www.youtube-nocookie.com'].includes(u.hostname.toLowerCase())){if(youtubeMessage)youtubeMessage.textContent='Встав коректне посилання YouTube на відео або плейлист.';return false}
  const host=u.hostname.toLowerCase();
- const video=host==='youtu.be'?u.pathname.split('/').filter(Boolean)[0]:(u.searchParams.get('v')||'');
+ const video=host==='youtu.be'?u.pathname.split('/').filter(Boolean)[0]:(u.searchParams.get('v')||u.pathname.match(/\/(?:shorts|embed|live|v)\/([^/?]+)/)?.[1]||'');
  const list=u.searchParams.get('list')||'';
+ if(video&&!/^[A-Za-z0-9_-]{6,}$/.test(video)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося розпізнати ID відео YouTube. Встав повне посилання.';return false}
  if(!video&&!list){if(youtubeMessage)youtubeMessage.textContent='У посиланні не знайдено відео або плейлист.';return false}
  const params=new URLSearchParams();params.set('playsinline','1');params.set('rel','0');params.set('autoplay','1');params.set('controls','1');if(list)params.set('list',list);
  const src=video?'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(video)+'?'+params.toString():'https://www.youtube-nocookie.com/embed/videoseries?'+params.toString();
@@ -17,7 +18,7 @@ function playYouTube(raw){
 }
 youtubeForm?.addEventListener('submit',e=>{e.preventDefault();playYouTube(youtubeInput?.value||'')});
 const tiktokForm=$('#tiktokForm'),tiktokInput=$('#tiktokUrl'),tiktokEmbed=$('#tiktokEmbed'),tiktokMessage=$('#tiktokMessage');
-const PROFILE_URL='https://www.tiktok.com/@baggy8364';
+const PROFILE_URL='https://www.tiktok.com/@uakozak5';
 const tiktokSavedList=$('#tiktokSavedList');
 function safeTikTokUrl(raw){
  let u;try{u=new URL((raw||'').trim())}catch{return null}
@@ -90,7 +91,7 @@ function loadTikTok(raw){
  if(videoId)saveTikTokUrl(u.href);
 }
 tiktokForm?.addEventListener('submit',e=>{e.preventDefault();loadTikTok(tiktokInput?.value||'')});
-if(tiktokInput){let previous='';try{previous=localStorage.getItem('khkozak_tiktok_url')||''}catch{}tiktokInput.value=previous||PROFILE_URL;loadTikTok(tiktokInput.value)}
+if(tiktokInput){let previous='';try{previous=localStorage.getItem('khkozak_tiktok_url')||''}catch{}if(/\/@(?:baggy8364|tiktok\.comkhkozak4)(?:\/|$)/i.test(previous))previous='';tiktokInput.value=previous||PROFILE_URL;loadTikTok(tiktokInput.value)}
 renderSavedTikTok();
 try{if(youtubeInput)youtubeInput.value=localStorage.getItem('khkozak_youtube_url')||''}catch{}
 
@@ -127,7 +128,7 @@ function renderMusic(){
   const title=document.createElement('b');title.textContent=item.title;
   const sub=document.createElement('small');sub.textContent=item.tag+' · YouTube';
   info.append(title,sub);
-  const btn=document.createElement('a');btn.className='music-play-btn';btn.href='https://www.youtube.com/results?search_query='+encodeURIComponent(item.query);btn.target='_self';btn.rel='noopener';btn.textContent='▶ ЗНАЙТИ ТРЕК';
+  const btn=document.createElement('a');btn.className='music-play-btn';btn.href='https://www.youtube.com/results?search_query='+encodeURIComponent(item.query);btn.target='_blank';btn.rel='noopener noreferrer';btn.textContent='▶ ЗНАЙТИ ТРЕК';
   row.append(num,info,btn);musicList.append(row);
  });
  if(musicCount)musicCount.textContent=filtered.length+' пошукових варіантів';
@@ -152,7 +153,7 @@ const khUkrainianTracks=[
 function playTrack(track){
  const query=track[1]+' '+track[0]+' official audio';
  if(track[2]&&youtubeInput){youtubeInput.value='https://www.youtube.com/watch?v='+track[2];playYouTube(youtubeInput.value);youtubeWrap?.scrollIntoView({behavior:'smooth',block:'center'});}
- else {if(youtubeMessage)youtubeMessage.textContent='Для цього треку відкриваю офіційний пошук YouTube.';window.location.href='https://www.youtube.com/results?search_query='+encodeURIComponent(query);}
+ else {if(youtubeMessage)youtubeMessage.textContent='Відкриваю пошук офіційного треку на YouTube в окремій вкладці.';window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(query),'_blank','noopener,noreferrer');}
 }
 const khUkrainianList=$('#khUkrainianTracks');
 function renderUkrainianTracks(){
