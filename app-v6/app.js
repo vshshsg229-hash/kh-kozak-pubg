@@ -551,4 +551,17 @@ connectOnlineApi();
 if(getAuthToken())refreshOnlineAccount();
 if(new URLSearchParams(window.location.search).get('payment')==='return'&&getAuthToken()){apiRequest('/api/premium/status').then(data=>{if(data.user)applyOnlineUser(data.user);if(data.eliteVerified){showToast('Оплату підтверджено! Elite і нагороди активовано.');goTab('profile')}else showToast('Платіж ще перевіряється. Онови Elite-статус трохи пізніше.')}).catch(error=>showToast('Не вдалося перевірити оплату: '+error.message))}
 loadTelegramStatus();refreshAdminData();
+window.khkozakProgression = {
+  snapshot: () => ({ coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level(), online: !!getAuthToken() }),
+  spendCoins: amount => {
+    const cost = Math.max(0, Math.floor(Number(amount) || 0));
+    if (getAuthToken() || !Number.isFinite(cost) || Number(state.coins) < cost) return false;
+    state.coins -= cost;
+    save();
+    render();
+    return true;
+  },
+  refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level(), online: !!getAuthToken() }; }
+};
+
 })();
