@@ -2,14 +2,15 @@
 create table if not exists public.hub_shop_catalog (
   item_id text primary key,
   item_name text not null,
-  item_kind text not null check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin')),
+  item_kind text not null check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack')),
   cost integer not null check (cost >= 0),
   rarity text not null default 'COMMON',
   daily_order integer unique,
-  active boolean not null default true
+  active boolean not null default true,
+  required_level integer not null default 1
 );
 alter table public.hub_shop_catalog drop constraint if exists hub_shop_catalog_item_kind_check;
-alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin'));
+alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack'));
 create table if not exists public.hub_inventory (
   user_id uuid not null references auth.users(id) on delete cascade,
   item_id text not null references public.hub_shop_catalog(item_id),
@@ -75,3 +76,14 @@ insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,dail
 on conflict (item_id) do update set
   item_name=excluded.item_name,item_kind=excluded.item_kind,cost=excluded.cost,
   rarity=excluded.rarity,daily_order=excluded.daily_order,active=true;
+
+
+insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order,required_level) values
+('skin_neon','NEON VIPER','skin',500,'EPIC',null,1),
+('weapon_carbon','M416 CARBON BLACK','weaponSkin',350,'RARE',null,1),
+('helmet_raven','RAVEN HELMET','helmet',250,'RARE',null,1),
+('pack_pulse','PULSE BACKPACK','backpack',400,'EPIC',null,1),
+('helmet_scout','ШОЛОМ РОЗВІДНИКА','helmet',250,'RARE',null,2),
+('vest_titan','БРОНЕЖИЛЕТ TITAN','vest',300,'RARE',null,3),
+('pack_phantom','РЮКЗАК PHANTOM','backpack',400,'EPIC',null,5)
+on conflict(item_id) do update set item_name=excluded.item_name,item_kind=excluded.item_kind,cost=excluded.cost,rarity=excluded.rarity,required_level=excluded.required_level,active=true;
