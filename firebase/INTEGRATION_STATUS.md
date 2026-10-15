@@ -11,6 +11,7 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 - Added Firebase Cloud Functions source:
   - `finishGame` applies fixed server-side rewards, uses event IDs for duplicate prevention, and adds a short cooldown.
   - `getLeaderboard` returns the top 10 without direct client reads of other users' private profile documents.
+  - Community player search, friend requests, accepted-friend private chat, and online nickname updates.
 - Updated authenticated game reward and leaderboard calls to use Firebase callable functions.
 - Disabled the legacy Render API request path in `app-v6/app.js` on this branch.
 - Added `firebase.json`, Functions package metadata, a setup/deployment guide, and a GitHub Actions syntax-check workflow.
