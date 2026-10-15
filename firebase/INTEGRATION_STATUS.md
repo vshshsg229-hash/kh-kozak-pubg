@@ -17,6 +17,10 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 - Disabled the legacy Render API request path in `app-v6/app.js` on this branch.
 - Added `firebase.json`, Functions package metadata, a setup/deployment guide, and a GitHub Actions syntax-check workflow.
 
+## Validation status
+- GitHub Actions JavaScript syntax checks and PWA/local-asset checks pass on the current staging head.
+- Live Firebase deployment and browser end-to-end behavior are still not verified.
+
 ## Not yet verified
 - Live browser registration, login, and profile creation against the Firebase project.
 - Whether Email/Password and Firestore are enabled and the Firestore rules are published.
