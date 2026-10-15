@@ -7,7 +7,7 @@ function createWindow() {
     height: 900,
     minWidth: 900,
     minHeight: 620,
-    title: "KH么Kozak Battle Hub 9.5.4",
+    title: `KH么Kozak Battle Hub ${app.getVersion()}`,
     autoHideMenuBar: true,
     backgroundColor: "#090b12",
     webPreferences: {
@@ -22,7 +22,7 @@ function createWindow() {
     return { action: "deny" };
   });
 
-  win.loadFile(path.join(__dirname, "web", "index.html"));
+  win.loadFile(path.join(__dirname, "web", "index.html"), { query: { desktopVersion: app.getVersion() } });
 }
 
 app.whenReady().then(() => {
