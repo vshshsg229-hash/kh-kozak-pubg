@@ -14,6 +14,12 @@ Node.js + PostgreSQL backend for real accounts, shared game rewards, public lead
 
 The daily shop, cosmetic inventory, secret-code redemption and some missions remain browser-local for now. Do not describe those as server-synced or as secure online rewards yet. Game rewards submitted while signed in are assigned by the server; browser-only/offline play continues using local progress.
 
+## Public shared video feed
+
+- Public `GET /api/creator/videos` and video playback routes make published clips visible to every site visitor.
+- Only the first registered account with username `KH么Kozak` (or the configured `CREATOR_ADMIN_USERNAME`) can upload or delete clips; the API enforces this permission.
+- Video bytes are stored in PostgreSQL, each clip is limited to 25 MiB, and the public feed lists the latest 100 clips. Large libraries increase database storage usage.
+
 ## Deploy with Render + PostgreSQL
 
 1. Push this repository to GitHub (these files are already in the existing `backend/` folder).
