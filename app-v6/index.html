@@ -9,12 +9,13 @@
 <link rel="stylesheet" href="pc-companion.css?v=1.2.0"><link rel="stylesheet" href="global-refresh.css?v=9.0.1"><link rel="stylesheet" href="app-update.css?v=13.9.2"><link rel="stylesheet" href="interface-refresh.css?v=13.9.2"><link rel="stylesheet" href="battle-world.css?v=1.0.1"><link rel="stylesheet" href="creator-studio.css?v=1.1.0">
 
 <link rel="stylesheet" href="pubg-links.css?v=1.0.6">
-<link rel="stylesheet" href="mobile-comfort.css?v=9.8.3"><link rel="stylesheet" href="tablet-portrait.css?v=1.0.0"><link rel="stylesheet" href="tablet-landscape.css?v=1.0.0"><link rel="stylesheet" href="global-13.8.css?v=13.8.1"><link rel="stylesheet" href="creator-feed.css?v=1.0.0"><link rel="stylesheet" href="interface-v16.css?v=16.2.0"><link rel="stylesheet" href="media-tiktok-buttons.css?v=16.1.0"><link rel="stylesheet" href="interface-recovery-v16.2.css?v=16.2.0">
+<link rel="stylesheet" href="mobile-comfort.css?v=9.8.3"><link rel="stylesheet" href="tablet-portrait.css?v=1.0.0"><link rel="stylesheet" href="tablet-landscape.css?v=1.0.0"><link rel="stylesheet" href="global-13.8.css?v=13.8.1"><link rel="stylesheet" href="creator-feed.css?v=1.0.0"><link rel="stylesheet" href="interface-v16.css?v=16.2.0"><link rel="stylesheet" href="media-tiktok-buttons.css?v=16.1.0"><link rel="stylesheet" href="interface-recovery-v16.2.css?v=16.3.0">
 </head>
 <body>
 <div class="app-shell">
   <aside class="sidebar">
-    <a class="brand" href="#home" data-tab-link="home"><span class="brand-mark">K</span><span><b>KH么KOZAK</b><small>BATTLE HUB <i>16.2</i></small></span></a>
+    <div class="mobile-menu-heading"><div><strong>УСІ РОЗДІЛИ</strong><small>Обери, куди перейти</small></div><button type="button" id="mobileSidebarClose" aria-label="Закрити меню" onclick="document.getElementById('mobileMenuToggle')?.click()">×</button></div>
+    <a class="brand" href="#home" data-tab-link="home"><span class="brand-mark">K</span><span><b>KH么KOZAK</b><small>BATTLE HUB <i>16.3</i></small></span></a>
     <nav class="nav" aria-label="Основна навігація">
       <div class="nav-group"><div class="nav-group-title">СТАРТ</div>
         <button class="nav-item active" data-tab="home"><span>⌂</span><span class="nav-label">Головна</span><em>СТАРТ</em></button>
@@ -229,10 +230,10 @@
       <article class="tactical-hq-card"><div class="panel-head"><h3>👥 СКЛАД ЗАГОНУ</h3><span class="live-pill">SQUAD ROLES</span></div><p class="tactical-hq-muted">Запиши, хто яку роль виконує. Імена збережуться після перезавантаження.</p><div class="tactical-hq-roster"><label class="tactical-hq-role"><b>⚔ Штурмовик</b><input id="tqhAssault" maxlength="40" placeholder="Нік гравця"></label><label class="tactical-hq-role"><b>◎ Снайпер</b><input id="tqhSniper" maxlength="40" placeholder="Нік гравця"></label><label class="tactical-hq-role"><b>✚ Підтримка</b><input id="tqhSupport" maxlength="40" placeholder="Нік гравця"></label><label class="tactical-hq-role"><b>⌖ Розвідник</b><input id="tqhScout" maxlength="40" placeholder="Нік гравця"></label></div><div class="tactical-hq-action-row"><button class="tactical-hq-btn primary" id="tqhRosterSave" type="button">💾 ЗБЕРЕГТИ СКЛАД</button></div><div class="tactical-hq-status" id="tqhRosterStatus" aria-live="polite"></div></article></div>
       <div class="section-heading"><div><div class="eyebrow muted">ЖУРНАЛ ВИХОДІВ</div><h2>Мої останні операції</h2></div><button class="tactical-hq-btn" id="tqhClear" type="button">ОЧИСТИТИ ІСТОРІЮ</button></div><div class="tactical-hq-history" id="tqhHistory"></div><div class="panel arsenal-privacy" style="margin-top:16px"><span>ⓘ</span><p>Важливо: штаб записує твій план і час сесій, але не підключений до матчів PUBG та не може автоматично перевіряти перемоги.</p></div>
     </section>
-    <footer class="footer"><span>© 2026 KH么KOZAK BATTLE HUB</span><span>ЗРОБЛЕНО ДЛЯ ГРАВЦІВ <b>◆</b> · VERSION 16.2</span></footer>
+    <footer class="footer"><span>© 2026 KH么KOZAK BATTLE HUB</span><span>ЗРОБЛЕНО ДЛЯ ГРАВЦІВ <b>◆</b> · VERSION 16.3</span></footer>
   </main>
 </div>
-<div class="mobile-nav" aria-label="Швидка навігація"><button class="active" data-tab="home" title="Головна"><span>⌂</span>Головна</button><button data-tab="games" title="Ігри та режими"><span>▣</span>Ігри</button><button data-tab="pass" title="Royale Pass — сезонні нагороди"><span>⬆</span>Royale Pass</button><button data-tab="music" title="Відкрити музичний плеєр"><span>♫</span>Музика</button><button data-tab="tiktok" title="Відкрити TikTok-відео"><span>♪</span>TikTok</button><button id="mobileDockMore" type="button" aria-label="Відкрити всі вкладки"><span>☰</span>Ще</button></div>
+<div class="mobile-nav" aria-label="Швидка навігація"><button class="active" data-tab="home" title="Головна"><span>⌂</span>Головна</button><button data-tab="games" title="Ігри та режими"><span>▣</span>Ігри</button><button data-tab="pass" title="Royale Pass — сезонні нагороди"><span>⬆</span>Royale Pass</button><button data-tab="music" title="Відкрити музичний плеєр"><span>♫</span>Музика</button><button data-tab="tiktok" title="Відкрити TikTok-відео"><span>♪</span>TikTok</button><button id="mobileDockMore" type="button" aria-label="Відкрити меню всіх розділів"><span>☰</span>Ще</button></div>
 <div class="modal-backdrop" id="gameModal" aria-hidden="true"><div class="game-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="closeModal" aria-label="Закрити">×</button><div class="eyebrow muted" id="modalEyebrow">MINI GAME</div><h2 id="modalTitle">Тест реакції</h2><p id="modalDesc">Перевір свої навички.</p><div id="gameArea" class="game-area"></div><div id="gameMessage" class="game-message" aria-live="polite"></div></div></div>
 
 <div class="toast" id="toast" role="status"></div>
