@@ -1,10 +1,20 @@
-/* KH Fighter Loadout presets */
+/* KH Fighter kit store: responsive for desktop and mobile */
 #khReplicaFighterSlot[data-kit="heavy"] .kh-real-soldier{filter:drop-shadow(0 18px 22px #000b) contrast(1.16) saturate(.82) brightness(.92)}
 #khReplicaFighterSlot[data-kit="ghost"] .kh-real-soldier{filter:drop-shadow(0 18px 22px #000b) hue-rotate(175deg) saturate(.68) brightness(1.12)}
 #khReplicaFighterSlot[data-kit="scavenger"] .kh-real-soldier{filter:drop-shadow(0 18px 22px #000b) sepia(.28) hue-rotate(20deg) saturate(1.18) brightness(.94)}
 #khReplicaFighterSlot[data-kit="ranger"] .kh-real-soldier{filter:drop-shadow(0 18px 22px #000b)}
-.kh-fighter-kit-title{display:block;margin-top:4px;padding-top:7px;border-top:1px solid #344153;font-size:8px;letter-spacing:1.2px;color:#83cfff}
-.kh-fighter-kits{display:grid;gap:5px}
-.kh-fighter-customizer .kh-fighter-kits button{font-size:9px;min-height:27px}
-.kh-fighter-kit-status{font-size:8px;line-height:1.4;color:#9eacbd}
-@media(max-width:760px){.kh-fighter-customizer .kh-fighter-kits button{font-size:8px;min-height:25px}.kh-fighter-kit-title{font-size:7px}}
+.kh-fighter-kit-title{display:block;margin-top:5px;padding-top:8px;border-top:1px solid #344153;font-size:9px;letter-spacing:1.2px;color:#83cfff}
+.kh-fighter-kit-summary{margin:6px 0;padding:7px 8px;background:#0c151e;border:1px solid #293b4a;border-radius:5px;color:#f3cf62;font-size:9px;font-weight:800;line-height:1.5}
+.kh-fighter-kits{display:grid;gap:5px;max-height:250px;overflow-y:auto;overscroll-behavior:contain;padding-right:2px}
+.kh-fighter-kit-card{display:flex;align-items:center;gap:5px;justify-content:space-between;min-width:0;padding:6px;background:linear-gradient(110deg,#131e28,#0d141c);border:1px solid #2b3a49;border-radius:6px}
+.kh-fighter-kit-card.is-equipped{border-color:#55c7ff;background:linear-gradient(110deg,#123044,#101923)}
+.kh-fighter-kit-info{display:flex;align-items:center;gap:6px;min-width:0;flex:1}
+.kh-fighter-kit-icon{font-size:17px;flex:0 0 auto}
+.kh-fighter-kit-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.kh-fighter-kit-copy b{font-size:9px;color:#f0f5fb;line-height:1.2}
+.kh-fighter-kit-copy small{font-size:8px;color:#94a7b8;line-height:1.25}
+.kh-fighter-customizer .kh-fighter-kit-action{font-size:8px;line-height:1.2;min-height:27px;min-width:76px;max-width:94px;padding:5px 6px;white-space:normal;border:1px solid #466074;border-radius:4px;background:#1d3342;color:#b9e7ff;font-weight:900;cursor:pointer}
+.kh-fighter-customizer .kh-fighter-kit-card.is-equipped .kh-fighter-kit-action{background:#173d2c;border-color:#357d5b;color:#a5f3c5}
+.kh-fighter-customizer .kh-fighter-kit-action:disabled{opacity:.65;cursor:default}
+.kh-fighter-kit-status{font-size:8px;line-height:1.45;color:#a9b9c8;margin-top:6px;overflow-wrap:anywhere}
+@media(max-width:760px){.kh-fighter-kit-title{font-size:8px}.kh-fighter-kit-summary{font-size:8px}.kh-fighter-kits{max-height:220px}.kh-fighter-kit-card{padding:5px}.kh-fighter-kit-icon{font-size:15px}.kh-fighter-kit-copy b{font-size:8px}.kh-fighter-kit-copy small{font-size:7px}.kh-fighter-customizer .kh-fighter-kit-action{font-size:7px;min-width:68px;max-width:78px;min-height:26px;padding:4px}.kh-fighter-kit-status{font-size:7px}}
