@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.20.1",
+  "version": "16.20.2",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.20.1: fixed update banner version comparison and refreshed service-worker cache; reorganized KH Digital Space into separate Internet, KH Persona, KH App Center, KH Media and KH Workspace pages. Added editable personal identity card; retained browser search, site launcher, media player and productivity tools. Existing core navigation and game features preserved."
+  "releaseNotes": "v16.20.2: Google searches open in a normal browser tab because Google blocks iframe embedding; synchronized update banner and cache versions. Previous cache precache paths also corrected."
 }
