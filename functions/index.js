@@ -220,8 +220,8 @@ exports.listCommunityMessages = onCall({ region: REGION }, async (request) => {
   const friendId = String(request.data?.friendId || '');
   await requireAcceptedFriendship(uid, friendId);
   const snap = await db.collection('conversations').doc(pairId(uid, friendId))
-    .collection('messages').orderBy('createdAt', 'asc').limit(100).get();
-  return { messages: snap.docs.map(d => ({
+    .collection('messages').orderBy('createdAt', 'desc').limit(100).get();
+  return { messages: snap.docs.reverse().map(d => ({
     id: d.id, senderId: d.data().senderId, body: String(d.data().body || ''),
     createdAt: d.data().createdAt?.toDate?.().toISOString?.() || null
   })) };
