@@ -36,7 +36,7 @@ const AI_API_KEY = process.env.AI_API_KEY || "";
 const AI_BASE_URL = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
 const AI_MODEL = process.env.AI_MODEL || "gpt-4o-mini";
 const CREATOR_ADMIN_USERNAME = (process.env.CREATOR_ADMIN_USERNAME || "KH么Kozak").trim();
-const CREATOR_ADMIN_USERNAME = (process.env.CREATOR_ADMIN_USERNAME || "KH么Kozak").trim();
+
 
 if (!DATABASE_URL) throw new Error("DATABASE_URL is required. Create a PostgreSQL database and set DATABASE_URL.");
 if (!JWT_SECRET || JWT_SECRET.length < 32) throw new Error("JWT_SECRET is required and must be at least 32 characters.");
