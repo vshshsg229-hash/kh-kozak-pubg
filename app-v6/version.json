@@ -1,6 +1,7 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "9.5.4",
+  "version": "9.5.5",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.4",
-  "updatedAt": "2026-10-15"
+  "updatedAt": "2026-10-15",
+  "windowsVersion": "9.5.4"
 }
