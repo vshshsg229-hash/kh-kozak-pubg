@@ -89,6 +89,13 @@ jobs:
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
             'PWA manifest declares at least one icon');
 
+          const media = fs.readFileSync(path.join(root, 'media.js'), 'utf8');
+          assert(html.includes('interface-refresh.css?v=13.9.0'), 'Refreshed interface stylesheet is loaded');
+          assert(html.includes('id="tab-music"') && html.includes('id="tab-tiktok"'), 'Music and TikTok tabs exist');
+          assert(media.includes("const PROFILE_URL='https://www.tiktok.com/@uakozak5'"), 'TikTok form defaults to the configured creator profile');
+          assert(media.includes('shorts|embed|live|v'), 'YouTube player recognizes Shorts, embeds, live streams, and standard videos');
+          assert(media.includes('khkozak_tiktok_videos') && media.includes('khkozak_ua_music_source'), 'TikTok saves and music source preferences are persisted');
+
           for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
             const value = match[1];
             if (/^(?:https?:|data:|#|\/\/)/i.test(value)) continue;
@@ -126,9 +133,7 @@ jobs:
           for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
           assert(html.includes('games-3d.js?v=1.3.1'), 'HTML loads current 3D engine version with ammo update');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
-          assert(html.includes('battle-evolution.js?v=1.1.0'), 'HTML loads Battle Evolution contracts and tournament board');
-          const evolution = fs.readFileSync(path.join(root, 'battle-evolution.js'), 'utf8');
-          for (const feature of ['Розминка загону', 'Операція тижня', 'ЛОКАЛЬНИЙ ТУРНІР', 'КАР’ЄРНІ ВІДКРИТТЯ', 'career150', 'khkozak_online_token_v1']) assert(evolution.includes(feature), 'Battle Evolution feature exists: ' + feature);
+          // Battle Evolution is intentionally not loaded in the current server-light UI.
           const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
           for (const feature of ['data-bunker-upgrade', 'bunkerScavenge', 'bunkerClaim', 'bunkerTrophyGrid']) assert(bunker.includes(feature), 'Bunker feature exists: ' + feature);
 
