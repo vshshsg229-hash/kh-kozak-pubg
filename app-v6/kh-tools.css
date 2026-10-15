@@ -1,0 +1,41 @@
+/* KH Web & Workspace v1 */
+.kh-tools-nav{border:1px solid rgba(92,190,255,.24)!important}
+.kh-tools-page{padding-bottom:100px}
+.kh-tools-hero{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.kh-tools-hero h1{margin:4px 0;font-size:clamp(25px,4vw,38px)}
+.kh-tools-hero p{color:var(--muted,#a8b4c5);margin:6px 0;max-width:680px}
+.kh-tools-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(90,200,255,.3);background:rgba(24,155,210,.1);border-radius:999px;padding:7px 12px;font-size:12px;color:#9de5ff}
+.kh-tools-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.kh-tool-card{grid-column:span 6;min-width:0;border:1px solid rgba(130,165,200,.18);border-radius:16px;padding:17px;background:linear-gradient(145deg,rgba(20,31,47,.95),rgba(10,17,28,.96));box-shadow:0 10px 28px rgba(0,0,0,.12)}
+.kh-tool-card.wide{grid-column:span 12}
+.kh-tool-title{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.kh-tool-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:rgba(35,170,225,.13);font-size:20px}
+.kh-tool-title h2{font-size:16px;margin:0}.kh-tool-title p{font-size:12px;color:var(--muted,#9caabd);margin:3px 0 0}
+.kh-tool-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.kh-tool-input,.kh-tool-textarea,.kh-tool-select{min-width:0;width:100%;border:1px solid rgba(145,170,200,.24);border-radius:10px;background:#0b1421;color:#f3f7fb;padding:11px 12px;font:inherit;outline:none}
+.kh-tool-input:focus,.kh-tool-textarea:focus{border-color:#42c9ff;box-shadow:0 0 0 3px rgba(66,201,255,.1)}
+.kh-tool-textarea{min-height:125px;resize:vertical}
+.kh-tool-btn{border:1px solid rgba(80,190,240,.3);border-radius:10px;background:rgba(25,130,190,.18);color:#eaf8ff;padding:10px 13px;font-weight:700;cursor:pointer}
+.kh-tool-btn:hover{background:rgba(25,160,220,.3)}.kh-tool-btn.primary{background:linear-gradient(135deg,#168dc4,#2563eb);border-color:transparent}
+.kh-tool-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.kh-tool-link{display:flex;flex-direction:column;gap:7px;align-items:flex-start;text-align:left;text-decoration:none;color:inherit;border:1px solid rgba(145,170,200,.17);border-radius:12px;padding:12px;background:rgba(255,255,255,.025);min-width:0}
+.kh-tool-link:hover{border-color:#37b8ed;background:rgba(30,150,210,.09)}
+.kh-tool-link b{font-size:13px}.kh-tool-link small{font-size:11px;color:#9eafc4}
+.kh-browser-frame{width:100%;height:min(64vh,680px);border:1px solid rgba(145,170,200,.22);border-radius:12px;background:#fff}
+.kh-browser-status{font-size:12px;color:#a9b8ca;margin-top:9px}
+.kh-tool-result{white-space:pre-wrap;overflow-wrap:anywhere;color:#b9c8d9;font-size:13px;margin-top:9px}
+.kh-tool-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.kh-tool-list-item{display:flex;align-items:center;gap:8px;padding:9px;border-radius:9px;background:rgba(255,255,255,.04)}.kh-tool-list-item span{flex:1;overflow-wrap:anywhere}
+.kh-tool-list-item button{padding:5px 8px}
+.kh-tool-clock{font-size:32px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums}
+.kh-tool-chiprow{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.kh-tool-note{font-size:12px;line-height:1.5;color:#9eb0c5}
+.kh-tool-player{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#05080c}
+.kh-tool-calc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.kh-tool-calc button{padding:13px 4px;font-size:16px}
+.kh-tool-calc-display{text-align:right;font-size:25px;font-weight:700;margin-bottom:10px;overflow-wrap:anywhere}
+.kh-tool-timer-controls{display:flex;gap:8px;flex-wrap:wrap}
+.kh-tools-light .kh-tool-card{background:#f3f7fb;color:#172033;border-color:#d5e0ec}
+.kh-tools-light .kh-tool-input,.kh-tools-light .kh-tool-textarea,.kh-tools-light .kh-tool-select{background:#fff;color:#172033;border-color:#ccd7e5}
+.kh-tools-light .kh-tool-link{border-color:#d5e0ec;background:#fff}
+@media(max-width:760px){.kh-tool-card,.kh-tool-card.wide{grid-column:span 12}.kh-tool-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}.kh-tools-hero{align-items:flex-start}.kh-browser-frame{height:55vh}.kh-tool-card{padding:14px}}
+@media(max-width:420px){.kh-tool-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.kh-tool-row>*{flex:1}.kh-tool-btn{padding:10px}.kh-tool-title h2{font-size:15px}}
