@@ -1,4 +1,7 @@
-/* KH么Kozak Battle Hub 16.2 — restore Royale Pass and all navigation controls */
+/* KH么Kozak Battle Hub 16.4 — LOCKED MOBILE MENU
+ * Navigation structure is approved and must remain unchanged.
+ * Future visual edits may change styling/background only; do not move, rename, regroup, add, or remove menu buttons.
+ */
 @media(max-width:720px) and (orientation:portrait){
   .mobile-nav{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;align-items:stretch;gap:3px!important;overflow:visible!important;left:5px!important;right:5px!important;bottom:calc(5px + env(safe-area-inset-bottom))!important;padding:6px!important;border:1px solid #354959!important;border-radius:15px!important}
   .mobile-nav button{display:flex!important;flex:initial!important;min-width:0!important;width:100%!important;min-height:48px!important;padding:4px 1px!important;white-space:normal!important;font-size:clamp(7px,2.1vw,9px)!important;line-height:1.05!important;gap:3px!important}
