@@ -33,14 +33,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Verify deployment secret is configured
+      - name: Verify deployment and legacy-migration secrets are configured
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
+          missing=0
           if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
-            echo "::error::Add the repository Actions secret FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB first."
-            exit 1
+            echo "::error::Add Actions secret FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB."
+            missing=1
           fi
+          if [ -z "$SUPABASE_URL" ]; then
+            echo "::error::Add Actions secret SUPABASE_URL (the legacy Supabase project URL)."
+            missing=1
+          fi
+          if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::error::Add Actions secret SUPABASE_SERVICE_ROLE_KEY. Never put this key in client code."
+            missing=1
+          fi
+          exit "$missing"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -52,6 +64,18 @@ jobs:
         run: |
           npm install --global firebase-tools
           npm install --prefix functions
+
+      - name: Configure Firebase Secret Manager for legacy-profile migration
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          umask 077
+          printf '%s' "$SUPABASE_URL" > "$RUNNER_TEMP/supabase-url"
+          printf '%s' "$SUPABASE_SERVICE_ROLE_KEY" > "$RUNNER_TEMP/supabase-service-role"
+          firebase functions:secrets:set SUPABASE_URL --data-file "$RUNNER_TEMP/supabase-url" --project kh-kozak-battle-hub --force
+          firebase functions:secrets:set SUPABASE_SERVICE_ROLE_KEY --data-file "$RUNNER_TEMP/supabase-service-role" --project kh-kozak-battle-hub --force
+          rm -f "$RUNNER_TEMP/supabase-url" "$RUNNER_TEMP/supabase-service-role"
 
       - name: Deploy Firestore rules and Cloud Functions
         run: firebase deploy --only firestore:rules,functions --project kh-kozak-battle-hub
