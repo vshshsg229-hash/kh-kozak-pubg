@@ -70,3 +70,45 @@ img,video,canvas,svg{max-width:100%}
  .section-heading h2{letter-spacing:-.7px!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Global 13.8 — seasonal offers and Elite Pass refresh */
+.pass-section-heading{align-items:center;gap:14px}
+.pass-section-heading>small{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:100%;padding:8px 11px;border:1px solid #3a4147;border-radius:7px;background:#151b22;color:#c0cad4;line-height:1.5}
+.pass-section-heading>small b{display:inline-block;color:#f5c342;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:.35px}
+.premium-heading>small{border-color:#68552e;background:#211d16}
+.premium-heading>small b{color:#f6d16a}
+.pass-offers{align-items:stretch}
+.pass-offer{height:100%;border-radius:10px;overflow:hidden;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.pass-offer:hover{transform:translateY(-2px);box-shadow:0 12px 28px #0003}
+.pass-offer-art{border-radius:7px;min-height:66px}
+.pass-offer-info h3{overflow-wrap:anywhere}
+.pass-offer button{min-height:var(--kh-touch-target,44px);border-radius:7px}
+.premium-pass-panel{border-radius:11px;min-width:0}
+.premium-pass-panel>.btn{min-height:var(--kh-touch-target,44px);border-radius:7px}
+.premium-pass-status{min-width:0}
+.premium-pass-status b{overflow-wrap:anywhere}
+.premium-track .pass-reward{border-radius:9px}
+@media(min-width:721px) and (max-width:1100px){
+ .pass-offers{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .pass-offers .pass-offer:last-child:nth-child(odd){grid-column:1/-1}
+ .premium-track.pass-track{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:720px){
+ .pass-section-heading{align-items:flex-start!important}
+ .pass-section-heading>small{font-size:11px;text-align:left!important;justify-content:flex-start;padding:7px 9px}
+ .premium-pass-panel{gap:14px!important}
+ .pass-offers{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+ .pass-offer{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;gap:10px;padding:12px!important}
+ .pass-offer-art{height:64px;min-height:64px}
+ .pass-offer-info{min-width:0}
+ .pass-offer-info h3{font-size:18px}
+ .pass-offer button{grid-column:1/-1;width:100%;margin-top:0}
+ .premium-track.pass-track{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .premium-track .pass-reward{min-width:0;padding:10px!important}
+}
+@media(max-width:380px){
+ .pass-section-heading h2{font-size:22px!important}
+ .premium-track.pass-track{grid-template-columns:minmax(0,1fr)!important}
+ .pass-offer{grid-template-columns:52px minmax(0,1fr);padding:10px!important}
+ .pass-offer-art{height:52px;min-height:52px}
+}
