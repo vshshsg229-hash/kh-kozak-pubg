@@ -71,3 +71,31 @@ a{color:#8dfaff}
  .sidebar{box-shadow:0 0 34px rgba(0,246,255,.18)!important}
  .kh-replica-hero,.kh-replica-right article,.panel,.card,.game-card,.mission-card,.event-card,.section-card{border-color:rgba(0,246,255,.32)!important}
 }
+
+
+/* 16.8 floating neon atmosphere; decorative only, navigation remains unchanged */
+body{isolation:isolate}
+body:after{content:"";position:fixed;inset:-8%;z-index:0;pointer-events:none;opacity:.42;background:radial-gradient(circle at 12% 24%,rgba(0,246,255,.28) 0 2px,transparent 4px),radial-gradient(circle at 78% 17%,rgba(255,46,209,.32) 0 2px,transparent 5px),radial-gradient(circle at 34% 72%,rgba(139,92,255,.3) 0 2px,transparent 5px),radial-gradient(circle at 88% 66%,rgba(0,246,255,.26) 0 1.5px,transparent 4px),radial-gradient(ellipse at 16% 58%,rgba(0,246,255,.1),transparent 25%),radial-gradient(ellipse at 83% 78%,rgba(255,46,209,.1),transparent 24%);animation:khNebulaDrift 22s ease-in-out infinite alternate}
+@keyframes khNebulaDrift{0%{transform:translate3d(-1%,1%,0) scale(1)}50%{transform:translate3d(1.5%,-1%,0) scale(1.035)}100%{transform:translate3d(-.5%,-1.5%,0) scale(1.015)}}
+.app-shell{z-index:1}
+.sidebar:after{content:"";position:absolute;left:0;right:0;top:-35%;height:24%;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(0,246,255,.1),rgba(255,46,209,.11),transparent);animation:khSidebarScan 9s linear infinite}
+@keyframes khSidebarScan{0%{transform:translateY(-10%);opacity:0}15%{opacity:.8}85%{opacity:.6}100%{transform:translateY(530%);opacity:0}}
+.hero:after,.kh-replica-hero:after,.kh-replica-right article:after,.panel:after,.card:after,.stat-card:after,.game-card:after,.mission-card:after,.reward-card:after,.event-card:after,.arsenal-card:after,.tactical-hq-card:after,.creator-card:after,.profile-card:after,.shop-card:after,.pass-card:after,.section-card:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 0%,rgba(0,246,255,.09) 43%,rgba(255,46,209,.12) 51%,transparent 63%);background-size:230% 100%;animation:khSurfaceShimmer 12s ease-in-out infinite}
+@keyframes khSurfaceShimmer{0%,66%{background-position:130% 0;opacity:0}73%{opacity:.7}91%{background-position:-40% 0;opacity:.35}100%{background-position:-40% 0;opacity:0}}
+.brand-mark{animation:khLogoFloat 4s ease-in-out infinite,khLogoGlow 3s ease-in-out infinite alternate!important}
+@keyframes khLogoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-1deg)}}
+@keyframes khLogoGlow{from{filter:drop-shadow(0 0 3px rgba(0,246,255,.2))}to{filter:drop-shadow(0 0 10px rgba(255,46,209,.5))}}
+.online-dot{animation:khOnlinePulse 1.8s ease-in-out infinite}
+@keyframes khOnlinePulse{0%,100%{opacity:.65;box-shadow:0 0 5px rgba(0,246,255,.3)}50%{opacity:1;box-shadow:0 0 14px rgba(0,246,255,.9)}}
+.sidebar .nav-item.active{animation:khActiveBreath 4s ease-in-out infinite}
+@keyframes khActiveBreath{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15)}}
+.hero .eyebrow>span{animation:khSignalBlink 2.2s steps(2,end) infinite}
+@keyframes khSignalBlink{0%,100%{opacity:1}50%{opacity:.42}}
+.kh-replica-aircraft{animation:khAircraftDrift 12s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(0,246,255,.45))}
+@keyframes khAircraftDrift{0%,100%{transform:translate(-4px,2px) rotate(-3deg)}50%{transform:translate(12px,-8px) rotate(2deg)}}
+.kh-replica-art-glow{animation:khGlowBreathe 6s ease-in-out infinite alternate}
+@keyframes khGlowBreathe{from{opacity:.55;transform:scale(.94)}to{opacity:1;transform:scale(1.08)}}
+button:not(.nav-item):not(.mobile-nav button):not(.modal-close),.btn,.button,.action-btn,.primary-btn{transition:transform .22s ease,filter .22s ease,box-shadow .22s ease!important}
+button:not(.nav-item):not(.mobile-nav button):not(.modal-close):hover,.btn:hover,.button:hover,.action-btn:hover,.primary-btn:hover{transform:translateY(-2px);filter:brightness(1.12)}
+@media(prefers-reduced-motion:reduce){body:after,.sidebar:after,.hero:after,.kh-replica-hero:after,.kh-replica-right article:after,.panel:after,.card:after,.stat-card:after,.game-card:after,.mission-card:after,.reward-card:after,.event-card:after,.arsenal-card:after,.tactical-hq-card:after,.creator-card:after,.profile-card:after,.shop-card:after,.pass-card:after,.section-card:after,.brand-mark,.online-dot,.sidebar .nav-item.active,.hero .eyebrow>span,.kh-replica-aircraft,.kh-replica-art-glow{animation:none!important}}
+@media(max-width:720px){body:after{opacity:.3;inset:-5%}.sidebar:after{opacity:.6}}
