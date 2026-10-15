@@ -37,15 +37,14 @@
     return { ...profile, uid: user.uid };
   }
   async function updatePublicProfile(fields) {
-    const { db, user } = requireFirebase();
-    const allowed = {};
-    ['username', 'avatar', 'bio'].forEach(key => {
-      if (Object.prototype.hasOwnProperty.call(fields || {}, key)) {
-        allowed[key] = String(fields[key] ?? '').slice(0, key === 'bio' ? 240 : 64);
-      }
+    const { user } = requireFirebase();
+    const input = fields || {};
+    const callable = window.firebase.app().functions('us-central1').httpsCallable('updateMyProfile');
+    await callable({
+      username: String(input.username ?? user.displayName ?? (user.email || 'player').split('@')[0]).trim(),
+      ...(Object.prototype.hasOwnProperty.call(input, 'bio') ? { bio: String(input.bio ?? '').slice(0, 240) } : {}),
+      ...(Object.prototype.hasOwnProperty.call(input, 'avatar') ? { avatar: String(input.avatar ?? '').slice(0, 64) } : {})
     });
-    allowed.updatedAt = window.firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('users').doc(user.uid).set(allowed, { merge: true });
     return loadProfile();
   }
   window.KHFirebaseProfile = Object.freeze({
