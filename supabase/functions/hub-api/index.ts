@@ -50,6 +50,13 @@ function safeUser(row: any) {
 function validEmail(value: unknown): value is string {
   return typeof value === "string" && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
+function normalizePhone(value: unknown): string {
+  return typeof value === "string" ? value.trim().replace(/[\s().-]/g, "") : "";
+}
+function validPhone(value: unknown): value is string {
+  const phone = normalizePhone(value);
+  return /^\+[1-9]\d{7,14}$/.test(phone);
+}
 function cleanName(value: unknown) {
   return typeof value === "string" ? value.trim().replace(/[<>]/g, "").slice(0, 20) : "";
 }
@@ -502,20 +509,20 @@ Deno.serve(async (req: Request) => {
 
     if (req.method === "POST" && path === "/api/auth/register") {
       const body = await req.json().catch(() => ({}));
-      const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+      const phone = normalizePhone(body.phone);
       const password = typeof body.password === "string" ? body.password : "";
       const username = cleanName(body.username);
-      if (!validEmail(email)) return response({ error: "Введи коректну електронну пошту." }, 400, origin);
+      if (!validPhone(phone)) return response({ error: "Введи номер у міжнародному форматі, наприклад +380501234567." }, 400, origin);
       if (password.length < 8 || password.length > 72) return response({ error: "Пароль має містити від 8 до 72 символів." }, 400, origin);
       if (username.length < 3) return response({ error: "Ігровий нік має містити щонайменше 3 символи." }, 400, origin);
       const auth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
-      const { data, error } = await auth.auth.signUp({ email, password, options: { data: { username }, emailRedirectTo: "https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/" } });
+      const { data, error } = await auth.auth.signUp({ phone, password, options: { data: { username } } });
       if (error) return response({ error: error.message }, 400, origin);
-      if (!data.user) return response({ error: "Supabase не повернув користувача. Перевір налаштування Auth." }, 500, origin);
+      if (!data.user) return response({ error: "Supabase не повернув користувача. Перевір налаштування Phone Auth." }, 500, origin);
       if (!data.session) {
         return response({
           confirmationRequired: true,
-          message: "Акаунт створено. Перевір пошту та підтвердь адресу, після чого увійди.",
+          message: "Акаунт створено, але Supabase вимагає підтвердження номера SMS. Щоб входити без SMS-коду, вимкни Confirm phone у Supabase Auth; або налаштуй SMS-провайдера та підтвердження номера.",
           user: { id: data.user.id, username, coins: 0, points: 0, xp: 0, played: 0, games: {} },
         }, 201, origin);
       }
@@ -537,12 +544,18 @@ Deno.serve(async (req: Request) => {
 
     if (req.method === "POST" && path === "/api/auth/login") {
       const body = await req.json().catch(() => ({}));
-      const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+      const identifier = typeof body.identifier === "string" ? body.identifier.trim() : "";
+      const legacyEmail = typeof body.email === "string" ? body.email.trim() : "";
+      const phone = normalizePhone(body.phone || (identifier && !identifier.includes("@") ? identifier : ""));
+      const email = (identifier.includes("@") ? identifier : legacyEmail).trim().toLowerCase();
       const password = typeof body.password === "string" ? body.password : "";
-      if (!validEmail(email) || !password || password.length > 72) return response({ error: "Перевір електронну пошту й пароль." }, 400, origin);
+      const byPhone = !!phone && validPhone(phone);
+      const byEmail = !!email && validEmail(email);
+      if ((!byPhone && !byEmail) || !password || password.length > 72) return response({ error: "Введи номер у форматі +380501234567 або електронну пошту та пароль." }, 400, origin);
       const auth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
-      const { data, error } = await auth.auth.signInWithPassword({ email, password });
-      if (error || !data.session || !data.user) return response({ error: "Неправильна пошта/пароль або пошта ще не підтверджена." }, 401, origin);
+      const credentials = byPhone ? { phone, password } : { email, password };
+      const { data, error } = await auth.auth.signInWithPassword(credentials);
+      if (error || !data.session || !data.user) return response({ error: "Неправильний номер/пошта або пароль. Якщо ввімкнено підтвердження номера, спочатку підтвердь його." }, 401, origin);
       const profile = await getProfile(data.user.id);
       if (!profile) return response({ error: "Профіль не створився. Перевір SQL-тригер у Supabase." }, 500, origin);
       return response({ token: data.session.access_token, refreshToken: data.session.refresh_token, user: safeUser(await getUserSnapshot(data.user.id)) }, 200, origin);
