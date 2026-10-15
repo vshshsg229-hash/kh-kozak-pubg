@@ -123,13 +123,16 @@
   <div class="panel-head"><h3>ОНЛАЙН-СЕРВЕР</h3><span id="onlineStatusPill" class="live-pill">НЕ ПІДКЛЮЧЕНО</span></div>
   <p class="online-help">Сервер KH么Kozak підключено за замовчуванням. Адреса сервера зафіксована й недоступна для зміни в інтерфейсі. Акаунти, спільнота, приватний чат, ігрові нагороди та рейтинг використовують спільну базу даних.</p>
   <div class="online-auth-fields">
-    <label for="onlineNickname">Ігровий нік для нового акаунта</label>
+    <label for="onlineNickname">Ігровий нік</label>
     <input id="onlineNickname" maxlength="20" placeholder="KH么Kozak" autocomplete="nickname">
-    <label for="onlineEmail">Електронна пошта</label>
-    <input id="onlineEmail" type="email" maxlength="254" placeholder="you@example.com" autocomplete="email">
-    <label for="onlinePassword">Пароль (мінімум 8 символів)</label>
-    <input id="onlinePassword" type="password" minlength="8" maxlength="72" placeholder="Не використовуй пароль від інших сервісів" autocomplete="current-password">
-    <div class="online-auth-actions"><button id="onlineRegister" class="btn btn-yellow" type="button">СТВОРИТИ АКАУНТ</button><button id="onlineLogin" class="btn btn-ghost" type="button">УВІЙТИ</button><button id="onlineLogout" class="btn btn-ghost" type="button" hidden>ВИЙТИ</button></div>
+    <label for="onlinePhone">Номер телефону з кодом країни</label>
+    <input id="onlinePhone" type="tel" inputmode="tel" maxlength="16" placeholder="+380XXXXXXXXX" autocomplete="tel" aria-describedby="phoneAuthHelp">
+    <small id="phoneAuthHelp" class="online-help">Введи номер у міжнародному форматі, наприклад +380501234567. Firebase надішле SMS-код.</small>
+    <div id="recaptcha-container" class="phone-recaptcha"></div>
+    <button id="onlineRegister" class="btn btn-yellow" type="button">НАДІСЛАТИ SMS-КОД</button>
+    <label for="onlineSmsCode">Код із SMS</label>
+    <input id="onlineSmsCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+    <div class="online-auth-actions"><button id="onlineLogin" class="btn btn-ghost" type="button" disabled>ПІДТВЕРДИТИ КОД</button><button id="onlineLogout" class="btn btn-ghost" type="button" hidden>ВИЙТИ</button></div>
   </div>
   <div id="onlineAccountMessage" class="form-message" aria-live="polite">Сервер KH么Kozak Battle Hub підключається автоматично.</div>
   <div class="panel-divider"></div>
