@@ -312,12 +312,17 @@ exports.migrateLegacyProfileByPhone = onCall({
 
   let legacyUser = null;
   for (let page = 1; page <= 100; page++) {
+  let reachedSearchLimit = true;
     const response = await fetch(base + '/auth/v1/admin/users?page=' + page + '&per_page=1000', { headers });
     if (!response.ok) throw new HttpsError('unavailable', 'Не вдалося перевірити старий акаунт. Прогрес не змінено.');
     const payload = await response.json();
     const users = Array.isArray(payload) ? payload : (payload.users || []);
     legacyUser = users.find(user => String(user.phone || '') === phone) || null;
+    if (users.length < 1000) reachedSearchLimit = false;
     if (legacyUser || users.length < 1000) break;
+  }
+  if (!legacyUser?.id && reachedSearchLimit) {
+    throw new HttpsError('resource-exhausted', 'Забагато старих акаунтів для автоматичного пошуку. Прогрес не змінено; потрібна ручна міграція.');
   }
   if (!legacyUser?.id) return { migrated: false, alreadyExists: false };
 
