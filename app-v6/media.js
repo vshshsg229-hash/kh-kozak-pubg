@@ -7,7 +7,8 @@ function playYouTube(raw){
  const host=u.hostname.toLowerCase();
  const video=host==='youtu.be'?u.pathname.split('/').filter(Boolean)[0]:(u.searchParams.get('v')||u.pathname.match(/\/(?:shorts|embed|live|v)\/([^/?]+)/)?.[1]||'');
  const list=u.searchParams.get('list')||'';
- if(video&&!/^[A-Za-z0-9_-]{6,}$/.test(video)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося розпізнати ID відео YouTube. Встав повне посилання.';return false}\n if(!video&&!list){if(youtubeMessage)youtubeMessage.textContent='У посиланні не знайдено відео або плейлист.';return false}
+ if(video&&!/^[A-Za-z0-9_-]{6,}$/.test(video)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося розпізнати ID відео YouTube. Встав повне посилання.';return false}
+ if(!video&&!list){if(youtubeMessage)youtubeMessage.textContent='У посиланні не знайдено відео або плейлист.';return false}
  const params=new URLSearchParams();params.set('playsinline','1');params.set('rel','0');params.set('autoplay','1');params.set('controls','1');if(list)params.set('list',list);
  const src=video?'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(video)+'?'+params.toString():'https://www.youtube-nocookie.com/embed/videoseries?'+params.toString();
  if(youtubeWrap)youtubeWrap.innerHTML='<iframe title="YouTube music player" src="'+src+'" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>';
