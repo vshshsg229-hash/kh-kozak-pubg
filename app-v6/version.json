@@ -4,5 +4,5 @@
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.14: integrated Supabase daily rewards into online profile, fixed server-backed purchases/equipment for fighter helmet and backpack, strengthened cache/update wiring, and preserved approved navigation."
+  "releaseNotes": "Battle Hub v16.14: Supabase-backed daily drop for online accounts, expanded KH Squadmate guidance, server-authoritative fighter shop/equipment including helmet, vest and backpack slots, level-gated unlocks, and refreshed PWA caching. Approved navigation is unchanged."
 }
