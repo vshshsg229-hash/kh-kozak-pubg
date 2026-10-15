@@ -1,10 +1,10 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const API_BASE=(()=>{const meta=document.querySelector('meta[name="kh-api-base"]')?.content;return String(window.KH_API_BASE||meta||'').trim().replace(/\/$/,'')})();
+const API_BASE=(()=>{const meta=document.querySelector('meta[name="kh-api-base"]')?.content;let saved='';try{saved=localStorage.getItem('khkozak_api_base')||''}catch{}return String(window.KH_API_BASE||meta||saved||'https://khkozak-battle-hub-api-uftt.onrender.com').trim().replace(/\/$/,'')})();
 const apiUrl=path=>API_BASE+path;
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const status=message=>{const el=$('#khcFeedStatus');if(el)el.textContent=message};
-function token(){return window.KH_API_TOKEN||window.KH_AUTH?.accessToken||window.KH_AUTH?.session?.access_token||''}
+function token(){let stored='';try{stored=localStorage.getItem('khkozak_online_token_v1')||''}catch{}return window.KH_API_TOKEN||window.KH_AUTH?.accessToken||window.KH_AUTH?.session?.access_token||stored||''}
 function formatDate(value){const d=new Date(value);return Number.isNaN(d.getTime())?'':d.toLocaleDateString('uk-UA',{day:'2-digit',month:'short',year:'numeric'})}
 function render(videos){const grid=$('#khcFeedGrid');if(!grid)return;if(!videos.length){grid.innerHTML='<div class="khc-feed-empty"><span>🎬</span><b>Поки немає опублікованих кліпів</b><small>Нові відео KH么Kozak з’являться тут.</small></div>';return}
 grid.innerHTML=videos.map(v=>{const url=/^https?:\/\//i.test(v.url||'')?v.url:apiUrl(v.url||('/api/creator/videos/'+encodeURIComponent(v.id)+'/file'));const mime=/^video\/(mp4|webm|ogg|quicktime)$/i.test(v.mimeType||'')?v.mimeType:'video/mp4';return '<article class="khc-feed-card"><video controls playsinline preload="metadata" src="'+esc(url)+'" type="'+esc(mime)+'"></video><div class="khc-feed-card-body"><h4>'+esc(v.title||'Відео KH么Kozak')+'</h4>'+(v.caption?'<p>'+esc(v.caption)+'</p>':'')+'<small>'+esc(formatDate(v.createdAt))+(v.fileSize?' · '+(Number(v.fileSize)/1048576).toFixed(1)+' МБ':'')+'</small></div></article>'}).join('')}
