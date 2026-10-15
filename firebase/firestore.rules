@@ -24,7 +24,7 @@ service cloud.firestore {
         && request.resource.data.username is string
         && request.resource.data.username.size() <= 32
         && request.resource.data.usernameLower is string
-        && request.resource.data.usernameLower == request.resource.data.username.lower();
+        && request.resource.data.usernameLower.size() <= 32;
 
       // Until trusted server functions are added, clients can read only their own profile.
       allow read: if ownsUser(uid);
