@@ -648,6 +648,21 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    if (req.method === "POST" && path === "/api/daily/claim") {
+      const user = await getUser(req);
+      if (!user) return response({ error: "Увійди в онлайн-акаунт, щоб забрати серверну щоденну нагороду." }, 401, origin);
+      const { data: claim, error } = await admin.rpc("hub_claim_telegram_daily", { p_user_id: user.id });
+      if (error) throw error;
+      if (claim?.error === "profile_not_found") return response({ error: "Профіль не знайдено." }, 404, origin);
+      const snapshot = await getUserSnapshot(user.id);
+      if (!snapshot) return response({ error: "Профіль не знайдено." }, 404, origin);
+      return response({
+        alreadyClaimed: claim?.already_claimed === true,
+        reward: claim?.reward ?? { coins: 0, points: 0, xp: 0 },
+        user: safeUser(snapshot)
+      }, 200, origin);
+    }
+
     if (req.method === "GET" && path === "/api/leaderboard") {
       const limit = Math.max(1, Math.min(20, Number.parseInt(new URL(req.url).searchParams.get("limit") ?? "10", 10) || 10));
       const { data, error } = await admin.from("hub_profiles").select("username,points,xp,played")
