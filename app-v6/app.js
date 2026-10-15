@@ -142,6 +142,46 @@ renderOnlineStatus();
 if(getAuthToken()&&apiBase())refreshOnlineAccount();
 if(apiBase())connectOnlineApi();
 
+window.addEventListener('kh-firebase-profile-ready', async event => {
+  const user = event.detail?.user || window.KH_FIREBASE_AUTH?.currentUser;
+  if (!user || !window.KHFirebaseProfile) return;
+  try {
+    const profile = await window.KHFirebaseProfile.load();
+    if (!profile) return;
+    const merged = {
+      id: user.uid,
+      username: profile.username || user.displayName || state.name,
+      coins: profile.coins ?? state.coins,
+      points: profile.points ?? state.points,
+      xp: profile.xp ?? state.xp,
+      played: profile.played ?? state.played,
+      games: profile.games ?? state.games,
+      inventory: profile.inventory ?? state.owned,
+      achievements: profile.achievements ?? state.serverAchievements,
+      equipped_title: profile.equipped_title ?? state.equippedTitle,
+      equipped_frame: profile.equipped_frame ?? state.equippedFrame,
+      equipped_avatar: profile.equipped_avatar ?? state.equippedAvatar,
+      equipped_theme: profile.equipped_theme ?? state.equippedTheme,
+      equipped_badge: profile.equipped_badge ?? state.equippedBadge,
+      equipped_banner: profile.equipped_banner ?? state.equippedBanner,
+      equipped_skin: profile.equipped_skin ?? state.equippedSkin,
+      equipped_weapon_skin: profile.equipped_weapon_skin ?? state.equippedWeaponSkin
+    };
+    applyOnlineUser(merged);
+    window.khOnlineUserId = user.uid;
+    const pill = $('#onlineStatusPill');
+    if (pill) { pill.textContent = 'FIREBASE: АКАУНТ ОНЛАЙН'; pill.classList.add('online-ready'); }
+    setOnlineMessage('Телефон підтверджено. Профіль із Firebase завантажено; локальний прогрес використано для первинного створення профілю.');
+  } catch (error) {
+    setOnlineMessage('Увійшли через Firebase, але профіль не завантажився: ' + (error.message || 'помилка'), true);
+  }
+});
+window.addEventListener('kh-firebase-auth-state', event => {
+  if (!event.detail?.user) {
+    const pill = $('#onlineStatusPill');
+    if (pill) { pill.textContent = 'FIREBASE ГОТОВИЙ'; pill.classList.remove('online-ready'); }
+  }
+});
 function cleanup(){cleanups.forEach(f=>{try{f()}catch(e){}});cleanups=[]}
 function openModal(type){cleanup();modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';message.textContent='';area.innerHTML='';if(type==='reaction')startReaction();if(type==='aim')startAim();if(type==='quiz')startQuiz();if(type==='memory')startMemory();if(type==='loot')startLoot();if(type==='pubg')startPubg();if(type==='arena')startArena();if(type==='classic')startClassic();if(type==='metro')startMetro();if(type==='zombie')startZombie();if(type.startsWith('arcade-'))startArcadeGame(type.slice(7))}
 function closeModal(){cleanup();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
