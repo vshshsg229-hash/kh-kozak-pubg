@@ -41,6 +41,9 @@ jobs:
       - name: Check Battle World 2.0 JavaScript syntax
         run: node --check app-v6/battle-world.js
 
+      - name: Check TikTok Creator Studio JavaScript syntax
+        run: node --check app-v6/creator-studio.js
+
       - name: Check PC companion JavaScript syntax
         run: node --check app-v6/pc-companion.js
 
