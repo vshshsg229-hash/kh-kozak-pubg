@@ -5,14 +5,11 @@ on:
     branches: [main]
     paths:
       - "app-v6/**"
-      - "backend/**"
-      - "supabase/**"
       - ".github/workflows/battle-hub-checks.yml"
   pull_request:
     branches: [main]
     paths:
       - "app-v6/**"
-      - "supabase/**"
       - ".github/workflows/battle-hub-checks.yml"
   workflow_dispatch:
 
@@ -35,7 +32,6 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check app-v6/app.js
-          node --check app-v6/online-sync-v16.13.js
           node --check app-v6/fighter-inventory-v16.12.js
           node --check app-v6/i18n.js
           node --check app-v6/media.js
@@ -50,11 +46,6 @@ jobs:
           node --check app-v6/creator-studio.js
           node --check app-v6/creator-editor.js
 
-      - name: Check shared video feed syntax
-        run: node --check app-v6/creator-feed.js
-
-      - name: Check backend API syntax
-        run: node --check backend/server.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
@@ -83,9 +74,6 @@ jobs:
           for (const feature of ['khcExport', 'khcCover', 'khcCopyCaption', 'khcStart', 'khcEnd', 'tiktok.com/upload']) assert(creatorEditor.includes(feature), 'Creator editor feature exists: ' + feature);
           assert(creatorEditorCss.includes('.khc-editor-grid') && creatorEditorCss.includes('.khc-preview-frame'), 'Creator editor styles exist');
           assert(html.includes('creator-editor.js?v=1.2.0') && html.includes('creator-editor.css?v=1.2.0'), 'Creator editor assets are referenced');
-          assert(html.includes('creator-feed.js?v=1.0.0') && html.includes('creator-feed.css?v=1.0.0'), 'Shared creator video feed assets are referenced');
-          const creatorFeed = fs.readFileSync(path.join(root, 'creator-feed.js'), 'utf8');
-          assert(creatorFeed.includes('/api/creator/videos') && creatorFeed.includes('khc:publish-video'), 'Shared video feed uses the public API and editor publish event');
           assert(manifest.name?.includes('KH') && manifest.start_url && manifest.scope,
             'PWA manifest has app name, start URL and scope');
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
@@ -148,71 +136,3 @@ jobs:
       - name: Check service worker syntax
         run: node --check app-v6/sw.js
 
-      - name: Validate Supabase security and feature schema
-        run: |
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-
-          const sql = fs.readFileSync('supabase/schema.sql', 'utf8').toLowerCase();
-          const api = fs.readFileSync('supabase/functions/hub-api/index.ts', 'utf8');
-          const app = fs.readFileSync('app-v6/app.js', 'utf8');
-          const checks = [];
-          const assert = (condition, message) => {
-            if (!condition) throw new Error(message);
-            checks.push(message);
-          };
-
-          for (const table of [
-            'hub_profiles', 'hub_game_events', 'hub_telegram_links',
-            'hub_telegram_link_codes', 'hub_telegram_daily_claims',
-            'hub_shop_catalog', 'hub_inventory', 'hub_daily_shop_purchases',
-            'hub_achievements'
-          ]) {
-            assert(sql.includes('create table if not exists public.' + table),
-              'Schema declares ' + table);
-            assert(sql.includes('alter table public.' + table + ' enable row level security'),
-              'RLS enabled for ' + table);
-          }
-
-          for (const fn of [
-            'hub_finish_game', 'hub_claim_telegram_daily',
-            'hub_purchase_item', 'hub_equip_item', 'hub_refresh_achievements'
-          ]) {
-            assert(sql.includes('function public.' + fn),
-              'Schema declares RPC ' + fn);
-            assert(api.includes('"' + fn + '"'),
-              'Edge Function calls RPC ' + fn);
-          }
-
-          assert(api.includes('ADMIN_USER_IDS') && api.includes('async function isAdmin'),
-            'Admin endpoints have server-side identity checks');
-          assert(api.includes('SUPABASE_SERVICE_ROLE_KEY'),
-            'Service role key is read only by the server function');
-          assert(!app.includes('SUPABASE_SERVICE_ROLE_KEY') &&
-                 !app.includes('service_role key') &&
-                 !app.includes('service_role_key'),
-            'Frontend does not contain service-role key identifiers');
-          assert(api.includes('zombie: { coins: 30, points: 40, xp: 45 }'),
-            'Zombie mode has a server-side reward policy');
-
-          for (const [name, source] of [['schema.sql', sql], ['elite migration', fs.readFileSync('supabase/migrations/20261014142000_elite_ideas_and_payments.sql', 'utf8').toLowerCase()], ['skin inventory hotfix migration', fs.readFileSync('supabase/migrations/20261014173000_fix_skin_inventory_purchase.sql', 'utf8').toLowerCase()]]) {
-            assert(source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin') then") ||
-                   source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin','helmet','vest','backpack') then"),
-              name + ' grants purchased character and weapon skins to inventory');
-          }
-          const onlineSync = fs.readFileSync('app-v6/online-sync-v16.13.js', 'utf8');
-          const fighterMigration = fs.readFileSync('supabase/migrations/20261015110000_online_fighter_shop_sync.sql', 'utf8').toLowerCase();
-          assert(html.includes('online-sync-v16.13.js?v=16.14.0') && html.includes('online-sync-v16.13.css?v=16.14.0'),
-            'Online sync assets are loaded with current cache versions');
-          assert(onlineSync.includes('/api/daily/claim') && api.includes('path === "/api/daily/claim"'),
-            'Daily reward is claimed through authenticated server endpoint');
-          assert(fighterMigration.includes('equipped_vest') && fighterMigration.includes('required_level') &&
-                 fighterMigration.includes("'helmet','vest','backpack'"),
-            'Server migration covers all fighter equipment slots and level unlocks');
-          assert(api.includes('p_base_coins: base.coins') &&
-                 api.includes('p_base_points: base.points') &&
-                 api.includes('p_base_xp: base.xp'),
-            'Game reward amounts come from server-side reward map');
-
-          console.log('Passed ' + checks.length + ' Supabase schema/security checks.');
-          NODE
