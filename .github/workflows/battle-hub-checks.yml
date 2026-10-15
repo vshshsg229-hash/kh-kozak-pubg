@@ -44,6 +44,7 @@ jobs:
           node --check app-v6/character-lobby.js
           node --check app-v6/app-update.js
           node --check app-v6/battle-world.js
+          node --check app-v6/creator-studio.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
