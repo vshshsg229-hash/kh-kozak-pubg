@@ -45,6 +45,7 @@ jobs:
           node --check app-v6/app-update.js
           node --check app-v6/battle-world.js
           node --check app-v6/creator-studio.js
+          node --check app-v6/creator-editor.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
@@ -68,6 +69,11 @@ jobs:
             assert(fighter.includes(feature), 'Fighter 2.0 includes ' + feature);
           }
           assert(fighterCss.includes('.kh-role-picker') && fighterCss.includes('.kh-scene-night') && fighterCss.includes('.kh-daily-fighter'), 'Fighter 2.0 styles are present');
+          const creatorEditor = fs.readFileSync(path.join(root, 'creator-editor.js'), 'utf8');
+          const creatorEditorCss = fs.readFileSync(path.join(root, 'creator-editor.css'), 'utf8');
+          for (const feature of ['khcExport', 'khcCover', 'khcCopyCaption', 'khcStart', 'khcEnd', 'tiktok.com/upload']) assert(creatorEditor.includes(feature), 'Creator editor feature exists: ' + feature);
+          assert(creatorEditorCss.includes('.khc-grid') && creatorEditorCss.includes('.khc-frame'), 'Creator editor styles exist');
+          assert(html.includes('creator-editor.js?v=1.0.0') && html.includes('creator-editor.css?v=1.0.0'), 'Creator editor assets are referenced');
           assert(manifest.name?.includes('KH') && manifest.start_url && manifest.scope,
             'PWA manifest has app name, start URL and scope');
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
