@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.18.2",
+  "version": "16.19.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.18.2: removed the floating Tactical Lab quick-access button as requested. Tactical Lab remains available inside the Arsenal tab. Existing navigation and progress preserved."
+  "releaseNotes": "Battle Hub v16.19.0: added KH Web and Workspace section with search/address bar, website launcher, custom links, notes, to-do list, calculator, timer, stopwatch, translator shortcuts, YouTube player, daily clock, AI service links, password generator, and theme toggle. Existing game features, account flow and navigation preserved."
 }
