@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.19.0",
+  "version": "16.20.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.19.0: added KH Web and Workspace section with search/address bar, website launcher, custom links, notes, to-do list, calculator, timer, stopwatch, translator shortcuts, YouTube player, daily clock, AI service links, password generator, and theme toggle. Existing game features, account flow and navigation preserved."
+  "releaseNotes": "v16.20.0: reorganized KH Digital Space into separate Internet, KH Persona, KH App Center, KH Media and KH Workspace pages. Added editable personal identity card; retained browser search, site launcher, media player and productivity tools. Existing core navigation and game features preserved."
 }
