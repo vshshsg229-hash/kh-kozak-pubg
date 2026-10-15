@@ -196,7 +196,8 @@ jobs:
             'Zombie mode has a server-side reward policy');
 
           for (const [name, source] of [['schema.sql', sql], ['elite migration', fs.readFileSync('supabase/migrations/20261014142000_elite_ideas_and_payments.sql', 'utf8').toLowerCase()], ['skin inventory hotfix migration', fs.readFileSync('supabase/migrations/20261014173000_fix_skin_inventory_purchase.sql', 'utf8').toLowerCase()]]) {
-            assert(source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin') then"),
+            assert(source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin') then") ||
+                   source.includes("elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponskin','helmet','vest','backpack') then"),
               name + ' grants purchased character and weapon skins to inventory');
           }
           const onlineSync = fs.readFileSync('app-v6/online-sync-v16.13.js', 'utf8');
