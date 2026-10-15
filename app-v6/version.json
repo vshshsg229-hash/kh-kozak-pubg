@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.14.0",
+  "version": "16.15.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.14: Supabase-backed daily drop for online accounts, expanded KH Squadmate guidance, server-authoritative fighter shop/equipment including helmet, vest and backpack slots, level-gated unlocks, and refreshed PWA caching. Approved navigation is unchanged."
+  "releaseNotes": "Battle Hub v16.15: removed online accounts, server sync, server-backed rewards and shared server video uploads. Coins, XP, daily rewards, inventory and cosmetics run locally. Approved navigation is unchanged."
 }
