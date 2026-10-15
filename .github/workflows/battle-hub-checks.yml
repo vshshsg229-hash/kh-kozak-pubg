@@ -35,6 +35,10 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check app-v6/app.js
+          node --check app-v6/firebase-init.js
+          node --check app-v6/firebase-profile.js
+          node --check app-v6/firebase-auth.js
+          node --check functions/index.js
           node --check app-v6/i18n.js
           node --check app-v6/media.js
           node --check app-v6/arcade-100.js
