@@ -111,6 +111,13 @@ jobs:
           }
 
           const gameEngine = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+          const fighterInventory = fs.readFileSync(path.join(root, 'fighter-inventory-v16.12.js'), 'utf8');
+          assert(!html.includes('online-sync') && !html.includes('creator-feed.js'),
+            'No online account or server-upload scripts are loaded');
+          assert(!gameEngine.includes('khOnlineSync') && !gameEngine.includes('applyRemoteUser'),
+            'Coins, XP, daily rewards and game progress stay local-only');
+          assert(!fighterInventory.includes('khOnlineSync') && !fighterInventory.includes('khkozak-online-user'),
+            'Fighter inventory and shop stay local-only');
           assert(gameEngine.includes('function startZombie()'), 'Zombie survival mode is implemented');
           assert(gameEngine.includes('if(zombie&&enemies.every(e=>e.hp<=0))'), 'Zombie mode advances through waves');
           assert(html.includes('mode-shortcuts') && html.includes('data-game="zombie"'), 'Featured modes are easy to find');
@@ -126,7 +133,7 @@ jobs:
           for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
           assert(html.includes('games-3d.js?v=1.3.1'), 'HTML loads current 3D engine version with ammo update');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
-          // Battle Evolution is intentionally not loaded in the current server-light UI.
+          // Battle Evolution is intentionally not loaded in the current approved UI.
           const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
           for (const feature of ['data-bunker-upgrade', 'bunkerScavenge', 'bunkerClaim', 'bunkerTrophyGrid']) assert(bunker.includes(feature), 'Bunker feature exists: ' + feature);
 
