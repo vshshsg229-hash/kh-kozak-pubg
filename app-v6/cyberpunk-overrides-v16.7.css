@@ -1,0 +1,73 @@
+/* KH么Kozak Battle Hub 16.7 — HIGH-VISIBILITY CYBERPUNK OVERRIDE
+   Styling only. Preserve the approved navigation/menu markup and behavior. */
+:root{
+ color-scheme:dark!important;
+ --cyber-cyan:#00f6ff;--cyber-pink:#ff2ed1;--cyber-purple:#8b5cff;
+ --bg:#040610;--panel:#0b1020;--panel2:#11152b;--line:#23445e;
+ --text:#effcff;--muted:#9bb1ca;--yellow:#00f6ff;--accent:#00f6ff;
+}
+html,body{min-height:100%;background:#040610!important;color:#effcff!important}
+body{
+ background:
+  radial-gradient(ellipse at 8% 10%,rgba(0,246,255,.24),transparent 34%),
+  radial-gradient(ellipse at 92% 18%,rgba(255,46,209,.22),transparent 32%),
+  radial-gradient(ellipse at 50% 100%,rgba(91,54,255,.22),transparent 45%),
+  repeating-linear-gradient(0deg,rgba(0,246,255,.035) 0 1px,transparent 1px 34px),
+  repeating-linear-gradient(90deg,rgba(255,46,209,.025) 0 1px,transparent 1px 34px),
+  linear-gradient(135deg,#03050d,#091426 52%,#10071b)!important;
+ background-attachment:fixed!important;
+}
+body:before{content:"";position:fixed!important;inset:0!important;z-index:0!important;pointer-events:none!important;
+ background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.42) 100%),linear-gradient(115deg,transparent 0 47%,rgba(0,246,255,.045) 48%,transparent 49% 70%,rgba(255,46,209,.04) 71%,transparent 72%)!important}
+.app-shell{position:relative!important;z-index:1!important;background:transparent!important}
+.main{background:transparent!important}
+.sidebar,.mobile-nav{
+ background:linear-gradient(180deg,rgba(5,13,28,.98),rgba(12,6,25,.98))!important;
+ border-color:rgba(0,246,255,.52)!important;
+ box-shadow:0 0 28px rgba(0,246,255,.13),8px 0 32px rgba(0,0,0,.42)!important;
+}
+.brand{border-color:rgba(0,246,255,.35)!important}
+.brand-mark{background:linear-gradient(135deg,#00f6ff,#ff2ed1)!important;color:#030711!important;box-shadow:0 0 26px rgba(0,246,255,.55)!important}
+.brand b,.mobile-brand{color:#f4feff!important;text-shadow:0 0 16px rgba(0,246,255,.25)!important}
+.brand small i,.season b,.currency .coin{color:#00f6ff!important}
+.nav-group-title{color:#ff65df!important;text-shadow:0 0 12px rgba(255,46,209,.25)!important}
+.sidebar .nav-item{border:1px solid transparent!important;transition:background .2s,border-color .2s,box-shadow .2s!important}
+.sidebar .nav-item:hover,.sidebar .nav-item.active{
+ color:#f4feff!important;background:linear-gradient(100deg,rgba(0,246,255,.19),rgba(139,92,255,.12),rgba(255,46,209,.12))!important;
+ border-color:rgba(0,246,255,.42)!important;
+ box-shadow:inset 3px 0 #00f6ff,0 0 18px rgba(0,246,255,.12)!important;
+}
+.sidebar .nav-item.active>span:first-child,.sidebar .nav-item.active .nav-label{color:#a8fbff!important}
+.topbar{border-bottom-color:rgba(0,246,255,.38)!important;box-shadow:0 8px 24px rgba(0,246,255,.04)!important}
+.hero,.kh-home-replica,.kh-replica-hero,.kh-replica-right article,.page-heading,.section-heading,.panel,.card,.stat-card,.game-card,.mission-card,.reward-card,.event-card,.arsenal-card,.tactical-hq-card,.creator-card,.profile-card,.shop-card,.pass-card,.section-card,.modal-content,.game-modal{
+ color:#effcff!important;
+ background:linear-gradient(145deg,rgba(12,23,43,.96),rgba(11,7,25,.97))!important;
+ border:1px solid rgba(0,246,255,.35)!important;
+ box-shadow:0 12px 34px rgba(0,0,0,.38),0 0 22px rgba(0,246,255,.07),inset 0 1px rgba(255,255,255,.045)!important;
+}
+.hero{background:linear-gradient(120deg,rgba(4,10,23,.98),rgba(16,9,34,.95))!important}
+.hero:before{background:linear-gradient(90deg,rgba(4,10,23,.95),rgba(7,12,28,.72) 48%,rgba(255,46,209,.16)),repeating-linear-gradient(0deg,rgba(0,246,255,.055) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(0,246,255,.045) 0 1px,transparent 1px 28px)!important}
+.hero-grid{background-image:linear-gradient(rgba(0,246,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(255,46,209,.09) 1px,transparent 1px)!important;background-size:28px 28px!important;opacity:.8!important}
+.kh-replica-art,.hero-art{background:radial-gradient(ellipse at 50% 30%,rgba(255,46,209,.3),transparent 35%),linear-gradient(145deg,#111b36,#080813 70%,#071d2a)!important}
+.kh-replica-art-glow,.sun{background:radial-gradient(circle,rgba(0,246,255,.5),rgba(255,46,209,.2) 45%,transparent 72%)!important;box-shadow:0 0 70px rgba(0,246,255,.26)!important}
+h1,h2,h3,h4,.section-title,.section-heading h2,.kh-replica-profile h2{
+ color:#f5fdff!important;text-shadow:0 0 18px rgba(0,246,255,.28),2px 0 rgba(255,46,209,.18)!important}
+.hero h1 strong,.eyebrow,.page-heading:after,.footer b{color:#00f6ff!important}
+.btn,.button,.action-btn,.primary-btn,button:not(.nav-item):not(.mobile-nav button):not(.modal-close),input[type=button],input[type=submit]{
+ border-color:rgba(0,246,255,.5)!important}
+.btn-yellow,.button-primary,button.primary,.btn-primary,.primary-btn,.action-btn.primary{
+ color:#f5ffff!important;background:linear-gradient(105deg,rgba(0,246,255,.25),rgba(139,92,255,.3),rgba(255,46,209,.2))!important;
+ border:1px solid rgba(0,246,255,.7)!important;box-shadow:0 0 20px rgba(0,246,255,.13)!important}
+button:hover,.btn:hover,.button:hover,.action-btn:hover{border-color:#ff2ed1!important;box-shadow:0 0 22px rgba(255,46,209,.18)!important}
+input,select,textarea{background:rgba(3,8,20,.94)!important;color:#f1fcff!important;border-color:rgba(0,246,255,.4)!important}
+a{color:#8dfaff}
+.mobile-nav{border-top:1px solid rgba(0,246,255,.6)!important;backdrop-filter:blur(18px)!important}
+.mobile-nav button.active{color:#b6fbff!important;background:linear-gradient(180deg,rgba(0,246,255,.2),rgba(255,46,209,.13))!important;box-shadow:inset 0 2px #00f6ff,0 0 18px rgba(0,246,255,.15)!important}
+.mobile-nav button.active span{color:#00f6ff!important}
+.pubg-quick-link,.pubg-home-download{border-color:rgba(0,246,255,.55)!important;background:linear-gradient(110deg,rgba(0,246,255,.12),rgba(139,92,255,.12),rgba(255,46,209,.1))!important;box-shadow:0 0 18px rgba(0,246,255,.07)!important}
+@media(max-width:720px){
+ body{background-attachment:scroll!important}
+ body:before{opacity:.7!important}
+ .sidebar{box-shadow:0 0 34px rgba(0,246,255,.18)!important}
+ .kh-replica-hero,.kh-replica-right article,.panel,.card,.game-card,.mission-card,.event-card,.section-card{border-color:rgba(0,246,255,.32)!important}
+}
