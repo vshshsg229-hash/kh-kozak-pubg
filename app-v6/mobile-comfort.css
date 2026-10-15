@@ -264,3 +264,69 @@
   }
   .kh-replica-actions button { min-height: 68px !important; height: 68px !important; }
 }
+
+
+/* 9.8.0 — compact K/D stats and phone-friendly quick panels */
+@media (max-width: 620px) {
+  .kh-replica-stats {
+    top: 120px !important; left: 12px !important; right: 12px !important;
+    width: auto !important; padding: 5px 4px !important;
+    gap: 1px !important; border-radius: 9px !important;
+    background: #060b14d9 !important;
+  }
+  .kh-replica-stats > div { gap: 1px !important; }
+  .kh-replica-stats span { font-size: 12px !important; }
+  .kh-replica-stats small { font-size: 7px !important; line-height: 1.1 !important; }
+  .kh-replica-stats b { font-size: 10px !important; line-height: 1.1 !important; }
+  .pubg-quick-links {
+    display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 7px !important; margin: 10px 0 !important; width: 100% !important;
+  }
+  .pubg-quick-link {
+    min-width: 0 !important; min-height: 58px !important; height: auto !important;
+    box-sizing: border-box !important; padding: 9px 10px !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; justify-content: center !important;
+    gap: 4px !important; border-radius: 10px !important;
+  }
+  .pubg-quick-link span { min-width: 0 !important; font-size: 11px !important; line-height: 1.2 !important; }
+  .pubg-quick-link span small { display: block !important; font-size: 8px !important; margin-top: 3px !important; }
+  .pubg-quick-link > b { font-size: 9px !important; white-space: normal !important; }
+  .quick-links {
+    display: grid !important; grid-template-columns: minmax(0,1fr) !important;
+    gap: 7px !important; margin-top: 10px !important;
+  }
+  .quick-link {
+    min-width: 0 !important; width: 100% !important; min-height: 56px !important;
+    box-sizing: border-box !important; padding: 9px 11px !important;
+    display: flex !important; gap: 10px !important; align-items: center !important;
+    text-align: left !important; border-radius: 10px !important;
+  }
+  .quick-link > b { flex: 0 0 30px !important; width: 30px !important; font-size: 19px !important; }
+  .quick-link span { min-width: 0 !important; flex: 1 1 auto !important; }
+  .quick-link strong { display: block !important; font-size: 11px !important; line-height: 1.25 !important; }
+  .quick-link small { display: block !important; font-size: 9px !important; line-height: 1.25 !important; white-space: normal !important; }
+  .quick-link i { flex: 0 0 auto !important; }
+  .mobile-nav {
+    gap: 4px !important; padding: 5px 7px max(5px,env(safe-area-inset-bottom)) !important;
+    scroll-snap-type: x proximity !important;
+  }
+  .mobile-nav button {
+    flex: 0 0 61px !important; min-width: 61px !important;
+    min-height: 48px !important; height: auto !important;
+    padding: 5px 3px !important; border-radius: 9px !important;
+    font-size: 9px !important; line-height: 1.15 !important;
+    scroll-snap-align: center !important; white-space: normal !important;
+  }
+  .mobile-nav button span { display: block !important; font-size: 18px !important; line-height: 1.15 !important; margin-bottom: 2px !important; }
+}
+@media (max-width: 390px) {
+  .kh-replica-stats { left: 15px !important; right: 15px !important; padding: 4px 3px !important; }
+  .kh-replica-stats span { font-size: 11px !important; }
+  .kh-replica-stats small { font-size: 6.5px !important; }
+  .kh-replica-stats b { font-size: 9px !important; }
+  .pubg-quick-links { gap: 5px !important; }
+  .pubg-quick-link { padding: 8px !important; }
+  .pubg-quick-link span { font-size: 10px !important; }
+  .mobile-nav button { flex-basis: 58px !important; min-width: 58px !important; font-size: 8px !important; }
+}
