@@ -104,3 +104,104 @@
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+
+/* 9.7.1 — phone-friendly home character stage */
+@media (max-width: 620px) {
+  .kh-replica-hero {
+    min-height: 650px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    isolation: isolate;
+  }
+  .kh-replica-profile {
+    top: 12px !important; left: 10px !important; right: 10px !important;
+    max-width: none !important; gap: 9px !important;
+  }
+  .kh-replica-profile h2 { white-space: normal !important; overflow-wrap: anywhere; }
+  .kh-replica-profile p, .kh-replica-profile small { line-height: 1.4 !important; }
+  .kh-replica-edit {
+    min-width: 42px !important; min-height: 42px !important;
+    display: grid !important; place-items: center !important;
+    border: 1px solid #d8e0f044 !important; border-radius: 10px !important;
+    background: #080d17c9 !important;
+  }
+  .kh-replica-social {
+    top: 78px !important; left: 12px !important;
+    display: flex !important; flex-wrap: wrap !important; gap: 8px 14px !important;
+    max-width: calc(100% - 24px) !important;
+  }
+  .kh-replica-social a {
+    min-height: 30px !important; gap: 6px !important; font-size: 11px !important;
+    overflow-wrap: anywhere;
+  }
+  .kh-replica-stats {
+    top: 116px !important; left: 9px !important; right: 9px !important;
+    width: auto !important; box-sizing: border-box !important;
+    padding: 8px 5px !important; gap: 3px !important;
+    grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+    border-radius: 11px !important; background: #060b14df !important;
+  }
+  .kh-replica-stats > div {
+    min-width: 0 !important; display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important;
+    gap: 2px !important; text-align: center !important;
+  }
+  .kh-replica-stats span { font-size: 15px !important; line-height: 1.1 !important; }
+  .kh-replica-stats small { font-size: 8px !important; line-height: 1.2 !important; overflow-wrap: anywhere; }
+  .kh-replica-stats b { font-size: 12px !important; line-height: 1.2 !important; overflow-wrap: anywhere; }
+  #khReplicaFighterSlot .kh-real-soldier {
+    left: 56% !important; top: 23% !important; height: 62% !important;
+    width: auto !important; max-width: 100% !important; max-height: 430px !important;
+    object-fit: contain !important; object-position: center bottom !important;
+    transform: translateX(-50%) !important;
+    touch-action: pan-y !important;
+  }
+  .kh-replica-signature {
+    right: 5% !important; bottom: 25% !important;
+    max-width: 42% !important; font-size: clamp(17px,5vw,23px) !important;
+    letter-spacing: 1px !important; overflow-wrap: anywhere;
+  }
+  .kh-replica-signature small { font-size: 11px !important; }
+  .kh-character-nameplate {
+    bottom: 91px !important; max-width: calc(100% - 76px) !important;
+    white-space: normal !important; padding: 7px 11px !important;
+    border: 1px solid #e9bf4d55 !important; border-radius: 10px !important;
+  }
+  .kh-rotate-controls {
+    top: 56% !important; right: 8px !important; bottom: auto !important;
+    display: flex !important; flex-direction: column !important; gap: 7px !important;
+  }
+  .kh-rotate-controls button {
+    width: 42px !important; height: 42px !important; min-width: 42px !important;
+    min-height: 42px !important; border-radius: 11px !important;
+    font-size: 21px !important; padding: 0 !important;
+    box-shadow: 0 4px 14px #0008 !important; touch-action: manipulation !important;
+  }
+  .kh-drag-hint {
+    bottom: 76px !important; left: 50% !important; top: auto !important;
+    max-width: calc(100% - 100px) !important; font-size: 8px !important;
+    text-align: center !important; white-space: normal !important;
+  }
+  .kh-replica-actions {
+    left: 8px !important; right: 8px !important; bottom: 8px !important;
+    grid-template-columns: repeat(4,minmax(0,1fr)) !important; gap: 5px !important;
+  }
+  .kh-replica-actions button {
+    min-width: 0 !important; min-height: 66px !important; height: auto !important;
+    padding: 7px 3px !important; border-radius: 10px !important;
+    font-size: 8px !important; line-height: 1.25 !important;
+  }
+  .kh-replica-actions button > b { font-size: 21px !important; }
+}
+@media (max-width: 390px) {
+  .kh-replica-hero { min-height: 630px !important; }
+  .kh-replica-profile { gap: 7px !important; }
+  .kh-replica-avatar { width: 48px !important; height: 48px !important; font-size: 15px !important; }
+  .kh-replica-profile h2 { font-size: 13px !important; }
+  .kh-replica-social { top: 72px !important; }
+  .kh-replica-stats { top: 110px !important; }
+  #khReplicaFighterSlot .kh-real-soldier { left: 55% !important; top: 25% !important; height: 59% !important; }
+  .kh-replica-actions button { font-size: 7px !important; }
+  .kh-replica-actions button > b { font-size: 19px !important; }
+}
