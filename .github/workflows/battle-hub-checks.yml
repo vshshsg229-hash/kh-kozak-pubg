@@ -47,8 +47,12 @@ jobs:
           node --check app-v6/battle-world.js
           node --check app-v6/creator-studio.js
           node --check app-v6/creator-editor.js
-          node --check app-v6/creator-feed.js
-          node --check backend/server.js
+
+      - name: Check shared video feed syntax
+        run: node --check app-v6/creator-feed.js
+
+      - name: Check backend API syntax
+        run: node --check backend/server.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
