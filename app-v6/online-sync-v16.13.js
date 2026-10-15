@@ -43,7 +43,7 @@ async function signUp(){
 function renderCard(){
  const body=$('#khOnlineAccountBody'),pill=$('#khOnlineStatePill');if(!body||!pill)return;
  const user=lastUser||(()=>{try{return JSON.parse(get(USER)||'null')}catch{return null}})();
- if(token()&&user){pill.textContent='ОНЛАЙН';pill.classList.add('online');body.innerHTML='<div class="kh-online-user"><div class="kh-online-user-avatar">✓</div><div><b>'+escapeText(user.username||'Гравець')+'</b><small>◈ '+(Number(user.coins)||0).toLocaleString('uk-UA')+' монет · ⚡ '+(Number(user.xp)||0)+' XP</small><small>Серверний ID: '+escapeText(String(user.id||'').slice(0,8))+'…</small></div></div><div class="kh-online-actions"><button type="button" id="khOnlineSyncNow">СИНХРОНІЗУВАТИ ЗАРАЗ</button><button type="button" class="secondary" id="khOnlineLogout">ВИЙТИ З АКАУНТА</button></div><p id="khOnlineAccountStatus" role="status" aria-live="polite">Акаунт підключено. Остання перевірка — після входу.</p>';$('#khOnlineSyncNow').addEventListener('click',()=>sync().catch(e=>setStatus(e.message,true)));$('#khOnlineDailyClaim').addEventListener('click',()=>claimDaily().catch(e=>setStatus(e.message,true)));$('#khOnlineLogout').addEventListener('click',logout);return}
+ if(token()&&user){pill.textContent='ОНЛАЙН';pill.classList.add('online');body.innerHTML='<div class="kh-online-user"><div class="kh-online-user-avatar">✓</div><div><b>'+escapeText(user.username||'Гравець')+'</b><small>◈ '+(Number(user.coins)||0).toLocaleString('uk-UA')+' монет · ⚡ '+(Number(user.xp)||0)+' XP</small><small>Серверний ID: '+escapeText(String(user.id||'').slice(0,8))+'…</small></div></div><div class="kh-online-actions"><button type="button" id="khOnlineSyncNow">СИНХРОНІЗУВАТИ ЗАРАЗ</button><button type="button" class="secondary" id="khOnlineLogout">ВИЙТИ З АКАУНТА</button></div><p id="khOnlineAccountStatus" role="status" aria-live="polite">Акаунт підключено. Остання перевірка — після входу.</p>';$('#khOnlineSyncNow').addEventListener('click',()=>sync().catch(e=>setStatus(e.message,true)));$('#khOnlineLogout').addEventListener('click',logout);return}
  pill.textContent='НЕ ВИКОНАНО ВХІД';pill.classList.remove('online');
 }
 function escapeText(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -57,12 +57,8 @@ function logout(){put(TOKEN,'');put(REFRESH,'');put(USER,'');lastUser=null;windo
 const UUID=()=>{if(crypto?.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})};
 async function claimDaily(){
  if(!token())throw new Error('Спочатку увійди в онлайн-акаунт.');
- const button=$('#khOnlineDailyClaim');if(button)button.disabled=true;
- try{const data=await request('/api/daily/claim',{method:'POST',body:{}});if(data.user)applyUser(data.user);
- if(data.alreadyClaimed){setStatus('Щоденну серверну нагороду вже забрано сьогодні.');if(button)button.textContent='НАГОРОДУ ВЖЕ ЗАБРАНО';}
- else{setStatus('Нагорода отримана на сервері: +25 монет · +20 очок · +20 XP.');if(button)button.textContent='НАГОРОДУ ЗАБРАНО ✓';}
- if(button)button.disabled=!!data.alreadyClaimed;renderCard();return data
- }catch(e){if(button)button.disabled=false;throw e}
+ const data=await request('/api/daily/claim',{method:'POST',body:{}});if(data.user)applyUser(data.user);
+ setStatus(data.alreadyClaimed?'Щоденну серверну нагороду вже забрано сьогодні.':'Нагорода отримана на сервері: +25 монет · +20 очок · +20 XP.');return data
 }
 async function finishGame(kind){
  if(!token())return null;
