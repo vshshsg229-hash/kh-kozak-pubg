@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080d14"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="KH Kozak Hub"><meta name="description" content="KH么Kozak — PUBG Mobile gaming hub">
-<title>KH么Kozak — Battle Hub 16.17 Offline</title>
-<link rel="stylesheet" href="style.css?v=9.5.9-pubg-buttons"><link rel="stylesheet" href="tactical-hq.css?v=9.3.0"><link rel="stylesheet" href="event-center.css?v=1.0.0"><link rel="stylesheet" href="arsenal.css?v=1.0.0"><link rel="stylesheet" href="game-library.css?v=1.1.0"><link rel="stylesheet" href="character-lobby.css?v=1.4.1">
+<title>KH么Kozak — Battle Hub 16.18 Offline</title>
+<link rel="stylesheet" href="style.css?v=9.5.9-pubg-buttons"><link rel="stylesheet" href="tactical-hq.css?v=9.3.0"><link rel="stylesheet" href="event-center.css?v=1.0.0"><link rel="stylesheet" href="arsenal.css?v=1.0.0"><link rel="stylesheet" href="tactical-lab-v16.18.css?v=16.18.0"><link rel="stylesheet" href="game-library.css?v=1.1.0"><link rel="stylesheet" href="character-lobby.css?v=1.4.1">
 <link rel="stylesheet" href="desktop-neon.css?v=1.1.0"><link rel="stylesheet" href="home-replica.css?v=1.0.3"><link rel="stylesheet" href="fighter-upgrade.css?v=1.0.0">
 <link rel="stylesheet" href="pc-companion.css?v=1.2.0"><link rel="stylesheet" href="global-refresh.css?v=9.0.1"><link rel="stylesheet" href="app-update.css?v=13.9.2"><link rel="stylesheet" href="interface-refresh.css?v=13.9.2"><link rel="stylesheet" href="battle-world.css?v=1.0.1"><link rel="stylesheet" href="creator-studio.css?v=1.1.0">
 
@@ -18,7 +18,7 @@
 <div class="app-shell">
   <aside class="sidebar">
     <div class="mobile-menu-heading"><div><strong>УСІ РОЗДІЛИ</strong><small>Обери, куди перейти</small></div><button type="button" id="mobileSidebarClose" aria-label="Закрити меню" onclick="document.getElementById('mobileMenuToggle')?.click()">×</button></div>
-    <a class="brand" href="#home" data-tab-link="home"><span class="brand-mark">K</span><span><b>KH么KOZAK</b><small>BATTLE HUB <i>16.17</i></small></span></a>
+    <a class="brand" href="#home" data-tab-link="home"><span class="brand-mark">K</span><span><b>KH么KOZAK</b><small>BATTLE HUB <i>16.18</i></small></span></a>
     <nav class="nav" aria-label="Основна навігація">
       <div class="nav-group"><div class="nav-group-title">ГОЛОВНА</div>
         <button class="nav-item active" data-tab="home"><span>⌂</span><span class="nav-label">Головна</span></button>
@@ -224,6 +224,37 @@
       </div>
       <div class="section-heading"><div><div class="eyebrow muted">ТВОЯ БІБЛІОТЕКА</div><h2>Збережені комплекти</h2></div><span class="live-pill" id="arsenalCount">0 КОМПЛЕКТІВ</span></div>
       <div class="arsenal-saved-grid" id="arsenalSaved"><div class="arsenal-empty"><span>🎒</span><b>Поки немає комплектів</b><small>Створи перший комплект у формі вище.</small></div></div>
+      <section class="tl-wrap" id="khTacticalLab" aria-labelledby="tlHeading">
+        <header class="tl-head"><div><div class="tl-kicker">KH么KOZAK · WEAPON WORKBENCH</div><h2 id="tlHeading">TACTICAL LAB <span class="yellow-dot">.</span></h2><p>Збирай обвіси, досліджуй модельний контроль зброї, порівнюй конфігурації та передавай збірки друзям кодом.</p></div><span class="tl-model-tag">OFFLINE · MODEL DATA</span></header>
+        <div class="tl-main">
+          <article class="tl-panel"><h3 class="tl-panel-title">01 / КОНФІГУРАТОР <small>ЗБЕРЕЖЕННЯ НА ПРИСТРОЇ</small></h3>
+            <div class="tl-form">
+              <div class="tl-field"><label for="tlBuildName">Назва збірки</label><input id="tlBuildName" maxlength="48" placeholder="Наприклад: M416 — стабільний спрей"></div>
+              <div class="tl-field"><label for="tlWeapon">ОСНОВНА ЗБРОЯ</label><select id="tlWeapon"><option>M416</option></select></div>
+              <div class="tl-fields">
+                <div class="tl-field"><label for="tlSlotMuzzle">ДУЛО</label><select id="tlSlotMuzzle"></select></div>
+                <div class="tl-field"><label for="tlSlotGrip">РУКІВ’Я</label><select id="tlSlotGrip"></select></div>
+                <div class="tl-field"><label for="tlSlotMag">МАГАЗИН</label><select id="tlSlotMag"></select></div>
+                <div class="tl-field"><label for="tlSlotScope">ПРИЦІЛ</label><select id="tlSlotScope"></select></div>
+                <div class="tl-field"><label for="tlSlotStock">ПРИКЛАД</label><select id="tlSlotStock"></select></div>
+                <div class="tl-field"><label for="tlCompareWeapon">ПОРІВНЯТИ ЗІ ЗБРОЄЮ</label><select id="tlCompareWeapon"><option>AKM</option></select></div>
+              </div>
+              <div class="tl-actions"><button class="tl-button" id="tlSave" type="button">＋ ЗБЕРЕГТИ ЗБІРКУ</button><button class="tl-button secondary" id="tlExport" type="button">КОПІЮВАТИ КОД</button></div>
+              <div class="tl-fields tl-import-row"><div class="tl-field"><label for="tlImportCode">КОД ЗБІРКИ ДРУГА</label><input id="tlImportCode" maxlength="4000" placeholder="KH-TL1-…"></div><div class="tl-field tl-import-action"><label aria-hidden="true">ІМПОРТ</label><button class="tl-button secondary" id="tlImport" type="button">ЗАВАНТАЖИТИ КОД</button></div></div>
+              <p class="tl-status" id="tlStatus" aria-live="polite"></p>
+            </div>
+          </article>
+          <article class="tl-panel"><h3 class="tl-panel-title">02 / АНАЛІЗ ЗБІРКИ <small id="tlWeaponType">МОДЕЛЬНІ ПОКАЗНИКИ</small></h3>
+            <div class="tl-weapon-banner"><div><strong id="tlCompareTitle">M416 / AKM</strong><small>Умовні індекси для порівняння стилів гри</small></div><div class="tl-damage" id="tlDamage">42/100</div></div>
+            <div class="tl-stat-list" id="tlStats"></div>
+          </article>
+        </div>
+        <div class="tl-lower">
+          <article class="tl-recoil-box"><h3 class="tl-panel-title">03 / СПРЕЙ-СИМУЛЯТОР <small>12 ПОСТРІЛІВ</small></h3><div id="tlRecoil"></div><p class="tl-recoil-caption" id="tlRecoilCaption">Модельна траєкторія</p><button class="tl-button secondary" id="tlTest" type="button" style="width:100%">▶ ЗАПУСТИТИ ТЕСТ ВІДДАЧІ</button></article>
+          <article class="tl-recoil-box"><h3 class="tl-panel-title">04 / ПОРІВНЯННЯ <small>АКТИВНА ЗБІРКА VS БАЗА</small></h3><div class="tl-compare" id="tlCompare"></div><p class="tl-recoil-caption">Порівняння використовує модельні індекси, а не вимірювання з PUBG.</p></article>
+        </div>
+        <div class="tl-library"><div class="tl-library-head"><h3>ЗБЕРЕЖЕНІ ЗБІРКИ</h3><small id="tlSavedCount">0 ЗБІРОК</small></div><div class="tl-saved-list" id="tlSaved"><div class="tl-empty">Тут з’являться твої власні конфігурації.</div></div></div>
+      </section>
       <div class="panel arsenal-privacy"><span>ⓘ</span><p>Зберігай комплекти й чеклісти та повертайся до них у будь-який момент.</p></div>
     </section>
     <section class="view" id="tab-tactical">
@@ -233,7 +264,7 @@
       <article class="tactical-hq-card"><div class="panel-head"><h3>👥 СКЛАД ЗАГОНУ</h3><span class="live-pill">SQUAD ROLES</span></div><p class="tactical-hq-muted">Запиши, хто яку роль виконує. Імена збережуться після перезавантаження.</p><div class="tactical-hq-roster"><label class="tactical-hq-role"><b>⚔ Штурмовик</b><input id="tqhAssault" maxlength="40" placeholder="Нік гравця"></label><label class="tactical-hq-role"><b>◎ Снайпер</b><input id="tqhSniper" maxlength="40" placeholder="Нік гравця"></label><label class="tactical-hq-role"><b>✚ Підтримка</b><input id="tqhSupport" maxlength="40" placeholder="Нік гравця"></label><label class="tactical-hq-role"><b>⌖ Розвідник</b><input id="tqhScout" maxlength="40" placeholder="Нік гравця"></label></div><div class="tactical-hq-action-row"><button class="tactical-hq-btn primary" id="tqhRosterSave" type="button">💾 ЗБЕРЕГТИ СКЛАД</button></div><div class="tactical-hq-status" id="tqhRosterStatus" aria-live="polite"></div></article></div>
       <div class="section-heading"><div><div class="eyebrow muted">ЖУРНАЛ ВИХОДІВ</div><h2>Мої останні операції</h2></div><button class="tactical-hq-btn" id="tqhClear" type="button">ОЧИСТИТИ ІСТОРІЮ</button></div><div class="tactical-hq-history" id="tqhHistory"></div><div class="panel arsenal-privacy" style="margin-top:16px"><span>ⓘ</span><p>Важливо: штаб записує твій план і час сесій, але не підключений до матчів PUBG та не може автоматично перевіряти перемоги.</p></div>
     </section>
-    <footer class="footer"><span>© 2026 KH么KOZAK BATTLE HUB</span><span>ЗРОБЛЕНО ДЛЯ ГРАВЦІВ <b>◆</b> · VERSION 16.17</span></footer>
+    <footer class="footer"><span>© 2026 KH么KOZAK BATTLE HUB</span><span>ЗРОБЛЕНО ДЛЯ ГРАВЦІВ <b>◆</b> · VERSION 16.18</span></footer>
   </main>
 </div>
 <div class="mobile-nav" aria-label="Швидка навігація"><button class="active" data-tab="home" title="Головна"><span>⌂</span>Головна</button><button data-tab="games" title="Ігри та режими"><span>▣</span>Ігри</button><button data-tab="pass" title="Royale Pass — сезонні нагороди"><span>⬆</span>Royale Pass</button><button data-tab="music" title="Відкрити музичний плеєр"><span>♫</span>Музика</button><button data-tab="tiktok" title="Відкрити TikTok-відео"><span>♪</span>TikTok</button><button id="mobileDockMore" type="button" aria-label="Відкрити меню всіх розділів"><span>☰</span>Ще</button></div>
@@ -242,6 +273,6 @@
 <div class="toast" id="toast" role="status"></div>
 <div class="desktop-command-backdrop" id="desktopCommandBackdrop" hidden><section class="desktop-command" role="dialog" aria-modal="true" aria-labelledby="desktopCommandTitle"><div class="desktop-command-head"><span class="desktop-command-mark">KH</span><div><strong id="desktopCommandTitle">Швидкий перехід</strong><small>Знайди вкладку без прокручування меню</small></div><kbd>ESC</kbd></div><label class="desktop-command-search"><span>⌕</span><input id="desktopCommandInput" type="search" placeholder="Пошук: ігри, магазин, профіль…" autocomplete="off"><kbd>↵</kbd></label><div class="desktop-command-list" id="desktopCommandList" role="listbox" aria-label="Розділи Battle Hub"></div><div class="desktop-command-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> вибрати</span><span><kbd>ENTER</kbd> відкрити</span><span><kbd>CTRL</kbd> + <kbd>K</kbd> пошук</span></div></section></div>
 <script src="i18n.js?v=8.26.0" defer></script>
-<script src="media.js?v=16.2.0" defer></script><script src="app.js?v=16.16.0" defer></script><script src="bunker.js?v=1.1.0" defer></script><script src="arcade-100.js?v=1.1.0" defer></script><script src="progression-hub.js?v=1.1.0" defer></script><script src="battle-pass-v16.17.js?v=16.17.0" defer></script><script src="games-3d.js?v=1.4.0" defer></script><script src="event-center.js?v=1.0.0" defer></script><script src="arsenal.js?v=1.0.0" defer></script><script src="tactical-hq.js?v=9.3.0" defer></script><script src="game-library.js?v=1.2.0" defer></script><script src="character-lobby.js?v=1.4.3" defer></script><script src="fighter-inventory-v16.12.js?v=16.16.0" defer></script><script src="home-replica.js?v=1.0.3" defer></script><script src="fighter-upgrade.js?v=1.0.0" defer></script><script src="desktop-tools.js?v=1.0.0" defer></script><script src="global-control-center.js?v=9.2.7" defer></script><script>let pwaPrompt;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();pwaPrompt=e;});document.getElementById("installPc")?.addEventListener("click",async()=>{if(pwaPrompt){pwaPrompt.prompt();await pwaPrompt.userChoice;pwaPrompt=null;return}alert("Щоб встановити KH么Kozak на ПК: відкрий цей сайт у Google Chrome або Microsoft Edge, натисни ⋮ у меню браузера та вибери «Установити KH么Kozak / Install app». Якщо такого пункту немає, онови сторінку або скористайся посиланням для ПК.");});document.getElementById("copyPcLink")?.addEventListener("click",async()=>{const url="https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=16.17.0";try{await navigator.clipboard.writeText(url);alert("Посилання для ПК скопійовано! Надішли його на комп’ютер і відкрий у Chrome або Edge.");}catch{prompt("Скопіюй посилання для ПК:",url);}});if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script>
+<script src="media.js?v=16.2.0" defer></script><script src="app.js?v=16.16.0" defer></script><script src="bunker.js?v=1.1.0" defer></script><script src="arcade-100.js?v=1.1.0" defer></script><script src="progression-hub.js?v=1.1.0" defer></script><script src="battle-pass-v16.17.js?v=16.18.0" defer></script><script src="games-3d.js?v=1.4.0" defer></script><script src="event-center.js?v=1.0.0" defer></script><script src="arsenal.js?v=1.0.0" defer></script><script src="tactical-lab-v16.18.js?v=16.18.0" defer></script><script src="tactical-hq.js?v=9.3.0" defer></script><script src="game-library.js?v=1.2.0" defer></script><script src="character-lobby.js?v=1.4.3" defer></script><script src="fighter-inventory-v16.12.js?v=16.16.0" defer></script><script src="home-replica.js?v=1.0.3" defer></script><script src="fighter-upgrade.js?v=1.0.0" defer></script><script src="desktop-tools.js?v=1.0.0" defer></script><script src="global-control-center.js?v=9.2.7" defer></script><script>let pwaPrompt;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();pwaPrompt=e;});document.getElementById("installPc")?.addEventListener("click",async()=>{if(pwaPrompt){pwaPrompt.prompt();await pwaPrompt.userChoice;pwaPrompt=null;return}alert("Щоб встановити KH么Kozak на ПК: відкрий цей сайт у Google Chrome або Microsoft Edge, натисни ⋮ у меню браузера та вибери «Установити KH么Kozak / Install app». Якщо такого пункту немає, онови сторінку або скористайся посиланням для ПК.");});document.getElementById("copyPcLink")?.addEventListener("click",async()=>{const url="https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/?v=16.17.0";try{await navigator.clipboard.writeText(url);alert("Посилання для ПК скопійовано! Надішли його на комп’ютер і відкрий у Chrome або Edge.");}catch{prompt("Скопіюй посилання для ПК:",url);}});if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script>
 <script src="pc-companion.js?v=1.2.0"></script>
-<script src="app-update.js?v=16.17.0" defer></script><script src="battle-world.js?v=1.0.1" defer></script><script src="creator-studio.js?v=1.1.0" defer></script><script src="app-management.js?v=16.17.0" defer></script></body></html>
+<script src="app-update.js?v=16.18.0" defer></script><script src="battle-world.js?v=1.0.1" defer></script><script src="creator-studio.js?v=1.1.0" defer></script><script src="app-management.js?v=16.18.0" defer></script></body></html>
