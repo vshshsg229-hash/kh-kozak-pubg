@@ -40,6 +40,8 @@ jobs:
           cp -R app-v6/. android-wrapper/app/src/main/assets/www/
       - name: Check universal control center JavaScript syntax
         run: node --check app-v6/global-control-center.js
+      - name: Check TikTok video editor JavaScript syntax
+        run: node --check app-v6/creator-editor.js
       - name: Build installable debug APK
         working-directory: android-wrapper
         run: gradle --no-daemon assembleDebug
