@@ -1,0 +1,25 @@
+(()=>{'use strict';
+const PK='khkozak_hub_v6',SK='kh_fighter_inventory_v1';
+const $=s=>document.querySelector(s),profile=()=>{try{return JSON.parse(localStorage.getItem(PK)||'{}')}catch{return {}}},saveProfile=p=>{try{localStorage.setItem(PK,JSON.stringify(p))}catch{}};
+const scope=()=>{let id=String(window.khOnlineUserId||'').trim();if(id)return'user_'+id;return'guest_'+String(profile().name||'KH么Kozak').toLowerCase().replace(/[^a-z0-9а-яіїєґ_-]+/gi,'_').slice(0,40)};
+const read=()=>{try{return JSON.parse(localStorage.getItem(SK+'_'+scope())||'{}')}catch{return {}}},write=b=>{try{localStorage.setItem(SK+'_'+scope(),JSON.stringify(b))}catch{}};
+const items=[
+{id:'skin_recruit',name:'ПОЛЬОВИЙ НОВОБРАНЕЦЬ',slot:'skin',label:'Скін',icon:'🪖',rarity:'Звичайний',level:1,starter:1,key:'equippedSkin',value:'skin_recruit'},
+{id:'weapon_olive',name:'M416 OLIVE TACTICAL',slot:'weapon',label:'Зброя',icon:'🔫',rarity:'Звичайний',level:1,starter:1,key:'equippedWeaponSkin',value:'weapon_olive'},
+{id:'helmet_scout',name:'ШОЛОМ РОЗВІДНИКА',slot:'helmet',label:'Шолом',icon:'⛑️',rarity:'Рідкісний',level:2},
+{id:'skin_urban',name:'URBAN GHOST',slot:'skin',label:'Скін',icon:'🪖',rarity:'Рідкісний',level:2,key:'equippedSkin',value:'skin_urban'},
+{id:'vest_titan',name:'БРОНЕЖИЛЕТ TITAN',slot:'vest',label:'Броня',icon:'🦺',rarity:'Рідкісний',level:3},
+{id:'weapon_ember',name:'M416 EMBER CORE',slot:'weapon',label:'Зброя',icon:'🔫',rarity:'Епічний',level:4,key:'equippedWeaponSkin',value:'weapon_ember'},
+{id:'pack_phantom',name:'РЮКЗАК PHANTOM',slot:'backpack',label:'Рюкзак',icon:'🎒',rarity:'Епічний',level:5},
+{id:'skin_shadow',name:'SHADOW OPS',slot:'skin',label:'Скін',icon:'🥷',rarity:'Епічний',level:6,key:'equippedSkin',value:'skin_shadow'},
+{id:'weapon_ice',name:'M416 CRYO STEEL',slot:'weapon',label:'Зброя',icon:'🔫',rarity:'Легендарний',level:8,key:'equippedWeaponSkin',value:'weapon_ice'},
+{id:'skin_commander',name:'GOLD COMMANDER',slot:'skin',label:'Скін',icon:'👑',rarity:'Легендарний',level:10,key:'equippedSkin',value:'skin_commander'}];
+const lvl=()=>Math.max(1,Math.floor((Number(profile().xp)||0)/100)+1),cls=r=>({'Звичайний':'common','Рідкісний':'rare','Епічний':'epic','Легендарний':'legendary'}[r]||'common');
+function bag(){let b=read();b.owned=Array.isArray(b.owned)?b.owned:[];b.equipped=b.equipped||{};items.filter(i=>i.starter||lvl()>=i.level).forEach(i=>{if(!b.owned.includes(i.id))b.owned.push(i.id)});if(!b.equipped.skin)b.equipped.skin='skin_recruit';if(!b.equipped.weapon)b.equipped.weapon='weapon_olive';write(b);return b}
+function equip(id){let i=items.find(x=>x.id===id),b=bag();if(!i||!b.owned.includes(id))return;b.equipped[i.slot]=id;write(b);if(i.key){let p=profile();p[i.key]=i.value;saveProfile(p)}document.dispatchEvent(new CustomEvent('khkozak-cosmetics-updated',{detail:{source:'fighter-inventory',item:id}}));draw()}
+function draw(){let host=$('#khLobby .kh-loadout-panel');if(!host)return;let box=host.querySelector('#khFighterInventory');if(!box){box=document.createElement('section');box.id='khFighterInventory';box.className='kh-inventory';host.appendChild(box)}let b=bag(),n=lvl(),slots=[['skin','Скін'],['weapon','Зброя'],['helmet','Шолом'],['vest','Броня'],['backpack','Рюкзак']];
+const equipped=slots.map(([s,l])=>{let i=items.find(x=>x.id===b.equipped[s]);return'<span><small>'+l+'</small><b>'+(i?i.icon+' '+i.name:'Не вибрано')+'</b></span>'}).join('');
+box.innerHTML='<header class="kh-inv-head"><div><small>04 / ОСОБИСТИЙ АРСЕНАЛ</small><h3>ІНВЕНТАР БІЙЦЯ</h3><p>Екіпірування, рідкість скінів і нагороди за рівні.</p></div><b class="kh-inv-lvl">LVL '+n+'</b></header><div class="kh-inv-equipped">'+equipped+'</div><div class="kh-inv-reward">✦ <span><b>НАГОРОДИ ЗА РІВЕНЬ</b><small>'+(items.filter(i=>i.level>n&&!i.starter).length)+' предметів попереду · наступний рівень: '+(items.find(i=>i.level>n&&!i.starter)?.level||'усі нагороди відкриті')+'</small></span></div><div class="kh-inv-grid">'+items.map(i=>{let own=b.owned.includes(i.id),active=b.equipped[i.slot]===i.id;return'<article class="kh-inv-item '+cls(i.rarity)+(active?' active':'')+'"><div class="kh-inv-itemtop"><i>'+i.icon+'</i><small>'+i.rarity+'</small></div><label>'+i.label.toUpperCase()+' · LVL '+i.level+'</label><b>'+i.name+'</b><footer>'+(active?'<span>✓ ЕКІПІРОВАНО</span>':own?'<button type="button" data-kh-equip="'+i.id+'">ЕКІПІРУВАТИ</button>':'<span>🔒 ВІДКРИЄТЬСЯ НА '+i.level+' РІВНІ</span>')+'</footer></article>'}).join('')+'</div><p class="kh-inv-note">Рівень зростає з XP профілю. Косметика змінює вигляд, а не бойові характеристики PUBG.</p>';
+box.querySelectorAll('[data-kh-equip]').forEach(x=>x.onclick=()=>equip(x.dataset.khEquip))}
+const mo=new MutationObserver(()=>draw());function start(){mo.observe(document.body,{childList:true,subtree:true});draw()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();document.addEventListener('khkozak-profile-updated',draw);window.addEventListener('storage',e=>{if(e.key===PK||e.key.startsWith(SK+'_'))draw()});
+})();
