@@ -34,10 +34,11 @@
       }
       return { uid: user.uid, ...existing };
     }
+    const initialUsername = String(username || user.displayName || (user.phoneNumber ? 'Player' + user.phoneNumber.slice(-4) : (user.email || 'player').split('@')[0])).slice(0, 32);
     const profile = {
       uid: user.uid,
-      username: String(username || user.displayName || (user.phoneNumber ? 'Player' + user.phoneNumber.slice(-4) : (user.email || 'player').split('@')[0])).slice(0, 32),
-      usernameLower: String(username || user.displayName || (user.email || 'player').split('@')[0]).slice(0, 32).toLowerCase(),
+      username: initialUsername,
+      usernameLower: initialUsername.toLowerCase(),
       email: user.email || null,
       coins: 0, points: 0, xp: 0, played: 0,
       createdAt: window.firebase.firestore.FieldValue.serverTimestamp(),
