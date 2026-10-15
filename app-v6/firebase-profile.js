@@ -19,7 +19,7 @@
     const snap = await ref.get();
     return snap.exists ? { uid: user.uid, ...snap.data() } : null;
   }
-  async function createProfileIfMissing(username, seedState = {}) {
+  async function createProfileIfMissing(username) {
     const { db, user } = requireFirebase();
     const ref = db.collection('users').doc(user.uid);
     const snap = await ref.get();
@@ -39,21 +39,7 @@
       username: String(username || user.displayName || (user.phoneNumber ? 'Player' + user.phoneNumber.slice(-4) : (user.email || 'player').split('@')[0])).slice(0, 32),
       usernameLower: String(username || user.displayName || (user.email || 'player').split('@')[0]).slice(0, 32).toLowerCase(),
       email: user.email || null,
-      coins: Math.max(0, Number(seedState.coins) || 0),
-      points: Math.max(0, Number(seedState.points) || 0),
-      xp: Math.max(0, Number(seedState.xp) || 0),
-      played: Math.max(0, Number(seedState.played) || 0),
-      games: seedState.games && typeof seedState.games === 'object' ? seedState.games : {},
-      inventory: Array.isArray(seedState.owned) ? seedState.owned.slice(0, 500) : [],
-      achievements: Array.isArray(seedState.serverAchievements) ? seedState.serverAchievements.slice(0, 500) : [],
-      equipped_title: String(seedState.equippedTitle || ''),
-      equipped_frame: String(seedState.equippedFrame || ''),
-      equipped_avatar: String(seedState.equippedAvatar || ''),
-      equipped_theme: String(seedState.equippedTheme || ''),
-      equipped_badge: String(seedState.equippedBadge || ''),
-      equipped_banner: String(seedState.equippedBanner || ''),
-      equipped_skin: String(seedState.equippedSkin || 'skin_recruit'),
-      equipped_weapon_skin: String(seedState.equippedWeaponSkin || 'weapon_olive'),
+      coins: 0, points: 0, xp: 0, played: 0,
       createdAt: window.firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
     };
