@@ -148,3 +148,6 @@ html.kh-high-contrast .panel,html.kh-high-contrast .stat-card,html.kh-high-contr
     display:none!important;
   }
 }
+
+/* Quick panel is placed inside the More/sidebar menu, never floating over gameplay */
+.kh-control-launch-slot{display:block;width:100%;padding:0 12px 16px;box-sizing:border-box}.kh-control-launch-slot .kh-control-launch{display:flex!important;position:static!important;inset:auto!important;width:100%!important;max-width:100%!important;margin:10px 0 0!important;justify-content:flex-start!important;box-sizing:border-box!important;z-index:auto!important}.kh-control-launch-slot .kh-control-launch b{display:inline!important}
