@@ -212,3 +212,24 @@ exports.listCommunityMessages = onCall({ region: REGION }, async (request) => {
     createdAt: d.data().createdAt?.toDate?.().toISOString?.() || null
   })) };
 });
+
+exports.updateMyProfile = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const input = request.data || {};
+  const username = String(input.username || '').trim();
+  if (username.length < 3 || username.length > 20 || !/^[\p{L}\p{N}_ .-]+$/u.test(username)) {
+    throw new HttpsError('invalid-argument', 'Нік має містити 3–20 символів: літери, цифри, пробіл, крапку, дефіс або підкреслення.');
+  }
+  const usernameLower = username.toLowerCase();
+  const ref = db.collection('users').doc(uid);
+  const duplicate = await db.collection('users').where('usernameLower', '==', usernameLower).limit(2).get();
+  if (duplicate.docs.some(doc => doc.id !== uid)) {
+    throw new HttpsError('already-exists', 'Цей ігровий нік уже зайнятий.');
+  }
+  const patch = { username, usernameLower, updatedAt: FieldValue.serverTimestamp() };
+  if (typeof input.bio === 'string') patch.bio = input.bio.trim().slice(0, 240);
+  if (typeof input.avatar === 'string') patch.avatar = input.avatar.slice(0, 64);
+  await ref.update(patch);
+  const updated = await ref.get();
+  return { profile: publicPlayer(uid, updated.data()), bio: String(updated.data().bio || ''), avatar: String(updated.data().avatar || '') };
+});
