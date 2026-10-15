@@ -1369,3 +1369,35 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .pubg-quick-link:hover{filter:brightness(1.2);transform:translateY(-1px)}
 @media(max-width:700px){.pubg-quick-links{top:auto;right:8px;left:8px;bottom:calc(68px + env(safe-area-inset-bottom));justify-content:center;gap:6px;padding:6px}.pubg-quick-link{flex:1;gap:4px;padding:10px 7px;font-size:10px}.pubg-quick-link b{font-size:8px}}
 @media(max-width:380px){.pubg-quick-link{flex-direction:column;gap:3px}}
+
+
+/* KH KOZAK ESPORTS REDESIGN v16.23.0 — static, crisp, responsive */
+:root{--bg:#080b10;--panel:#101722;--panel2:#151e2b;--line:#273548;--text:#f4f7fb;--muted:#9aa8bb;--yellow:#f6c445;--yellow2:#ffdc7b;--green:#67e0bb;--blue:#69b8ff;--orange:#ffad65;--sidebar:236px}
+html{scroll-behavior:auto!important}
+*,*::before,*::after{animation:none!important;animation-delay:0s!important;animation-duration:0s!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important;caret-color:auto}
+body{background:var(--bg)!important;color:var(--text)}
+body::before,body::after,.background-effects,.bg-particles,.particles,.particle,.scanline,.scanlines,.noise-overlay,.grid-overlay,.animated-bg,.neon-pulse,.glow-orb,.floating-particles{animation:none!important;display:none!important}
+button,a,.nav-item,.card,.panel,.game-card,.mission-card,.shop-card,.quick-action,.menu-item{transform:none!important;filter:none!important}
+button:hover,a:hover,.nav-item:hover,.card:hover,.panel:hover,.game-card:hover,.mission-card:hover,.shop-card:hover{transform:none!important;filter:none!important;box-shadow:none!important}
+button:active,.nav-item:active,.quick-action:active{transform:none!important}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--yellow)!important;outline-offset:2px!important}
+.sidebar,.side-nav,.app-sidebar{background:#0c121b!important;border-color:#273548!important;box-shadow:none!important;backdrop-filter:none!important}
+.nav-item,.nav-link,.menu-item{border-radius:7px!important;border:1px solid transparent!important}
+.nav-item.active,.nav-link.active,.menu-item.active{background:#252319!important;border-color:#68572b!important;color:#ffe08a!important;box-shadow:inset 3px 0 0 var(--yellow)!important}
+.card,.panel,.stat-card,.game-card,.mission-card,.shop-card,.profile-card,.mr-panel,.cl-panel{border-radius:10px!important;border-color:#2b394c!important;box-shadow:none!important;backdrop-filter:none!important}
+.card::before,.card::after,.panel::before,.panel::after,.game-card::before,.game-card::after,.nav-item::before,.nav-item::after{animation:none!important;box-shadow:none!important}
+h1,h2,h3,.page-title,.section-title{letter-spacing:-.025em}
+h1,.page-title{font-weight:900!important}
+button,.btn,.nav-item,.nav-link{font-weight:750}
+.btn-primary,button.primary,.primary-button{background:var(--yellow)!important;color:#101216!important;border-color:var(--yellow)!important}
+input,select,textarea{background:#0b111a!important;border-color:#33445b!important;color:var(--text)!important;border-radius:7px!important}
+.badge,.tag,.pill{border-radius:5px!important;box-shadow:none!important}
+.progress,.progress-bar,.meter{border-radius:3px!important;box-shadow:none!important}
+img,svg,canvas,video{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:760px){:root{--sidebar:0px}.card,.panel,.stat-card,.game-card,.mission-card,.shop-card{border-radius:9px!important}.page-heading h1{line-height:1.05}.nav-item,.nav-link,button,.btn{min-height:40px}}
+/* Static esports treatment for new utility labs */
+.mr-stat,.cl-stat,.mr-panel,.cl-panel,.cl-preview{box-shadow:none!important;backdrop-filter:none!important}
+.mr-stat,.cl-stat{border-radius:9px!important}
+.mr-stat b,.cl-preview-mark,.cl-count{color:var(--yellow)!important}
+.mr-stat::before,.mr-panel::before,.cl-panel::before,.cl-preview::before{display:none!important;animation:none!important}
