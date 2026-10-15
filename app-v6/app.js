@@ -148,6 +148,21 @@ window.addEventListener('kh-firebase-profile-ready', async event => {
   try {
     const profile = await window.KHFirebaseProfile.load();
     if (!profile) return;
+    const localHasProgress = (Number(state.coins) || 0) > 0 || (Number(state.points) || 0) > 0 ||
+      (Number(state.xp) || 0) > 0 || (Number(state.played) || 0) > 0 ||
+      (Array.isArray(state.owned) && state.owned.length > 2) ||
+      (Array.isArray(state.serverAchievements) && state.serverAchievements.length > 0);
+    const serverHasProgress = (Number(profile.coins) || 0) > 0 || (Number(profile.points) || 0) > 0 ||
+      (Number(profile.xp) || 0) > 0 || (Number(profile.played) || 0) > 0 ||
+      (Array.isArray(profile.inventory) && profile.inventory.length > 0) ||
+      (Array.isArray(profile.achievements) && profile.achievements.length > 0);
+    if (localHasProgress && !serverHasProgress) {
+      window.khOnlineUserId = user.uid;
+      const pill = $('#onlineStatusPill');
+      if (pill) { pill.textContent = 'FIREBASE: ВХІД ВИКОНАНО'; pill.classList.add('online-ready'); }
+      setOnlineMessage('Вхід через Firebase успішний. Твій локальний прогрес залишено на пристрої; перенесення старих серверних даних потрібно завершити окремо, тому нульовий профіль Firebase не застосовано.', true);
+      return;
+    }
     const merged = {
       id: user.uid,
       username: profile.username || user.displayName || state.name,
@@ -171,7 +186,7 @@ window.addEventListener('kh-firebase-profile-ready', async event => {
     window.khOnlineUserId = user.uid;
     const pill = $('#onlineStatusPill');
     if (pill) { pill.textContent = 'FIREBASE: АКАУНТ ОНЛАЙН'; pill.classList.add('online-ready'); }
-    setOnlineMessage('Телефон підтверджено. Профіль із Firebase завантажено; локальний прогрес використано для первинного створення профілю.');
+    setOnlineMessage('Телефон підтверджено. Профіль із Firebase завантажено.');
   } catch (error) {
     setOnlineMessage('Увійшли через Firebase, але профіль не завантажився: ' + (error.message || 'помилка'), true);
   }
