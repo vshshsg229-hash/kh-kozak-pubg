@@ -80,3 +80,135 @@ exports.getLeaderboard = onCall({ region: REGION }, async (request) => {
   });
   return { leaderboard };
 });
+
+function requireAuth(request) {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Спочатку увійди через Firebase.');
+  return request.auth.uid;
+}
+function publicPlayer(uid, data) {
+  return {
+    uid,
+    username: String(data.username || 'Гравець').slice(0, 32),
+    points: Number(data.points || 0),
+    xp: Number(data.xp || 0),
+    played: Number(data.played || 0)
+  };
+}
+function pairId(a, b) {
+  return [String(a), String(b)].sort().join('__');
+}
+async function requireAcceptedFriendship(uid, friendId) {
+  if (!friendId || uid === friendId) throw new HttpsError('invalid-argument', 'Обери іншого гравця.');
+  const ref = db.collection('friendships').doc(pairId(uid, friendId));
+  const snap = await ref.get();
+  if (!snap.exists || snap.data().status !== 'accepted' ||
+      !Array.isArray(snap.data().members) || !snap.data().members.includes(uid) ||
+      !snap.data().members.includes(friendId)) {
+    throw new HttpsError('permission-denied', 'Приватний чат доступний лише друзям.');
+  }
+  return ref;
+}
+
+exports.searchCommunityPlayers = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const query = String(request.data?.query || '').trim().toLowerCase();
+  if (query.length < 2 || query.length > 32) {
+    throw new HttpsError('invalid-argument', 'Введи від 2 до 32 символів ігрового ніка.');
+  }
+  const snap = await db.collection('users').orderBy('usernameLower')
+    .startAt(query).endAt(query + '\uf8ff').limit(15).get();
+  return { players: snap.docs.filter(d => d.id !== uid).map(d => publicPlayer(d.id, d.data())) };
+});
+
+exports.sendFriendRequest = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const targetId = String(request.data?.targetId || '');
+  if (!targetId || targetId === uid) throw new HttpsError('invalid-argument', 'Не можна додати себе в друзі.');
+  const [meSnap, targetSnap] = await Promise.all([
+    db.collection('users').doc(uid).get(),
+    db.collection('users').doc(targetId).get()
+  ]);
+  if (!meSnap.exists || !targetSnap.exists) throw new HttpsError('not-found', 'Профіль гравця не знайдено.');
+  const ref = db.collection('friendships').doc(pairId(uid, targetId));
+  const result = await db.runTransaction(async tx => {
+    const snap = await tx.get(ref);
+    if (snap.exists && snap.data().status === 'accepted') {
+      return { ok: true, message: 'Ви вже друзі.' };
+    }
+    if (snap.exists && snap.data().status === 'pending') {
+      const data = snap.data();
+      if (data.requestedBy !== uid) {
+        tx.update(ref, { status: 'accepted', updatedAt: FieldValue.serverTimestamp(), acceptedAt: FieldValue.serverTimestamp() });
+        return { ok: true, message: 'Запит підтверджено — ви тепер друзі.' };
+      }
+      return { ok: true, message: 'Запит уже очікує відповіді.' };
+    }
+    tx.set(ref, {
+      members: [uid, targetId].sort(),
+      requestedBy: uid,
+      status: 'pending',
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    return { ok: true, message: 'Запит у друзі надіслано.' };
+  });
+  return result;
+});
+
+exports.respondFriendRequest = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const targetId = String(request.data?.friendId || '');
+  const accept = request.data?.accept === true;
+  const ref = db.collection('friendships').doc(pairId(uid, targetId));
+  return db.runTransaction(async tx => {
+    const snap = await tx.get(ref);
+    if (!snap.exists) throw new HttpsError('not-found', 'Запит не знайдено.');
+    const data = snap.data();
+    if (!Array.isArray(data.members) || !data.members.includes(uid) || data.requestedBy === uid || data.status !== 'pending') {
+      throw new HttpsError('permission-denied', 'Цей запит не очікує на твою відповідь.');
+    }
+    tx.update(ref, {
+      status: accept ? 'accepted' : 'rejected',
+      updatedAt: FieldValue.serverTimestamp(),
+      ...(accept ? { acceptedAt: FieldValue.serverTimestamp() } : { rejectedAt: FieldValue.serverTimestamp() })
+    });
+    return { ok: true, message: accept ? 'Запит прийнято.' : 'Запит відхилено.' };
+  });
+});
+
+exports.listCommunityFriends = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const snap = await db.collection('friendships').where('members', 'array-contains', uid).limit(100).get();
+  const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const ids = [...new Set(rows.flatMap(r => r.members || []).filter(id => id !== uid))];
+  const profiles = await Promise.all(ids.map(id => db.collection('users').doc(id).get()));
+  const byId = new Map(profiles.filter(p => p.exists).map(p => [p.id, publicPlayer(p.id, p.data())]));
+  return { friendships: rows.map(r => ({
+    id: r.id, status: r.status, requestedBy: r.requestedBy,
+    friend: byId.get((r.members || []).find(id => id !== uid)) || null
+  })).filter(r => r.friend) };
+});
+
+exports.sendCommunityMessage = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const friendId = String(request.data?.friendId || '');
+  const body = String(request.data?.message || '').trim();
+  if (!body || body.length > 1000) throw new HttpsError('invalid-argument', 'Повідомлення має містити від 1 до 1000 символів.');
+  await requireAcceptedFriendship(uid, friendId);
+  const conversationId = pairId(uid, friendId);
+  const ref = db.collection('conversations').doc(conversationId).collection('messages').doc();
+  await ref.set({ senderId: uid, body, createdAt: FieldValue.serverTimestamp() });
+  return { ok: true, id: ref.id };
+});
+
+exports.listCommunityMessages = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const friendId = String(request.data?.friendId || '');
+  await requireAcceptedFriendship(uid, friendId);
+  const snap = await db.collection('conversations').doc(pairId(uid, friendId))
+    .collection('messages').orderBy('createdAt', 'asc').limit(100).get();
+  return { messages: snap.docs.map(d => ({
+    id: d.id, senderId: d.data().senderId, body: String(d.data().body || ''),
+    createdAt: d.data().createdAt?.toDate?.().toISOString?.() || null
+  })) };
+});
