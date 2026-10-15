@@ -40,6 +40,6 @@ If the project is not selected in the CLI, use `firebase projects:list` and then
 ## Security notes / known limitations
 
 - Game rewards are calculated by the server, not accepted from client-supplied coin/XP values. However, the current game-completion call is still initiated by browser code. The cooldown and idempotency checks are a baseline, **not a complete anti-cheat system**. Do not use this for valuable purchases, cash prizes, or competitive rankings without stronger server-verifiable gameplay validation and App Check.
-- The old REST API's community, inventory, shop purchases, achievements and admin flows have not all been migrated. Those features must not be assumed to synchronize with Firebase yet.
+- The old REST API's inventory, shop purchases, achievements, and admin flows have not all been migrated. Community, profile edits, leaderboard, game rewards, and daily drops use Firebase callable functions in this branch. Those features must not be assumed to synchronize with Firebase yet.
 - The Firebase web config is public client config; it is not a secret. Never commit service-account credentials.
 - Live authentication, Firestore rules, Functions deployment and end-to-end game reward tests have not been performed by this repository edit. Deploy and verify on staging before merging to `main`.
