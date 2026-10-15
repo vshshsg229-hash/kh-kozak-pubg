@@ -23,10 +23,10 @@ jobs:
     if: inputs.confirm_deploy == 'yes'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out tested Firebase staging branch
+      - name: Check out production integration branch
         uses: actions/checkout@v4
         with:
-          ref: firebase-integration-staging-v2
+          ref: main
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
