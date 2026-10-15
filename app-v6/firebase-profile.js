@@ -23,7 +23,15 @@
     const { db, user } = requireFirebase();
     const ref = db.collection('users').doc(user.uid);
     const snap = await ref.get();
-    if (snap.exists) return { uid: user.uid, ...snap.data() };
+    if (snap.exists) {
+      const existing = snap.data();
+      if (!existing.usernameLower && window.firebase?.app && typeof window.firebase.app().functions === 'function') {
+        await window.firebase.app().functions('us-central1').httpsCallable('updateMyProfile')({ username: String(existing.username || user.displayName || 'Player').slice(0, 20) });
+        const refreshed = await ref.get();
+        return { uid: user.uid, ...refreshed.data() };
+      }
+      return { uid: user.uid, ...existing };
+    }
     const profile = {
       uid: user.uid,
       username: String(username || user.displayName || (user.email || 'player').split('@')[0]).slice(0, 32),
