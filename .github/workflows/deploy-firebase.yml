@@ -1,0 +1,57 @@
+name: Deploy Firebase backend (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deploy:
+        description: "Type yes to deploy staging Firestore rules and Cloud Functions to kh-kozak-battle-hub"
+        required: true
+        type: choice
+        options:
+          - no
+          - yes
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-backend-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: inputs.confirm_deploy == 'yes'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tested Firebase staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: firebase-integration-staging-v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify deployment secret is configured
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "::error::Add the repository Actions secret FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB first."
+            exit 1
+          fi
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KH_KOZAK_BATTLE_HUB }}
+          project_id: kh-kozak-battle-hub
+
+      - name: Install Firebase CLI and Functions dependencies
+        run: |
+          npm install --global firebase-tools
+          npm install --prefix functions
+
+      - name: Deploy Firestore rules and Cloud Functions
+        run: firebase deploy --only firestore:rules,functions --project kh-kozak-battle-hub
