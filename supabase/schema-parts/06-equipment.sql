@@ -7,7 +7,10 @@ alter table public.hub_profiles
   add column if not exists equipped_badge text,
   add column if not exists equipped_banner text,
   add column if not exists equipped_skin text,
-  add column if not exists equipped_weapon_skin text;
+  add column if not exists equipped_weapon_skin text,
+  add column if not exists equipped_helmet text,
+  add column if not exists equipped_vest text,
+  add column if not exists equipped_backpack text;
 
 create or replace function public.hub_equip_item(p_user_id uuid, p_item_id text)
 returns jsonb
@@ -23,11 +26,14 @@ begin
   select * into v_profile from public.hub_profiles where id=p_user_id for update;
   if not found then return jsonb_build_object('error','profile_not_found'); end if;
   select * into v_item from public.hub_shop_catalog where item_id=p_item_id and active=true;
-  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') then
+  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') then
     return jsonb_build_object('error','item_not_equipable');
   end if;
   if not exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
-    return jsonb_build_object('error','not_owned');
+    if coalesce(v_item.required_level,1) > floor(coalesce(v_profile.xp,0)::numeric/100)::integer+1 then
+      return jsonb_build_object('error','not_owned');
+    end if;
+    insert into public.hub_inventory(user_id,item_id) values(p_user_id,p_item_id) on conflict do nothing;
   end if;
 
   if v_item.item_kind='title' then v_current:=v_profile.equipped_title;  elsif v_item.item_kind='frame' then v_current:=v_profile.equipped_frame;
@@ -36,6 +42,9 @@ begin
   elsif v_item.item_kind='badge' then v_current:=v_profile.equipped_badge;
   elsif v_item.item_kind='banner' then v_current:=v_profile.equipped_banner;
   elsif v_item.item_kind='skin' then v_current:=v_profile.equipped_skin;
+  elsif v_item.item_kind='helmet' then v_current:=v_profile.equipped_helmet;
+  elsif v_item.item_kind='vest' then v_current:=v_profile.equipped_vest;
+  elsif v_item.item_kind='backpack' then v_current:=v_profile.equipped_backpack;
   else v_current:=v_profile.equipped_weapon_skin;
   end if;
 
@@ -48,6 +57,9 @@ begin
     equipped_banner=case when v_item.item_kind='banner' then case when v_current=p_item_id then null else p_item_id end else equipped_banner end,
     equipped_skin=case when v_item.item_kind='skin' then case when v_current=p_item_id then null else p_item_id end else equipped_skin end,
     equipped_weapon_skin=case when v_item.item_kind='weaponSkin' then case when v_current=p_item_id then null else p_item_id end else equipped_weapon_skin end,
+    equipped_helmet=case when v_item.item_kind='helmet' then case when v_current=p_item_id then null else p_item_id end else equipped_helmet end,
+    equipped_vest=case when v_item.item_kind='vest' then case when v_current=p_item_id then null else p_item_id end else equipped_vest end,
+    equipped_backpack=case when v_item.item_kind='backpack' then case when v_current=p_item_id then null else p_item_id end else equipped_backpack end,
     updated_at=now()
   where id=p_user_id returning * into v_profile;
   return jsonb_build_object('user',to_jsonb(v_profile),'item_id',p_item_id);
