@@ -1,0 +1,27 @@
+/* KH Battle Hub 16.1 — direct Music and TikTok shortcuts for every screen */
+.media-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 22px}
+.media-shortcut{display:flex;align-items:center;gap:12px;min-width:0;text-align:left;padding:14px;border:1px solid #2c3d48;border-radius:15px;background:linear-gradient(135deg,#14242a,#101720);color:#f1f6f8;cursor:pointer;transition:transform .18s,border-color .18s,background .18s}
+.media-shortcut:hover,.media-shortcut:focus-visible{transform:translateY(-2px);border-color:#b9ef55;outline:none;background:linear-gradient(135deg,#1b3035,#121c26)}
+.media-shortcut-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:#c7f36a;color:#10170a;font-size:25px;font-weight:900}
+.tiktok-shortcut .media-shortcut-icon{background:#8bdcff;color:#081721}
+.media-shortcut>span:nth-child(2){display:grid;gap:4px;min-width:0;flex:1}
+.media-shortcut strong{font-size:12px;letter-spacing:.7px}
+.media-shortcut small{font-size:11px;line-height:1.45;color:#9eafbb}
+.media-shortcut>b{font-size:9px;letter-spacing:.6px;color:#c7f36a;white-space:nowrap}
+.tiktok-shortcut>b{color:#8bdcff}
+.mobile-nav button[data-tab="music"]{color:#d7f79c}
+.mobile-nav button[data-tab="tiktok"]{color:#9ce5ff}
+@media(max-width:720px){
+ .main{padding-bottom:132px!important}
+ .mobile-nav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-auto-rows:minmax(38px,auto);gap:4px!important;max-height:none!important;height:auto!important;padding:7px 7px calc(7px + env(safe-area-inset-bottom))!important;overflow:visible!important}
+ .mobile-nav button{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important;min-width:0!important;width:100%!important;min-height:37px!important;flex-basis:auto!important;padding:4px 2px!important;border-radius:9px!important;font-size:9px!important;line-height:1.15!important;white-space:nowrap!important}
+ .mobile-nav button span{display:block!important;font-size:17px!important;line-height:1!important;margin:0!important}
+ .mobile-nav button[data-tab="music"],.mobile-nav button[data-tab="tiktok"]{background:#18242b;border:1px solid #344751}
+}
+@media(max-width:560px){
+ .media-shortcuts{grid-template-columns:minmax(0,1fr);gap:9px}
+ .media-shortcut{padding:12px;gap:10px}
+ .media-shortcut-icon{flex-basis:38px;width:38px;height:38px}
+ .media-shortcut>b{font-size:8px}
+ .media-shortcut small{font-size:10px}
+}
