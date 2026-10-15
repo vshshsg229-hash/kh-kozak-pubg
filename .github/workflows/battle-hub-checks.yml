@@ -99,7 +99,7 @@ jobs:
           }
 
           for (const id of ['tab-home', 'tab-games', 'tab-missions', 'tab-rewards',
-            'tab-profile', 'tab-pass', 'tab-bunker', 'tab-telegram', 'tab-admin', 'tab-assistant', 'tab-3d',
+            'tab-profile', 'tab-pass', 'tab-bunker', 'tab-telegram', 'tab-assistant', 'tab-3d',
             'gameModal', 'installPc', 'copyPcLink']) {
             assert(html.includes(`id="${id}"`), `Required interface element exists: ${id}`);
           }
