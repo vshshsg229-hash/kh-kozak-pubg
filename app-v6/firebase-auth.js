@@ -80,6 +80,7 @@
       if (window.KHFirebaseProfile) {
         await window.KHFirebaseProfile.createIfMissing(username);
       }
+      window.dispatchEvent(new CustomEvent('kh-firebase-profile-ready', { detail: { user: auth.currentUser } }));
       status('FIREBASE: ВХІД ВИКОНАНО', true);
       message('Акаунт і профіль Firebase підключено. Спільнота та рейтинг працюють через серверні функції; ігрові нагороди синхронізуються через Firebase Functions.');
       const pass = $('onlinePassword');
@@ -132,14 +133,20 @@
       status(window.KH_FIREBASE_STATUS?.ready ? 'FIREBASE ГОТОВИЙ' : 'FIREBASE НЕ ГОТОВИЙ', false);
     }
   });
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
     const auth = window.KH_FIREBASE_AUTH;
     if (!auth) {
       status('FIREBASE НЕ ГОТОВИЙ', false);
       message('Не вдалося ініціалізувати Firebase. Перевір підключення SDK і конфігурацію.', true);
     } else if (auth.currentUser) {
       status('FIREBASE: ВХІД ВИКОНАНО', true);
-      message('Firebase-акаунт активний. Синхронізація ігрового прогресу ще не під’єднана.');
+      message('Завантажую профіль Firebase…');
+      try {
+        const username = auth.currentUser.displayName || (auth.currentUser.email || 'player').split('@')[0];
+        await window.KHFirebaseProfile.createIfMissing(username);
+        window.dispatchEvent(new CustomEvent('kh-firebase-profile-ready', { detail: { user: auth.currentUser } }));
+        message('Firebase-акаунт активний. Профіль, рейтинг і спільнота використовують Firebase.');
+      } catch (error) { message(friendlyError(error), true); }
     } else {
       status('FIREBASE ГОТОВИЙ', false);
       message('Firebase готовий. Створи акаунт або увійди, щоб користуватися профілем, рейтингом і спільнотою.');
