@@ -24,6 +24,21 @@ jobs:
         with:
           version: latest
 
+      - name: Validate Supabase deployment credentials
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        shell: bash
+        run: |
+          if [[ ! "${SUPABASE_ACCESS_TOKEN:-}" =~ ^sbp_[A-Za-z0-9_-]+$ ]]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN must be a Supabase Personal Access Token beginning with sbp_. Create one in Supabase Dashboard → Account → Access Tokens."
+            exit 1
+          fi
+          if [[ "${SUPABASE_PROJECT_REF:-}" != "xacqretciujzrcqjvvgz" ]]; then
+            echo "::error::SUPABASE_PROJECT_REF must be xacqretciujzrcqjvvgz for KH Kozak Battle Hub."
+            exit 1
+          fi
+
       - name: Deploy hub-api
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
