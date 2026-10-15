@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       confirm_deploy:
-        description: "Type yes to deploy staging Firestore rules and Cloud Functions to kh-kozak-battle-hub"
+        description: "Type yes to deploy Firestore rules and Cloud Functions to the Firebase project to kh-kozak-battle-hub"
         required: true
         type: choice
         options:
@@ -23,10 +23,10 @@ jobs:
     if: inputs.confirm_deploy == 'yes'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out tested Firebase staging branch
+      - name: Check out the merged production branch
         uses: actions/checkout@v4
         with:
-          ref: firebase-integration-staging-v2
+          ref: main
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
