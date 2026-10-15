@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.20.2",
+  "version": "16.20.3",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.20.2: Google searches open in a normal browser tab because Google blocks iframe embedding; synchronized update banner and cache versions. Previous cache precache paths also corrected."
+   "releaseNotes": "v16.20.3: повністю прибрано розділи KH Digital Space; решту Battle Hub збережено."
 }
