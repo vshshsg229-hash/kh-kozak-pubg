@@ -10,6 +10,7 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 - Added restrictive Firestore rules: profile owner access only, zeroed progression at profile creation, cosmetic-only client edits, and no client-side profile deletion.
 - Added Firebase Cloud Functions source:
   - `finishGame` applies fixed server-side rewards, uses event IDs for duplicate prevention, and adds a short cooldown.
+  - `claimDailyReward` applies the daily drop and streak bonus server-side using Kyiv time.
   - `getLeaderboard` returns the top 10 without direct client reads of other users' private profile documents.
   - Community player search, friend requests, accepted-friend private chat, and online nickname updates.
 - Updated authenticated game reward and leaderboard calls to use Firebase callable functions.
@@ -20,7 +21,7 @@ Branch: `firebase-integration-setup`. Production `main` is intentionally unchang
 - Live browser registration, login, and profile creation against the Firebase project.
 - Whether Email/Password and Firestore are enabled and the Firestore rules are published.
 - Cloud Functions deployment and live reward/leaderboard calls.
-- The shop, inventory, achievements, community, admin features, and all progression sync are not fully migrated.
+- Community search/friend requests/private chat and profile/rating are wired to Firebase, but they are not live-verified until Cloud Functions are deployed. The shop, inventory, achievements, admin features, and all progression sync are not fully migrated.
 - The reward cooldown and event ID checks are a baseline, not a complete anti-cheat system.
 
 ## Before production
