@@ -1,9 +1,9 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '9.5.6';
+  const WEB_VERSION = '9.5.7';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
-  const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v' + encodeURIComponent(version);
+  const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
   const isElectron = /Electron/i.test(navigator.userAgent);
   const params = new URLSearchParams(window.location.search);
   const DESKTOP_VERSION = params.get('desktopVersion') || '0.0.0';
