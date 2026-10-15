@@ -2,11 +2,12 @@
 -- Run this migration in Supabase SQL Editor before using the new online shop items.
 alter table public.hub_profiles
   add column if not exists equipped_helmet text,
+  add column if not exists equipped_vest text,
   add column if not exists equipped_backpack text;
 
 alter table public.hub_shop_catalog drop constraint if exists hub_shop_catalog_item_kind_check;
 alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check
-  check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','backpack'));
+  check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack'));
 
 insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order) values
 ('skin_neon','NEON VIPER','skin',500,'EPIC',null),
@@ -30,7 +31,10 @@ begin
     return jsonb_build_object('error','item_not_equipable');
   end if;
   if not exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
-    return jsonb_build_object('error','not_owned');
+    if coalesce(v_item.required_level,1) > floor(coalesce(v_profile.xp,0)::numeric/100)::integer+1 then
+      return jsonb_build_object('error','not_owned');
+    end if;
+    insert into public.hub_inventory(user_id,item_id) values(p_user_id,p_item_id) on conflict do nothing;
   end if;
   if v_item.item_kind='title' then v_current:=v_profile.equipped_title;
   elsif v_item.item_kind='frame' then v_current:=v_profile.equipped_frame;
@@ -40,6 +44,7 @@ begin
   elsif v_item.item_kind='banner' then v_current:=v_profile.equipped_banner;
   elsif v_item.item_kind='skin' then v_current:=v_profile.equipped_skin;
   elsif v_item.item_kind='helmet' then v_current:=v_profile.equipped_helmet;
+  elsif v_item.item_kind='vest' then v_current:=v_profile.equipped_vest;
   elsif v_item.item_kind='backpack' then v_current:=v_profile.equipped_backpack;
   else v_current:=v_profile.equipped_weapon_skin;
   end if;
@@ -53,6 +58,7 @@ begin
     equipped_skin=case when v_item.item_kind='skin' then case when v_current=p_item_id then null else p_item_id end else equipped_skin end,
     equipped_weapon_skin=case when v_item.item_kind='weaponSkin' then case when v_current=p_item_id then null else p_item_id end else equipped_weapon_skin end,
     equipped_helmet=case when v_item.item_kind='helmet' then case when v_current=p_item_id then null else p_item_id end else equipped_helmet end,
+    equipped_vest=case when v_item.item_kind='vest' then case when v_current=p_item_id then null else p_item_id end else equipped_vest end,
     equipped_backpack=case when v_item.item_kind='backpack' then case when v_current=p_item_id then null else p_item_id end else equipped_backpack end,
     updated_at=now()
   where id=p_user_id returning * into v_profile;
@@ -62,6 +68,19 @@ $$;
 revoke all on function public.hub_equip_item(uuid,text) from public, anon, authenticated;
 grant execute on function public.hub_equip_item(uuid,text) to service_role;
 
+
+-- Level-unlocked fighter equipment. The server checks required_level before equipping.
+alter table public.hub_shop_catalog add column if not exists required_level integer not null default 1;
+insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order,required_level) values
+('helmet_scout','ШОЛОМ РОЗВІДНИКА','helmet',250,'RARE',null,2),
+('vest_titan','БРОНЕЖИЛЕТ TITAN','vest',300,'RARE',null,3),
+('pack_phantom','РЮКЗАК PHANTOM','backpack',400,'EPIC',null,5),
+('skin_urban','URBAN GHOST','skin',28000,'LEGENDARY',null,2),
+('weapon_ember','M416 EMBER CORE','weaponSkin',48000,'LEGENDARY',null,4),
+('skin_shadow','SHADOW OPS','skin',65000,'LEGENDARY',null,6),
+('weapon_ice','M416 CRYO STEEL','weaponSkin',90000,'LEGENDARY',null,8),
+('skin_commander','GOLD COMMANDER','skin',120000,'LEGENDARY',null,10)
+on conflict(item_id) do update set item_name=excluded.item_name,item_kind=excluded.item_kind,required_level=excluded.required_level,active=true;
 
 -- Extend the server-authoritative purchase RPC so helmet/backpack purchases actually grant inventory.
 create or replace function public.hub_purchase_item(p_user_id uuid, p_item_id text, p_daily boolean default false)
