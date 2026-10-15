@@ -424,6 +424,7 @@ function setMobileMenu(open){
   if(mobileMenuBackdrop)mobileMenuBackdrop.hidden=!open;
 }
 mobileMenuToggle?.addEventListener('click',()=>setMobileMenu(!document.body.classList.contains('mobile-menu-open')));
+document.getElementById('mobileDockMore')?.addEventListener('click',()=>mobileMenuToggle?.click());
 mobileMenuBackdrop?.addEventListener('click',()=>setMobileMenu(false));
 document.querySelectorAll('.sidebar [data-tab],.sidebar [data-tab-link]').forEach(item=>item.addEventListener('click',()=>setMobileMenu(false)));
 document.addEventListener('keydown',event=>{if(event.key==='Escape')setMobileMenu(false)});
