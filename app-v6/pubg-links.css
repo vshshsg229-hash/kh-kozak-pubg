@@ -79,3 +79,6 @@
   .pubg-quick-links{grid-template-columns:1fr!important;padding:9px 12px!important;gap:8px!important}
   .pubg-quick-link{min-height:48px!important;padding:11px 13px!important;font-size:13px!important}
 }
+
+/* This shortcut group now lives lower on the home page, near the game library. */
+.pubg-quick-links-bottom{margin:24px 0 16px!important;border:1px solid #303b47!important;border-radius:14px!important;background:#080d14!important}
