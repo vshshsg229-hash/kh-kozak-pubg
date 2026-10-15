@@ -43,6 +43,7 @@ function safeUser(row: any) {
     equipped_avatar: row.equipped_avatar ?? null, equipped_theme: row.equipped_theme ?? null,
     equipped_badge: row.equipped_badge ?? null, equipped_banner: row.equipped_banner ?? null,
     equipped_skin: row.equipped_skin ?? null, equipped_weapon_skin: row.equipped_weapon_skin ?? null,
+    equipped_helmet: row.equipped_helmet ?? null, equipped_backpack: row.equipped_backpack ?? null,
     eliteVerified: row.elite_verified === true && (!row.elite_expires_at || new Date(row.elite_expires_at).getTime() > Date.now()),
     createdAt: row.created_at,
   };
