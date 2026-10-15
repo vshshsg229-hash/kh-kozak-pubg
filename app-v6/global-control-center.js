@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const VERSION='9.2.1',STORE='khkozak_control_center_v1';
+const VERSION='9.2.2',STORE='khkozak_control_center_v1';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const state=(()=>{try{return {...{font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0},...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch{return{font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0}}})();
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch{}};
