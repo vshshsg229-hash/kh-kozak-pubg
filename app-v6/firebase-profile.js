@@ -26,9 +26,11 @@
     if (snap.exists) {
       const existing = snap.data();
       if (!existing.usernameLower && window.firebase?.app && typeof window.firebase.app().functions === 'function') {
-        await window.firebase.app().functions('us-central1').httpsCallable('updateMyProfile')({ username: String(existing.username || user.displayName || 'Player').slice(0, 20) });
-        const refreshed = await ref.get();
-        return { uid: user.uid, ...refreshed.data() };
+        try {
+          await window.firebase.app().functions('us-central1').httpsCallable('updateMyProfile')({ username: String(existing.username || user.displayName || 'Player').slice(0, 20) });
+          const refreshed = await ref.get();
+          if (refreshed.exists) return { uid: user.uid, ...refreshed.data() };
+        } catch (error) { console.warn('[KH Firebase] Existing nickname index was not migrated:', error?.message || error); }
       }
       return { uid: user.uid, ...existing };
     }
