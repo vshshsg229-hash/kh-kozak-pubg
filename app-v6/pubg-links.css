@@ -38,3 +38,44 @@
   .pubg-home-icon{flex-basis:42px!important;width:42px!important;height:42px!important;font-size:22px!important}
   .pubg-home-text strong{font-size:15px!important}
 }
+
+/* Always-visible platform shortcuts at the very top of the app */
+.pubg-quick-links{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:12px 18px!important;
+  margin:0!important;
+  position:relative!important;
+  z-index:100!important;
+  background:#080d14!important;
+  border-bottom:1px solid #303b47!important;
+}
+.pubg-quick-link{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  min-width:0!important;
+  min-height:54px!important;
+  padding:12px 16px!important;
+  border:2px solid #b78d37!important;
+  border-radius:12px!important;
+  background:linear-gradient(120deg,#332b1b,#171a1d)!important;
+  color:#fff!important;
+  text-decoration:none!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  box-sizing:border-box!important;
+  box-shadow:0 5px 18px #0006!important;
+}
+.pubg-quick-mobile{border-color:#2a9b83!important;background:linear-gradient(120deg,#12342e,#171d21)!important}
+.pubg-quick-link b{font-size:10px!important;letter-spacing:.5px!important;white-space:nowrap!important;color:#ffd35a!important}
+.pubg-quick-mobile b{color:#69e4c4!important}
+.pubg-quick-link:focus-visible,.pubg-home-download:focus-visible{outline:3px solid #fff!important;outline-offset:3px!important}
+@media(max-width:560px){
+  .pubg-quick-links{grid-template-columns:1fr!important;padding:9px 12px!important;gap:8px!important}
+  .pubg-quick-link{min-height:48px!important;padding:11px 13px!important;font-size:13px!important}
+}
