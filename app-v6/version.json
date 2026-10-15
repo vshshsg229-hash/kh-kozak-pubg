@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.9.0",
+  "version": "16.10.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Cyberpunk v16.9: responsive visual polish for fighter scenes, subtle reward glints, smoother XP bars, improved focus visibility and touch interactions across phone, tablet and desktop. Approved navigation labels, icons, order, layout and behavior preserved."
+  "releaseNotes": "Battle Hub v16.10: daily fighter missions now grant +75 coins and +40 XP once per day, update the player profile, and refresh the service-worker cache. Responsive cyberpunk polish remains in place. Approved navigation labels, icons, order, layout and behavior preserved."
 }
