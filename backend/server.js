@@ -35,6 +35,7 @@ const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_WEBHOOK_SECRET || "";
 const AI_API_KEY = process.env.AI_API_KEY || "";
 const AI_BASE_URL = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
 const AI_MODEL = process.env.AI_MODEL || "gpt-4o-mini";
+const CREATOR_ADMIN_USERNAME = (process.env.CREATOR_ADMIN_USERNAME || "KH么Kozak").trim();
 
 if (!DATABASE_URL) throw new Error("DATABASE_URL is required. Create a PostgreSQL database and set DATABASE_URL.");
 if (!JWT_SECRET || JWT_SECRET.length < 32) throw new Error("JWT_SECRET is required and must be at least 32 characters.");
@@ -118,6 +119,17 @@ async function ensureSchema() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
     CREATE INDEX IF NOT EXISTS community_messages_friendship_idx ON community_messages (friendship_id, created_at);
+    CREATE TABLE IF NOT EXISTS creator_videos (
+      id BIGSERIAL PRIMARY KEY,
+      owner_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title VARCHAR(180) NOT NULL,
+      caption VARCHAR(2200) NOT NULL DEFAULT '',
+      mime_type VARCHAR(80) NOT NULL,
+      file_size BIGINT NOT NULL CHECK (file_size > 0 AND file_size <= 26214400),
+      video_data BYTEA NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS creator_videos_created_idx ON creator_videos (created_at DESC);
   `);
 }
 
@@ -332,6 +344,89 @@ app.post("/api/community/messages", authRequired, async (req, res) => {
       [friendship.rows[0].id, req.userId, body]
     );
     res.status(201).json({ message: result.rows[0] });
+  } catch (error) { handleDbError(error, res); }
+});
+
+const creatorVideoUploadLimit = rateLimit({ windowMs: 60 * 60 * 1000, limit: 30, standardHeaders: "draft-7", legacyHeaders: false, message: { error: "Забагато завантажень. Спробуй пізніше." } });
+const creatorVideoTypes = new Set(["video/mp4", "video/webm", "video/quicktime", "video/ogg"]);
+async function isCreatorAdmin(userId) {
+  const result = await pool.query(
+    "SELECT id FROM users WHERE lower(username)=lower($1) ORDER BY id ASC LIMIT 1",
+    [CREATOR_ADMIN_USERNAME]
+  );
+  return result.rows[0] && String(result.rows[0].id) === String(userId);
+}
+async function creatorAdminRequired(req, res, next) {
+  try {
+    const user = await pool.query("SELECT id, username FROM users WHERE id=$1", [req.userId]);
+    if (!user.rows[0]) return res.status(401).json({ error: "Акаунт не знайдено." });
+    if (user.rows[0].username.toLocaleLowerCase("uk-UA") !== CREATOR_ADMIN_USERNAME.toLocaleLowerCase("uk-UA") || !(await isCreatorAdmin(req.userId))) {
+      return res.status(403).json({ error: "Публікувати відео може лише власник KH么Kozak." });
+    }
+    next();
+  } catch (error) { handleDbError(error, res); }
+}
+app.get("/api/creator/videos", async (_req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT id::text AS id, title, caption, mime_type AS \"mimeType\", file_size AS \"fileSize\", created_at AS \"createdAt\" FROM creator_videos ORDER BY created_at DESC, id DESC LIMIT 100"
+    );
+    res.setHeader("Cache-Control", "no-store");
+    res.json({ videos: result.rows.map(v => ({ ...v, url: "/api/creator/videos/" + v.id + "/file" })) });
+  } catch (error) { handleDbError(error, res); }
+});
+app.get("/api/creator/videos/access", authRequired, async (req, res) => {
+  try { res.json({ canUpload: Boolean(await isCreatorAdmin(req.userId)) }); }
+  catch (error) { handleDbError(error, res); }
+});
+app.post("/api/creator/videos", authRequired, creatorAdminRequired, creatorVideoUploadLimit, express.raw({ type: "video/*", limit: "25mb" }), async (req, res) => {
+  const mimeType = String(req.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
+  if (!creatorVideoTypes.has(mimeType)) return res.status(415).json({ error: "Формат не підтримується. Використай MP4, WebM, MOV або OGG." });
+  if (!Buffer.isBuffer(req.body) || !req.body.length) return res.status(400).json({ error: "Не отримано відеофайл." });
+  if (req.body.length > 25 * 1024 * 1024) return res.status(413).json({ error: "Максимальний розмір одного відео — 25 МБ." });
+  const rawTitle = typeof req.query.title === "string" ? req.query.title : "";
+  const title = rawTitle.replace(/[<>\u0000-\u001f]/g, "").trim().slice(0, 180) || "Відео KH么Kozak";
+  const rawCaption = typeof req.query.caption === "string" ? req.query.caption : "";
+  const caption = rawCaption.replace(/[<>\u0000-\u001f]/g, "").trim().slice(0, 2200);
+  try {
+    const result = await pool.query(
+      "INSERT INTO creator_videos (owner_id, title, caption, mime_type, file_size, video_data) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id::text AS id, title, caption, mime_type AS \"mimeType\", file_size AS \"fileSize\", created_at AS \"createdAt\"",
+      [req.userId, title, caption, mimeType, req.body.length, req.body]
+    );
+    const v = result.rows[0];
+    res.status(201).json({ video: { ...v, url: "/api/creator/videos/" + v.id + "/file" } });
+  } catch (error) { handleDbError(error, res); }
+});
+app.get("/api/creator/videos/:id/file", async (req, res) => {
+  if (!/^\d{1,20}$/.test(req.params.id)) return res.status(400).json({ error: "Некоректний ідентифікатор відео." });
+  try {
+    const result = await pool.query("SELECT mime_type, file_size, video_data FROM creator_videos WHERE id=$1", [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ error: "Відео не знайдено." });
+    const row = result.rows[0], data = row.video_data;
+    res.setHeader("Content-Type", row.mime_type);
+    res.setHeader("Accept-Ranges", "bytes");
+    res.setHeader("Cache-Control", "public, max-age=300");
+    const range = req.headers.range;
+    if (range) {
+      const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+      if (!match) return res.status(416).set("Content-Range", "bytes */" + data.length).end();
+      let start = match[1] ? Number(match[1]) : Math.max(0, data.length - Number(match[2] || 0));
+      let end = match[2] && match[1] ? Number(match[2]) : data.length - 1;
+      if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || end < start || start >= data.length) return res.status(416).set("Content-Range", "bytes */" + data.length).end();
+      end = Math.min(end, data.length - 1);
+      res.status(206).set("Content-Range", "bytes " + start + "-" + end + "/" + data.length).set("Content-Length", String(end - start + 1));
+      return res.end(data.subarray(start, end + 1));
+    }
+    res.setHeader("Content-Length", String(data.length));
+    res.end(data);
+  } catch (error) { handleDbError(error, res); }
+});
+app.delete("/api/creator/videos/:id", authRequired, creatorAdminRequired, async (req, res) => {
+  if (!/^\d{1,20}$/.test(req.params.id)) return res.status(400).json({ error: "Некоректний ідентифікатор відео." });
+  try {
+    const result = await pool.query("DELETE FROM creator_videos WHERE id=$1 RETURNING id", [req.params.id]);
+    if (!result.rowCount) return res.status(404).json({ error: "Відео не знайдено." });
+    res.json({ ok: true });
   } catch (error) { handleDbError(error, res); }
 });
 
