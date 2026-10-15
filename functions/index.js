@@ -66,7 +66,7 @@ exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (r
     if (dailyBonus) updated.dailyBonusDate = new Date(now).toISOString().slice(0, 10);
     tx.create(eventRef, { game, reward, createdAt: FieldValue.serverTimestamp() });
     tx.update(userRef, updated);
-    return { user: { ...user, ...updated, id: uid, username: user.username || 'Player' }, reward, dailyBonus };
+    return { user: { id: uid, username: String(user.username || 'Player').slice(0, 32), coins: updated.coins, points: updated.points, xp: updated.xp, played: updated.played, games: updated.games }, reward, dailyBonus };
   });
   return result;
 });
