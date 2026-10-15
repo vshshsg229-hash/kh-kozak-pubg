@@ -33,8 +33,13 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
 const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_WEBHOOK_SECRET || "";
 const AI_API_KEY = process.env.AI_API_KEY || "";
+const AI_PROVIDER = (process.env.AI_PROVIDER || "openai-compatible").toLowerCase();
 const AI_BASE_URL = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
 const AI_MODEL = process.env.AI_MODEL || "gpt-4o-mini";
+const AI_TIMEOUT_MS = Math.max(5000, Math.min(90000, Number(process.env.AI_TIMEOUT_MS || 45000)));
+if (process.env.NODE_ENV === "production" && !/^https:\/\//i.test(AI_BASE_URL) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(AI_BASE_URL)) {
+  throw new Error("In production, AI_BASE_URL must use HTTPS unless it points to localhost.");
+}
 
 if (!DATABASE_URL) throw new Error("DATABASE_URL is required. Create a PostgreSQL database and set DATABASE_URL.");
 if (!JWT_SECRET || JWT_SECRET.length < 32) throw new Error("JWT_SECRET is required and must be at least 32 characters.");
@@ -437,21 +442,32 @@ app.post("/api/games/finish", authRequired, gameLimiter, async (req, res) => {
 
 async function generateReply(message) {
   if (!AI_API_KEY) throw new Error("AI_API_KEY is not configured");
-  const response = await fetch(`${AI_BASE_URL}/chat/completions`, {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${AI_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: AI_MODEL,
-      messages: [
-        { role: "system", content: "Ти помічник KH么Kozak Battle Hub, фанатського хабу PUBG Mobile. Відповідай українською, доброзичливо й стисло. Допомагай із мінііграми, рівнями, монетами та використанням сайту. Не стверджуй, що можеш змінювати офіційний акаунт PUBG Mobile." },
-        { role: "user", content: String(message).slice(0, 1200) }
-      ],
-      temperature: 0.6
-    })
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error?.message || "AI provider request failed");
-  return data.choices?.[0]?.message?.content?.trim() || "Не вдалося сформувати відповідь.";
+  if (!["openai-compatible", "ollama"].includes(AI_PROVIDER)) throw new Error("AI_PROVIDER must be openai-compatible or ollama");
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+  try {
+    const response = await fetch(`${AI_BASE_URL}/chat/completions`, {
+      method: "POST",
+      signal: controller.signal,
+      headers: { "Authorization": `Bearer ${AI_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        messages: [
+          { role: "system", content: "Ти помічник KH么Kozak Battle Hub, фанатського хабу PUBG Mobile. Відповідай українською, доброзичливо й стисло. Допомагай із мінііграми, рівнями, монетами та використанням сайту. Не стверджуй, що можеш змінювати офіційний акаунт PUBG Mobile. Не проси паролі, токени чи інші секрети." },
+          { role: "user", content: String(message).slice(0, 1200) }
+        ],
+        temperature: 0.6
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const providerMessage = typeof data.error?.message === "string" ? data.error.message.slice(0, 300) : `HTTP ${response.status}`;
+      throw new Error(`AI provider request failed: ${providerMessage}`);
+    }
+    return data.choices?.[0]?.message?.content?.trim() || "Не вдалося сформувати відповідь.";
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 app.post("/api/chat", rateLimit({ windowMs: 60 * 1000, limit: 15, standardHeaders: "draft-7", legacyHeaders: false }), async (req, res) => {
   const message = typeof req.body?.message === "string" ? req.body.message.trim() : "";
