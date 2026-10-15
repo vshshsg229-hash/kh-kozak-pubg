@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.11.0",
+  "version": "16.12.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.11: fighter inventory with rarity tiers, equipped skin/weapon selection, helmet/armor/backpack slots, and level-based item unlocks. Existing navigation/menu preserved. Daily fighter missions remain available."
+  "releaseNotes": "Battle Hub v16.12: added a coin-based cosmetic exchange linked to fighter inventory. Buy and equip shop items with coin balance and insufficient-funds feedback. Level-unlocked items and approved navigation remain unchanged."
 }
