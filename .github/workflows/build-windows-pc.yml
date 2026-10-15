@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: kh-kozak-windows-pc-release-v9-5-4
+  group: kh-kozak-windows-pc-release-v9-5-6
   cancel-in-progress: true
 
 jobs:
@@ -64,7 +64,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: KH-Kozak-Battle-Hub-Windows-9.5.4
+          name: KH-Kozak-Battle-Hub-Windows-9.5.6
           path: |
             desktop/dist/*.exe
             desktop/dist/*.blockmap
@@ -74,13 +74,13 @@ jobs:
       - name: Publish downloadable Windows release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: pc-v9.5.4
-          name: KH么Kozak Battle Hub for Windows 9.5.4
+          tag_name: pc-v9.5.6
+          name: KH么Kozak Battle Hub for Windows 9.5.6
           body: |
             Windows PC release of KH么Kozak Battle Hub.
             
-            - KH.Kozak.Battle.Hub.Setup.9.5.4.exe: installer with Start Menu and desktop shortcuts.
-            - KH.Kozak.Battle.Hub.9.5.4.exe: portable build, no installation required.
+            - KH.Kozak.Battle.Hub.Setup.9.5.6.exe: installer with Start Menu and desktop shortcuts.
+            - KH.Kozak.Battle.Hub.9.5.6.exe: portable build, no installation required.
             
             Windows x64.
           files: |
