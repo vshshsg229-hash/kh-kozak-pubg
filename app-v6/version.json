@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.18.1",
+  "version": "16.18.2",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.18.1: added persistent Tactical Lab quick access on desktop and mobile. Tap the floating Tactical Lab button to open Arsenal and jump directly to the weapon configurator. Existing navigation and progress preserved; no server or PUBG API."
+  "releaseNotes": "Battle Hub v16.18.2: removed the floating Tactical Lab quick-access button as requested. Tactical Lab remains available inside the Arsenal tab. Existing navigation and progress preserved."
 }
