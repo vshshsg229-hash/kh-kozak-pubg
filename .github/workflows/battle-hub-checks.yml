@@ -42,6 +42,7 @@ jobs:
           node --check app-v6/progression-hub.js
           node --check app-v6/battle-evolution.js
           node --check app-v6/character-lobby.js
+          node --check app-v6/app-update.js
 
       - name: Validate PWA manifest and referenced local assets
         run: |
@@ -58,7 +59,7 @@ jobs:
             checks.push(message);
           };
 
-          assert(html.includes('character-lobby.js?v=1.3.0') && html.includes('character-lobby.css?v=1.3.0'), 'Fighter 2.0 assets are referenced with fresh cache versions');
+          assert(html.includes('character-lobby.js?v=1.3.0') && html.includes('character-lobby.css?v=1.4.1'), 'Fighter 2.0 assets are referenced with fresh cache versions');
           const fighter = fs.readFileSync(path.join(root, 'character-lobby.js'), 'utf8');
           const fighterCss = fs.readFileSync(path.join(root, 'character-lobby.css'), 'utf8');
           for (const feature of ['ТАКТИЧНИЙ ПРОФІЛЬ','ШТУРМОВИК','РОЗВІДНИК','МЕДИК','СЦЕНА ОГЛЯДУ','ОСОБЛИВЕ ЗАВДАННЯ','khMissionDone']) {
