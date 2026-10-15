@@ -1,0 +1,41 @@
+/* KH么Kozak Battle Hub 16.2 — restore Royale Pass and all navigation controls */
+@media(max-width:720px) and (orientation:portrait){
+  .mobile-nav{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;align-items:stretch;gap:3px!important;overflow:visible!important;left:5px!important;right:5px!important;bottom:calc(5px + env(safe-area-inset-bottom))!important;padding:6px!important;border:1px solid #354959!important;border-radius:15px!important}
+  .mobile-nav button{display:flex!important;flex:initial!important;min-width:0!important;width:100%!important;min-height:48px!important;padding:4px 1px!important;white-space:normal!important;font-size:clamp(7px,2.1vw,9px)!important;line-height:1.05!important;gap:3px!important}
+  .mobile-nav button span{display:block!important;font-size:17px!important;line-height:1!important}
+  .mobile-nav button[data-tab="pass"]{background:#c5f36a18!important;border:1px solid #c5f36a60!important;color:#d8f89a!important}
+  .mobile-nav button[data-tab="music"]{background:#c5f36a0d!important;color:#d8f89a!important}
+  .mobile-nav button[data-tab="tiktok"]{background:#83c9ff0d!important;color:#9cdeff!important}
+  .main{padding-bottom:calc(82px + env(safe-area-inset-bottom))!important}
+  .sidebar{display:flex!important;position:fixed!important;inset:0 auto 0 0!important;width:min(310px,86vw)!important;height:100dvh!important;max-height:100dvh!important;z-index:130!important;overflow-y:auto!important;transform:translateX(-105%)!important;transition:transform .24s ease!important}
+  body.mobile-menu-open .sidebar{display:flex!important;transform:translateX(0)!important}
+  body.mobile-menu-open .mobile-menu-backdrop{display:block!important;z-index:120!important}
+  .mobile-menu-toggle{display:flex!important;align-items:center!important;justify-content:center!important;z-index:131!important}
+  .sidebar .nav-group-title,.sidebar .nav-label,.sidebar .nav-item em{display:block!important}
+  .sidebar .nav-item{display:flex!important;justify-content:flex-start!important;min-height:43px!important;font-size:12px!important}
+}
+@media(min-width:721px) and (max-width:1100px) and (orientation:portrait){
+  .main{margin-left:0!important;width:100%!important;padding:0 14px calc(84px + env(safe-area-inset-bottom))!important}
+  .sidebar{display:flex!important;position:fixed!important;inset:0 auto 0 0!important;width:min(320px,70vw)!important;height:100dvh!important;max-height:100dvh!important;z-index:130!important;overflow-y:auto!important;transform:translateX(-105%)!important;transition:transform .24s ease!important}
+  body.mobile-menu-open .sidebar{display:flex!important;transform:translateX(0)!important}
+  body.mobile-menu-open .mobile-menu-backdrop{display:block!important;z-index:120!important}
+  .mobile-menu-toggle{display:flex!important;align-items:center!important;justify-content:center!important}
+  .sidebar .nav-group-title,.sidebar .nav-label,.sidebar .nav-item em{display:block!important}
+  .sidebar .nav-item{display:flex!important;justify-content:flex-start!important;font-size:12px!important}
+  .mobile-nav{display:flex!important;grid-template-columns:none!important;position:fixed!important;z-index:110!important;left:8px!important;right:8px!important;bottom:calc(6px + env(safe-area-inset-bottom))!important;gap:4px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:7px!important;border:1px solid #354959!important;border-radius:15px!important;background:#0b1017f5!important}
+  .mobile-nav button{display:flex!important;flex:1 0 75px!important;min-width:65px!important;min-height:50px!important;white-space:nowrap!important;font-size:9px!important}
+  .mobile-nav button[data-tab="pass"]{display:flex!important;background:#c5f36a18!important;color:#d8f89a!important}
+  .mobile-nav button[data-tab="music"],.mobile-nav button[data-tab="tiktok"]{display:flex!important}
+}
+@media(min-width:721px) and (max-width:1100px) and (orientation:landscape){
+  .sidebar{display:flex!important;position:fixed!important;inset:0 auto 0 0!important;width:198px!important;height:100dvh!important;max-height:100dvh!important;transform:none!important;overflow-y:auto!important;z-index:130!important;padding:13px 9px!important}
+  .sidebar .brand>span:last-child,.sidebar .nav-group-title,.sidebar .nav-label,.sidebar .nav-item em,.sidebar .side-bottom span,.sidebar .side-bottom small{display:initial!important}
+  .sidebar .nav{display:flex!important;flex-direction:column!important;gap:5px!important}
+  .sidebar .nav-item{display:flex!important;justify-content:flex-start!important;min-height:35px!important;font-size:10px!important;padding:6px!important}
+  .sidebar .nav-item>span:first-child{width:25px!important;height:25px!important;min-width:25px!important}
+  .main{margin-left:198px!important;width:auto!important;padding-left:15px!important;padding-right:15px!important}
+  .mobile-nav{display:none!important}
+  .mobile-menu-toggle,.mobile-menu-backdrop{display:none!important}
+}
+@media(min-width:1101px){.mobile-nav{display:none!important}.sidebar{display:flex!important}}
+@media(prefers-reduced-motion:reduce){.mobile-nav button,.sidebar{transition:none!important}}
