@@ -401,3 +401,7 @@
   .pubg-quick-link { padding: 9px !important; min-height: 72px !important; }
   .quick-link { flex-basis: 78vw !important; width: 78vw !important; }
 }
+
+/* 9.8.2 — restore visible mobile fighter */
+@media(max-width:620px){.kh-replica-hero{position:relative!important;min-height:920px!important;height:920px!important;overflow:hidden!important}.kh-replica-art,.kh-replica-fighter-slot{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:visible!important}#khReplicaFighterSlot .kh-real-soldier{position:absolute!important;left:57%!important;top:18%!important;width:auto!important;height:67%!important;max-height:650px!important;max-width:94%!important;object-fit:contain!important;object-position:center bottom!important;transform:translateX(-50%)!important;z-index:3!important;visibility:visible!important;opacity:1!important}}
+@media(max-width:390px){.kh-replica-hero{min-height:900px!important;height:900px!important}#khReplicaFighterSlot .kh-real-soldier{left:56%!important;top:19%!important;height:66%!important;max-height:610px!important;max-width:96%!important}}
