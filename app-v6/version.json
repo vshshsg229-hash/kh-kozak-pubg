@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.17.0",
+  "version": "16.18.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.17: added offline daily, weekly and seasonal Battle Pass missions with claimable coin and XP rewards. Uses existing local game statistics and pass XP; monthly season reset, existing inventory and global progress remain compatible. No server or menu changes."
+  "releaseNotes": "Battle Hub v16.18: added Tactical Lab to the existing Arsenal tab: offline weapon/attachment configurator, model-based comparison and recoil visualization, local build library, share/import build codes. Existing navigation and game progress preserved; no server or PUBG API."
 }
