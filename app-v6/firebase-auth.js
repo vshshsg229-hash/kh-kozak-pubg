@@ -81,7 +81,7 @@
         await window.KHFirebaseProfile.createIfMissing(username);
       }
       status('FIREBASE: ВХІД ВИКОНАНО', true);
-      message('Акаунт Firebase підключено. Увага: синхронізація монет, XP, магазину та ігрового прогресу ще не під’єднана.');
+      message('Акаунт і профіль Firebase підключено. Спільнота та рейтинг працюють через серверні функції; ігрові нагороди синхронізуються через Firebase Functions.');
       const pass = $('onlinePassword');
       if (pass) pass.value = '';
     } catch (error) {
@@ -127,7 +127,7 @@
     const user = event.detail?.user;
     if (user) {
       status('FIREBASE: ВХІД ВИКОНАНО', true);
-      message('Firebase-акаунт активний. Синхронізація ігрового прогресу ще не під’єднана.');
+      message('Firebase-акаунт активний. Профіль, рейтинг і спільнота використовують Firebase.');
     } else {
       status(window.KH_FIREBASE_STATUS?.ready ? 'FIREBASE ГОТОВИЙ' : 'FIREBASE НЕ ГОТОВИЙ', false);
     }
@@ -142,7 +142,7 @@
       message('Firebase-акаунт активний. Синхронізація ігрового прогресу ще не під’єднана.');
     } else {
       status('FIREBASE ГОТОВИЙ', false);
-      message('Реєстрація та вхід працюють через Firebase. Ігровий прогрес буде підключено окремим етапом.');
+      message('Firebase готовий. Створи акаунт або увійди, щоб користуватися профілем, рейтингом і спільнотою.');
     }
   });
 })();
