@@ -598,5 +598,10 @@ insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,dail
 ('pack_pulse','PULSE BACKPACK','backpack',400,'EPIC',null,1),
 ('helmet_scout','ШОЛОМ РОЗВІДНИКА','helmet',250,'RARE',null,2),
 ('vest_titan','БРОНЕЖИЛЕТ TITAN','vest',300,'RARE',null,3),
-('pack_phantom','РЮКЗАК PHANTOM','backpack',400,'EPIC',null,5)
+('pack_phantom','РЮКЗАК PHANTOM','backpack',400,'EPIC',null,5),
+('skin_urban','Urban Ghost','skin',28000,'LEGENDARY',null,2),
+('weapon_ember','M416 Ember Core','weaponSkin',48000,'LEGENDARY',null,4),
+('skin_shadow','Shadow Ops','skin',65000,'LEGENDARY',null,6),
+('weapon_ice','M416 Cryo Steel','weaponSkin',90000,'LEGENDARY',null,8),
+('skin_commander','Gold Commander','skin',120000,'LEGENDARY',null,10),
 on conflict(item_id) do update set item_name=excluded.item_name,item_kind=excluded.item_kind,cost=excluded.cost,rarity=excluded.rarity,required_level=excluded.required_level,active=true;
