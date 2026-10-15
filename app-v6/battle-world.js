@@ -21,7 +21,7 @@ const missionPool=[
  {id:'practice',icon:'🎯',title:'Тренувальний день',desc:'Відвідай тренувальну кімнату й отримай бонус.',goal:1,reward:40,xp:20,kind:'training'}
 ];
 function makeMissions(){const pool=missionPool.slice().sort(()=>Math.random()-.5).slice(0,4);return pool.map(m=>({...m,progress:0}))}
-function missionProgress(kind){if(kind==='supplies')return Math.min(3,data.foundSupplies%4);if(kind==='defense')return Math.min(1,data.defenseWins);if(kind==='collection')return data.collectionOwned.length>1?1:0;if(kind==='squad')return data.squad.created&&data.squad.members.some(x=>x.trim())?1:0;if(kind==='upgrade')return Object.values(data.rooms).some(x=>x>1)?1:0;if(kind==='training')return data.roomClaims.training===today()?1:0;return 0}
+function missionProgress(kind){if(kind==='supplies')return Math.min(3,data.foundSupplies);if(kind==='defense')return Math.min(1,data.defenseWins);if(kind==='collection')return data.collectionOwned.length>1?1:0;if(kind==='squad')return data.squad.created&&data.squad.members.some(x=>x.trim())?1:0;if(kind==='upgrade')return Object.values(data.rooms).some(x=>x>1)?1:0;if(kind==='training')return data.roomClaims.training===today()?1:0;return 0}
 function syncMissions(){data.missions.forEach(m=>m.progress=missionProgress(m.kind));save()}
 function mount(id,html){const target=$(id);if(!target)return;const node=document.createElement('div');node.innerHTML=html;target.append(...node.childNodes)}
 function addBunkerRooms(){
