@@ -1,6 +1,10 @@
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { defineSecret } = require('firebase-functions/params');
+
+const SUPABASE_URL = defineSecret('SUPABASE_URL');
+const SUPABASE_SERVICE_ROLE_KEY = defineSecret('SUPABASE_SERVICE_ROLE_KEY');
 
 initializeApp();
 const db = getFirestore();
@@ -283,4 +287,76 @@ exports.claimDailyReward = onCall({ region: REGION }, async (request) => {
       reward: { coins, points, xp }, streak
     };
   });
+});
+
+
+// One-time migration for an SMS-verified phone matching a legacy Supabase account.
+// The client cannot provide balances; all imported values are read with the server-only key.
+exports.migrateLegacyProfileByPhone = onCall({
+  region: REGION,
+  secrets: [SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY],
+  enforceAppCheck: false
+}, async (request) => {
+  const uid = requireAuth(request);
+  const phone = String(request.auth.token?.phone_number || '');
+  if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+    throw new HttpsError('failed-precondition', 'Firebase не підтвердив номер телефону. Повтори вхід через SMS.');
+  }
+  const targetRef = db.collection('users').doc(uid);
+  if ((await targetRef.get()).exists) return { migrated: false, alreadyExists: true };
+
+  const base = SUPABASE_URL.value().replace(/\\/+$/, '');
+  const key = SUPABASE_SERVICE_ROLE_KEY.value();
+  if (!base || !key) throw new HttpsError('failed-precondition', 'Міграцію старого прогресу ще не налаштовано на сервері.');
+  const headers = { apikey: key, Authorization: 'Bearer ' + key };
+
+  let legacyUser = null;
+  for (let page = 1; page <= 100; page++) {
+    const response = await fetch(base + '/auth/v1/admin/users?page=' + page + '&per_page=1000', { headers });
+    if (!response.ok) throw new HttpsError('unavailable', 'Не вдалося перевірити старий акаунт. Прогрес не змінено.');
+    const payload = await response.json();
+    const users = Array.isArray(payload) ? payload : (payload.users || []);
+    legacyUser = users.find(user => String(user.phone || '') === phone) || null;
+    if (legacyUser || users.length < 1000) break;
+  }
+  if (!legacyUser?.id) return { migrated: false, alreadyExists: false };
+
+  const getRows = async (path) => {
+    const response = await fetch(base + path, { headers });
+    if (!response.ok) throw new HttpsError('unavailable', 'Не вдалося прочитати старий профіль. Прогрес не змінено.');
+    return response.json();
+  };
+  const [profiles, inventoryRows, achievementRows] = await Promise.all([
+    getRows('/rest/v1/hub_profiles?select=*&id=eq.' + encodeURIComponent(legacyUser.id) + '&limit=1'),
+    getRows('/rest/v1/hub_inventory?select=item_id&user_id=eq.' + encodeURIComponent(legacyUser.id)),
+    getRows('/rest/v1/hub_achievements?select=achievement_id&user_id=eq.' + encodeURIComponent(legacyUser.id))
+  ]);
+  const old = profiles[0];
+  if (!old) return { migrated: false, alreadyExists: false };
+  const username = String(old.username || legacyUser.user_metadata?.username || ('Player' + phone.slice(-4))).slice(0, 32);
+  const migratedProfile = {
+    username, usernameLower: username.toLowerCase(), phoneNumber: phone,
+    email: legacyUser.email || null,
+    coins: Math.max(0, Number(old.coins || 0)), points: Math.max(0, Number(old.points || 0)),
+    xp: Math.max(0, Number(old.xp || 0)), played: Math.max(0, Number(old.played || 0)),
+    games: old.games && typeof old.games === 'object' ? old.games : {},
+    inventory: inventoryRows.map(row => row.item_id).filter(Boolean),
+    achievements: achievementRows.map(row => row.achievement_id).filter(Boolean),
+    equipped_title: old.equipped_title || null, equipped_frame: old.equipped_frame || null,
+    equipped_avatar: old.equipped_avatar || null, equipped_theme: old.equipped_theme || null,
+    equipped_badge: old.equipped_badge || null, equipped_banner: old.equipped_banner || null,
+    equipped_skin: old.equipped_skin || null, equipped_weapon_skin: old.equipped_weapon_skin || null,
+    eliteVerified: old.elite_verified === true && (!old.elite_expires_at || new Date(old.elite_expires_at).getTime() > Date.now()),
+    legacySupabaseUserId: legacyUser.id, migratedAt: FieldValue.serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp()
+  };
+  const migrated = await db.runTransaction(async tx => {
+    const snap = await tx.get(targetRef);
+    if (snap.exists) return false;
+    tx.create(targetRef, migratedProfile);
+    return true;
+  });
+  return { migrated, alreadyExists: !migrated, username, coins: migratedProfile.coins,
+    points: migratedProfile.points, xp: migratedProfile.xp, played: migratedProfile.played,
+    inventoryCount: migratedProfile.inventory.length, achievementCount: migratedProfile.achievements.length };
 });
