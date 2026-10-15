@@ -299,13 +299,13 @@ exports.migrateLegacyProfileByPhone = onCall({
 }, async (request) => {
   const uid = requireAuth(request);
   const phone = String(request.auth.token?.phone_number || '');
-  if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+  if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
     throw new HttpsError('failed-precondition', 'Firebase не підтвердив номер телефону. Повтори вхід через SMS.');
   }
   const targetRef = db.collection('users').doc(uid);
   if ((await targetRef.get()).exists) return { migrated: false, alreadyExists: true };
 
-  const base = SUPABASE_URL.value().replace(/\\/+$/, '');
+  const base = SUPABASE_URL.value().replace(/\/+$/, '');
   const key = SUPABASE_SERVICE_ROLE_KEY.value();
   if (!base || !key) throw new HttpsError('failed-precondition', 'Міграцію старого прогресу ще не налаштовано на сервері.');
   const headers = { apikey: key, Authorization: 'Bearer ' + key };
