@@ -488,7 +488,7 @@ window.khkozakProgression = {
     if(user.username)state.name=String(user.username).slice(0,20);
     if(user.games&&typeof user.games==='object')state.games={...defaultState.games,...user.games};
     if(user.eliteVerified!==undefined)state.eliteVerified=!!user.eliteVerified;
-    const map={equipped_title:'equippedTitle',equipped_frame:'equippedFrame',equipped_avatar:'equippedAvatar',equipped_theme:'equippedTheme',equipped_badge:'equippedBadge',equipped_banner:'equippedBanner',equipped_skin:'equippedSkin',equipped_weapon_skin:'equippedWeaponSkin',equipped_helmet:'equippedHelmet',equipped_backpack:'equippedBackpack'};
+    const map={equipped_title:'equippedTitle',equipped_frame:'equippedFrame',equipped_avatar:'equippedAvatar',equipped_theme:'equippedTheme',equipped_badge:'equippedBadge',equipped_banner:'equippedBanner',equipped_skin:'equippedSkin',equipped_weapon_skin:'equippedWeaponSkin',equipped_helmet:'equippedHelmet',equipped_vest:'equippedVest',equipped_backpack:'equippedBackpack'};
     for(const [remote,local] of Object.entries(map))if(user[remote])state[local]=user[remote];
     if(Array.isArray(user.inventory)){state.owned=[...new Set([...(state.owned||[]),...user.inventory])];}
     save();render();document.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{source:'supabase-sync',userId:user.id}}));return true;
