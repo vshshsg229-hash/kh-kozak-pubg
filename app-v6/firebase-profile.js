@@ -34,6 +34,14 @@
       }
       return { uid: user.uid, ...existing };
     }
+    if (user.phoneNumber && window.firebase?.app && typeof window.firebase.app().functions === 'function') {
+      const migrate = window.firebase.app().functions('us-central1').httpsCallable('migrateLegacyProfileByPhone');
+      const result = await migrate({});
+      if (result.data?.migrated) {
+        const migrated = await ref.get();
+        if (migrated.exists) return { uid: user.uid, ...migrated.data() };
+      }
+    }
     const profile = {
       uid: user.uid,
       username: String(username || user.displayName || (user.phoneNumber ? 'Player' + user.phoneNumber.slice(-4) : (user.email || 'player').split('@')[0])).slice(0, 32),
