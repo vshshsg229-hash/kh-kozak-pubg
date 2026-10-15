@@ -509,7 +509,7 @@ Deno.serve(async (req: Request) => {
       if (password.length < 8 || password.length > 72) return response({ error: "Пароль має містити від 8 до 72 символів." }, 400, origin);
       if (username.length < 3) return response({ error: "Ігровий нік має містити щонайменше 3 символи." }, 400, origin);
       const auth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
-      const { data, error } = await auth.auth.signUp({ email, password, options: { data: { username } } });
+      const { data, error } = await auth.auth.signUp({ email, password, options: { data: { username }, emailRedirectTo: "https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/" } });
       if (error) return response({ error: error.message }, 400, origin);
       if (!data.user) return response({ error: "Supabase не повернув користувача. Перевір налаштування Auth." }, 500, origin);
       if (!data.session) {
