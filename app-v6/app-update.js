@@ -1,14 +1,12 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '16.4.0';
+  const WEB_VERSION = '16.5.0';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
   const isElectron = /Electron/i.test(navigator.userAgent);
-  const params = new URLSearchParams(window.location.search);
-  const DESKTOP_VERSION = params.get('desktopVersion') || '0.0.0';
-  const CURRENT_VERSION = isElectron ? DESKTOP_VERSION : WEB_VERSION;
-  let banner, message, action, closeButton, latestVersion = '';
+  const CURRENT_VERSION = isElectron ? new URLSearchParams(location.search).get('desktopVersion') || '0.0.0' : WEB_VERSION;
+  let banner, message, action, latestVersion = '';
   const compare = (a, b) => {
     const aa = String(a).split('.').map(n => Number(n) || 0);
     const bb = String(b).split('.').map(n => Number(n) || 0);
@@ -28,46 +26,40 @@
     document.body.appendChild(banner);
     message = banner.querySelector('[data-update-message]');
     action = banner.querySelector('[data-update-action]');
-    closeButton = banner.querySelector('.kh-update-close');
-    closeButton.addEventListener('click', () => banner.classList.add('is-dismissed'));
+    banner.querySelector('.kh-update-close').addEventListener('click', () => banner.classList.add('is-dismissed'));
     action.addEventListener('click', async event => {
       if (isElectron) {
         event.preventDefault();
-        action.textContent = 'ВІДКРИВАЄМО ЗАВАНТАЖЕННЯ…';
-        window.open(RELEASE_URL(latestVersion), '_blank', 'noopener,noreferrer');
+        window.open(RELEASE_URL(latestVersion || '9.5.7'), '_blank', 'noopener,noreferrer');
         return;
       }
       event.preventDefault();
-      action.textContent = 'ОНОВЛЮЄМО…';
+      action.textContent = 'ОЧИЩАЄМО КЕШ…';
       action.setAttribute('aria-busy', 'true');
       action.style.pointerEvents = 'none';
-      const finish = version => window.location.replace(APP_URL + '?v=' + encodeURIComponent(version || latestVersion || WEB_VERSION) + '&updated=' + Date.now());
+      const targetVersion = latestVersion || WEB_VERSION;
       try {
-        let versionToLoad = latestVersion || WEB_VERSION;
-        try {
-          const fresh = await fetch(VERSION_URL + '?refresh=' + Date.now(), { cache: 'no-store' });
-          if (fresh.ok) {
-            const data = await fresh.json();
-            if (typeof data?.version === 'string') versionToLoad = data.version;
-          }
-        } catch (_) {}
-        if ('serviceWorker' in navigator) {
-          const reg = await navigator.serviceWorker.getRegistration('./');
-          if (reg) {
-            const controllerChanged = new Promise(resolve => {
-              const done = () => resolve();
-              navigator.serviceWorker.addEventListener('controllerchange', done, { once: true });
-              window.setTimeout(done, 5000);
-            });
-            await reg.update();
-            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-            await controllerChanged;
-          }
+        // Clear this app's old service-worker caches so stale scripts cannot be restored.
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)));
         }
-        finish(versionToLoad);
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(registrations.map(async reg => {
+            try { await reg.update(); } catch (_) {}
+            try { if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (_) {}
+            try { await reg.unregister(); } catch (_) {}
+          }));
+        }
       } catch (_) {
-        finish(latestVersion || WEB_VERSION);
+        // Continue with a cache-busted reload even if an embedded browser blocks cache APIs.
       }
+      const url = new URL(APP_URL, location.href);
+      url.searchParams.set('v', targetVersion);
+      url.searchParams.set('updated', String(Date.now()));
+      url.searchParams.set('refresh', '1');
+      location.replace(url.toString());
     });
   }
   function showUpdate(version) {
@@ -75,7 +67,7 @@
     buildBanner();
     message.textContent = isElectron
       ? 'Windows: версія ' + version + ' готова. Завантаж новий інсталятор і встанови поверх старої програми.'
-      : 'Версія ' + version + ' готова. Натисни, щоб перезавантажити застосунок без старого кешу.';
+      : 'Версія ' + version + ' готова. Натисни, щоб очистити старий кеш і завантажити свіжу версію.';
     action.href = isElectron ? RELEASE_URL(version) : APP_URL + '?v=' + encodeURIComponent(version);
     action.target = isElectron ? '_blank' : '_self';
     banner.classList.remove('is-dismissed');
@@ -93,9 +85,7 @@
         banner.classList.remove('is-visible');
       }
     } catch (_) {
-      if (banner) {
-        message.textContent = 'Не вдалося перевірити версію. Перевір інтернет і натисни перезавантажити сторінку.';
-      }
+      if (banner && message) message.textContent = 'Не вдалося перевірити версію. Перевір інтернет і спробуй ще раз.';
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', checkVersion, { once: true });
