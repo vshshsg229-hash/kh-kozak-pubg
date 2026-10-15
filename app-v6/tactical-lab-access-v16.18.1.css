@@ -1,0 +1,9 @@
+/* Persistent quick access to the Tactical Lab */
+.kh-tl-quick-access{position:fixed;right:18px;bottom:22px;z-index:1200;display:flex;align-items:center;gap:10px;min-height:58px;padding:9px 15px;border:1px solid #f6d45b;border-radius:15px;background:linear-gradient(135deg,#202b37f5,#0b111bf5);color:#f7f8fa;box-shadow:0 10px 35px #0008,0 0 0 1px #f6d45b20;font:inherit;text-align:left;cursor:pointer;backdrop-filter:blur(12px);transition:transform .18s ease,box-shadow .18s ease}
+.kh-tl-quick-access:hover,.kh-tl-quick-access:focus-visible{transform:translateY(-3px);box-shadow:0 14px 38px #0009,0 0 22px #f6d45b35;outline:2px solid #f6d45b;outline-offset:3px}
+.kh-tl-qa-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:#f6d45b;color:#10151b;font-size:20px}
+.kh-tl-qa-copy{display:grid;gap:3px}.kh-tl-qa-copy strong{font-size:.77rem;letter-spacing:.09em;color:#f6d45b}.kh-tl-qa-copy small{font-size:.68rem;color:#c2ccd7}.kh-tl-qa-arrow{font-size:1.15rem;color:#f6d45b;margin-left:4px}
+#khTacticalLab{scroll-margin-top:20px}.tl-quick-focus{animation:tlQuickFocus 1.25s ease-out}
+@keyframes tlQuickFocus{0%{box-shadow:0 0 0 3px #f6d45b,0 0 35px #f6d45b55}100%{box-shadow:none}}
+@media(max-width:700px){.kh-tl-quick-access{right:10px;bottom:calc(78px + env(safe-area-inset-bottom));min-height:50px;gap:8px;padding:7px 10px;border-radius:13px;max-width:calc(100vw - 20px)}.kh-tl-qa-icon{width:34px;height:34px;font-size:18px}.kh-tl-qa-copy strong{font-size:.7rem}.kh-tl-qa-copy small{font-size:.61rem}.kh-tl-qa-arrow{font-size:1rem}}
+@media(prefers-reduced-motion:reduce){.kh-tl-quick-access{transition:none}.tl-quick-focus{animation:none}}
