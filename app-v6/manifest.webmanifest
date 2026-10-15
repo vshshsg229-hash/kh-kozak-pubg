@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.1.0",
+  "name": "KH么Kozak Battle Hub 16.2.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.1.0: оновлений адаптивний інтерфейс для ПК, телефону й планшета, ігри, тренування, місії та нагороди.",
+  "description": "KH么Kozak Battle Hub 16.2.0: оновлений адаптивний інтерфейс для ПК, телефону й планшета, ігри, тренування, місії та нагороди.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
