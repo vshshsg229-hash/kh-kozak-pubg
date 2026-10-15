@@ -12,10 +12,6 @@
   let recaptchaWidgetId = null;
   let linkingExistingAccount = false;
 
-  function readLocalProgress() {
-    try { return JSON.parse(localStorage.getItem('khkozak_hub_v6') || '{}'); }
-    catch (_) { return {}; }
-  }
   function message(text, error = false) {
     const el = $('onlineAccountMessage');
     if (el) {
@@ -143,7 +139,7 @@
       // Firestore profile, coins, XP, achievements and inventory remain attached.
       const profileName = username.length >= 3 ? username : (user.displayName || ('Player' + (user.phoneNumber || '').slice(-4)));
       if (window.KHFirebaseProfile) {
-        await window.KHFirebaseProfile.createIfMissing(profileName, readLocalProgress());
+        await window.KHFirebaseProfile.createIfMissing(profileName);
       }
       confirmationResult = null;
       const sms = $('onlineSmsCode');
