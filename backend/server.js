@@ -36,6 +36,7 @@ const AI_API_KEY = process.env.AI_API_KEY || "";
 const AI_BASE_URL = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
 const AI_MODEL = process.env.AI_MODEL || "gpt-4o-mini";
 const CREATOR_ADMIN_USERNAME = (process.env.CREATOR_ADMIN_USERNAME || "KH么Kozak").trim();
+const CREATOR_ADMIN_USERNAME = (process.env.CREATOR_ADMIN_USERNAME || "KH么Kozak").trim();
 
 if (!DATABASE_URL) throw new Error("DATABASE_URL is required. Create a PostgreSQL database and set DATABASE_URL.");
 if (!JWT_SECRET || JWT_SECRET.length < 32) throw new Error("JWT_SECRET is required and must be at least 32 characters.");
@@ -119,6 +120,17 @@ async function ensureSchema() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
     CREATE INDEX IF NOT EXISTS community_messages_friendship_idx ON community_messages (friendship_id, created_at);
+    CREATE TABLE IF NOT EXISTS creator_videos (
+      id BIGSERIAL PRIMARY KEY,
+      owner_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title VARCHAR(180) NOT NULL,
+      caption VARCHAR(2200) NOT NULL DEFAULT '',
+      mime_type VARCHAR(80) NOT NULL,
+      file_size BIGINT NOT NULL CHECK (file_size > 0 AND file_size <= 26214400),
+      video_data BYTEA NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS creator_videos_created_idx ON creator_videos (created_at DESC);
     CREATE TABLE IF NOT EXISTS creator_videos (
       id BIGSERIAL PRIMARY KEY,
       owner_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
