@@ -42,6 +42,7 @@ jobs:
           node --check app-v6/battle-evolution.js
           node --check app-v6/character-lobby.js
           node --check app-v6/app-update.js
+          node --check app-v6/app-management.js
           node --check app-v6/battle-world.js
           node --check app-v6/creator-studio.js
           node --check app-v6/creator-editor.js
@@ -131,7 +132,15 @@ jobs:
           }
           assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
           for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
-          assert(html.includes('games-3d.js?v=1.3.1'), 'HTML loads current 3D engine version with ammo update');
+          assert(html.includes('games-3d.js?v=1.4.0'), 'HTML loads the expanded 50-mode 3D engine');
+          const arcade = fs.readFileSync(path.join(root, 'arcade-100.js'), 'utf8');
+          assert(arcade.includes('names.length<1000') && arcade.includes("count.textContent='1000'"), 'Arcade catalog expands to 1000 mini-game variants');
+          assert(arcade.includes('kh100Random'), 'Arcade includes random game launch');
+          assert(threeD.includes('50 3D РЕЖИМІВ') && threeD.includes('const extraModeSpecs='), '3D Arena advertises the expanded catalog');
+          const extraModeMatch = threeD.match(/const extraModeSpecs=(\\[[\\s\\S]*?\\]);\\nmodes\\.push/);
+          assert(extraModeMatch && JSON.parse(extraModeMatch[1]).length === 43, '3D Arena has exactly 50 modes including 7 base modes');
+          const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
+          assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
           // Battle Evolution is intentionally not loaded in the current approved UI.
           const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
