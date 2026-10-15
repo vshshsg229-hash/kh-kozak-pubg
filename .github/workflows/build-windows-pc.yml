@@ -35,6 +35,9 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package.json
 
+      - name: Check app update notifier JavaScript syntax
+        run: node --check app-v6/app-update.js
+
       - name: Check PC companion JavaScript syntax
         run: node --check app-v6/pc-companion.js
 
