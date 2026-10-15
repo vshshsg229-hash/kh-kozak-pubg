@@ -1,0 +1,38 @@
+name: Check Supabase Hub API
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "app-v6/app.js"
+      - "app-v6/index.html"
+      - "app-v6/sw.js"
+      - ".github/workflows/check-supabase-api.yml"
+  push:
+    branches: [supabase-backend-switch-staging-2026-10-15]
+    paths:
+      - ".github/workflows/check-supabase-api.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check deployed Supabase API and database
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://xacqretciujzrcqjvvgz.supabase.co/functions/v1/hub-api/api/health"
+          code=$(curl --silent --show-error --location --max-time 25 --output /tmp/health.json --write-out "%{http_code}" "$url")
+          echo "HTTP status: $code"
+          cat /tmp/health.json
+          echo
+          if [ "$code" != "200" ]; then
+            echo "::error::Supabase Hub API health check returned HTTP $code."
+            exit 1
+          fi
+          node -e 'const fs=require("fs");const d=JSON.parse(fs.readFileSync("/tmp/health.json","utf8"));if(d.ok!==true||d.database!=="connected"){console.error("Supabase API is not ready:",d);process.exit(1)}console.log("Supabase API and database are healthy. Version:",d.version||"unknown")'
+
