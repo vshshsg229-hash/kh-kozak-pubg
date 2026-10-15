@@ -25,6 +25,19 @@ const ALLOWED_GAMES = new Set([
 
 const REWARD = Object.freeze({ coins: 8, points: 5, xp: 10 });
 
+function kyivDateKey(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Kyiv', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(date);
+  const part = Object.fromEntries(parts.map(p => [p.type, p.value]));
+  return part.year + '-' + part.month + '-' + part.day;
+}
+function previousDateKey(key) {
+  const [year, month, day] = key.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, day - 1)).toISOString().slice(0, 10);
+}
+
+
 exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
   if (!request.auth) throw new HttpsError('unauthenticated', 'Спочатку увійди через Firebase.');
   const uid = request.auth.uid;
@@ -48,7 +61,8 @@ exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (r
     if (lastGameAt && now - lastGameAt < 3000) {
       throw new HttpsError('resource-exhausted', 'Зачекай кілька секунд перед наступною нагородою.');
     }
-    const dailyBonus = user.dailyBonusDate !== new Date(now).toISOString().slice(0, 10);
+    const today = kyivDateKey(new Date(now));
+    const dailyBonus = user.dailyBonusDate !== today;
     const reward = {
       coins: REWARD.coins + (dailyBonus ? 15 : 0),
       points: REWARD.points + (dailyBonus ? 10 : 0),
@@ -63,10 +77,10 @@ exports.finishGame = onCall({ region: REGION, enforceAppCheck: false }, async (r
       lastGameAtMs: now,
       updatedAt: FieldValue.serverTimestamp()
     };
-    if (dailyBonus) updated.dailyBonusDate = new Date(now).toISOString().slice(0, 10);
+    if (dailyBonus) updated.dailyBonusDate = today;
     tx.create(eventRef, { game, reward, createdAt: FieldValue.serverTimestamp() });
     tx.update(userRef, updated);
-    return { user: { id: uid, username: String(user.username || 'Player').slice(0, 32), coins: updated.coins, points: updated.points, xp: updated.xp, played: updated.played, games: updated.games }, reward, dailyBonus };
+    return { user: { id: uid, username: String(user.username || 'Player').slice(0, 32), coins: updated.coins, points: updated.points, xp: updated.xp, played: updated.played, games: updated.games, dailyClaimDate: user.dailyClaimDate || '', lastDailyDate: user.lastDailyDate || '', dailyStreak: Number(user.dailyStreak || 0) }, reward, dailyBonus };
   });
   return result;
 });
@@ -232,4 +246,41 @@ exports.updateMyProfile = onCall({ region: REGION }, async (request) => {
   await ref.update(patch);
   const updated = await ref.get();
   return { profile: publicPlayer(uid, updated.data()), bio: String(updated.data().bio || ''), avatar: String(updated.data().avatar || '') };
+});
+
+exports.claimDailyReward = onCall({ region: REGION }, async (request) => {
+  const uid = requireAuth(request);
+  const userRef = db.collection('users').doc(uid);
+  const now = new Date();
+  const today = kyivDateKey(now);
+  const yesterday = previousDateKey(today);
+  return db.runTransaction(async tx => {
+    const snap = await tx.get(userRef);
+    if (!snap.exists) throw new HttpsError('failed-precondition', 'Профіль не знайдено. Перезайди в акаунт.');
+    const user = snap.data();
+    if (user.dailyClaimDate === today) throw new HttpsError('already-exists', 'Сьогоднішній дроп уже забрано.');
+    const streak = user.lastDailyDate === yesterday ? Number(user.dailyStreak || 0) + 1 : 1;
+    let coins = 25, points = 20, xp = 25;
+    if (streak === 3) { coins += 50; xp += 40; }
+    if (streak === 7) { coins += 150; points += 100; xp += 100; }
+    const updated = {
+      coins: Number(user.coins || 0) + coins,
+      points: Number(user.points || 0) + points,
+      xp: Number(user.xp || 0) + xp,
+      dailyClaimDate: today,
+      lastDailyDate: today,
+      dailyStreak: streak,
+      updatedAt: FieldValue.serverTimestamp()
+    };
+    tx.update(userRef, updated);
+    return {
+      user: {
+        id: uid, username: String(user.username || 'Player').slice(0, 32),
+        coins: updated.coins, points: updated.points, xp: updated.xp,
+        played: Number(user.played || 0), games: user.games || {},
+        dailyClaimDate: today, lastDailyDate: today, dailyStreak: streak
+      },
+      reward: { coins, points, xp }, streak
+    };
+  });
 });
