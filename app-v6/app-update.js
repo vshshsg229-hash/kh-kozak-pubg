@@ -1,10 +1,13 @@
 (() => {
   'use strict';
-  const CURRENT_VERSION = '9.5.5';
+  const WEB_VERSION = '9.5.6';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
-  const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v' + version;
+  const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v' + encodeURIComponent(version);
   const isElectron = /Electron/i.test(navigator.userAgent);
+  const params = new URLSearchParams(window.location.search);
+  const DESKTOP_VERSION = params.get('desktopVersion') || '0.0.0';
+  const CURRENT_VERSION = isElectron ? DESKTOP_VERSION : WEB_VERSION;
   let banner, message, action, closeButton, latestVersion = '';
   const compare = (a, b) => {
     const aa = String(a).split('.').map(n => Number(n) || 0);
@@ -21,7 +24,7 @@
     banner.className = 'kh-update-banner';
     banner.setAttribute('role', 'status');
     banner.setAttribute('aria-live', 'polite');
-    banner.innerHTML = '<span class="kh-update-icon" aria-hidden="true">↻</span><span class="kh-update-copy"><strong>Доступне оновлення KH么Kozak</strong><small data-update-message>Нова версія готова.</small></span><a class="kh-update-action" data-update-action href="#" rel="noopener noreferrer">ОНОВИТИ ДОДАТОК</a><button class="kh-update-close" type="button" aria-label="Закрити сповіщення">×</button>';
+    banner.innerHTML = '<span class="kh-update-icon" aria-hidden="true">↻</span><span class="kh-update-copy"><strong>Доступне оновлення KH么Kozak</strong><small data-update-message>Перевіряємо нову версію…</small></span><a class="kh-update-action" data-update-action href="#" rel="noopener noreferrer">ОНОВИТИ ДОДАТОК</a><button class="kh-update-close" type="button" aria-label="Закрити сповіщення">×</button>';
     document.body.appendChild(banner);
     message = banner.querySelector('[data-update-message]');
     action = banner.querySelector('[data-update-action]');
@@ -29,8 +32,9 @@
     closeButton.addEventListener('click', () => banner.classList.add('is-dismissed'));
     action.addEventListener('click', async event => {
       if (isElectron) {
-        action.href = RELEASE_URL(latestVersion);
-        action.target = '_blank';
+        event.preventDefault();
+        action.textContent = 'ВІДКРИВАЄМО ЗАВАНТАЖЕННЯ…';
+        window.open(RELEASE_URL(latestVersion), '_blank', 'noopener,noreferrer');
         return;
       }
       event.preventDefault();
@@ -39,25 +43,25 @@
       try {
         const reg = await navigator.serviceWorker?.getRegistration('./');
         if (reg) {
-          await reg.update().catch(() => {});
+          await reg.update();
           if (reg.waiting) {
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             await new Promise(resolve => {
-              const timeout = setTimeout(resolve, 3500);
+              const timeout = setTimeout(resolve, 4000);
               navigator.serviceWorker.addEventListener('controllerchange', () => { clearTimeout(timeout); resolve(); }, { once: true });
             });
           }
         }
       } catch (_) {}
-      window.location.replace(APP_URL + '?v=' + encodeURIComponent(latestVersion) + '&updated=1');
+      window.location.replace(APP_URL + '?v=' + encodeURIComponent(latestVersion) + '&updated=' + Date.now());
     });
   }
   function showUpdate(version) {
     latestVersion = version;
     buildBanner();
     message.textContent = isElectron
-      ? 'Версія ' + version + ' готова для Windows. Завантаж інсталятор і запусти його.'
-      : 'Версія ' + version + ' готова. Натисни, щоб завантажити та застосувати оновлення.';
+      ? 'Windows: версія ' + version + ' готова. Завантаж новий інсталятор і встанови поверх старої програми.'
+      : 'Версія ' + version + ' готова. Натисни, щоб перезавантажити застосунок без старого кешу.';
     action.href = isElectron ? RELEASE_URL(version) : APP_URL + '?v=' + encodeURIComponent(version);
     action.target = isElectron ? '_blank' : '_self';
     banner.classList.remove('is-dismissed');
@@ -65,17 +69,22 @@
   }
   async function checkVersion() {
     try {
-      const response = await fetch(VERSION_URL + '?check=' + Date.now(), { cache: 'no-store', mode: 'cors' });
-      if (!response.ok) return;
+      const response = await fetch(VERSION_URL + '?check=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Version endpoint returned ' + response.status);
       const data = await response.json();
       const targetVersion = isElectron ? data?.windowsVersion : data?.version;
-      if (typeof targetVersion === 'string' && compare(targetVersion, CURRENT_VERSION) > 0) showUpdate(targetVersion);
-      else if (banner) banner.classList.remove('is-visible');
+      if (typeof targetVersion === 'string' && compare(targetVersion, CURRENT_VERSION) > 0) {
+        showUpdate(targetVersion);
+      } else if (banner) {
+        banner.classList.remove('is-visible');
+      }
     } catch (_) {
-      // Offline mode is supported; the updater stays hidden until the version endpoint is reachable.
+      if (banner) {
+        message.textContent = 'Не вдалося перевірити версію. Перевір інтернет і натисни перезавантажити сторінку.';
+      }
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', checkVersion, { once: true });
   else checkVersion();
-  window.setInterval(checkVersion, 5 * 60 * 1000);
+  window.setInterval(checkVersion, 2 * 60 * 1000);
 })();
