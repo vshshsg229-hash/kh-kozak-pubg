@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.5.0",
+  "version": "16.6.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Added a cyberpunk neon-cyan and magenta visual theme with a dark futuristic background. Approved mobile menu structure and button order remain unchanged."
+  "releaseNotes": "Cyberpunk visual refresh: deeper dark background, stronger cyan/magenta neon glow, futuristic grid and illuminated card accents. Mobile navigation structure, labels and button order preserved."
 }
