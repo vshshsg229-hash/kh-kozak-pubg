@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.13.0",
+  "version": "16.14.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Battle Hub v16.13: added Supabase phone/email sign-in in the existing profile tab, persistent sessions, remote profile hydration, server-credited game rewards, and server-side cosmetic purchase/equip integration. Navigation remains unchanged."
+  "releaseNotes": "Battle Hub v16.14: integrated Supabase daily rewards into online profile, fixed server-backed purchases/equipment for fighter helmet and backpack, strengthened cache/update wiring, and preserved approved navigation."
 }
