@@ -1340,3 +1340,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 
 /* 8.66.0 — visible fallback when TikTok blocks creator embeds */
 .kh-tiktok-embed-fallback{margin:12px auto;padding:16px;border:1px dashed var(--line,#343b46);border-radius:10px;background:#111720;color:var(--text,#f4f6fa);text-align:center;max-width:560px}.kh-tiktok-embed-fallback p{font-size:13px;opacity:.8}.kh-tiktok-embed-fallback a{display:inline-block;margin-top:8px;color:#ffd447;font-weight:700;text-decoration:underline}
+
+
+/* Official PUBG download links: PC and Mobile are intentionally separated. */
+.official-game-links{margin:20px 0 6px;padding:18px;border:1px solid #343c43;background:linear-gradient(135deg,#111820ee,#101316ee);border-radius:14px}
+.official-game-links h2{margin:0 0 6px;color:var(--yellow,#f5c842);font-size:14px;letter-spacing:1.4px}
+.official-game-links>p{margin:0 0 13px;color:#aeb8c1;font-size:11px;line-height:1.5}
+.official-game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.official-game-card{display:flex;flex-direction:column;gap:9px;min-width:0;padding:16px;border:1px solid #45505a;border-radius:10px;background:#171d23;color:#f4f6f8;text-decoration:none;transition:transform .18s,border-color .18s,background .18s}
+.official-game-card:hover{transform:translateY(-2px);border-color:var(--yellow,#f5c842);background:#1d252d}
+.official-game-pc{border-top:3px solid #d6a640}
+.official-game-mobile{border-top:3px solid #48b9a2}
+.official-game-platform{font-size:9px;font-weight:900;letter-spacing:1px;color:#c4cbd1}
+.official-game-card strong{font-size:16px;line-height:1.25}
+.official-game-card small{color:#aeb8c1;font-size:11px;line-height:1.5}
+.official-game-cta{margin-top:4px;color:var(--yellow,#f5c842);font-size:10px;font-weight:900;letter-spacing:.7px}
+@media(max-width:560px){.official-game-links{padding:13px}.official-game-grid{grid-template-columns:1fr}.official-game-card{padding:14px}.official-game-card strong{font-size:15px}}
