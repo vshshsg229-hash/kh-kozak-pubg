@@ -82,3 +82,59 @@
 
 /* This shortcut group now lives lower on the home page, near the game library. */
 .pubg-quick-links-bottom{margin:24px 0 16px!important;border:1px solid #303b47!important;border-radius:14px!important;background:#080d14!important}
+
+
+/* Mobile-first ergonomics for the always-visible PUBG shortcuts */
+.pubg-quick-links{
+  align-items:stretch!important;
+}
+.pubg-quick-link{
+  min-height:60px!important;
+  line-height:1.35!important;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.pubg-quick-link span{
+  display:block!important;
+  min-width:0!important;
+  overflow-wrap:anywhere!important;
+}
+@media(max-width:560px){
+  .pubg-quick-links{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+    padding:12px!important;
+  }
+  .pubg-quick-link{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:center!important;
+    justify-content:initial!important;
+    gap:10px!important;
+    min-height:68px!important;
+    padding:13px 14px!important;
+    border-width:1px!important;
+    border-radius:14px!important;
+    font-size:14px!important;
+    line-height:1.35!important;
+  }
+  .pubg-quick-link b{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-height:34px!important;
+    padding:7px 9px!important;
+    border:1px solid currentColor!important;
+    border-radius:9px!important;
+    font-size:10px!important;
+    letter-spacing:.2px!important;
+  }
+}
+@media(max-width:360px){
+  .pubg-quick-link{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:8px!important;
+    min-height:72px!important;
+  }
+  .pubg-quick-link b{justify-self:start!important}
+}
