@@ -311,8 +311,8 @@ exports.migrateLegacyProfileByPhone = onCall({
   const headers = { apikey: key, Authorization: 'Bearer ' + key };
 
   let legacyUser = null;
-  for (let page = 1; page <= 100; page++) {
   let reachedSearchLimit = true;
+  for (let page = 1; page <= 100; page++) {
     const response = await fetch(base + '/auth/v1/admin/users?page=' + page + '&per_page=1000', { headers });
     if (!response.ok) throw new HttpsError('unavailable', 'Не вдалося перевірити старий акаунт. Прогрес не змінено.');
     const payload = await response.json();
