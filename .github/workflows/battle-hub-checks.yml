@@ -137,7 +137,7 @@ jobs:
           assert(arcade.includes('names.length<1000') && arcade.includes("count.textContent='1000'"), 'Arcade catalog expands to 1000 mini-game variants');
           assert(arcade.includes('kh100Random'), 'Arcade includes random game launch');
           assert(threeD.includes('50 3D РЕЖИМІВ') && threeD.includes('const extraModeSpecs='), '3D Arena advertises the expanded catalog');
-          const extraModeMatch = threeD.match(/const extraModeSpecs=(\\[[\\s\\S]*?\\]);\\nmodes\\.push/);
+          const extraModeMatch = threeD.match(/const extraModeSpecs=(\[[\s\S]*?\]);\nmodes\.push/);
           assert(extraModeMatch && JSON.parse(extraModeMatch[1]).length === 43, '3D Arena has exactly 50 modes including 7 base modes');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
