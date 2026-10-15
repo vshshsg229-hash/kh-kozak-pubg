@@ -1,0 +1,129 @@
+/* KH么Kozak Battle Hub 16.5 — CYBERPUNK VISUAL THEME
+   Theme-only layer: preserve the approved navigation markup, order, labels, sizing and behavior. */
+:root{
+  color-scheme:dark;
+  --bg:#060812;
+  --panel:#0d1220;
+  --panel2:#111a2b;
+  --line:#26364f;
+  --text:#edfaff;
+  --muted:#91a8c1;
+  --yellow:#b6ff35;
+  --accent:#00f5ff;
+  --cyber-cyan:#00f5ff;
+  --cyber-pink:#ff3bd4;
+  --cyber-lime:#c6ff4d;
+  --cyber-blue:#557dff;
+}
+html{background:#050711!important}
+body{
+  color:var(--text)!important;
+  background:
+    radial-gradient(ellipse at 12% 5%,rgba(0,245,255,.13),transparent 34%),
+    radial-gradient(ellipse at 88% 12%,rgba(255,59,212,.11),transparent 31%),
+    radial-gradient(ellipse at 50% 100%,rgba(85,125,255,.12),transparent 43%),
+    linear-gradient(135deg,#050711 0%,#080d1b 48%,#080713 100%)!important;
+  background-attachment:fixed!important;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(0,245,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.035) 1px,transparent 1px);
+  background-size:36px 36px;
+  mask-image:linear-gradient(to bottom,black,transparent 88%);
+}
+::selection{background:rgba(0,245,255,.3);color:#fff}
+a{color:#7cfaff}
+a:hover{color:#ff8bea}
+.app-shell{background:transparent!important}
+.main{background:transparent!important}
+.sidebar{
+  background:linear-gradient(180deg,rgba(8,15,29,.98),rgba(8,9,21,.98))!important;
+  border-color:rgba(0,245,255,.23)!important;
+  box-shadow:8px 0 34px rgba(0,0,0,.24),1px 0 0 rgba(0,245,255,.08)!important;
+}
+.brand{border-color:rgba(0,245,255,.18)!important}
+.brand-mark{
+  color:#07101a!important;
+  background:linear-gradient(135deg,var(--cyber-cyan),var(--cyber-pink))!important;
+  box-shadow:0 0 22px rgba(0,245,255,.25)!important;
+}
+.brand b{color:#f4fdff!important;text-shadow:0 0 16px rgba(0,245,255,.2)}
+.brand small{color:#9eb5d2!important}
+.nav-group-title{color:#6e8ba7!important}
+.sidebar .nav-item.active{
+  border-color:rgba(0,245,255,.32)!important;
+  box-shadow:inset 3px 0 var(--cyber-cyan),0 0 18px rgba(0,245,255,.07)!important;
+  background:linear-gradient(90deg,rgba(0,245,255,.12),rgba(255,59,212,.045))!important;
+}
+.sidebar .nav-item.active>span:first-child,.sidebar .nav-item.active .nav-label{color:#b9fbff!important}
+.panel,.card,.stat-card,.game-card,.mission-card,.reward-card,.event-card,.arsenal-card,.tactical-hq-card,.creator-card,.profile-card,.shop-card,.pass-card,.modal-content,.game-modal,.section-card{
+  background:linear-gradient(145deg,rgba(17,27,46,.94),rgba(10,15,29,.97))!important;
+  border-color:rgba(77,132,170,.32)!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+.panel:hover,.card:hover,.game-card:hover,.mission-card:hover,.event-card:hover,.reward-card:hover{
+  border-color:rgba(0,245,255,.42)!important;
+  box-shadow:0 12px 35px rgba(0,0,0,.28),0 0 22px rgba(0,245,255,.06)!important;
+}
+h1,h2,h3,h4,.section-title,.section-heading h2{
+  color:#f0fbff!important;
+  text-shadow:0 0 18px rgba(0,245,255,.075);
+}
+.eyebrow,.muted,.subtitle,.description,.helper-text{color:#91a8c1}
+button,.btn,.button,.action-btn,.primary-btn,.secondary-btn,input[type=button],input[type=submit]{
+  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+button:not(.nav-item):not(.mobile-nav button):not(.modal-close),
+.btn,.button,.action-btn,.primary-btn,.secondary-btn,input[type=button],input[type=submit]{
+  border-color:rgba(0,245,255,.28);
+}
+button:not(.nav-item):not(.mobile-nav button):not(.modal-close):hover,
+.btn:hover,.button:hover,.action-btn:hover,.primary-btn:hover,.secondary-btn:hover{
+  border-color:rgba(0,245,255,.7)!important;
+  box-shadow:0 0 18px rgba(0,245,255,.13)!important;
+}
+button.primary,.btn-primary,.primary-btn,.button-primary,.action-btn.primary{
+  background:linear-gradient(110deg,rgba(0,245,255,.17),rgba(85,125,255,.2))!important;
+  border-color:rgba(0,245,255,.52)!important;color:#e9fdff!important;
+}
+input,select,textarea,.search-input{
+  color:#edfbff!important;background:rgba(5,11,23,.88)!important;
+  border-color:rgba(82,132,172,.42)!important;
+}
+input:focus,select:focus,textarea:focus{
+  outline:1px solid rgba(0,245,255,.75)!important;
+  box-shadow:0 0 0 3px rgba(0,245,255,.09)!important;
+}
+hr,.divider{border-color:rgba(0,245,255,.16)!important}
+.progress,.progress-track,.xp-track,.meter-track{background:#1a263c!important}
+.progress-bar,.xp-fill,.meter-fill{background:linear-gradient(90deg,var(--cyber-cyan),var(--cyber-blue),var(--cyber-pink))!important;box-shadow:0 0 12px rgba(0,245,255,.22)}
+.badge,.tag,.chip,.pill{border-color:rgba(0,245,255,.28)!important}
+.mobile-nav{
+  background:linear-gradient(180deg,rgba(12,19,35,.98),rgba(6,10,22,.99))!important;
+  border-color:rgba(0,245,255,.32)!important;
+  box-shadow:0 -7px 28px rgba(0,0,0,.35),0 0 22px rgba(0,245,255,.06)!important;
+  backdrop-filter:blur(16px)!important;
+}
+.mobile-nav button.active{
+  border-color:rgba(0,245,255,.4)!important;
+  background:linear-gradient(180deg,rgba(0,245,255,.13),rgba(255,59,212,.06))!important;
+  color:#b8fbff!important;
+}
+.mobile-nav button.active span{color:var(--cyber-cyan)!important}
+.modal-backdrop,.mobile-menu-backdrop{background:rgba(2,4,12,.82)!important}
+.toast,.kh-update-banner,.desktop-command{
+  background:linear-gradient(145deg,#111b30,#090f20)!important;
+  border-color:rgba(0,245,255,.38)!important;
+  box-shadow:0 0 30px rgba(0,245,255,.1)!important;
+}
+.footer{border-color:rgba(0,245,255,.17)!important;color:#7f98b4!important}
+.footer b{color:var(--cyber-cyan)!important;text-shadow:0 0 10px rgba(0,245,255,.6)}
+@media(prefers-reduced-motion:no-preference){
+  .brand-mark{animation:cyber-pulse 4s ease-in-out infinite}
+  @keyframes cyber-pulse{0%,100%{box-shadow:0 0 14px rgba(0,245,255,.2)}50%{box-shadow:0 0 25px rgba(255,59,212,.24)}}
+}
+@media(max-width:720px){
+  body{background-attachment:scroll!important}
+  body:before{background-size:28px 28px;opacity:.65}
+}
