@@ -24,8 +24,8 @@ function accountCard(){
  const profile=$('#tab-profile');if(!profile)return;
  let card=$('#khOnlineAccount');if(!card){card=document.createElement('section');card.id='khOnlineAccount';card.className='kh-online-account';card.innerHTML='<div class="kh-online-account-head"><span class="kh-online-account-icon">◈</span><div><small>KH么KOZAK · SUPABASE</small><h3>ОНЛАЙН-ПРОФІЛЬ</h3><p>Увійди, щоб зберігати прогрес, монети та інвентар між телефоном і ПК.</p></div><span class="kh-online-pill" id="khOnlineStatePill">НЕ ВИКОНАНО ВХІД</span></div><div id="khOnlineAccountBody"><div class="kh-online-fields"><label>Номер телефону або email<input id="khOnlineIdentifier" autocomplete="username" placeholder="+380501234567 або email"></label><label>Пароль<input id="khOnlinePassword" type="password" autocomplete="current-password" minlength="8" maxlength="72" placeholder="Щонайменше 8 символів"></label></div><div class="kh-online-register-fields" id="khOnlineRegisterFields" hidden><label>Ігровий нік<input id="khOnlineUsername" maxlength="20" autocomplete="nickname" placeholder="Твій нік KH"></label></div><div class="kh-online-actions"><button type="button" id="khOnlineLogin">УВІЙТИ</button><button type="button" id="khOnlineRegister">СТВОРИТИ АКАУНТ</button></div><p id="khOnlineAccountStatus" role="status" aria-live="polite">Сесія зберігається на цьому пристрої. Для входу на іншому пристрої використовуй ті самі дані.</p></div>';
  const heading=profile.querySelector('.profile-card')||profile.firstElementChild; if(heading)heading.insertAdjacentElement('beforebegin',card);else profile.prepend(card);
- $('#khOnlineLogin').addEventListener('click',()=>signIn());
- $('#khOnlineRegister').addEventListener('click',()=>{const f=$('#khOnlineRegisterFields');f.hidden=!f.hidden;$('#khOnlineRegister').textContent=f.hidden?'СТВОРИТИ АКАУНТ':'СКАСУВАТИ РЕЄСТРАЦІЮ';$('#khOnlineLogin').textContent=f.hidden?'УВІЙТИ':'ЗАРЕЄСТРУВАТИСЯ';});
+ $('#khOnlineLogin').addEventListener('click',()=>$('#khOnlineRegisterFields')?.hidden?signIn():signUp());
+ $('#khOnlineRegister').addEventListener('click',()=>{const f=$('#khOnlineRegisterFields');if(!f)return;if(!f.hidden){signUp();return}f.hidden=false;$('#khOnlineRegister').textContent='ЗАРЕЄСТРУВАТИСЯ';$('#khOnlineLogin').textContent='СКАСУВАТИ';});
 }
 function setBusy(v){busy=v;['#khOnlineLogin','#khOnlineRegister'].forEach(s=>{const b=$(s);if(b)b.disabled=v})}
 async function signIn(){
@@ -53,7 +53,7 @@ async function sync(){
  try{const data=await request('/api/auth/me');if(data.user){applyUser(data.user);renderCard();setStatus('Синхронізація успішна · '+new Date().toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'}));return data.user}return null}
  catch(e){setStatus(e.message,true);throw e}
 }
-function logout(){put(TOKEN,'');put(REFRESH,'');put(USER,'');lastUser=null;window.khOnlineUserId='';window.khOnlineUser=null;setStatus('Вийшов з онлайн-акаунта. Локальний прогрес на цьому пристрої збережено.');renderCard();accountCard();setStatus('Вийшов з онлайн-акаунта. Локальний прогрес на цьому пристрої збережено.')}
+function logout(){put(TOKEN,'');put(REFRESH,'');put(USER,'');lastUser=null;window.khOnlineUserId='';window.khOnlineUser=null;$('#khOnlineAccount')?.remove();accountCard();setStatus('Вийшов з онлайн-акаунта. Локальний прогрес на цьому пристрої збережено.')}
 const UUID=()=>{if(crypto?.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})};
 async function finishGame(kind){
  if(!token())return null;
@@ -64,6 +64,6 @@ async function finishGame(kind){
 async function purchaseItem(itemId){if(!token())return null;const data=await request('/api/shop/purchase',{method:'POST',body:{itemId}});if(data.user)applyUser(data.user);return data}
 async function equipItem(itemId){if(!token())return null;const data=await request('/api/shop/equip',{method:'POST',body:{itemId}});if(data.user)applyUser(data.user);return data}
 window.khOnlineSync={api:API,request,signIn,signUp,sync,finishGame,purchaseItem,equipItem,getUser:()=>lastUser,hasSession:()=>!!token(),logout,applyUser};
-document.addEventListener('DOMContentLoaded',()=>{accountCard();$('#khOnlineRegister')?.addEventListener('click',()=>{if(!$('#khOnlineRegisterFields')?.hidden)signUp()});if(token()){try{lastUser=JSON.parse(get(USER)||'null')}catch{};if(lastUser){window.khOnlineUserId=lastUser.id;window.khOnlineUser=lastUser}sync().catch(()=>{});renderCard()}});
+document.addEventListener('DOMContentLoaded',()=>{accountCard();if(token()){try{lastUser=JSON.parse(get(USER)||'null')}catch{};if(lastUser){window.khOnlineUserId=lastUser.id;window.khOnlineUser=lastUser}sync().catch(()=>{});renderCard()}});
 const observer=new MutationObserver(()=>{if($('#tab-profile')&&!$('#khOnlineAccount'))accountCard()});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>observer.observe(document.body,{childList:true,subtree:true}),{once:true});else observer.observe(document.body,{childList:true,subtree:true});
 })();
