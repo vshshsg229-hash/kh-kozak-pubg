@@ -8,6 +8,7 @@ alter table public.hub_profiles
 alter table public.hub_shop_catalog drop constraint if exists hub_shop_catalog_item_kind_check;
 alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check
   check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack'));
+alter table public.hub_shop_catalog add column if not exists required_level integer not null default 1;
 
 insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order) values
 ('skin_neon','NEON VIPER','skin',500,'EPIC',null),
@@ -70,7 +71,6 @@ grant execute on function public.hub_equip_item(uuid,text) to service_role;
 
 
 -- Level-unlocked fighter equipment. The server checks required_level before equipping.
-alter table public.hub_shop_catalog add column if not exists required_level integer not null default 1;
 insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order,required_level) values
 ('helmet_scout','ШОЛОМ РОЗВІДНИКА','helmet',250,'RARE',null,2),
 ('vest_titan','БРОНЕЖИЛЕТ TITAN','vest',300,'RARE',null,3),
