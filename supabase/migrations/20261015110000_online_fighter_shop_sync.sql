@@ -27,7 +27,7 @@ begin
   select * into v_profile from public.hub_profiles where id=p_user_id for update;
   if not found then return jsonb_build_object('error','profile_not_found'); end if;
   select * into v_item from public.hub_shop_catalog where item_id=p_item_id and active=true;
-  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','backpack') then
+  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') then
     return jsonb_build_object('error','item_not_equipable');
   end if;
   if not exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
@@ -120,19 +120,19 @@ begin
     v_price := floor(v_item.cost * 0.75)::integer;
   end if;
 
-  if v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','backpack') and exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
+  if v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') and exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
     return jsonb_build_object('error','already_owned');
   end if;
   if v_profile.coins < v_price then return jsonb_build_object('error','insufficient_coins'); end if;
 
   if v_item.item_kind='case' then
     select * into v_won from public.hub_shop_catalog c
-    where c.active=true and c.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','backpack')
+    where c.active=true and c.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack')
       and not exists(select 1 from public.hub_inventory i where i.user_id=p_user_id and i.item_id=c.item_id)
     order by random() limit 1;
     if not found then return jsonb_build_object('error','collection_complete'); end if;
     insert into public.hub_inventory(user_id,item_id) values(p_user_id,v_won.item_id) on conflict do nothing;
-  elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','backpack') then
+  elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') then
     insert into public.hub_inventory(user_id,item_id) values(p_user_id,p_item_id);
   end if;
 
