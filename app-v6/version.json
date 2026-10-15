@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.3.0",
+  "version": "16.4.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Made the mobile More menu clearer with a labeled header, grouped sections, high-contrast buttons, and a fully opaque background."
+  "releaseNotes": "Reorganized the More menu into clear groups, moved personal Telegram into Contact, and simplified navigation styling for phone and portrait tablet."
 }
