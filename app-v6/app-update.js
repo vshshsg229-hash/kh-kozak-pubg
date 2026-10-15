@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const CURRENT_VERSION = '9.5.4';
+  const CURRENT_VERSION = '9.5.5';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v' + version;
@@ -68,7 +68,8 @@
       const response = await fetch(VERSION_URL + '?check=' + Date.now(), { cache: 'no-store', mode: 'cors' });
       if (!response.ok) return;
       const data = await response.json();
-      if (data && typeof data.version === 'string' && compare(data.version, CURRENT_VERSION) > 0) showUpdate(data.version);
+      const targetVersion = isElectron ? data?.windowsVersion : data?.version;
+      if (typeof targetVersion === 'string' && compare(targetVersion, CURRENT_VERSION) > 0) showUpdate(targetVersion);
       else if (banner) banner.classList.remove('is-visible');
     } catch (_) {
       // Offline mode is supported; the updater stays hidden until the version endpoint is reachable.
