@@ -25,7 +25,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(101,229,209,.55)!
 .media-layout{gap:16px}
 .media-message{line-height:1.55}
 .tiktok-profiles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px;align-items:start}
-.tiktok-profile-unit{overflow:hidden;min-width:0}\n.tiktok-creator-feed{min-width:0;max-width:100%;overflow-x:auto}\n.tiktok-creator-feed .tiktok-embed{margin:12px auto!important;max-width:100%!important}\n.tiktok-profile-copy{min-width:0}\n.tiktok-profile-copy h2{overflow-wrap:anywhere}
+.tiktok-profile-unit{overflow:hidden;min-width:0}
+.tiktok-creator-feed{min-width:0;max-width:100%;overflow-x:auto}
+.tiktok-creator-feed .tiktok-embed{margin:12px auto!important;max-width:100%!important}
+.tiktok-profile-copy{min-width:0}
+.tiktok-profile-copy h2{overflow-wrap:anywhere}
 .tiktok-profile-card{gap:16px;padding:clamp(14px,2vw,22px)}
 .tiktok-profile-mark{display:grid;place-items:center;flex:0 0 54px;width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,rgba(255,209,102,.18),rgba(101,229,209,.12));border:1px solid var(--kh-line);font-size:28px}
 .tiktok-profile-copy h2{overflow-wrap:anywhere}
@@ -48,7 +52,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(101,229,209,.55)!
  .kh-playlist-track,.music-track-row{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center}
  .kh-playlist-track .music-play-btn,.music-track-row .music-play-btn{grid-column:2;justify-self:stretch;width:100%;white-space:normal}
  .tiktok-profile-card{align-items:flex-start}
- .tiktok-profile-copy .btn{white-space:normal;max-width:100%}\n .tiktok-profiles-grid{grid-template-columns:minmax(0,1fr)!important}
+ .tiktok-profile-copy .btn{white-space:normal;max-width:100%}
+ .tiktok-profiles-grid{grid-template-columns:minmax(0,1fr)!important}
  .media-layout.tiktok-layout{grid-template-columns:minmax(0,1fr)}
  .media-player-panel,.media-side-panel{min-width:0}
 }
