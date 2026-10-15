@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '13.8';
+  const WEB_VERSION = '13.8.3';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
@@ -40,20 +40,34 @@
       event.preventDefault();
       action.textContent = 'ОНОВЛЮЄМО…';
       action.setAttribute('aria-busy', 'true');
+      action.style.pointerEvents = 'none';
+      const finish = version => window.location.replace(APP_URL + '?v=' + encodeURIComponent(version || latestVersion || WEB_VERSION) + '&updated=' + Date.now());
       try {
-        const reg = await navigator.serviceWorker?.getRegistration('./');
-        if (reg) {
-          await reg.update();
-          if (reg.waiting) {
-            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-            await new Promise(resolve => {
-              const timeout = setTimeout(resolve, 4000);
-              navigator.serviceWorker.addEventListener('controllerchange', () => { clearTimeout(timeout); resolve(); }, { once: true });
+        let versionToLoad = latestVersion || WEB_VERSION;
+        try {
+          const fresh = await fetch(VERSION_URL + '?refresh=' + Date.now(), { cache: 'no-store' });
+          if (fresh.ok) {
+            const data = await fresh.json();
+            if (typeof data?.version === 'string') versionToLoad = data.version;
+          }
+        } catch (_) {}
+        if ('serviceWorker' in navigator) {
+          const reg = await navigator.serviceWorker.getRegistration('./');
+          if (reg) {
+            const controllerChanged = new Promise(resolve => {
+              const done = () => resolve();
+              navigator.serviceWorker.addEventListener('controllerchange', done, { once: true });
+              window.setTimeout(done, 5000);
             });
+            await reg.update();
+            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            await controllerChanged;
           }
         }
-      } catch (_) {}
-      window.location.replace(APP_URL + '?v=' + encodeURIComponent(latestVersion) + '&updated=' + Date.now());
+        finish(versionToLoad);
+      } catch (_) {
+        finish(latestVersion || WEB_VERSION);
+      }
     });
   }
   function showUpdate(version) {
