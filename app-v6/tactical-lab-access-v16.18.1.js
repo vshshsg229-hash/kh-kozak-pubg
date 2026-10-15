@@ -12,7 +12,7 @@ function install(){
   if(!lab)return;
   const arsenalNav=document.querySelector('[data-tab="arsenal"]');
   if(!document.getElementById('tab-arsenal')?.classList.contains('active'))arsenalNav?.click();
-  window.setTimeout(()=>{lab.scrollIntoView({behavior:'smooth',block:'start'});lab.classList.remove('tl-quick-focus');void lab.offsetWidth;lab.classList.add('tl-quick-focus');},220);
+  window.setTimeout(()=>{lab.scrollIntoView({behavior:'smooth',block:'start'});lab.classList.remove('tl-quick-focus');void lab.offsetWidth;lab.classList.add('tl-quick-focus');},500);
  });
  document.body.appendChild(button);
 }
