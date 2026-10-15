@@ -89,6 +89,13 @@ jobs:
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
             'PWA manifest declares at least one icon');
 
+          const media = fs.readFileSync(path.join(root, 'media.js'), 'utf8');
+          assert(html.includes('interface-refresh.css?v=13.9.0'), 'Refreshed interface stylesheet is loaded');
+          assert(html.includes('id="tab-music"') && html.includes('id="tab-tiktok"'), 'Music and TikTok tabs exist');
+          assert(media.includes("const PROFILE_URL='https://www.tiktok.com/@uakozak5'"), 'TikTok form defaults to the configured creator profile');
+          assert(media.includes('shorts|embed|live|v'), 'YouTube player recognizes Shorts, embeds, live streams, and standard videos');
+          assert(media.includes('khkozak_tiktok_videos') && media.includes('khkozak_ua_music_source'), 'TikTok saves and music source preferences are persisted');
+
           for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
             const value = match[1];
             if (/^(?:https?:|data:|#|\/\/)/i.test(value)) continue;
