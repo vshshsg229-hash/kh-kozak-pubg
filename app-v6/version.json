@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.20.3",
+  "version": "16.21.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-15",
   "windowsVersion": "9.5.7",
-   "releaseNotes": "v16.20.3: повністю прибрано розділи KH Digital Space; решту Battle Hub збережено."
+    "releaseNotes": "v16.21.0: додано Match Lab — журнал матчів, оцінку бою, статистику та експорт картки PNG."
 }
