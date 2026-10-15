@@ -289,14 +289,15 @@ grant execute on function public.hub_claim_telegram_daily(uuid) to service_role;
 create table if not exists public.hub_shop_catalog (
   item_id text primary key,
   item_name text not null,
-  item_kind text not null check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin')),
+  item_kind text not null check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack')),
   cost integer not null check (cost >= 0),
   rarity text not null default 'COMMON',
   daily_order integer unique,
-  active boolean not null default true
+  active boolean not null default true,
+  required_level integer not null default 1
 );
 alter table public.hub_shop_catalog drop constraint if exists hub_shop_catalog_item_kind_check;
-alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin'));
+alter table public.hub_shop_catalog add constraint hub_shop_catalog_item_kind_check check (item_kind in ('title','frame','avatar','theme','badge','banner','boost','case','skin','weaponSkin','helmet','vest','backpack'));
 create table if not exists public.hub_inventory (
   user_id uuid not null references auth.users(id) on delete cascade,
   item_id text not null references public.hub_shop_catalog(item_id),
@@ -445,19 +446,19 @@ begin
     v_price := floor(v_item.cost * 0.75)::integer;
   end if;
 
-  if v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') and exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
+  if v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') and exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
     return jsonb_build_object('error','already_owned');
   end if;
   if v_profile.coins < v_price then return jsonb_build_object('error','insufficient_coins'); end if;
 
   if v_item.item_kind='case' then
     select * into v_won from public.hub_shop_catalog c
-    where c.active=true and c.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin')
+    where c.active=true and c.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack')
       and not exists(select 1 from public.hub_inventory i where i.user_id=p_user_id and i.item_id=c.item_id)
     order by random() limit 1;
     if not found then return jsonb_build_object('error','collection_complete'); end if;
     insert into public.hub_inventory(user_id,item_id) values(p_user_id,v_won.item_id) on conflict do nothing;
-  elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') then
+  elsif v_item.item_kind in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') then
     insert into public.hub_inventory(user_id,item_id) values(p_user_id,p_item_id);
   end if;
 
@@ -492,9 +493,12 @@ alter table public.hub_profiles
   add column if not exists equipped_avatar text,
   add column if not exists equipped_theme text,
   add column if not exists equipped_badge text,
-  add column if not exists equipped_banner text;
+  add column if not exists equipped_banner text,
   add column if not exists equipped_skin text,
-  add column if not exists equipped_weapon_skin text;
+  add column if not exists equipped_weapon_skin text,
+  add column if not exists equipped_helmet text,
+  add column if not exists equipped_vest text,
+  add column if not exists equipped_backpack text;
 
 create or replace function public.hub_equip_item(p_user_id uuid, p_item_id text)
 returns jsonb
@@ -510,11 +514,14 @@ begin
   select * into v_profile from public.hub_profiles where id=p_user_id for update;
   if not found then return jsonb_build_object('error','profile_not_found'); end if;
   select * into v_item from public.hub_shop_catalog where item_id=p_item_id and active=true;
-  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin') then
+  if not found or v_item.item_kind not in ('title','frame','avatar','theme','badge','banner','skin','weaponSkin','helmet','vest','backpack') then
     return jsonb_build_object('error','item_not_equipable');
   end if;
   if not exists(select 1 from public.hub_inventory where user_id=p_user_id and item_id=p_item_id) then
-    return jsonb_build_object('error','not_owned');
+    if coalesce(v_item.required_level,1) > floor(coalesce(v_profile.xp,0)::numeric/100)::integer+1 then
+      return jsonb_build_object('error','not_owned');
+    end if;
+    insert into public.hub_inventory(user_id,item_id) values(p_user_id,p_item_id) on conflict do nothing;
   end if;
 
   if v_item.item_kind='title' then v_current:=v_profile.equipped_title;
@@ -524,6 +531,9 @@ begin
   elsif v_item.item_kind='badge' then v_current:=v_profile.equipped_badge;
   elsif v_item.item_kind='banner' then v_current:=v_profile.equipped_banner;
   elsif v_item.item_kind='skin' then v_current:=v_profile.equipped_skin;
+  elsif v_item.item_kind='helmet' then v_current:=v_profile.equipped_helmet;
+  elsif v_item.item_kind='vest' then v_current:=v_profile.equipped_vest;
+  elsif v_item.item_kind='backpack' then v_current:=v_profile.equipped_backpack;
   else v_current:=v_profile.equipped_weapon_skin;
   end if;
 
@@ -536,6 +546,9 @@ begin
     equipped_banner=case when v_item.item_kind='banner' then case when v_current=p_item_id then null else p_item_id end else equipped_banner end,
     equipped_skin=case when v_item.item_kind='skin' then case when v_current=p_item_id then null else p_item_id end else equipped_skin end,
     equipped_weapon_skin=case when v_item.item_kind='weaponSkin' then case when v_current=p_item_id then null else p_item_id end else equipped_weapon_skin end,
+    equipped_helmet=case when v_item.item_kind='helmet' then case when v_current=p_item_id then null else p_item_id end else equipped_helmet end,
+    equipped_vest=case when v_item.item_kind='vest' then case when v_current=p_item_id then null else p_item_id end else equipped_vest end,
+    equipped_backpack=case when v_item.item_kind='backpack' then case when v_current=p_item_id then null else p_item_id end else equipped_backpack end,
     updated_at=now()
   where id=p_user_id returning * into v_profile;
   return jsonb_build_object('user',to_jsonb(v_profile),'item_id',p_item_id);
@@ -575,3 +588,15 @@ alter table public.hub_chat_messages enable row level security;
 revoke all on public.hub_chat_messages from anon, authenticated;
 grant select, insert, delete on public.hub_chat_messages to service_role;
 
+
+
+-- KH Battle Hub fighter equipment catalog additions.
+insert into public.hub_shop_catalog(item_id,item_name,item_kind,cost,rarity,daily_order,required_level) values
+('skin_neon','NEON VIPER','skin',500,'EPIC',null,1),
+('weapon_carbon','M416 CARBON BLACK','weaponSkin',350,'RARE',null,1),
+('helmet_raven','RAVEN HELMET','helmet',250,'RARE',null,1),
+('pack_pulse','PULSE BACKPACK','backpack',400,'EPIC',null,1),
+('helmet_scout','ШОЛОМ РОЗВІДНИКА','helmet',250,'RARE',null,2),
+('vest_titan','БРОНЕЖИЛЕТ TITAN','vest',300,'RARE',null,3),
+('pack_phantom','РЮКЗАК PHANTOM','backpack',400,'EPIC',null,5)
+on conflict(item_id) do update set item_name=excluded.item_name,item_kind=excluded.item_kind,cost=excluded.cost,rarity=excluded.rarity,required_level=excluded.required_level,active=true;
