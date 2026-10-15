@@ -138,3 +138,42 @@
   }
   .pubg-quick-link b{justify-self:start!important}
 }
+
+
+/* KH MOBILE COMFORT PASS — October 2026 */
+@media (max-width: 720px) {
+  html { scroll-padding-top: 12px; scroll-padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
+  body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+  .app-shell { min-width: 0 !important; width: 100% !important; overflow-x: clip; }
+  .main { min-width: 0 !important; width: 100% !important; margin-left: 0 !important; padding: 0 12px calc(104px + env(safe-area-inset-bottom)) !important; }
+  .topbar { gap: 8px !important; padding: 10px 0 !important; flex-wrap: wrap; }
+  .topbar > * { min-width: 0; }
+  .topbar h1, .page-title, h1 { overflow-wrap: anywhere; }
+  .panel, .stat-card, .feature-card, .game-card, .section-card, .card { min-width: 0; max-width: 100%; }
+  .panel, .feature-card, .section-card { padding: 14px !important; }
+  .stat-grid, .stats-grid, .feature-grid, .game-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 9px !important; }
+  button, .button, a.button, input, select, textarea { max-width: 100%; }
+  button, .button, a.button, .nav-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  input, select, textarea { font-size: 16px !important; }
+  .mobile-nav { padding-bottom: env(safe-area-inset-bottom) !important; }
+  .kh-control-launch { right: 12px !important; left: 12px !important; bottom: calc(76px + env(safe-area-inset-bottom)) !important; min-height: 44px !important; justify-content: center !important; border-radius: 13px !important; }
+  .kh-control-panel { left: 8px !important; right: 8px !important; bottom: calc(132px + env(safe-area-inset-bottom)) !important; width: auto !important; max-height: calc(100dvh - 148px - env(safe-area-inset-bottom)) !important; overflow-y: auto !important; overscroll-behavior: contain; }
+  .kh-control-head h2 { font-size: 19px !important; }
+  .kh-control-section { padding: 12px 0 !important; }
+  .kh-pubg-tabs button { min-height: 44px !important; font-size: 12px !important; }
+  .kh-pubg-tab-content a, .kh-control-primary { min-height: 44px !important; display: flex; align-items: center; justify-content: center; }
+  .pubg-quick-links { position: static !important; inset: auto !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; margin: 20px 0 !important; }
+}
+@media (max-width: 420px) {
+  .main { padding-left: 10px !important; padding-right: 10px !important; }
+  .panel, .feature-card, .section-card { padding: 12px !important; }
+  .stat-grid, .stats-grid, .feature-grid, .game-grid { grid-template-columns: minmax(0,1fr) !important; }
+  .kh-control-panel { padding: 12px !important; border-radius: 16px !important; }
+  .kh-control-head { gap: 8px !important; }
+  .kh-control-head p, .kh-control-note { font-size: 12px !important; }
+  .kh-control-buttons { flex-wrap: wrap; }
+  .kh-control-buttons > button { min-height: 42px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pubg-quick-link, .pubg-home-download, .kh-control-launch { transition: none !important; }
+}
