@@ -330,3 +330,74 @@
   .pubg-quick-link span { font-size: 10px !important; }
   .mobile-nav button { flex-basis: 58px !important; min-width: 58px !important; font-size: 8px !important; }
 }
+
+
+/* 9.8.1 — reorganize mobile stats and quick access */
+@media (max-width: 620px) {
+  /* Keep the K/D panel separate from the fighter instead of covering the stage */
+  .kh-replica-stats {
+    top: 166px !important; left: 9px !important; right: auto !important;
+    width: 118px !important; padding: 8px 7px !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 8px 5px !important; z-index: 7 !important;
+    background: #070c16ed !important; border: 1px solid #65748d88 !important;
+    box-shadow: 0 6px 18px #0005 !important; backdrop-filter: blur(10px) !important;
+  }
+  .kh-replica-stats > div {
+    min-width: 0 !important; display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important;
+    text-align: center !important; gap: 2px !important;
+  }
+  .kh-replica-stats span { font-size: 15px !important; line-height: 1.1 !important; }
+  .kh-replica-stats small { font-size: 8px !important; line-height: 1.15 !important; }
+  .kh-replica-stats b { font-size: 11px !important; line-height: 1.15 !important; overflow-wrap: anywhere !important; }
+  #khReplicaFighterSlot .kh-real-soldier {
+    left: 62% !important; top: 252px !important;
+    height: 455px !important; max-height: 455px !important;
+    max-width: 78% !important; object-fit: contain !important;
+    object-position: center bottom !important; transform: translateX(-50%) !important;
+  }
+  .kh-replica-social { top: 76px !important; left: 12px !important; gap: 5px !important; }
+  .kh-replica-social a { min-height: 26px !important; font-size: 11px !important; }
+  .kh-character-nameplate { left: 10px !important; right: 58px !important; bottom: 178px !important; }
+  /* Download shortcuts: clear horizontal buttons with labels and obvious tap targets */
+  .pubg-quick-links {
+    display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    align-items: stretch !important; gap: 8px !important; margin: 10px 0 14px !important;
+  }
+  .pubg-quick-link {
+    min-height: 76px !important; padding: 10px !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; justify-content: space-between !important;
+    gap: 7px !important; border-radius: 12px !important;
+  }
+  .pubg-quick-link span { font-size: 11px !important; font-weight: 700 !important; line-height: 1.25 !important; }
+  .pubg-quick-link span small { font-size: 8px !important; }
+  .pubg-quick-link > b { align-self: flex-end !important; font-size: 9px !important; }
+  /* General quick access becomes a swipeable row, avoiding a tall stack of cards */
+  .quick-links {
+    display: flex !important; flex-flow: row nowrap !important;
+    gap: 8px !important; overflow-x: auto !important; overflow-y: hidden !important;
+    padding: 2px 1px 9px !important; margin: 10px 0 14px !important;
+    scroll-snap-type: x mandatory !important; -webkit-overflow-scrolling: touch !important;
+  }
+  .quick-link {
+    flex: 0 0 min(76vw,245px) !important; width: min(76vw,245px) !important;
+    min-height: 76px !important; padding: 11px !important;
+    box-sizing: border-box !important; scroll-snap-align: start !important;
+    border-radius: 12px !important; align-items: center !important;
+  }
+  .quick-link > b { flex: 0 0 32px !important; width: 32px !important; font-size: 21px !important; }
+  .quick-link strong { font-size: 12px !important; }
+  .quick-link small { font-size: 10px !important; line-height: 1.3 !important; white-space: normal !important; }
+}
+@media (max-width: 390px) {
+  .kh-replica-stats { top: 166px !important; left: 7px !important; width: 108px !important; padding: 7px 5px !important; gap: 7px 3px !important; }
+  .kh-replica-stats span { font-size: 13px !important; }
+  .kh-replica-stats small { font-size: 7px !important; }
+  .kh-replica-stats b { font-size: 10px !important; }
+  #khReplicaFighterSlot .kh-real-soldier { left: 63% !important; top: 263px !important; height: 435px !important; max-height: 435px !important; max-width: 76% !important; }
+  .pubg-quick-links { gap: 6px !important; }
+  .pubg-quick-link { padding: 9px !important; min-height: 72px !important; }
+  .quick-link { flex-basis: 78vw !important; width: 78vw !important; }
+}
