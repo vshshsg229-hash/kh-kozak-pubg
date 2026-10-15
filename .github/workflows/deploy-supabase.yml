@@ -30,8 +30,8 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         shell: bash
         run: |
-          if [[ ! "${SUPABASE_ACCESS_TOKEN:-}" =~ ^sbp_[A-Za-z0-9_-]+$ ]]; then
-            echo "::error::SUPABASE_ACCESS_TOKEN must be a Supabase Personal Access Token beginning with sbp_. Create one in Supabase Dashboard → Account → Access Tokens."
+          if [[ ! "${SUPABASE_ACCESS_TOKEN:-}" =~ ^sbp_[A-Za-z0-9_-]{30,}$ ]]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN must be the full Supabase Personal Access Token (sbp_ prefix plus the complete token). Do not use a publishable key, a partial token, or the Firebase service-account JSON. Create one in Supabase Dashboard → Account → Access Tokens."
             exit 1
           fi
           if [[ "${SUPABASE_PROJECT_REF:-}" != "xacqretciujzrcqjvvgz" ]]; then
