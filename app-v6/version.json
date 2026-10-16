@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.33.0",
+  "version": "17.34.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Виправлено кнопку оновлення: версія береться з version.json, застарілий кеш очищається, повторне відкриття має унікальне посилання."
+  "releaseNotes": "Оновлено вкладку TikTok: творча майстерня з генератором ідей для PUBG, хуками та підписами, наборами хештегів і збереженим планом публікацій."
 }
