@@ -84,3 +84,23 @@
 #tab-artifactforge .af-secret-panel .af-mission{border-color:#47345f}
 #tab-artifactforge .af-secret-panel .af-mission.is-complete{border-color:#4aa98f;background:#092620}
 #tab-artifactforge .af-secret-req{display:block;color:#b8a6d5;font-size:11px;margin:6px 0 10px}
+
+/* Lightweight animated tactical hologram map */
+@keyframes af-grid-drift{from{background-position:0 0,0 0,0 0,0 0,0 0}to{background-position:22px 22px,-22px 22px,0 0,0 0,0 0}}
+@keyframes af-scan-sweep{0%{transform:translateY(-110%);opacity:0}12%{opacity:.55}85%{opacity:.3}100%{transform:translateY(110%);opacity:0}}
+@keyframes af-route-pulse{0%,100%{opacity:.32;filter:drop-shadow(0 0 1px #62e7ff)}50%{opacity:.95;filter:drop-shadow(0 0 5px #62e7ff)}}
+@keyframes af-node-ping{0%,100%{box-shadow:0 0 0 3px #0a1c2a,0 0 8px #3ddfff22}50%{box-shadow:0 0 0 3px #0a1c2a,0 0 16px #3ddfff88}}
+@keyframes af-found-ping{0%,100%{box-shadow:0 0 0 3px #0a1c2a,0 0 7px #65f2b044}50%{box-shadow:0 0 0 3px #0a1c2a,0 0 17px #65f2b099}}
+#tab-artifactforge .af-map{isolation:isolate;animation:af-grid-drift 18s linear infinite}
+#tab-artifactforge .af-map:before{z-index:0;animation:af-route-pulse 5s ease-in-out infinite}
+#tab-artifactforge .af-map:after{z-index:1;animation:af-route-pulse 4s ease-in-out infinite}
+#tab-artifactforge .af-map:focus-within:after{opacity:1}
+#tab-artifactforge .af-map:before{overflow:hidden}
+#tab-artifactforge .af-node{transition:background-color .18s ease,border-color .18s ease,transform .18s ease;animation:af-node-ping 3.4s ease-in-out infinite}
+#tab-artifactforge .af-node:nth-of-type(3n){animation-delay:-1.2s}
+#tab-artifactforge .af-node:nth-of-type(3n + 1){animation-delay:-2.1s}
+#tab-artifactforge .af-node.is-found{animation:af-found-ping 3s ease-in-out infinite}
+#tab-artifactforge .af-node.is-selected{transform:translate(-50%,-50%) scale(1.07);animation:af-node-ping 1.7s ease-in-out infinite}
+#tab-artifactforge .af-node:hover{transform:translate(-50%,-50%) scale(1.08)}
+#tab-artifactforge .af-secret-locked{animation:af-route-pulse 4s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){#tab-artifactforge .af-map,#tab-artifactforge .af-map:before,#tab-artifactforge .af-map:after,#tab-artifactforge .af-node,#tab-artifactforge .af-secret-locked{animation:none!important;transition:none!important}}
