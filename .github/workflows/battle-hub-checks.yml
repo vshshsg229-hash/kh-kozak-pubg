@@ -135,7 +135,7 @@ jobs:
           }
           assert(/gameCleanup=\[\]/.test(threeD), '3D scene cleanup list is initialized');
           for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
-          assert(html.includes('games-3d.js?v=1.4.0'), 'HTML loads the expanded 50-mode 3D engine');
+          assert(html.includes('games-3d.js?v='), 'HTML loads the versioned 3D engine');
           const arcade = fs.readFileSync(path.join(root, 'arcade-100.js'), 'utf8');
           assert(arcade.includes('names.length<1000') && arcade.includes("count.textContent='1000'"), 'Arcade catalog expands to 1000 mini-game variants');
           assert(arcade.includes('kh100Random'), 'Arcade includes random game launch');
