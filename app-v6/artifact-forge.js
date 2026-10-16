@@ -33,6 +33,7 @@ function installNavigation(){
  button.type='button';button.className='nav-item artifact-forge-nav';button.dataset.tab='artifactforge';
  button.title='Відкрити Artifact Forge — карта, секретні місії та кузня';
  button.innerHTML='<span aria-hidden="true">⬡</span><span class="nav-label">Artifact Forge</span>';
+ button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(view=>view.classList.toggle('active',view.id==='tab-artifactforge'));document.querySelectorAll('[data-tab]').forEach(item=>item.classList.toggle('active',item.dataset.tab==='artifactforge'));window.scrollTo({top:0,behavior:'auto'});});
  gamesButton.insertAdjacentElement('afterend',button);
 }
 function render(){const found=state.found.length;
