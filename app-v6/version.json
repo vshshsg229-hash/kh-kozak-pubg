@@ -4,5 +4,5 @@
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.17.0: Adds a pink 'Бункер виживання' navigation group and links Survival Ops + Bunker through one shared inventory. Successful raids deposit parts and rare loot; Bunker crafts raid kits that can be consumed in Survival Ops. Both modes use the same profile coins, XP and Battle Pass XP."
+  "releaseNotes": "v17.17.0: Adds the pink 'Бункер виживання' navigation group. Survival Ops and Bunker share one inventory, parts, raid kits, medkits, rare loot, profile coins, XP and Royale Pass XP. Successful raids deposit loot; craft kits in Bunker for 3 parts, use kits/medkits in Survival Ops, and exchange rare loot for +75 coins and +20 XP."
 }
