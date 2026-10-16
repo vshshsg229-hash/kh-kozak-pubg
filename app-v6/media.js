@@ -200,18 +200,31 @@ const uaMusicSources={
  '1990':{url:'https://open.spotify.com/embed/playlist/3XbjPibnpFyJYsPV9Aluwj?utm_source=generator&theme=0',title:'Українські пісні 1990-х'},
  '2000':{url:'https://open.spotify.com/embed/playlist/3aavjJRpn8JXfXjZQZ7s3F?utm_source=generator&theme=0',title:'Українські пісні 2000-х'}
 };
+// Автоматично міняємо добірку щодня. Треки всередині зовнішніх плейлистів
+// оновлюються їхніми власниками; тут щодня вибирається інше джерело з архіву.
+const uaMusicDailyStatus=$('#uaMusicDailyStatus');
+const uaMusicDailyKeys=['youtube','2000','1990','1980','1970','1960','1950','1940','1930','1920'];
+function uaMusicDailyKey(){
+ const now=new Date();
+ const localMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+ const dayNumber=Math.floor(localMidnight/86400000);
+ return uaMusicDailyKeys[((dayNumber%uaMusicDailyKeys.length)+uaMusicDailyKeys.length)%uaMusicDailyKeys.length];
+}
 function setUaMusicSource(key){
- const source=uaMusicSources[key]||uaMusicSources.youtube;
- if(!uaMusicEmbed)return;
+ const daily=key==='daily';
+ const activeKey=daily?uaMusicDailyKey():(uaMusicSources[key]?key:'youtube');
+ const source=uaMusicSources[activeKey];
+ if(!uaMusicEmbed||!source)return;
  uaMusicEmbed.src=source.url;
  uaMusicEmbed.title=source.title;
- uaMusicEmbed.dataset.provider=key==='youtube'?'youtube':'spotify';
- try{localStorage.setItem('khkozak_ua_music_source',key)}catch{}
+ uaMusicEmbed.dataset.provider=activeKey==='youtube'?'youtube':'spotify';
+ uaMusicEmbed.dataset.dailySource=activeKey;
+ if(uaMusicDailyStatus)uaMusicDailyStatus.textContent=daily?'🎵 Добірка дня: '+source.title+' · автоматично змінюється щодня.':'🎵 Обрана добірка: '+source.title+' · завтра можеш повернутися до автодобірки дня.';
 }
 uaMusicPlaylistSelect?.addEventListener('change',()=>setUaMusicSource(uaMusicPlaylistSelect.value));
 if(uaMusicPlaylistSelect&&uaMusicEmbed){
- let saved='youtube';try{saved=localStorage.getItem('khkozak_ua_music_source')||'youtube'}catch{}
- if(uaMusicSources[saved])uaMusicPlaylistSelect.value=saved;
- setUaMusicSource(uaMusicPlaylistSelect.value);
+ // Автодобірка — стартовий режим; ручний вибір діє до наступного відкриття розділу.
+ uaMusicPlaylistSelect.value='daily';
+ setUaMusicSource('daily');
 }
 })();
