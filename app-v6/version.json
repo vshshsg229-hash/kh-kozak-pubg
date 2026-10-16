@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.54.0",
+  "version": "17.55.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.40.0",
   "updatedAt": "2026-10-16",
   "windowsVersion": "17.40.0",
-  "releaseNotes": "Artifact Forge expansion: harder 650 HP season boss, 18 map nodes, expanded collection and secret operations, 12 development upgrades, three extra mini-games, extended forge recipes, and persistent season-profile rewards."
+  "releaseNotes": "Artifact Forge: 30-day season timer; hardcore seasonal boss with 950 HP and stronger counterattacks; expanded relic collection; six playable mini-game actions; 12 development upgrades; season rewards remain in profile. Survival Bunker and Battle Pass season timers are 30 days."
 }
