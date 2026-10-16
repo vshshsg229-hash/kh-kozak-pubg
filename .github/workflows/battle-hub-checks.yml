@@ -215,7 +215,7 @@ jobs:
           assert(battleHub3.includes('data.stats[g.id]') && battleHub3.includes('Особистий рекорд'), 'Battle Hub 3.0 tracks plays and personal best scores');
           assert(battleHub3.includes('function dailyChallenges()') && battleHub3.includes('function dailyStreak()') && battleHub3.includes('data-bh3-mission-claim'), 'Battle Hub 3.0 includes daily missions and a training streak');
           assert(battleHub3.includes('const trainingPlans=') && battleHub3.includes('function startTrainingPlan(goal)') && battleHub3.includes('data-bh3-plan-next'), 'Kozak AI provides guided multi-step training plans');
-          assert(battleHub3.includes('function renderCatalogMatches(query)') && battleHub3.includes('data-bh3-catalog-launch') && battleHub3.includes("addEventListener('input',()=>renderGames(activeFilter()))"), 'Quick Start search filters live and can launch catalog-wide results');
+          assert(battleHub3.includes('function renderCatalogMatches(query)') && battleHub3.includes('data-bh3-catalog-launch') && battleHub3.includes("addEventListener('input',()=>{renderGames(activeFilter());renderCatalogMatches($('#khBh3Search')?.value||'')})"), 'Quick Start search filters live and can launch catalog-wide results');
           assert(battleHub3.includes('function resultTip(id,score)') && battleHub3.includes('Розбір «'), 'Kozak AI provides contextual post-game coaching');
           assert(battleHub3.includes('function renderCombatRecord()') && battleHub3.includes('Твої досягнення'), 'Battle Hub 3.0 combat record and achievements exist');
           assert(battleHub3.includes('data-bh3-category') && battleHub3.includes('function launchRandomTraining'), 'Quick Start category filters and random training launcher exist');
