@@ -214,3 +214,14 @@
 .af-forge-recipes{margin-top:18px;padding-top:14px;border-top:1px solid var(--af-border,rgba(104,195,222,.25))}.af-forge-recipes h3{margin:0 0 10px;font-size:15px}.af-forge-recipe{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;padding:12px 0;border-bottom:1px solid rgba(104,195,222,.14)}.af-forge-recipe span{font-weight:800}.af-forge-recipe small{grid-column:1;color:var(--af-muted,#a4b6c8);font-size:11px}.af-forge-recipe button{grid-column:2;grid-row:1 / span 2}
 .af-node[data-zone="reactor"],.af-node[data-zone="blacksite"]{border-color:#ff8b62;box-shadow:0 0 15px rgba(255,105,80,.2)}.af-node[data-zone="frequency"],.af-node[data-zone="skybridge"]{border-color:#8c85ff;box-shadow:0 0 13px rgba(140,133,255,.18)}
 @media(max-width:760px){.af-mini-expanded-grid{grid-template-columns:1fr}.af-mini-expanded-grid p{min-height:0}.af-forge-recipe{grid-template-columns:minmax(0,1fr)}.af-forge-recipe button{grid-column:1;grid-row:auto;width:100%}}
+
+/* 17.57.0 — readable forge recipes and playable trial stages */
+#tab-artifactforge .af-challenge-panel{border-color:rgba(98,231,255,.55);background:linear-gradient(140deg,#0b1c2b,#101426)}
+#tab-artifactforge .af-challenge-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+#tab-artifactforge .af-challenge-track span{display:grid;place-items:center;min-height:44px;border:1px solid #35556b;border-radius:10px;color:#b8d9e8;background:#101e2d;font-weight:900}
+#tab-artifactforge .af-challenge-track span.is-done{background:#123e3c;border-color:#51e4c2;color:#8dffe8}
+#tab-artifactforge .af-forge-recipes h3{font-size:16px;color:#72e8ff}
+#tab-artifactforge .af-forge-recipe{padding:14px 0}
+#tab-artifactforge .af-forge-recipe small{font-size:12px;line-height:1.5}
+#tab-artifactforge .af-forge-recipe button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:600px){#tab-artifactforge .af-challenge-track span{min-height:38px}}
