@@ -2,8 +2,8 @@
  * Emotes are layered on the loaded rig without accumulating bone rotations.
  * The source model is a generic animated GLB, not an official PUBG asset.
  */
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'https://esm.sh/three@0.164.1';
+import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GLTFLoader.js';
 
 (() => {
   const root = document.getElementById('khLobbyMode');
