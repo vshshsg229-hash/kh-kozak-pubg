@@ -205,7 +205,7 @@ jobs:
           for (const feature of ['Тренування прицілу', 'Дуель реакції', 'Маршрут зони', 'Злам сейфа', 'ОПЕРАЦІЯ ДНЯ', 'khBh3Search', 'data-bh3-fav', 'Козак AI']) {
             assert(battleHub3.includes(feature), 'Battle Hub 3.0 feature exists: ' + feature);
           }
-          assert(battleHub3.includes('kh100-finished') && battleHub3.includes('kh_bh3_reward_'), 'Battle Hub 3.0 rewards are routed to progression and protected against same-day duplicate claims');
+          assert(battleHub3.includes('kh-bh3-finished') && battleHub3.includes('kh_bh3_reward_'), 'Battle Hub 3.0 rewards are routed to progression and protected against same-day duplicate claims');
           assert(battleHub3Css.includes('.kh-bh3-grid') && battleHub3Css.includes('@media(max-width:620px)'), 'Battle Hub 3.0 has responsive game cards and mobile styles');
           assert(html.includes('battle-hub-3.js?v=16.65.0') && html.includes('battle-hub-3.css?v=16.65.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
