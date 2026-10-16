@@ -225,3 +225,12 @@
 #tab-artifactforge .af-forge-recipe small{font-size:12px;line-height:1.5}
 #tab-artifactforge .af-forge-recipe button:disabled{opacity:.55;cursor:not-allowed}
 @media(max-width:600px){#tab-artifactforge .af-challenge-track span{min-height:38px}}
+
+/* 17.58.0 daily rotating holographic map and extended expedition */
+#tab-artifactforge .af-map-refresh-stat{border-color:rgba(92,224,255,.6)}
+#tab-artifactforge .af-daily-map-note{margin:10px 0 0;padding:12px 14px;border:1px solid rgba(80,211,255,.28);border-radius:10px;background:rgba(15,64,85,.22);color:#c9efff;font-size:13px;line-height:1.55}
+#tab-artifactforge .af-daily-map-note b{color:#75e9ff}
+#tab-artifactforge .af-node.is-daily-target{border-color:#fff28b;box-shadow:0 0 0 3px rgba(255,225,94,.18),0 0 22px rgba(255,225,94,.65);z-index:8}
+#tab-artifactforge .af-map{min-height:510px}
+#tab-artifactforge .af-node small{max-width:92px;white-space:normal;line-height:1.15;text-align:center}
+@media(max-width:600px){#tab-artifactforge .af-map{min-height:560px}#tab-artifactforge .af-node small{font-size:8px;max-width:68px}}
