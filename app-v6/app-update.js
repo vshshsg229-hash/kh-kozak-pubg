@@ -1,7 +1,7 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '17.10.0';
-  const VERSION_URL = new URL('version.json', location.href).toString();
+  const WEB_VERSION = '17.11.0';
+  const VERSION_URL = new URL('./version.json', location.href).toString();
   const APP_URL = new URL('./', location.href).toString();
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
   const isElectron = /Electron/i.test(navigator.userAgent);
@@ -38,7 +38,7 @@
       const url = new URL(APP_URL);
       url.searchParams.set('v', targetVersion);
       url.searchParams.set('updated', String(Date.now()));
-      url.searchParams.set('refresh', '1');
+      url.searchParams.set('refresh', String(Date.now()));
       action.textContent = 'ВІДКРИВАЄМО ОНОВЛЕНУ ВЕРСІЮ…';
       action.setAttribute('aria-busy', 'true');
       action.style.pointerEvents = 'none';
@@ -47,12 +47,8 @@
       try {
         if ('caches' in window) await Promise.all((await caches.keys()).filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)));
       } catch (_) {}
-      try {
-        if ('serviceWorker' in navigator) {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(async reg => { try { await reg.update(); } catch (_) {} }));
-        }
-      } catch (_) {}
+      // Navigate immediately after cache cleanup; waiting for worker.update() can hang
+      // on mobile/PWA shells and leave the update button permanently disabled.
       location.replace(url.toString());
     });
   }
