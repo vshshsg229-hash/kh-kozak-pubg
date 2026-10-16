@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const root=document.getElementById('tab-artifactforge');if(!root||root.dataset.afReady)return;root.dataset.afReady='1';
+const root=document.getElementById('tab-artifactforge');if(!root||root.querySelector('.af-hero'))return;root.dataset.afReady='loading';
 const KEY='kh-kozak-artifact-forge-v1';
 const zones=[
 {id:'north',name:'Північний ретранслятор',x:26,y:29,icon:'⌁',type:'artifact',reward:'Крижаний уламок',emoji:'❄️',desc:'Фрагмент старого навігаційного ядра.',mission:'Знайди сигнал ретранслятора',missionDesc:'Відкрий північний вузол і забери фрагмент сигналу.'},
@@ -95,5 +95,6 @@ if(action==='reset'&&confirm('Скинути лише прогрес Artifact Fo
 });
 installNavigation();
 render();
+root.dataset.afReady='1';
 setInterval(()=>{if(!root.isConnected)return;const now=Date.now();if(mapRefreshDue(now)){notice='Голографічну карту оновлено! Нові координати та щоденна аномалія вже активні.';selected=zones.find(z=>z.id===state.selected)||zones[0];render()}const mapLeft=Math.max(0,(state.mapRefreshAt||now+86400000)-now),seasonLeft=Math.max(0,30*86400000-(now-(state.seasonStartedAt||now))),missionLeft=Math.max(0,(state.dailyMissionResetAt||now+86400000)-now),rewardLeft=Math.max(0,86400000-(now-(state.dailyClaimAt||now-86400000)));root.querySelectorAll('[data-countdown="season"]').forEach(el=>el.textContent=formatCountdown(seasonLeft));root.querySelectorAll('[data-countdown="map"]').forEach(el=>el.textContent=formatCountdown(mapLeft));root.querySelectorAll('[data-countdown="missions"]').forEach(el=>el.textContent=formatCountdown(missionLeft));root.querySelectorAll('[data-countdown="daily-reward"]').forEach(el=>el.textContent=formatCountdown(rewardLeft));if(seasonLeft===0){rollSeasonIfDue();render()}if(missionLeft===0){resetDailyMissionsIfDue();render()}if(rewardLeft===0){const status=root.querySelector('.af-daily-head div:nth-child(2) b'),button=root.querySelector('[data-action="daily-claim"]');if(status)status.textContent='НАГОРОДА ДОСТУПНА';if(button){button.disabled=false;button.textContent='ЗАБРАТИ ЩОДЕННУ НАГОРОДУ'}}},1000);
 })();
