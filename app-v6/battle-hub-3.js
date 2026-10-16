@@ -77,7 +77,29 @@ function renderCombatRecord(){
  ];
  el.innerHTML='<div class="kh-bh3-record-head"><div><small>КОМБАТ-ЗАПИС · ПРОГРЕС</small><h3>Твої досягнення</h3><p>Особисті результати та значки відкриваються автоматично під час гри.</p></div><span class="kh-bh3-record-total">'+plays+'<small>спроб</small></span></div><div class="kh-bh3-record-metrics"><div><b>'+modes+'/7</b><span>режимів освоєно</span></div><div><b>'+best+'</b><span>найкращий результат</span></div><div><b>'+streak+' дн.</b><span>серія тренувань</span></div></div><div class="kh-bh3-badges">'+badges.map(b=>'<article class="kh-bh3-badge '+(b.ok?'is-unlocked':'')+'"><span>'+b.icon+'</span><div><b>'+b.name+'</b><small>'+b.desc+'</small></div><i>'+(b.ok?'ВІДКРИТО ✓':'ЗАКРИТО')+'</i></article>').join('')+'</div>';
 }
-function renderCatalogMatches(query){const box=$('#khBh3CatalogResults');if(!box)return;const q=String(query||'').trim().toLowerCase();box.replaceChildren();if(q.length<2){box.hidden=true;return}const matches=Array.from(document.querySelectorAll('#tab-games .game-tile')).map(tile=>({tile,button:tile.querySelector('[data-game]'),name:tile.querySelector('h3')?.textContent?.trim()||tile.querySelector('b')?.textContent?.trim()||'Ігровий режим',text:tile.textContent.toLowerCase()})).filter(x=>x.button&&x.text.includes(q));if(!matches.length){box.hidden=true;return}box.hidden=false;const heading=document.createElement('h3');heading.className='kh-bh3-catalog-title';heading.textContent='Інші режими хабу · '+matches.length;const list=document.createElement('div');list.className='kh-bh3-catalog-list';matches.slice(0,8).forEach(x=>{const b=document.createElement('button');b.type='button';b.dataset.bh3CatalogLaunch=x.button.dataset.game;b.innerHTML='<span></span><b></b><i>ВІДКРИТИ ↗</i>';b.querySelector('span').textContent='▣';b.querySelector('b').textContent=x.name;list.appendChild(b)});box.append(heading,list);if(matches.length>8){const note=document.createElement('p');note.className='kh-bh3-catalog-note';note.textContent='Показано 8 із '+matches.length+' результатів. Уточни пошук, щоб звузити список.';box.appendChild(note)}}
+function renderCatalogMatches(query){
+ const box=$('#khBh3CatalogResults');if(!box)return;
+ const raw=String(query||'').trim().toLowerCase();
+ box.replaceChildren();
+ if(raw.length<2){box.hidden=true;return}
+ const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9а-яіїєґ]/gi,'');
+ const q=norm(raw);
+ const seen=new Set();
+ const matches=Array.from(document.querySelectorAll('#tab-games [data-game]')).map(button=>{
+   const tile=button.closest('.game-tile,.kh-bh3-card,[data-game-card],article')||button.parentElement;
+   return {button,tile,name:tile?.querySelector('h3')?.textContent?.trim()||tile?.querySelector('b')?.textContent?.trim()||button.textContent.trim()||button.dataset.game,text:(tile?.textContent||button.textContent||'')+' '+button.dataset.game};
+ }).filter(x=>{
+   const id=String(x.button.dataset.game||'');if(!id||seen.has(id))return false;
+   const text=norm(x.text);if(!text.includes(q))return false;seen.add(id);return true;
+ });
+ if(!matches.length){box.hidden=true;return}
+ box.hidden=false;
+ const heading=document.createElement('h3');heading.className='kh-bh3-catalog-title';heading.textContent='ЗНАЙДЕНІ РЕЖИМИ · '+matches.length;
+ const list=document.createElement('div');list.className='kh-bh3-catalog-list';
+ matches.slice(0,10).forEach(x=>{const b=document.createElement('button');b.type='button';b.dataset.bh3CatalogLaunch=x.button.dataset.game;b.innerHTML='<span></span><b></b><i>ВІДКРИТИ ↗</i>';b.querySelector('span').textContent='▣';b.querySelector('b').textContent=x.name;list.appendChild(b)});
+ box.append(heading,list);
+ if(matches.length>10){const note=document.createElement('p');note.className='kh-bh3-catalog-note';note.textContent='Показано 10 із '+matches.length+' режимів. Уточни запит.';box.appendChild(note)}
+}
 function dailyGame(){const key=TODAY();const ix=Math.abs([...key].reduce((n,c)=>n+c.charCodeAt(0),0))%games.length;return games[ix].id}
 const trainingPlans={balanced:{name:'Бойова готовність',desc:'Збалансована розминка: точність, реакція та тактика.',ids:['aim','reaction','tactics']},precision:{name:'Точність і контроль',desc:'Приціл, контроль віддачі та пам’ять під тиском.',ids:['aim','recoil','code']},survival:{name:'Виживання загону',desc:'Безпечна зона, правильний лут і командні рішення.',ids:['zone','loot','tactics']}};
 function startTrainingPlan(goal){let p;if(goal==='favorites'){p={name:'Мій марафон улюбленого',desc:'Пройди свої збережені режими по черзі — після кожної гри хаб відкриє наступну.',ids:games.filter(g=>data.favorites.includes(g.id)).map(g=>g.id)};if(p.ids.length<2){renderCoach();return}}else p=trainingPlans[goal]||trainingPlans.balanced;data.trainingPlan={day:TODAY(),goal,ids:p.ids.slice(),step:0,completed:false};if(!save()){data.trainingPlan=null;renderCoach();return}renderCoach();launch(p.ids[0]);}
