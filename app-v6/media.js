@@ -130,7 +130,9 @@ function playTrack(track,queue=khPlaylist){
  const videoId=String(track[2]).trim();
  if(!/^[A-Za-z0-9_-]{6,}$/.test(videoId)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося перевірити відео цього треку.';return false;}
  youtubeInput.value='https://www.youtube.com/watch?v='+videoId;
- const playableQueue=(Array.isArray(queue)?queue:[]).filter(item=>item&&item[2]&&/^[A-Za-z0-9_-]{6,}$/.test(String(item[2]).trim()));\n const queueIndex=Math.max(0,playableQueue.findIndex(item=>item[2]===videoId));\n const loaded=playYouTube(youtubeInput.value,playableQueue,queueIndex);
+ const playableQueue=(Array.isArray(queue)?queue:[]).filter(item=>item&&item[2]&&/^[A-Za-z0-9_-]{6,}$/.test(String(item[2]).trim()));
+ const queueIndex=Math.max(0,playableQueue.findIndex(item=>item[2]===videoId));
+ const loaded=playYouTube(youtubeInput.value,playableQueue,queueIndex);
  if(!loaded)return false;
  if(youtubeMessage)youtubeMessage.textContent='▶ Обрано: '+track[0]+' — '+track[1]+'. Відтворення запускається у вбудованому плеєрі нижче.';
  try{window.khMusicMediaSession?.setMetadata(track[0],track[1],'KH Gaming Mix')}catch{}
