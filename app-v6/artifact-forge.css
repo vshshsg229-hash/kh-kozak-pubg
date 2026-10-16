@@ -1,0 +1,48 @@
+#tab-artifactforge{color:#eaf6ff;--af-line:#29445c;--af-cyan:#62e7ff;--af-muted:#8ba8bf}
+#tab-artifactforge *{box-sizing:border-box}
+#tab-artifactforge .af-hero,#tab-artifactforge .af-panel{border:1px solid var(--af-line);border-radius:14px;background:#09131f;padding:clamp(14px,2.5vw,22px);margin-bottom:14px}
+#tab-artifactforge .af-kicker{font-size:10px;letter-spacing:2px;font-weight:900;color:var(--af-cyan)}
+#tab-artifactforge h1{font-size:clamp(27px,4vw,43px);line-height:1.05;margin:9px 0}
+#tab-artifactforge h1 span{color:var(--af-cyan)}
+#tab-artifactforge p{color:#9fb5c9;line-height:1.55}
+#tab-artifactforge .af-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:15px}
+#tab-artifactforge .af-stat{padding:11px;border:1px solid #21394e;border-radius:9px;background:#0c1b2a}
+#tab-artifactforge .af-stat small{display:block;color:var(--af-muted);font-size:9px;letter-spacing:1px}
+#tab-artifactforge .af-stat b{display:block;font-size:23px;margin-top:5px}
+#tab-artifactforge .af-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(240px,.8fr);gap:14px;align-items:start}
+#tab-artifactforge .af-map{position:relative;min-height:390px;overflow:hidden;border:1px solid #25465d;border-radius:12px;background-color:#071521;background-image:linear-gradient(#21435955 1px,transparent 1px),linear-gradient(90deg,#21435955 1px,transparent 1px),radial-gradient(ellipse at 20% 30%,#14536a88 0,transparent 33%),radial-gradient(ellipse at 72% 70%,#123c4d99 0,transparent 34%),linear-gradient(145deg,#0b2431,#07111d 65%,#10283a);background-size:26px 26px,26px 26px,auto,auto,auto}
+#tab-artifactforge .af-map:before{content:"";position:absolute;inset:10% 7%;border:1px solid #2c6475;clip-path:polygon(12% 0,75% 3%,100% 29%,86% 54%,92% 84%,58% 100%,25% 84%,0 58%,7% 22%);background:repeating-linear-gradient(35deg,transparent 0 27px,#1a536555 28px 29px,transparent 30px 49px);pointer-events:none}
+#tab-artifactforge .af-map-head{position:absolute;top:12px;left:13px;right:13px;display:flex;justify-content:space-between;gap:8px;z-index:2;font-size:9px;letter-spacing:1.3px;color:#8ac5d8}
+#tab-artifactforge .af-map-foot{position:absolute;bottom:12px;left:13px;right:13px;display:flex;justify-content:space-between;gap:8px;z-index:2;font-size:9px;color:#7ca5b9}
+#tab-artifactforge .af-node{position:absolute;z-index:3;transform:translate(-50%,-50%);min-width:45px;min-height:45px;padding:5px;border:1px solid #4b91a6;border-radius:10px;background:#0a2433;color:#a5eaff;font-size:19px;font-weight:900;box-shadow:0 0 0 3px #0a1c2a}
+#tab-artifactforge .af-node small{display:block;font-size:8px;letter-spacing:.3px;white-space:nowrap}
+#tab-artifactforge .af-node.is-found{border-color:#65f2b0;color:#65f2b0;background:#092b28}
+#tab-artifactforge .af-node.is-selected{outline:2px solid #d7fbff;outline-offset:3px}
+#tab-artifactforge .af-node:disabled{opacity:.48;cursor:not-allowed}
+#tab-artifactforge button{font:inherit}
+#tab-artifactforge .af-btn{min-height:42px;border:1px solid #38718b;border-radius:8px;background:#0c293b;color:#e8faff;font-weight:800;padding:10px 12px;cursor:pointer}
+#tab-artifactforge .af-btn.primary{background:#b9f4ff;color:#06131d;border-color:#b9f4ff}
+#tab-artifactforge .af-btn:disabled{opacity:.4;cursor:not-allowed}
+#tab-artifactforge .af-btn:focus-visible,#tab-artifactforge .af-node:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#tab-artifactforge .af-selected{margin-top:12px;padding:14px;border:1px solid #27465c;border-radius:10px;background:#0b1a28}
+#tab-artifactforge .af-selected h3{margin:5px 0 7px;font-size:18px}
+#tab-artifactforge .af-label{font-size:9px;letter-spacing:1.2px;color:#78b4cb;font-weight:900}
+#tab-artifactforge .af-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 12px}
+#tab-artifactforge .af-section-title h2{font-size:18px;margin:0}
+#tab-artifactforge .af-section-title small{color:#8ba8bf;font-size:10px}
+#tab-artifactforge .af-mission{padding:13px;border:1px solid #29445c;border-radius:10px;background:#0b1926;margin-top:9px}
+#tab-artifactforge .af-mission h3{font-size:14px;margin:5px 0}
+#tab-artifactforge .af-mission p{font-size:12px;margin:5px 0 10px}
+#tab-artifactforge .af-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#tab-artifactforge .af-item{padding:12px;border:1px solid #29445c;border-radius:10px;background:#0b1926;min-width:0}
+#tab-artifactforge .af-item .af-icon{font-size:25px}
+#tab-artifactforge .af-item b{display:block;font-size:12px;margin:7px 0 4px}
+#tab-artifactforge .af-item small{font-size:10px;color:#8ba8bf;line-height:1.4}
+#tab-artifactforge .af-item.is-locked{opacity:.5}
+#tab-artifactforge .af-notice{min-height:20px;margin:9px 0 0;color:#76edba;font-size:12px}
+#tab-artifactforge .af-ingredients{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+#tab-artifactforge .af-chip{padding:7px 9px;border:1px solid #29445c;border-radius:7px;background:#081522;font-size:10px;color:#b8d5e8}
+#tab-artifactforge .af-chip.is-ready{border-color:#54d8aa;color:#7df0c0}
+#tab-artifactforge .af-two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:850px){#tab-artifactforge .af-layout{grid-template-columns:1fr}#tab-artifactforge .af-map{min-height:340px}}
+@media(max-width:520px){#tab-artifactforge .af-map{min-height:315px}#tab-artifactforge .af-node{min-width:39px;min-height:39px;font-size:16px}#tab-artifactforge .af-node small{font-size:7px}#tab-artifactforge .af-stats{gap:6px}#tab-artifactforge .af-stat{padding:9px}#tab-artifactforge .af-stat b{font-size:19px}#tab-artifactforge .af-two-col{grid-template-columns:1fr}#tab-artifactforge .af-grid{gap:7px}#tab-artifactforge .af-item{padding:9px}}
