@@ -125,6 +125,12 @@ jobs:
           const swCoreMatch = serviceWorker.match(/const CORE = \[(.*?)\];/s);
           assert(swCoreMatch, 'Service worker core asset list exists');
           const swCoreAssets = [...swCoreMatch[1].matchAll(/"([^"]+)"/g)].map(match => match[1]);
+
+          const activeLocalScripts = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+\.js(?:\?[^"']*)?)["']/gi)].map(match => match[1]).filter(url => !/^(?:https?:|\/\/|data:)/i.test(url));
+          const precacheUrls = new Set(swCoreAssets.map(asset => asset.replace(/^\.\//, '')));
+          for (const script of activeLocalScripts) assert(precacheUrls.has(script.replace(/^\.\//, '')), 'Active script matches service worker precache URL: ' + script);
+          assert(!html.includes('https://www.tiktok.com/@uakozak5'), 'Retired TikTok profile link is removed');
+          assert(html.includes('https://www.tiktok.com/@tiktok.comkhkozak4') && html.includes('https://www.tiktok.com/@baggy8364'), 'Current TikTok profile links remain available');
           for (const asset of swCoreAssets) {
             const local = asset.split('?')[0].split('#')[0].replace(/^\.\//, '');
             if (!local || local.endsWith('/')) continue;
