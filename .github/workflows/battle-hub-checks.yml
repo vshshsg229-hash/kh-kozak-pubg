@@ -226,10 +226,10 @@ jobs:
           assert(battleHub3.includes('categoryRequests') && battleHub3.includes('Увімкнув категорію'), 'Kozak AI can switch game categories');
           assert(battleHub3.includes('function enhanceAssistant()') && battleHub3.includes('Відкриваю «Ігри та режими»'), 'Kozak AI can navigate to requested app sections');
           assert(battleHub3Css.includes('.kh-bh3-grid') && battleHub3Css.includes('@media(max-width:620px)'), 'Battle Hub 3.0 has responsive game cards and mobile styles');
-          assert(html.includes('battle-hub-3.js?v=16.78.0') && html.includes('battle-hub-3.css?v=16.78.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
+          assert(html.includes('battle-hub-3.js?v=17.15.0') && html.includes('battle-hub-3.css?v=16.78.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
-          assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
+          assert(html.includes('bunker.js?v=17.63.0'), 'HTML loads Bunker mode');
           // Battle Evolution is intentionally not loaded in the current approved UI.
           const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
           for (const feature of ['data-bunker-upgrade', 'bunkerScavenge', 'bunkerClaim', 'bunkerTrophyGrid']) assert(bunker.includes(feature), 'Bunker feature exists: ' + feature);
