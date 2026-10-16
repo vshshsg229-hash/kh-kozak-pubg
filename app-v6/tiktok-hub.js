@@ -24,11 +24,15 @@ function refreshEmbeds(force=false){
  if(old)old.replaceWith(script);else document.body.appendChild(script);
 }
 function parseVideo(raw){
- let url;try{url=new URL(String(raw||'').trim())}catch{return null}
+ const text=String(raw||'').trim();
+ const candidate=(text.match(/https?:\/\/[^\s"'<>]+/i)||[])[0]||text;
+ let url;try{url=new URL(candidate.replace(/[),.;]+$/,''))}catch{return null}
  if(url.protocol!=='https:'||!(url.hostname==='tiktok.com'||url.hostname.endsWith('.tiktok.com')))return null;
- const match=url.pathname.match(/^\/@([A-Za-z0-9._-]+)\/video\/(\d+)/i);
+ let match=url.pathname.match(/\/@([A-Za-z0-9._-]+)\/video\/(\d+)/i);
+ if(!match){const id=url.pathname.match(/(?:\/video\/|\/v\/)(\d{8,})/i);if(id)match=[null,'',id[1]]}
  if(!match)return null;
- return {url:'https://www.tiktok.com/@'+match[1]+'/video/'+match[2],user:match[1],id:match[2]};
+ const user=match[1]||'creator';
+ return {url:'https://www.tiktok.com/@'+user+'/video/'+match[2],user,id:match[2]};
 }
 function playVideo(raw){
  const video=parseVideo(raw);
@@ -136,8 +140,9 @@ document.addEventListener('click',event=>{
    mini.querySelector('.kh-profile-mini-play').addEventListener('click',()=>{
     const parsed=parseVideo(mini.querySelector('input').value);
     const screen=mini.querySelector('.kh-profile-mini-screen');
-    if(!parsed){screen.innerHTML='<span>Встав повне посилання на конкретний TikTok-ролик.</span>';return;}
-    screen.innerHTML='<iframe title="TikTok @'+safeText(parsed.user)+'" src="https://www.tiktok.com/player/v1/'+encodeURIComponent(parsed.id)+'?controls=1&description=1&music_info=1" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe><a href="'+safeText(parsed.url)+'" target="_blank" rel="noopener noreferrer">ВІДКРИТИ ОРИГІНАЛ ↗</a>';
+    if(!parsed){screen.innerHTML='<span>Не вдалося розпізнати посилання. У TikTok натисни «Поширити» → «Копіювати посилання» для конкретного відео.</span>';return;}
+    screen.innerHTML='<blockquote class="tiktok-embed kh-profile-tiktok-embed" cite="'+safeText(parsed.url)+'" data-video-id="'+safeText(parsed.id)+'" style="max-width:605px;min-width:0;width:100%"><section><a target="_blank" rel="noopener noreferrer" href="'+safeText(parsed.url)+'">Переглянути відео @'+safeText(parsed.user)+'</a></section></blockquote><a href="'+safeText(parsed.url)+'" target="_blank" rel="noopener noreferrer">ВІДКРИТИ ОРИГІНАЛ ↗</a>';
+    refreshEmbeds(true);
    });
   }
   mini.hidden=false;
