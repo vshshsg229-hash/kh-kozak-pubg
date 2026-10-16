@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.65.0",
+  "version": "16.66.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.65.0: Battle Hub 3.0 — чотири нові ігрові тренування, щоденна операція, пошук/улюблені/останні ігри, розширений Козак AI та швидкий доступ до навігації."
+  "releaseNotes": "v16.66.0: Виправлено збереження нагород Battle Pass та Elite Pass, колекції й позначок отримання в одному записі профілю; додано відновлення стану при помилці запису."
 }
