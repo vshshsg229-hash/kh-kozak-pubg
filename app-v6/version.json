@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.35.0",
+  "version": "17.36.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "TikTok: передавання відео з пристрою через системне меню, швидкий перехід до публікації та вбудований плеєр для прямих посилань."
+  "releaseNotes": "TikTok upload and in-app video player; fixed version labels, script cache-busting and service worker refresh."
 }
