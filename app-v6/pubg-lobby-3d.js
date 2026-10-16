@@ -340,21 +340,28 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
       const count=pos.count;
       const joints=new Uint16Array(count*4), weights=new Float32Array(count*4);
       const p=new THREE.Vector3();
-      const dist=new Float32Array(segments.length);
+      const nearestD=new Float32Array(4), nearestJ=new Int32Array(4);
       for(let i=0;i<count;i++){
-        p.fromBufferAttribute(pos,i);
-        let total=0;
+        const px=pos.getX(i),py=pos.getY(i),pz=pos.getZ(i);
+        nearestD.fill(Infinity);nearestJ.fill(0);
         for(let j=0;j<segments.length;j++){
-          const s=segments[j], ab=s.z.clone().sub(s.a), ap=p.clone().sub(s.a);
-          const denom=Math.max(ab.lengthSq(),1e-8);
-          const t=THREE.MathUtils.clamp(ap.dot(ab)/denom,0,1);
-          dist[j]=p.distanceTo(s.a.clone().addScaledVector(ab,t));
+          const s=segments[j], ax=s.a.x,ay=s.a.y,az=s.a.z;
+          const abx=s.z.x-ax,aby=s.z.y-ay,abz=s.z.z-az;
+          const denom=Math.max(abx*abx+aby*aby+abz*abz,1e-8);
+          const apx=px-ax,apy=py-ay,apz=pz-az;
+          const t=THREE.MathUtils.clamp((apx*abx+apy*aby+apz*abz)/denom,0,1);
+          const dx=px-(ax+abx*t),dy=py-(ay+aby*t),dz=pz-(az+abz*t);
+          const d=Math.sqrt(dx*dx+dy*dy+dz*dz);
+          if(d<nearestD[3]){
+            let k=3;
+            while(k>0 && d<nearestD[k-1]){nearestD[k]=nearestD[k-1];nearestJ[k]=nearestJ[k-1];k--;}
+            nearestD[k]=d;nearestJ[k]=j;
+          }
         }
-        const nearest=Array.from(dist,(d,j)=>({d,j})).sort((a,b)=>a.d-b.d).slice(0,4);
         let sum=0;
         for(let k=0;k<4;k++){
-          const item=nearest[k], w=1/Math.pow(item.d+.035,3);
-          joints[i*4+k]=segments[item.j].index;weights[i*4+k]=w;sum+=w;
+          const w=1/Math.pow(nearestD[k]+.035,3);
+          joints[i*4+k]=segments[nearestJ[k]].index;weights[i*4+k]=w;sum+=w;
         }
         for(let k=0;k<4;k++) weights[i*4+k]/=sum||1;
       }
