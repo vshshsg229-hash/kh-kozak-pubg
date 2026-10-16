@@ -95,3 +95,53 @@
 .khl-real3d-status.is-error{border-color:#ff7777;color:#ffe4e4}
 @media(max-width:850px){#khlobbyCharacter.khl-has-3d{left:51%;width:40%;height:64%;bottom:8%;min-height:300px}}
 @media(max-width:440px){#khlobbyCharacter.khl-has-3d{width:48%;left:53%;height:57%;bottom:12%;min-height:265px}.khl-real3d-status{font-size:10px;padding:8px 10px}}
+
+
+/* 16.40 lobby pass: match the supplied PUBG Mobile emote-gallery references. */
+.khlobby-scene{
+  background:
+    radial-gradient(ellipse at 48% 42%,#9ad7ff35 0,transparent 28%),
+    linear-gradient(180deg,#081a33 0%,#183d60 26%,#31566b 45%,#172c3a 67%,#080f18 100%);
+}
+.khlobby-sky{
+  background:
+    linear-gradient(90deg,#071326aa 0%,transparent 38%,#07132655 75%,#071326cc 100%),
+    repeating-linear-gradient(90deg,transparent 0 11%,#d7efff0b 11.2% 11.5%,transparent 11.8% 22%);
+}
+.khlobby-mountain{
+  bottom:28%;height:44%;opacity:.55;
+  background:
+    linear-gradient(150deg,transparent 0 28%,#9bb4c122 28.2% 29%,transparent 29.2%),
+    linear-gradient(25deg,transparent 0 34%,#061729 34.2% 57%,transparent 57.2%),
+    linear-gradient(145deg,transparent 0 43%,#567b98 43.2% 58%,transparent 58.2%);
+}
+.khlobby-ruins{filter:brightness(.7);opacity:.78}
+.khlobby-tree{opacity:.35}
+.khlobby-ground{
+  background:
+    linear-gradient(180deg,#2e5369 0%,#182b3b 52%,#0b131d 100%),
+    repeating-linear-gradient(90deg,transparent 0 60px,#c9e9ff08 61px 63px);
+}
+.khlobby-path{background:linear-gradient(90deg,#101c2b,#526779 48%,#16293a);opacity:.58}
+.khlobby-flowerfield{display:none}
+.khlobby-sidepromos{display:none}
+.khlobby-currencies{background:#08101dcc}
+.khlobby-playercard{background:#08101dcc}
+.khlobby-emote-toast{top:20%;left:50%;background:#08101de8;border-color:#83caff}
+.khlobby-car{opacity:.84;filter:drop-shadow(0 0 18px #8bd9ff20) drop-shadow(0 14px 8px #0008)}
+.khlobby-companion{display:none}
+.khlobby-emo-panel{background:#09121e;border-top-color:#2c4d69}
+.khlobby-emote{background:linear-gradient(135deg,#1b2636,#101925);border-color:#34465a}
+.khlobby-emote[aria-pressed=true]{background:linear-gradient(135deg,#442c31,#231a25);border-color:#ff596a;box-shadow:inset 0 0 0 1px #ff596a}
+.khlobby-controlbox{background:#101a28;border-color:#34475d}
+.khlobby-start{background:linear-gradient(180deg,#ffec70,#e9a91e);box-shadow:0 5px 0 #805717}
+.khlobby-character{filter:drop-shadow(0 10px 22px #000a)}
+.khl-real3d-canvas{touch-action:pan-y;cursor:grab}
+.khl-real3d-canvas:active{cursor:grabbing}
+.khl-real3d-status{background:#08111de8;border:1px solid #5d819e;color:#e8f6ff}
+.khl-real3d-status.is-error{border-color:#ff596a;color:#ffd8dc}
+@media(max-width:850px){
+ .khlobby-scene{background:linear-gradient(180deg,#0b1b31 0%,#254760 38%,#101c2a 72%,#070d15 100%)}
+ .khlobby-car{opacity:.7}
+ .khlobby-character{filter:drop-shadow(0 8px 15px #000b)}
+}
