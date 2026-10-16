@@ -18,6 +18,7 @@ self.addEventListener("fetch", event => {
     }).catch(() => caches.match("./index.html")));
     return;
   }
+  if (new URL(request.url).pathname.endsWith("/nexus-ops.js")) { event.respondWith(fetch(request, {cache:"no-store"})); return; }
   event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => {
     if (response.ok) {
       const copy = response.clone();
