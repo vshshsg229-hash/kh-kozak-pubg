@@ -46,3 +46,30 @@
 #tab-artifactforge .af-two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:850px){#tab-artifactforge .af-layout{grid-template-columns:1fr}#tab-artifactforge .af-map{min-height:340px}}
 @media(max-width:520px){#tab-artifactforge .af-map{min-height:315px}#tab-artifactforge .af-node{min-width:39px;min-height:39px;font-size:16px}#tab-artifactforge .af-node small{font-size:7px}#tab-artifactforge .af-stats{gap:6px}#tab-artifactforge .af-stat{padding:9px}#tab-artifactforge .af-stat b{font-size:19px}#tab-artifactforge .af-two-col{grid-template-columns:1fr}#tab-artifactforge .af-grid{gap:7px}#tab-artifactforge .af-item{padding:9px}}
+
+/* Artifact Forge map expansion + research tree; static styling only */
+#tab-artifactforge .af-map{min-height:clamp(520px,62vw,760px);background-size:22px 22px,22px 22px,auto,auto,auto}
+#tab-artifactforge .af-map:after{content:"";position:absolute;inset:16% 12%;pointer-events:none;opacity:.75;background:linear-gradient(25deg,transparent 0 16%,#39879a88 16.2% 16.5%,transparent 16.8% 100%),linear-gradient(145deg,transparent 0 30%,#39879a88 30.2% 30.5%,transparent 30.8% 100%),linear-gradient(80deg,transparent 0 58%,#39879a66 58.2% 58.5%,transparent 58.8% 100%);clip-path:polygon(12% 0,75% 3%,100% 29%,86% 54%,92% 84%,58% 100%,25% 84%,0 58%,7% 22%)}
+#tab-artifactforge .af-node{min-width:54px;min-height:50px;padding:7px 5px;background:#092234;border-radius:9px}
+#tab-artifactforge .af-node small{max-width:106px;white-space:normal;line-height:1.15;margin-top:3px;color:#b6e9f6}
+#tab-artifactforge .af-tree{border:1px solid #29445c;border-radius:12px;background:#081725;padding:clamp(13px,2vw,20px);margin-top:14px}
+#tab-artifactforge .af-tree-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#tab-artifactforge .af-upgrade{min-width:0;border:1px solid #27475d;border-radius:9px;padding:11px;background:#0a1d2b}
+#tab-artifactforge .af-upgrade.is-owned{border-color:#4aa98f;background:#092620}
+#tab-artifactforge .af-upgrade-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#tab-artifactforge .af-upgrade-top>span{display:grid;place-items:center;width:26px;height:26px;border:1px solid #39738a;border-radius:7px;color:#9cecff;font-size:11px;font-weight:900}
+#tab-artifactforge .af-upgrade-top>b{font-size:13px}
+#tab-artifactforge .af-upgrade-top>small{margin-left:auto;color:#8ba8bf;font-size:9px}
+#tab-artifactforge .af-upgrade p{font-size:12px;min-height:38px;margin:9px 0}
+#tab-artifactforge .af-upgrade .af-btn{width:100%;font-size:11px}
+@media(max-width:760px){
+ #tab-artifactforge .af-layout{grid-template-columns:minmax(0,1fr)}
+ #tab-artifactforge .af-map{min-height:500px}
+ #tab-artifactforge .af-tree-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #tab-artifactforge .af-node{min-width:46px;min-height:44px;font-size:16px}
+ #tab-artifactforge .af-node small{font-size:7px;max-width:82px}
+}
+@media(max-width:390px){
+ #tab-artifactforge .af-tree-grid{grid-template-columns:minmax(0,1fr)}
+ #tab-artifactforge .af-map{min-height:450px}
+}
