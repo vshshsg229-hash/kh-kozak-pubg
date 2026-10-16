@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '17.35.0';
+  const WEB_VERSION = '17.36.0';
   const VERSION_URL = new URL('./version.json', location.href).toString();
   const APP_URL = new URL('./', location.href).toString();
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
