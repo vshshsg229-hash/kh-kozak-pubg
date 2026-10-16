@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.79.0",
+  "version": "17.80.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-17",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Nexus Protocol NIGHTMARE: added OMEGA-778 secret summon, unique OMEGA VOID arena, 3000-HP opening phase and exclusive legendary skin reward. Three-phase boss progression retained."
+  "releaseNotes": "Nexus Protocol recovery: restored stable full mode after a rendering regression; refreshed app and service-worker cache."
 }
