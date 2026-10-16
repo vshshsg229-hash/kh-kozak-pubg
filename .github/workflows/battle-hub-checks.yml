@@ -32,6 +32,7 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check app-v6/app.js
+          node --check app-v6/battle-hub-3.js
           node --check app-v6/fighter-inventory-v16.12.js
           node --check app-v6/i18n.js
           node --check app-v6/media.js
@@ -199,6 +200,14 @@ jobs:
           assert(threeD.includes('7 ГОТОВИХ 3D РЕЖИМІВ') && threeD.includes('const modes=['), '3D Arena accurately advertises its current playable catalog');
           const modeMatch = threeD.match(/const modes=(\[[\s\S]*?\]);\n\nlet selectedModeName/);
           assert(modeMatch && (modeMatch[1].match(/\{id:'/g) || []).length === 7, '3D Arena has exactly 7 implemented modes');
+          const battleHub3 = fs.readFileSync(path.join(root, 'battle-hub-3.js'), 'utf8');
+          const battleHub3Css = fs.readFileSync(path.join(root, 'battle-hub-3.css'), 'utf8');
+          for (const feature of ['Тренування прицілу', 'Дуель реакції', 'Маршрут зони', 'Злам сейфа', 'ОПЕРАЦІЯ ДНЯ', 'khBh3Search', 'data-bh3-fav', 'Козак AI']) {
+            assert(battleHub3.includes(feature), 'Battle Hub 3.0 feature exists: ' + feature);
+          }
+          assert(battleHub3.includes('kh100-finished') && battleHub3.includes('kh_bh3_reward_'), 'Battle Hub 3.0 rewards are routed to progression and protected against same-day duplicate claims');
+          assert(battleHub3Css.includes('.kh-bh3-grid') && battleHub3Css.includes('@media(max-width:620px)'), 'Battle Hub 3.0 has responsive game cards and mobile styles');
+          assert(html.includes('battle-hub-3.js?v=16.65.0') && html.includes('battle-hub-3.css?v=16.65.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
