@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.66.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.66.0",
+  "version": "17.67.0",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.67.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.66.0",
-  "releaseNotes": "Shared profile wallet and mode progression bridge; fixed updater version/cache mismatch and refresh behavior."
+  "windowsVersion": "17.67.0",
+  "releaseNotes": "Added a dedicated in-app YouTube mode under Content with embedded video and playlist playback."
 }
