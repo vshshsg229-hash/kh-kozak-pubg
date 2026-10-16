@@ -397,11 +397,21 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
   modelLoader.load('assets/silvanus_x_suit_3d_model.glb',gltf=>{
     model=prepareLoadedModel(gltf.scene);
     scene.add(model);
-    clips=gltf.animations||[];
+    // The supplied Silvanus GLB has no character skeleton; its only animation
+    // targets a camera. Never play camera-only clips as a character idle.
+    const rigBoneNames=new Set();
+    model.traverse(node=>{if(node.isBone)rigBoneNames.add(node.name);});
+    clips=(gltf.animations||[]).filter(clip=>{
+      const tracks=clip.tracks||[];
+      return tracks.length>0 && tracks.some(track=>{
+        const targetName=String(track.name||"").split(".")[0].split("/").pop();
+        return rigBoneNames.has(targetName) || /mixamorig|\b(bone|spine|head|arm|leg|hand|foot|hips|neck)\b/i.test(targetName);
+      });
+    });
     if(clips.length){
       mixer=new THREE.AnimationMixer(model);
-      const idle=clips.find(c=>/idle|stand|breath/i.test(c.name))||clips[0];
-      idleAction=mixer.clipAction(idle);idleAction.play();currentAction=idleAction;
+      const idle=clips.find(c=>/idle|stand|breath/i.test(c.name))||null;
+      if(idle){idleAction=mixer.clipAction(idle);idleAction.play();currentAction=idleAction;}
     }
     startLobby();
   },undefined,error=>{
