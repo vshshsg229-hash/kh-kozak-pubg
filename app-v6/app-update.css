@@ -9,3 +9,7 @@
 @media(max-width:560px){.kh-update-banner{top:8px;right:8px;width:calc(100vw - 16px);grid-template-columns:30px minmax(0,1fr) auto 20px;gap:7px;padding:10px}.kh-update-icon{width:30px;height:30px;flex-basis:30px;font-size:21px}.kh-update-action{min-height:36px;padding:0 9px;font-size:9px;letter-spacing:0}.kh-update-copy strong{font-size:11px}.kh-update-copy small{font-size:9px}.kh-update-close{min-width:22px;min-height:28px}}
 @media(max-width:360px){.kh-update-banner{grid-template-columns:26px minmax(0,1fr) auto 18px;gap:5px;padding:8px}.kh-update-icon{width:26px;height:26px;flex-basis:26px}.kh-update-action{padding:0 7px;font-size:8px}}
 @media(prefers-reduced-motion:reduce){.kh-update-banner.is-visible{animation:none}}
+
+/* 17.37.0: update action is a real button, not a link */
+.kh-update-action{border:0;cursor:pointer;font-family:inherit;line-height:1.2;appearance:none;-webkit-appearance:none}
+.kh-update-action:focus-visible{outline:2px solid #fff;outline-offset:3px}
