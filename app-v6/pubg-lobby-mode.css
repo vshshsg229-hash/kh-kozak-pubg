@@ -55,3 +55,31 @@
 .khlobby-scene[data-scene="night"] .khlobby-ruins,.khlobby-scene[data-scene="night"] .khlobby-tree:after{filter:brightness(.5) hue-rotate(18deg)}
 .khlobby-scene[data-scene="night"] .khlobby-flowerfield{opacity:.42}
 .khlobby-car.khlobby-car-highlight{filter:drop-shadow(0 0 16px #eaf6ffdd) drop-shadow(0 14px 8px #0008)}
+
+/* Body-part animation: the figure stays in place while arms, head and legs move independently. */
+#khlobbyCharacter svg>.khl-part{transform-box:fill-box;transform-origin:center;will-change:transform}
+#khlobbyCharacter.emote-wave .khl-leftArm{transform-origin:85% 18%;animation:khlArmWave .62s ease-in-out 3}
+#khlobbyCharacter.emote-wave .khl-rightArm{animation:khlIdleArm 1.2s ease-in-out infinite}
+#khlobbyCharacter.emote-dance .khl-leftArm{transform-origin:85% 18%;animation:khlDanceLeft .48s ease-in-out 6}
+#khlobbyCharacter.emote-dance .khl-rightArm{transform-origin:10% 18%;animation:khlDanceRight .48s ease-in-out 6}
+#khlobbyCharacter.emote-dance .khl-leftLeg{animation:khlLegLeft .48s ease-in-out 6}
+#khlobbyCharacter.emote-dance .khl-rightLeg{animation:khlLegRight .48s ease-in-out 6}
+#khlobbyCharacter.emote-victory .khl-leftArm{transform-origin:85% 18%;animation:khlArmRaise .7s ease-in-out 3}
+#khlobbyCharacter.emote-victory .khl-rightArm{transform-origin:10% 18%;animation:khlArmRaise .7s ease-in-out 3 reverse}
+#khlobbyCharacter.emote-salute .khl-leftArm{transform-origin:85% 18%;animation:khlSaluteArm .8s ease-in-out 2}
+#khlobbyCharacter.emote-heart .khl-leftArm{transform-origin:85% 18%;animation:khlHeartArm .7s ease-in-out 3}
+#khlobbyCharacter.emote-heart .khl-rightArm{transform-origin:10% 18%;animation:khlHeartArm .7s ease-in-out 3 reverse}
+#khlobbyCharacter.emote-bow .khl-head{animation:khlHeadBow .8s ease-in-out 2}
+#khlobbyCharacter.emote-bow .khl-leftArm,#khlobbyCharacter.emote-bow .khl-rightArm{animation:khlBowArms .8s ease-in-out 2}
+@keyframes khlArmWave{0%,100%{transform:rotate(0)}25%,65%{transform:rotate(-27deg)}45%,85%{transform:rotate(8deg)}}
+@keyframes khlIdleArm{0%,100%{transform:rotate(0)}50%{transform:rotate(3deg)}}
+@keyframes khlDanceLeft{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(-36deg) translateY(-4px)}}
+@keyframes khlDanceRight{0%,100%{transform:rotate(3deg)}50%{transform:rotate(35deg) translateY(-4px)}}
+@keyframes khlLegLeft{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg) translateY(-3px)}}
+@keyframes khlLegRight{0%,100%{transform:rotate(0)}50%{transform:rotate(8deg) translateY(2px)}}
+@keyframes khlArmRaise{0%,100%{transform:rotate(0)}45%,75%{transform:rotate(-48deg) translateY(-4px)}}
+@keyframes khlSaluteArm{0%,100%{transform:rotate(0)}45%,75%{transform:rotate(-55deg) translateY(-3px)}}
+@keyframes khlHeartArm{0%,100%{transform:rotate(0)}50%{transform:rotate(-24deg) translateY(-7px)}}
+@keyframes khlHeadBow{0%,100%{transform:rotate(0)}50%{transform:rotate(17deg) translateY(4px)}}
+@keyframes khlBowArms{0%,100%{transform:rotate(0)}50%{transform:rotate(10deg) translateY(3px)}}
+@media(prefers-reduced-motion:reduce){#khlobbyCharacter .khl-part{animation:none!important}}
