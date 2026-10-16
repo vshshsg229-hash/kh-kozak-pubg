@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.89.0",
+  "version": "16.90.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.89.0: repair bridge for game search launch, training plan actions and progress refresh."
+  "releaseNotes": "v16.90.0: repair malformed progress/profile markup, tighten activity XP triggers and improve game launch matching."
 }
