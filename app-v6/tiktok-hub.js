@@ -122,6 +122,15 @@ $('#khTikTokOpenUpload')?.addEventListener('click',()=>{
  window.open('https://www.tiktok.com/upload?lang=uk-UA','_blank','noopener,noreferrer');
 });
 document.addEventListener('click',event=>{
+ const inAppButton=event.target.closest('[data-kh-inapp-video]');
+ if(inAppButton){
+  event.preventDefault();
+  const field=document.querySelector('#khTikTokVideoUrl'),playerPanel=document.querySelector('.kh-tiktok-player-panel');
+  if(playerPanel)playerPanel.scrollIntoView({behavior:'auto',block:'start'});
+  if(status)status.textContent='Вбудований перегляд відкрито в Battle Hub. Встав посилання на конкретне відео з профілю, щоб відтворити його тут замість переходу в браузер.';
+  if(field){field.focus({preventScroll:true});field.placeholder='Встав посилання на конкретне відео TikTok…';}
+  return;
+ }
  const profile=event.target.closest('[data-kh-profile-open]');
  if(!profile)return;
  event.preventDefault();
