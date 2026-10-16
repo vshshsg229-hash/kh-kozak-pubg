@@ -145,3 +145,13 @@
  .khlobby-car{opacity:.7}
  .khlobby-character{filter:drop-shadow(0 8px 15px #000b)}
 }
+
+.khl-real3d-emote-grid{position:absolute;z-index:8;right:14px;top:50%;transform:translateY(-42%);width:clamp(112px,16vw,176px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:8px;background:#08111de8;border:1px solid #7d9ab955;box-shadow:0 10px 26px #0007;backdrop-filter:blur(8px)}
+.khl-real3d-emote-title{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:2px 2px 5px;color:#e7f4ff;font-size:10px;font-weight:1000;letter-spacing:1px;border-bottom:1px solid #6c8ba844}
+.khl-real3d-emote-title span{color:#ff596a}
+.khl-real3d-emote-grid button{display:grid;justify-items:center;gap:4px;min-width:0;min-height:48px;padding:6px 2px;border:1px solid #45586d;background:#172434;color:#f4f8ff;font-size:9px;font-weight:800}
+.khl-real3d-emote-grid button[aria-pressed=true]{border-color:#ff596a;background:#49272f;box-shadow:inset 0 0 0 1px #ff596a}
+.khl-real3d-emote-icon{font-size:19px;line-height:1.1}
+.khl-real3d-emote-name{font-size:8px;text-align:center;overflow-wrap:anywhere}
+@media(max-width:850px){.khl-real3d-emote-grid{right:7px;top:49%;width:112px;padding:5px;gap:4px}.khl-real3d-emote-grid button{min-height:42px}.khl-real3d-emote-icon{font-size:17px}.khl-real3d-emote-title{font-size:9px}}
+@media(max-width:440px){.khl-real3d-emote-grid{top:43%;width:94px;right:5px}.khl-real3d-emote-name{font-size:7px}.khl-real3d-emote-grid button{min-height:38px}.khlobby-character{left:43%;width:44%}.khlobby-car{left:0;width:42%}}
