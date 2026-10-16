@@ -3,6 +3,7 @@
  * The source model is a generic animated GLB, not an official PUBG asset.
  */
 import * as THREE from 'https://esm.sh/three@0.164.1';
+import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GLTFLoader.js';
 
 (() => {
   const root = document.getElementById('khLobbyMode');
@@ -277,13 +278,54 @@ import * as THREE from 'https://esm.sh/three@0.164.1';
     }
     return group;
   }
-  model=makeCharacter();
-  model.scale.setScalar(1);
-  scene.add(model);
-  host.classList.add('khl-has-3d');
-  status.classList.add('is-hidden');status.textContent='';
-  playEmote(root.querySelector('#khlobbyCurrentEmote')?.value||'wave');
-  resize();
-  tick();
+  function prepareLoadedModel(object){
+    boneMap.clear();
+    object.traverse(node=>{
+      if(node.isBone) boneMap.set(node.name,node);
+      if(node.isMesh){node.castShadow=true;node.receiveShadow=true;
+        if(node.material){const materials=Array.isArray(node.material)?node.material:[node.material];
+          for(const material of materials){if(material.map)material.map.colorSpace=THREE.SRGBColorSpace;material.needsUpdate=true;}
+        }
+      }
+    });
+    const bounds=new THREE.Box3().setFromObject(object);
+    const size=bounds.getSize(new THREE.Vector3());
+    const height=Math.max(size.y,.01);
+    object.scale.setScalar(3.65/height);
+    object.updateMatrixWorld(true);
+    const fitted=new THREE.Box3().setFromObject(object);
+    object.position.y-=fitted.min.y;
+    object.position.x-=(fitted.min.x+fitted.max.x)/2;
+    object.position.z-=(fitted.min.z+fitted.max.z)/2;
+    return object;
+  }
+  function startLobby(){
+    host.classList.add('khl-has-3d');
+    status.classList.add('is-hidden');status.textContent='';
+    playEmote(root.querySelector('#khlobbyCurrentEmote')?.value||'wave');
+    resize();
+    tick();
+  }
+  // Prefer the user's actual Silvanus X Suit asset when it is published in the app.
+  // If the GLB is absent or invalid, keep the lobby available with its existing rigged fallback.
+  const modelLoader=new GLTFLoader();
+  modelLoader.load('assets/silvanus_x_suit_3d_model.glb',gltf=>{
+    model=prepareLoadedModel(gltf.scene);
+    scene.add(model);
+    clips=gltf.animations||[];
+    if(clips.length){
+      mixer=new THREE.AnimationMixer(model);
+      const idle=clips.find(c=>/idle|stand|breath/i.test(c.name))||clips[0];
+      idleAction=mixer.clipAction(idle);idleAction.play();currentAction=idleAction;
+    }
+    startLobby();
+  },undefined,error=>{
+    console.warn('Silvanus GLB unavailable; using built-in animated lobby character.',error);
+    boneMap.clear();
+    model=makeCharacter();
+    model.scale.setScalar(1);
+    scene.add(model);
+    startLobby();
+  });
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);observer.disconnect();renderer.dispose();},{once:true});
 })();
