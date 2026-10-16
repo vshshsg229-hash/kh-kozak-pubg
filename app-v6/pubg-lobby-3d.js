@@ -112,6 +112,7 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     const wave=Math.sin(t*8.5);
     const sway=Math.sin(t*6.2);
     const pulse=Math.sin(t*4.8);
+    const autoRig=Boolean(model?.userData?.autoRig);
     const rightArm=[/rightarm/i,/right_arm/i,/rightupperarm/i];
     const leftArm=[/leftarm/i,/left_arm/i,/leftupperarm/i];
     const rightFore=[/rightforearm/i,/right_forearm/i,/rightlowerarm/i];
@@ -123,23 +124,23 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     // Deltas are removed before every mixer update and reapplied once per frame,
     // so gestures do not spiral or drift after several seconds.
     if(id==='wave'){
-      rotate(rightArm,Z,-1.75); rotate(rightFore,X,-.3 + wave*.22);
-      rotate(leftArm,Z,.08); rotate(spine,Y,Math.sin(t*2)*.025);
+      rotate(rightArm,Z,autoRig?1.72:-1.75); rotate(rightFore,autoRig?Z:X,autoRig?1.05+wave*.16:-.3+wave*.22);
+      rotate(leftArm,Z,autoRig?-.08:.08); rotate(spine,Y,Math.sin(t*2)*.025);
     } else if(id==='dance'){
-      rotate(rightArm,Z,-1.15 + sway*.38); rotate(leftArm,Z,1.12 - sway*.38);
-      rotate(rightFore,X,-.45 + pulse*.22); rotate(leftFore,X,.42 - pulse*.22);
+      rotate(rightArm,Z,(autoRig?2.0:-1.15) + sway*.38); rotate(leftArm,Z,(autoRig?-2.0:1.12) - sway*.38);
+      rotate(rightFore,autoRig?Z:X,(autoRig?-.8:-.45)+pulse*.22); rotate(leftFore,autoRig?Z:X,(autoRig?.8:.42)-pulse*.22);
       rotate(spine,Z,sway*.16); rotate(spine,Y,Math.sin(t*3.1)*.13);
       rotate(rLeg,Z,.18 + Math.max(0,sway)*.16); rotate(lLeg,Z,-.18 - Math.max(0,-sway)*.16);
     } else if(id==='victory'){
-      rotate(rightArm,Z,-2.45 + pulse*.08); rotate(leftArm,Z,2.45 - pulse*.08);
-      rotate(rightFore,X,-.15); rotate(leftFore,X,.15);
+      rotate(rightArm,Z,(autoRig?2.7:-2.45)+pulse*.08); rotate(leftArm,Z,(autoRig?-2.7:2.45)-pulse*.08);
+      rotate(rightFore,autoRig?Z:X,autoRig?-.45:-.15); rotate(leftFore,autoRig?Z:X,autoRig?.45:.15);
       rotate(spine,Z,Math.sin(t*3)*.035);
     } else if(id==='salute'){
-      rotate(rightArm,Z,-1.18); rotate(rightFore,X,-1.15 + pulse*.035);
+      rotate(rightArm,Z,autoRig?1.15:-1.18); rotate(rightFore,autoRig?Z:X,autoRig?-1.25:-1.15+pulse*.035);
       rotate(spine,Z,-.035); rotate(head,X,-.06);
     } else if(id==='heart'){
-      rotate(rightArm,Z,-1.1); rotate(leftArm,Z,1.1);
-      rotate(rightFore,X,-.85); rotate(leftFore,X,.85);
+      rotate(rightArm,Z,autoRig?2.1:-1.1); rotate(leftArm,Z,autoRig?-2.1:1.1);
+      rotate(rightFore,autoRig?Z:X,autoRig?-1.25:-.85); rotate(leftFore,autoRig?Z:X,autoRig?1.25:.85);
       rotate(spine,X,-.05 + pulse*.025);
     } else if(id==='bow'){
       const bend=Math.sin(Math.min(1,t/.7)*Math.PI/2)*.48;
