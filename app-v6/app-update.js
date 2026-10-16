@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '16.94.0';
+  const WEB_VERSION = '17.7.0';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
@@ -42,17 +42,15 @@
       action.textContent = 'ВІДКРИВАЄМО ОНОВЛЕНУ ВЕРСІЮ…';
       action.setAttribute('aria-busy', 'true');
       action.style.pointerEvents = 'none';
-      // Cleanup runs in background; it must not block the actual refresh.
+      // Clear old app caches first, then navigate with a unique release URL.
+      // Do not unregister the worker: it can race with navigation and leave a stale shell.
       try {
-        if ('caches' in window) {
-          caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)))).catch(() => {});
-        }
+        if ('caches' in window) await Promise.all((await caches.keys()).filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)));
+      } catch (_) {}
+      try {
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(regs => Promise.all(regs.map(async reg => {
-            try { await reg.update(); } catch (_) {}
-            try { if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (_) {}
-            try { await reg.unregister(); } catch (_) {}
-          }))).catch(() => {});
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(async reg => { try { await reg.update(); } catch (_) {} }));
         }
       } catch (_) {}
       location.replace(url.toString());
