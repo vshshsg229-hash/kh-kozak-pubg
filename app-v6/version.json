@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.39.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.39.0",
+  "version": "17.40.0",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.40.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.39.0",
-  "releaseNotes": "Synchronized web, PWA and Windows app version labels; updater and TikTok embed fixes."
+  "windowsVersion": "17.40.0",
+  "releaseNotes": "Added Artifact Forge tactical map, secret operations, collection and artifact crafting; synchronized web, PWA and Windows version labels."
 }
