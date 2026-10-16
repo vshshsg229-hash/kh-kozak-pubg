@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.22.0",
+  "version": "17.23.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.22.0: Expands the shared Survival Ops ↔ Bunker loop with generator power, specializations, mini-bosses, keyed secret caches, and persistent injuries treated with shared medkits."
+  "releaseNotes": "v17.23.0: Reliability pass for shared Survival Ops/Bunker mechanics: armor now protects against mini-boss hits, mini-boss defeats correctly end the run, medic bonus health is preserved, and healing respects the medic max-health bonus."
 }
