@@ -1,8 +1,8 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '17.7.0';
-  const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
-  const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
+  const WEB_VERSION = '17.10.0';
+  const VERSION_URL = new URL('version.json', location.href).toString();
+  const APP_URL = new URL('./', location.href).toString();
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
   const isElectron = /Electron/i.test(navigator.userAgent);
   const CURRENT_VERSION = isElectron ? new URLSearchParams(location.search).get('desktopVersion') || '0.0.0' : WEB_VERSION;
@@ -35,7 +35,7 @@
       }
       event.preventDefault();
       const targetVersion = latestVersion || WEB_VERSION;
-      const url = new URL(APP_URL, location.href);
+      const url = new URL(APP_URL);
       url.searchParams.set('v', targetVersion);
       url.searchParams.set('updated', String(Date.now()));
       url.searchParams.set('refresh', '1');
