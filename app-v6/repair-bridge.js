@@ -4,12 +4,14 @@ const qa=(s,root=document)=>Array.from(root.querySelectorAll(s));
 const safe=(fn)=>{try{return fn()}catch(e){console.warn('[KH么Kozak repair]',e);return null}};
 function launchGame(id){
  if(!id)return false;
- const candidates=qa('[data-game]');
+ const candidates=qa('#tab-games [data-game], [data-game]');
+ const norm=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]/g,'');
  let target=candidates.find(x=>x.dataset.game===id);
- if(!target){const map={zone:['zone','arena','zone-route'],aim:['aim','aim-trainer'],reaction:['reaction','reflex'],loot:['loot','loot-logic'],tactics:['tactics','tactical']};const aliases=map[id]||[id];target=candidates.find(x=>aliases.includes(x.dataset.game))}
+ if(!target){const map={zone:['zone','arena','zone-route','zoneRoute','safe-zone','route'],aim:['aim','aim-trainer','aimTrainer','shooting'],reaction:['reaction','reflex','reaction-test'],loot:['loot','loot-logic','lootLogic'],tactics:['tactics','tactical','tactical-lab'],code:['code','memory','memory-code'],recoil:['recoil','control-recoil']};const aliases=map[id]||[id];target=candidates.find(x=>aliases.some(a=>norm(a)===norm(x.dataset.game)))}
  if(target){target.click();return true}
  const search=q('#khBh3Search');
- if(search){search.value=id;search.dispatchEvent(new Event('input',{bubbles:true}));const match=qa('[data-bh3-catalog-launch]').find(x=>(x.dataset.bh3CatalogLaunch||'').toLowerCase()===id.toLowerCase());if(match){match.click();return true}}
+ if(search){search.value=id;search.dispatchEvent(new Event('input',{bubbles:true}));const match=qa('[data-bh3-catalog-launch]').find(x=>norm(x.dataset.bh3CatalogLaunch)===norm(id));if(match){match.click();return true}}
+ const fallback=qa('#tab-games button, #tab-games [role="button"]').find(x=>norm(x.dataset.game||x.dataset.bh3Play||x.dataset.mode||x.id)===norm(id));if(fallback){fallback.click();return true}
  return false;
 }
 function continuePlan(){
