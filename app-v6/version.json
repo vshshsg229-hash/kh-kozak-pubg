@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.62.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.62.0",
+  "version": "17.63.0",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.63.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.62.0",
-  "releaseNotes": "Replaced the broken Artifact Forge with Nexus Protocol: 20-node tactical map, 24-hour map cycle, secret operations, cipher, technology tree, crafting collection, daily rewards, trials and final boss."
+  "windowsVersion": "17.63.0",
+  "releaseNotes": "Replaced the broken Artifact Forge with Nexus Protocol: 20-node tactical map; removed obsolete Artifact Forge recovery code and added a permanent Nexus Protocol navigation entry, 24-hour map cycle, secret operations, cipher, technology tree, crafting collection, daily rewards, trials and final boss."
 }
