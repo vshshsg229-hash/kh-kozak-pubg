@@ -15,10 +15,22 @@ const searchProviders=[
  q=>'https://pipedapi.adminforge.de/search?q='+encodeURIComponent(q)+'&filter=videos',
  q=>'https://pipedapi.kavin.rocks/search?q='+encodeURIComponent(q)+'&filter=videos'
 ];
-let searchSequence=0,queue=[],currentIndex=-1,player=null,playerReady=false,pending=null,apiPromise=null,autoNext=true,loopQueue=false;\nlet officialKey='';
+let searchSequence=0,queue=[],currentIndex=-1,player=null,playerReady=false,pending=null,apiPromise=null,autoNext=true,loopQueue=false;
+let officialKey='';
 const text=(el,value)=>{el.textContent=String(value||'')};
 function setMessage(value){message.textContent=value}
-function ensureOfficialSearchSettings(){\n let details=document.getElementById('khYoutubeOfficialSearchSettings');if(details)return;\n details=document.createElement('details');details.id='khYoutubeOfficialSearchSettings';details.className='youtube-mode-direct';\n const summary=document.createElement('summary');summary.textContent='⚙️ Офіційний пошук YouTube (необов’язково)';\n const row=document.createElement('div');row.className='youtube-mode-input-row';row.style.marginTop='10px';\n const input=document.createElement('input');input.type='password';input.autocomplete='off';input.placeholder='YouTube Data API key';input.setAttribute('aria-label','YouTube Data API key');\n const save=document.createElement('button');save.type='button';save.textContent='Застосувати ключ';\n const note=document.createElement('p');note.className='youtube-mode-search-note';note.textContent='Для офіційного пошуку потрібен власний ключ YouTube Data API v3 з Google Cloud. Ключ зберігається лише в пам’яті цієї вкладки й не надсилається нам.';\n save.addEventListener('click',()=>{officialKey=input.value.trim();setMessage(officialKey?'Офіційний пошук YouTube увімкнено для цієї сесії.':'Ключ очищено; використовуються публічні пошукові джерела.');});\n row.append(input,save);details.append(summary,row,note);searchForm.insertAdjacentElement('afterend',details);\n}\nfunction ensureControls(){
+function ensureOfficialSearchSettings(){
+ let details=document.getElementById('khYoutubeOfficialSearchSettings');if(details)return;
+ details=document.createElement('details');details.id='khYoutubeOfficialSearchSettings';details.className='youtube-mode-direct';
+ const summary=document.createElement('summary');summary.textContent='⚙️ Офіційний пошук YouTube (необов’язково)';
+ const row=document.createElement('div');row.className='youtube-mode-input-row';row.style.marginTop='10px';
+ const input=document.createElement('input');input.type='password';input.autocomplete='off';input.placeholder='YouTube Data API key';input.setAttribute('aria-label','YouTube Data API key');
+ const save=document.createElement('button');save.type='button';save.textContent='Застосувати ключ';
+ const note=document.createElement('p');note.className='youtube-mode-search-note';note.textContent='Для офіційного пошуку потрібен власний ключ YouTube Data API v3 з Google Cloud. Ключ зберігається лише в пам’яті цієї вкладки й не надсилається нам.';
+ save.addEventListener('click',()=>{officialKey=input.value.trim();setMessage(officialKey?'Офіційний пошук YouTube увімкнено для цієї сесії.':'Ключ очищено; використовуються публічні пошукові джерела.');});
+ row.append(input,save);details.append(summary,row,note);searchForm.insertAdjacentElement('afterend',details);
+}
+function ensureControls(){
  let bar=document.getElementById('khYoutubePlaybackControls');
  if(bar)return bar;
  bar=document.createElement('div');bar.id='khYoutubePlaybackControls';bar.className='youtube-mode-playback-controls';
@@ -103,7 +115,14 @@ async function requestProvider(endpoint,q){
  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),5500);
  try{const response=await fetch(endpoint(q),{signal:controller.signal,headers:{Accept:'application/json'}});if(!response.ok)throw new Error('HTTP '+response.status);return await response.json()}finally{clearTimeout(timeout)}
 }
-async function searchOfficial(q,seq){\n const url=new URL('https://www.googleapis.com/youtube/v3/search');url.search=new URLSearchParams({part:'snippet',type:'video',maxResults:'24',q,videoEmbeddable:'true',key:officialKey}).toString();\n const response=await fetch(url.toString());const data=await response.json();if(!response.ok)throw new Error(data?.error?.message||'YouTube API error');if(seq!==searchSequence)return true;\n queue=(data.items||[]).map(item=>({videoId:item.id?.videoId,title:item.snippet?.title,author:item.snippet?.channelTitle,publishedAt:item.snippet?.publishedAt,thumbnail:item.snippet?.thumbnails?.medium?.url||item.snippet?.thumbnails?.default?.url})).filter(item=>videoId(item));\n if(!queue.length)throw new Error('YouTube не повернув відео для цього запиту');\n results.replaceChildren(...queue.map((item,index)=>makeCard(item,index)).filter(Boolean));ensureControls();setMessage('Офіційний YouTube: знайдено '+queue.length+' відео. Автоперехід увімкнено.');return true;\n}\nasync function search(query){
+async function searchOfficial(q,seq){
+ const url=new URL('https://www.googleapis.com/youtube/v3/search');url.search=new URLSearchParams({part:'snippet',type:'video',maxResults:'24',q,videoEmbeddable:'true',key:officialKey}).toString();
+ const response=await fetch(url.toString());const data=await response.json();if(!response.ok)throw new Error(data?.error?.message||'YouTube API error');if(seq!==searchSequence)return true;
+ queue=(data.items||[]).map(item=>({videoId:item.id?.videoId,title:item.snippet?.title,author:item.snippet?.channelTitle,publishedAt:item.snippet?.publishedAt,thumbnail:item.snippet?.thumbnails?.medium?.url||item.snippet?.thumbnails?.default?.url})).filter(item=>videoId(item));
+ if(!queue.length)throw new Error('YouTube не повернув відео для цього запиту');
+ results.replaceChildren(...queue.map((item,index)=>makeCard(item,index)).filter(Boolean));ensureControls();setMessage('Офіційний YouTube: знайдено '+queue.length+' відео. Автоперехід увімкнено.');return true;
+}
+async function search(query){
  const seq=++searchSequence,q=String(query||'').trim();if(q.length<2){setMessage('Введи щонайменше 2 символи для пошуку.');return}
  results.replaceChildren();queue=[];currentIndex=-1;setMessage('Шукаю на YouTube: “'+q+'”…');
  const jobs=searchProviders.map(endpoint=>requestProvider(endpoint,q).then(data=>({data})).catch(error=>({error})));
