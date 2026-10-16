@@ -83,3 +83,15 @@
 @keyframes khlHeadBow{0%,100%{transform:rotate(0)}50%{transform:rotate(17deg) translateY(4px)}}
 @keyframes khlBowArms{0%,100%{transform:rotate(0)}50%{transform:rotate(10deg) translateY(3px)}}
 @media(prefers-reduced-motion:reduce){#khlobbyCharacter .khl-part{animation:none!important}}
+
+
+/* Real WebGL/GLTF character layer: replaces the illustrative figure only after GLB loads. */
+#khlobbyCharacter.khl-has-3d{animation:none!important;transform:translateX(-50%);filter:drop-shadow(0 12px 12px #0008)}
+#khlobbyCharacter.khl-has-3d>svg{display:none!important}
+.khl-real3d-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;outline:none}
+.khl-real3d-canvas:active{cursor:grabbing}
+.khl-real3d-status{position:absolute;z-index:8;left:50%;top:48%;transform:translate(-50%,-50%);max-width:min(88vw,300px);padding:10px 14px;border:1px solid #9feaff99;border-radius:10px;background:#07111ddd;color:#e9f8ff;font:600 12px/1.45 system-ui,sans-serif;text-align:center;box-shadow:0 8px 30px #0007;pointer-events:none}
+.khl-real3d-status.is-hidden{display:none}
+.khl-real3d-status.is-error{border-color:#ff7777;color:#ffe4e4}
+@media(max-width:850px){#khlobbyCharacter.khl-has-3d{left:51%;width:40%;height:64%;bottom:8%;min-height:300px}}
+@media(max-width:440px){#khlobbyCharacter.khl-has-3d{width:48%;left:53%;height:57%;bottom:12%;min-height:265px}.khl-real3d-status{font-size:10px;padding:8px 10px}}
