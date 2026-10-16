@@ -1,32 +1,16 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.84.0",
+  "name": "KH么Kozak Battle Hub 16.85.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.84.0: Резервне копіювання прогресу, щоденні нагороди, Зал слави та Kozak AI Coach.",
+  "description": "KH么Kozak Battle Hub 16.85.0: Тактична лабораторія, інтерактивні місії, особисті рекорди, щоденні нагороди та Kozak AI Coach.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
-  "display_override": [
-    "standalone",
-    "minimal-ui"
-  ],
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
   "background_color": "#080b13",
   "theme_color": "#101725",
   "prefer_related_applications": false,
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
-    }
-  ]
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"},{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"maskable"}]
 }
