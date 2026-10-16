@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.90.0",
+  "version": "16.91.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.90.0: repair malformed progress/profile markup, tighten activity XP triggers and improve game launch matching."
+  "releaseNotes": "v16.91.0: refresh achievements and profile progress after a saved game result; add a Telegram hub visual and align release/cache versions."
 }
