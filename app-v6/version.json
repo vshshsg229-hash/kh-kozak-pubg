@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.57.0",
+  "version": "17.58.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.40.0",
   "updatedAt": "2026-10-16",
   "windowsVersion": "17.40.0",
-  "releaseNotes": "Fix update button and cache refresh; playable three-stage Trial Polygon mini-games; clearer Artifact Forge recipes and dynamic requirements; consistent 30-day season countdown; preserve rewards and boss progress."
+  "releaseNotes": "Daily holographic map rotation, additional endgame nodes, and updater reliability fixes."
 }
