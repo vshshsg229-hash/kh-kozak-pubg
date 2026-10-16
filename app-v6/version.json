@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.1.0",
+  "version": "17.2.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.1.0: adds a readable recent-activity history and fixes daily task completion counts."
+  "releaseNotes": "v17.2.0: adds a separately unlockable Elite Pass track with 10 claimable rewards persisted in the player profile."
 }
