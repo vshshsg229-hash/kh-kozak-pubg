@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '17.36.0';
+  const WEB_VERSION = '17.36.1';
   const VERSION_URL = new URL('./version.json', location.href).toString();
   const APP_URL = new URL('./', location.href).toString();
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
@@ -64,6 +64,15 @@
     banner.classList.add('is-visible');
   }
   async function checkVersion() {
+    // Keep the update control available even when the published version matches.
+    buildBanner();
+    if (!latestVersion) {
+      latestVersion = WEB_VERSION;
+      message.textContent = 'Кнопка оновлення доступна завжди. Натисни, щоб перезавантажити свіжу версію.';
+      action.href = APP_URL + '?v=' + encodeURIComponent(WEB_VERSION);
+      action.target = '_self';
+      banner.classList.add('is-visible');
+    }
     try {
       const response = await fetch(VERSION_URL + '?check=' + Date.now(), { cache: 'no-store' });
       if (!response.ok) throw new Error('Version endpoint returned ' + response.status);
@@ -71,11 +80,17 @@
       const targetVersion = isElectron ? data?.windowsVersion : data?.version;
       if (typeof targetVersion === 'string' && compare(targetVersion, CURRENT_VERSION) > 0) {
         showUpdate(targetVersion);
-      } else if (banner) {
-        banner.classList.remove('is-visible');
+      } else {
+        // Same version still gets a working refresh button instead of hiding it.
+        showUpdate(WEB_VERSION);
+        message.textContent = 'Версія актуальна. Натисни, щоб примусово перезавантажити додаток і очистити старий кеш.';
       }
     } catch (_) {
-      if (banner && message) message.textContent = 'Не вдалося перевірити версію. Перевір інтернет і спробуй ще раз.';
+      if (banner && message) {
+        message.textContent = 'Не вдалося перевірити сервер версій. Кнопка все одно доступна — натисни, щоб перезавантажити додаток.';
+        action.href = APP_URL + '?v=' + encodeURIComponent(WEB_VERSION);
+        banner.classList.add('is-visible');
+      }
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', checkVersion, { once: true });
