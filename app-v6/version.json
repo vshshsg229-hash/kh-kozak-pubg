@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.36.1",
+  "version": "17.37.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "TikTok upload and in-app video player; fixed version labels, script cache-busting, service worker refresh, and always-visible update button."
+  "releaseNotes": "TikTok upload and in-app video player; fixed version labels, script cache-busting, service worker refresh, and reliable update control and in-app TikTok video shortcuts."
 }
