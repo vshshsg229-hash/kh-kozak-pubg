@@ -137,8 +137,8 @@ jobs:
           for (const mode of ["id:'zombie'", "id:'sniper'", "id:'parkour'", "id:'boss'"]) assert(threeD.includes(mode), 'New playable 3D mode exists: ' + mode);
           assert(html.includes('games-3d.js?v='), 'HTML loads the versioned 3D engine');
           const arcade = fs.readFileSync(path.join(root, 'arcade-100.js'), 'utf8');
-          assert(arcade.includes('names.length<1000') && arcade.includes("count.textContent='1000'"), 'Arcade catalog expands to 1000 mini-game variants');
-          assert(arcade.includes('kh100Random'), 'Arcade includes random game launch');
+          assert(arcade.includes('const names=[') && arcade.includes('10 ігор · 10 різних механік') && arcade.includes('10 механік'), 'Arcade catalog accurately describes its 10 unique game mechanics');
+          assert(arcade.includes('kh100Random') || arcade.includes('kh100Random'), 'Arcade includes random game launch');
           assert(threeD.includes('50 3D РЕЖИМІВ') && threeD.includes('const extraModeSpecs='), '3D Arena advertises the expanded catalog');
           const extraModeMatch = threeD.match(/const extraModeSpecs=(\[[\s\S]*?\]);\nmodes\.push/);
           assert(extraModeMatch && JSON.parse(extraModeMatch[1]).length === 43, '3D Arena has exactly 50 modes including 7 base modes');
