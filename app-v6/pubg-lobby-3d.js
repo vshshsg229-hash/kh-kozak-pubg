@@ -86,9 +86,6 @@ import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/
   function boneRotation(patterns, axis, amount) {
     const bone = findBone(patterns);
     if (!bone) return;
-    const base = baseRotations.get(bone);
-    if (!base) return;
-    bone.quaternion.copy(base);
     const q = new THREE.Quaternion().setFromAxisAngle(axis, amount);
     bone.quaternion.multiply(q);
   }
