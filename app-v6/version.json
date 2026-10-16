@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.31.0",
+  "version": "17.32.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Більше боєприпасів на старті й у ящиках; у Zombie Survival гравець завдає вдвічі більше шкоди зараженим."
+  "releaseNotes": "ПК-керування у 2D: приціл мишею, утримання ЛКМ для черги вогню, E/F для взаємодії, окрема підказка керування та приховані сенсорні кнопки на ПК."
 }
