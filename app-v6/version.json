@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.86.0",
+  "version": "16.87.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.86.0: Командний центр для всього додатка, пошук розділів, три нові режими та виправлене підключення Тактичної лабораторії."
+  "releaseNotes": "v16.87.0: Єдиний центр прогресу та колекції, звірка нагород профілю з інвентарем і перевірка збережених даних."
 }
