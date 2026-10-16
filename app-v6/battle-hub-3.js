@@ -15,7 +15,7 @@ const games=[
 {id:'loot',icon:'🎒',name:'Тактичний лут',tag:'РІШЕННЯ',desc:'Вибирай потрібні припаси за ситуацією та не витрачай час.',reward:'До +40 монет · +55 XP'},
 {id:'tactics',icon:'🧭',name:'Командир операції',tag:'ТАКТИКА',desc:'Приймай п’ять рішень у ситуаціях PUBG та збирай тактичні очки.',reward:'До +45 монет · +65 XP'}
 ];
-function addStyles(){if($('#kh-bh3-style'))return;const l=document.createElement('link');l.id='kh-bh3-style';l.rel='stylesheet';l.href='battle-hub-3.css?v=16.70.0';document.head.appendChild(l)}
+function addStyles(){if($('#kh-bh3-style'))return;const l=document.createElement('link');l.id='kh-bh3-style';l.rel='stylesheet';l.href='battle-hub-3.css?v=16.73.0';document.head.appendChild(l)}
 function injectGameHub(){
  const section=$('#tab-games');if(!section||$('#khBh3Hub'))return;addStyles();
  const hub=document.createElement('section');hub.id='khBh3Hub';hub.className='kh-bh3-hub';hub.innerHTML=
