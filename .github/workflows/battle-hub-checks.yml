@@ -50,6 +50,28 @@ jobs:
           node --check app-v6/creator-editor.js
 
 
+      - name: Check syntax of every active JavaScript file
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE' > /tmp/kh-active-js-files.txt
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const html = fs.readFileSync('app-v6/index.html', 'utf8');
+          const files = new Set();
+          for (const match of html.matchAll(/<script\\b[^>]*\\bsrc=["']([^"']+\\.js(?:\\?[^"']*)?)["']/gi)) {
+            const url = match[1];
+            if (/^(?:https?:|\\/\\/|data:)/i.test(url)) continue;
+            const local = url.split(/[?#]/)[0].replace(/^\\.\\//, '');
+            if (local) files.add(path.join('app-v6', local));
+          }
+          for (const file of [...files].sort()) console.log(file);
+          NODE
+          while IFS= read -r file; do
+            echo "Checking $file"
+            node --check "$file"
+          done < /tmp/kh-active-js-files.txt
+
+
       - name: Validate PWA manifest and referenced local assets
         run: |
           node --input-type=module <<'NODE'
@@ -98,6 +120,16 @@ jobs:
             'PWA manifest has app name, start URL and scope');
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
             'PWA manifest declares at least one icon');
+
+
+          const swCoreMatch = serviceWorker.match(/const CORE = \\[(.*?)\\];/s);
+          assert(swCoreMatch, 'Service worker core asset list exists');
+          const swCoreAssets = [...swCoreMatch[1].matchAll(/"([^"]+)"/g)].map(match => match[1]);
+          for (const asset of swCoreAssets) {
+            const local = asset.split('?')[0].split('#')[0].replace(/^\\.\\//, '');
+            if (!local || local.endsWith('/')) continue;
+            assert(fs.existsSync(path.join(root, local)), 'Service worker precache asset exists: ' + local);
+          }
 
           const media = fs.readFileSync(path.join(root, 'media.js'), 'utf8');
           assert(html.includes('interface-refresh.css?v=13.9.2'), 'Refreshed interface stylesheet is loaded');
