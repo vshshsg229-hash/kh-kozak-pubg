@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.68.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
+  "version": "17.69.0",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.69.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.68.0",
-  "releaseNotes": "Added in-app YouTube search with video results and playback without manually pasting video URLs."
+  "windowsVersion": "17.69.0",
+  "releaseNotes": "Improved YouTube search parsing, embedded player controls, and automatic next-video playback."
 }
