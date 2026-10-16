@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.51.0",
+  "version": "17.53.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.40.0",
   "updatedAt": "2026-10-16",
   "windowsVersion": "17.40.0",
-  "releaseNotes": "PC web refresh: bust stale desktop/browser caches, refresh desktop theme and update checker, and expose the current seasonal systems."
+  "releaseNotes": "Added shared 30-day season countdowns for Survival Bunker and Survival Ops, seasonal archive and permanent bunker trophies. Battle Pass and Metro timers remain 30 days; Artifact Forge retains its separate 12-day season."
 }
