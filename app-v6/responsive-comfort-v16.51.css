@@ -1,0 +1,98 @@
+/* KH么Kozak Battle Hub 16.51.0 — responsive comfort for phone, tablet and PC.
+   Layout-only overrides: no features, game logic, or stored progress are changed. */
+:root {
+  --kh-content-gap: clamp(12px, 1.6vw, 24px);
+  --kh-tap-size: 44px;
+}
+html { max-width: 100%; }
+body { min-width: 0; }
+.app-shell, .main, .view, .view.active { min-width: 0; }
+img, video, iframe, canvas, svg { max-width: 100%; }
+button, a, input, select, textarea { touch-action: manipulation; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--yellow, #b66cff);
+  outline-offset: 3px;
+}
+.nav-item, .mobile-nav button, .btn { overflow-wrap: anywhere; }
+.panel, .card, .feature-card, .game-card, .game-tile, .reward-card,
+.stat-card, .section-card, .event-card, .arsenal-card, .profile-card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.table-wrap, .table-responsive, .data-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (min-width: 1201px) {
+  .main { width: auto; min-width: 0; }
+  .view { width: 100%; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .hero-actions > * { max-width: 100%; }
+  .stats-grid, .stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .feature-grid, .games-grid, .game-grid, .rewards-grid, .events-grid, .arsenal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .sidebar .nav { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+}
+@media (min-width: 721px) and (max-width: 1200px) {
+  html, body { overflow-x: clip; }
+  .sidebar .nav {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  /* Flatten grouped navigation so tablet bars stay one line instead of stacking tall groups. */
+  .sidebar .nav-group { display: contents !important; }
+  .sidebar .nav-group-title { display: none !important; }
+  .sidebar .nav-item { flex: 0 0 auto !important; white-space: nowrap !important; }
+  .sidebar .nav-item .nav-label { white-space: nowrap; }
+  .main, .view { min-width: 0 !important; }
+  .hero-copy, .hero-art, .panel, .card { min-width: 0 !important; }
+  .stats-grid, .stat-grid, .feature-grid, .games-grid, .game-grid,
+  .rewards-grid, .events-grid, .arsenal-grid, .official-game-grid {
+    min-width: 0;
+  }
+}
+@media (max-width: 720px) {
+  html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+  .main { width: 100%; min-width: 0; }
+  .view { width: 100%; }
+  .section-heading, .welcome-row { gap: 10px; flex-wrap: wrap; }
+  .section-heading > *, .welcome-row > * { min-width: 0; }
+  .hero-actions { grid-template-columns: minmax(0, 1fr) !important; }
+  .hero-actions > * { min-width: 0 !important; min-height: var(--kh-tap-size); }
+  .official-game-grid, .stats-grid, .feature-grid, .games-grid, .game-grid,
+  .rewards-grid, .events-grid, .arsenal-grid, .profile-grid, .pass-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .topbar { gap: 7px; }
+  .top-actions { min-width: 0; }
+  .language-control { min-width: 0; }
+  .mobile-nav button { min-height: 48px !important; }
+  .sidebar .nav-item { min-height: var(--kh-tap-size); }
+  .view input, .view select, .view textarea { max-width: 100%; }
+  .view pre, .view code { overflow-wrap: anywhere; }
+}
+@media (max-width: 390px) {
+  .main { padding-left: 9px !important; padding-right: 9px !important; }
+  .topbar { gap: 5px !important; }
+  .mobile-brand { min-width: 0 !important; }
+  .language-control { max-width: 40vw !important; }
+  .currency { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
