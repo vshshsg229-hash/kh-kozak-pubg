@@ -72,6 +72,9 @@ jobs:
             assert(fighter.includes(feature), 'Fighter inventory includes ' + feature);
           }
           assert(fighterCss.includes('.kh-inventory') && fighterCss.includes('.kh-inv-item') && fighterCss.includes('.kh-inv-equipped'), 'Fighter inventory styles are present');
+          const progression = fs.readFileSync(path.join(root, 'progression-hub.js'), 'utf8');
+          assert(progression.includes("ownedSource[reward.item]='freePass'") && progression.includes('ownedAt[reward.item]=Date.now()'), 'Pass cosmetics record their source and acquisition timestamp');
+          assert(progression.includes('if(!safeWrite(PROFILE_KEY,next))'), 'Pass reward claim handles profile-save failures');
           // The live UI uses Creator Studio; creator-editor is a retired, unmounted prototype.
           const creatorStudio = fs.readFileSync(path.join(root, 'creator-studio.js'), 'utf8');
           const creatorStudioCss = fs.readFileSync(path.join(root, 'creator-studio.css'), 'utf8');
