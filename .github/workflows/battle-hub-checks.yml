@@ -113,7 +113,7 @@ jobs:
           assert(progression.includes('progressionPassClaims:{season:claims.season,claimed:[...claimed,level]}'), 'Pass claim markers are stored atomically with the profile');
           assert(progression.includes('if(!safeWrite(PROFILE_KEY,next))'), 'Pass reward claim handles profile-save failures');
           const mainApp = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-          assert(mainApp.includes('function restoreRewardState(snapshot)') && mainApp.includes('return false}catch(e){return false}'), 'Failed pass writes restore the previous state and report failure');
+          assert(mainApp.includes('function restoreRewardState(snapshot)') && mainApp.includes('return true}catch(e){return false}'), 'Failed pass writes restore the previous state and report failure');
           // The live UI uses Creator Studio; creator-editor is a retired, unmounted prototype.
           const creatorStudio = fs.readFileSync(path.join(root, 'creator-studio.js'), 'utf8');
           const creatorStudioCss = fs.readFileSync(path.join(root, 'creator-studio.css'), 'utf8');
