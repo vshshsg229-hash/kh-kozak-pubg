@@ -202,7 +202,7 @@ jobs:
           assert(modeMatch && (modeMatch[1].match(/\{id:'/g) || []).length === 7, '3D Arena has exactly 7 implemented modes');
           const battleHub3 = fs.readFileSync(path.join(root, 'battle-hub-3.js'), 'utf8');
           const battleHub3Css = fs.readFileSync(path.join(root, 'battle-hub-3.css'), 'utf8');
-          for (const feature of ['Тренування прицілу', 'Дуель реакції', 'Маршрут зони', 'Злам сейфа', 'ОПЕРАЦІЯ ДНЯ', 'khBh3Search', 'khBh3-fav', 'Козак AI']) {
+          for (const feature of ['Тренування прицілу', 'Дуель реакції', 'Маршрут зони', 'Злам сейфа', 'ОПЕРАЦІЯ ДНЯ', 'khBh3Search', 'data-bh3-fav', 'Козак AI']) {
             assert(battleHub3.includes(feature), 'Battle Hub 3.0 feature exists: ' + feature);
           }
           assert(battleHub3.includes('kh100-finished') && battleHub3.includes('kh_bh3_reward_'), 'Battle Hub 3.0 rewards are routed to progression and protected against same-day duplicate claims');
