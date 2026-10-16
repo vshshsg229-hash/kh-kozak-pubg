@@ -11,7 +11,15 @@ const zones=[
 {id:'west',name:'Західний форпост',x:12,y:49,icon:'⌂',type:'artifact',reward:'Польовий модуль',emoji:'🧩',desc:'Зламаний модуль для дослідницьких апгрейдів.',mission:'Підніми форпост',missionDesc:'Досліди форпост і поверни модуль зв’язку.'},
 {id:'ridge',name:'Кристальний хребет',x:47,y:17,icon:'◇',type:'artifact',reward:'Кристал резонансу',emoji:'🔹',desc:'Ресурс для гілки дослідника.',mission:'Збери резонанс',missionDesc:'Знайди кристал на високогірному вузлі.'},
 {id:'marsh',name:'Туманні болота',x:16,y:68,icon:'≈',type:'emblem',reward:'Знак болотного дозору',emoji:'🪬',desc:'Емблема за пошук прихованих маршрутів.',mission:'Пройди крізь туман',missionDesc:'Досліди болотний вузол і познач безпечний шлях.'},
-{id:'observatory',name:'Орбітальна обсерваторія',x:57,y:83,icon:'◎',type:'trophy',reward:'Трофей «Око сектора»',emoji:'🔭',desc:'Трофей за повне картографування.',mission:'Звір координати',missionDesc:'Знайди обсерваторію та заверши її операцію.'}
+{id:'observatory',name:'Орбітальна обсерваторія',x:57,y:83,icon:'◎',type:'trophy',reward:'Трофей «Око сектора»',emoji:'🔭',desc:'Трофей за повне картографування.',mission:'Звір координати',missionDesc:'Знайди обсерваторію та заверши її операцію.'},
+{id:'reactor',name:'Реакторна шахта',x:40,y:36,icon:'⚡',type:'artifact',reward:'Ядро реактора',emoji:'⚡',desc:'Перегріте ядро для високорівневої Кузні.',mission:'Стабілізуй реактор',missionDesc:'Віднови контур охолодження та забери ядро.'},
+{id:'droneyard',name:'Кладовище дронів',x:8,y:32,icon:'⌖',type:'skin',reward:'Обшивка «Примара»',emoji:'🛸',desc:'Рідкісна бронепластина з бойового дрона.',mission:'Перехопи дрон-свідок',missionDesc:'Збери журнали знищених розвідників.'},
+{id:'rift',name:'Розлом частот',x:62,y:12,icon:'〰',type:'artifact',reward:'Фазова призма',emoji:'🔮',desc:'Призма для гілки квантового дослідника.',mission:'Вирівняй частоти',missionDesc:'Стабілізуй три імпульси розлому.'},
+{id:'bastion',name:'Бастіон «Грім»',x:84,y:20,icon:'▣',type:'emblem',reward:'Емблема «Грім»',emoji:'🛡️',desc:'Емблема за штурм укріпленого вузла.',mission:'Зламай бастіон',missionDesc:'Знайди слабке місце оборонного контуру.'},
+{id:'undercity',name:'Підмісто',x:8,y:84,icon:'⌂',type:'artifact',reward:'Чорний сплав',emoji:'⚙️',desc:'Сплав для броньованих рецептів Кузні.',mission:'Відкрий нижній маршрут',missionDesc:'Проклади шлях крізь підземний тунель.'},
+{id:'shrine',name:'Святилище ядра',x:47,y:58,icon:'✧',type:'trophy',reward:'Трофей «Серце сектора»',emoji:'💎',desc:'Трофей за синхронізацію всіх систем.',mission:'Запусти серце сектора',missionDesc:'Збери енергію з трьох сусідніх вузлів.'},
+{id:'blacksite',name:'Чорний об’єкт',x:91,y:63,icon:'⬢',type:'emblem',reward:'Знак «Нульова тінь»',emoji:'🕶️',desc:'Засекречена відзнака елітної операції.',mission:'Виконай протокол «Нуль»',missionDesc:'Проникни в чорний об’єкт і винеси докази.'},
+{id:'skybridge',name:'Небесний міст',x:30,y:12,icon:'⟷',type:'trophy',reward:'Трофей «Верхній маршрут»',emoji:'🏅',desc:'Трофей за повне відкриття вертикального маршруту.',mission:'Познач верхній маршрут',missionDesc:'Відкрий перехід до верхнього сектору.'}
 ];
 const catalog=[
 {id:'core',name:'Серцевина «Форми»',emoji:'💠',kind:'Артефакт',desc:'Матеріал для кузні.',zone:'vault'},
@@ -22,7 +30,17 @@ const catalog=[
 {id:'shadow',name:'Знак «Тінь»',emoji:'🎖️',kind:'Емблема',desc:'Відзнака таємної операції.',zone:'relay'},
 {id:'forged',name:'Реліквія «Пульс»',emoji:'🔷',kind:'Кований артефакт',desc:'Створено у Кузні з трьох знайдених знахідок.',zone:'forge'},
 {id:'nullcore',name:'Артефакт «Нульовий контур»',emoji:'🌀',kind:'Секретний артефакт',desc:'Унікальна знахідка із Секретного сектору.',zone:'secret'},
-{id:'blueprint',name:'Креслення «Нульовий контур»',emoji:'📐',kind:'Креслення кузні',desc:'Рецепт для секретної гілки крафту.',zone:'blueprint'}
+{id:'blueprint',name:'Креслення «Нульовий контур»',emoji:'📐',kind:'Креслення кузні',desc:'Рецепт для секретної гілки крафту.',zone:'blueprint'},
+{id:'reactor-core',name:'Ядро реактора',emoji:'⚡',kind:'Матеріал ядра',desc:'Компонент для броньованих рецептів.',zone:'reactor'},
+{id:'drone-shell',name:'Обшивка «Примара»',emoji:'🛸',kind:'Скін',desc:'Покриття розвідника нового покоління.',zone:'droneyard'},
+{id:'phase-prism',name:'Фазова призма',emoji:'🔮',kind:'Артефакт',desc:'Фокусує квантову енергію.',zone:'rift'},
+{id:'thunder-emblem',name:'Емблема «Грім»',emoji:'🛡️',kind:'Емблема',desc:'Відзнака за штурм бастіону.',zone:'bastion'},
+{id:'black-alloy',name:'Чорний сплав',emoji:'⚙️',kind:'Матеріал кузні',desc:'Рідкісний сплав для захисних рецептів.',zone:'undercity'},
+{id:'sector-heart',name:'Трофей «Серце сектора»',emoji:'💎',kind:'Трофей',desc:'Нагорода за синхронізацію систем.',zone:'shrine'},
+{id:'zero-shadow',name:'Знак «Нульова тінь»',emoji:'🕶️',kind:'Емблема',desc:'Відзнака секретного протоколу.',zone:'blacksite'},
+{id:'sky-medal',name:'Трофей «Верхній маршрут»',emoji:'🏅',kind:'Трофей',desc:'Нагорода за картографування верхнього сектора.',zone:'skybridge'},
+{id:'armored-relic',name:'Реліквія «Титан»',emoji:'🦾',kind:'Кована реліквія',desc:'Захищений артефакт із ядра реактора та чорного сплаву.',zone:'forge-titan'},
+{id:'phase-crown',name:'Корона фаз',emoji:'👑',kind:'Секретний трофей',desc:'Трофей за завершення квантового протоколу.',zone:'secret-crown'}
 ];
 const defaults={found:[],missions:[],forged:false,selected:'north',runs:0,upgrades:[],secretMissions:[],secretUnlocked:false,loot:0,gpuLevel:1,salvageBoard:[],salvagePicks:[],salvageResult:'',salvageRewarded:false,salvageDone:false,cipherCode:[],cipherInput:[],cipherAttempts:0,cipherResult:'',cipherDone:false,dailyClaimDate:'',dailyClaimAt:0,dailyRewardIndex:0,dailyStreak:0,dailyMissionResetAt:0,dailyMissionProgress:{explore:0,salvage:0,upgrade:0},dailyMissionClaims:[],profileRewards:[],seasonStartedAt:0,seasonNumber:1,seasonArchive:[],bossHp:420,bossPlayerHp:100,bossStarted:false,bossDefeated:false,bossLog:'',bossTurns:0};
 const gates={north:{},west:{nodes:['north'],missions:['north']},ridge:{nodes:['north'],missions:['north']},foundry:{nodes:['west','ridge'],missions:['west','ridge']},marsh:{nodes:['west'],missions:['west']},east:{nodes:['foundry'],missions:['foundry']},crater:{nodes:['ridge','foundry'],missions:['ridge','foundry']},vault:{nodes:['east','marsh'],missions:['east','marsh']},observatory:{nodes:['crater','vault'],missions:['crater','vault']},relay:{nodes:['vault'],missions:['vault']}};
