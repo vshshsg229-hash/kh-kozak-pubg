@@ -36,6 +36,7 @@ jobs:
           node --check app-v6/i18n.js
           node --check app-v6/media.js
           node --check app-v6/background-music.js
+          node --check app-v6/music-sleep-timer.js
           node --check app-v6/arcade-100.js
           node --check app-v6/games-3d.js
           node --check app-v6/bunker.js
