@@ -1,9 +1,8 @@
-/* KH么Kozak Battle Hub — skeletal 3D lobby controller.
+/* KH么Kozak Battle Hub — custom 3D character lobby controller.
  * Emotes are layered on the loaded rig without accumulating bone rotations.
  * The source model is a generic animated GLB, not an official PUBG asset.
  */
 import * as THREE from 'https://esm.sh/three@0.164.1';
-import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GLTFLoader.js';
 
 (() => {
   const root = document.getElementById('khLobbyMode');
@@ -189,33 +188,102 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     renderer.render(scene,camera);
   }
 
-  const loader=new GLTFLoader();
-  loader.load('https://threejs.org/examples/models/gltf/Soldier.glb',gltf=>{
-    model=gltf.scene;
-    model.traverse(obj=>{
-      if(obj.isMesh){obj.castShadow=true;obj.receiveShadow=true;}
-      if(obj.isBone) boneMap.set(obj.name,obj);
-    });
-    const bounds=new THREE.Box3().setFromObject(model), size=bounds.getSize(new THREE.Vector3());
-    model.scale.setScalar(4.15/Math.max(size.y,.001));
-    const fitted=new THREE.Box3().setFromObject(model);
-    model.position.y-=fitted.min.y; model.position.x-=(fitted.min.x+fitted.max.x)/2;
-    scene.add(model);
-    clips=gltf.animations||[];
-    mixer=new THREE.AnimationMixer(model);
-    const idle=clips.find(c=>/idle|stand/i.test(c.name))||clips.find(c=>/t.?pose/i.test(c.name))||clips[0];
-    if(idle){idleAction=mixer.clipAction(idle);currentAction=idleAction;idleAction.play();}
-    host.classList.add('khl-has-3d');
-    status.classList.add('is-hidden');status.textContent='';
-    const selected=root.querySelector('#khlobbyCurrentEmote')?.value||'wave';
-    playEmote(selected);resize();
-  },progress=>{
-    if(progress.total) status.textContent='Завантаження 3D-персонажа… '+Math.round(progress.loaded/progress.total*100)+'%';
-  },error=>{
-    console.error('KH lobby 3D model failed to load',error);
-    status.classList.add('is-error');
-    status.textContent='Не вдалося завантажити 3D-модель. Перевір інтернет і натисни «Оновити».';
-  });
+  // Custom procedural 3D recreation based on the user's three reference angles.
+  // This is a purpose-built 3D character, not a ripped PUBG asset or a static image.
+  function makeCharacter(){
+    const group=new THREE.Group();
+    const mat=(color,metalness=0,roughness=.58,emissive=0x000000)=>new THREE.MeshStandardMaterial({color,metalness,roughness,emissive,emissiveIntensity:.5});
+    const ivory=mat(0xd9d2c9,.18,.38), pale=mat(0xf0e9df,.22,.3), seam=mat(0x9d958d,.35,.42);
+    const green=mat(0x087d68,.35,.32), darkGreen=mat(0x063c38,.4,.3), gold=mat(0xb9953c,.72,.26);
+    const mask=mat(0x9c762d,.65,.26), black=mat(0x171b1c,.1,.4), eye=mat(0x00ffb7,.25,.18,0x00d995);
+    function mesh(geometry,material,parent,x,y,z,sx=1,sy=1,sz=1){
+      const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;
+    }
+    function ball(parent,material,x,y,z,sx,sy,sz){return mesh(new THREE.SphereGeometry(1,18,14),material,parent,x,y,z,sx,sy,sz);}
+    function limb(name,x,y,z){const g=new THREE.Group();g.name=name;g.position.set(x,y,z);group.add(g);boneMap.set(name,g);return g;}
+    // Boots and articulated legs
+    const leftLeg=limb('LeftUpLeg',-.19,.9,0), rightLeg=limb('RightUpLeg',.19,.9,0);
+    for(const [g,sgn] of [[leftLeg,-1],[rightLeg,1]]){
+      mesh(new THREE.CapsuleGeometry(.105,.58,4,8),ivory,g,0,-.28,0,1,1,.95);
+      mesh(new THREE.BoxGeometry(.23,.18,.38),pale,g,0,-.68,.075,1,1,1);
+      mesh(new THREE.BoxGeometry(.24,.07,.4),seam,g,0,-.77,.08,1,1,1);
+    }
+    // Long split ceremonial coat over the legs
+    mesh(new THREE.CylinderGeometry(.48,.63,1.8,12,1,true),ivory,group,0,1.65,0,1,1,1);
+    mesh(new THREE.ConeGeometry(.65,.72,12,1,true),pale,group,0,.99,0,1,1,1);
+    mesh(new THREE.BoxGeometry(.12,1.35,.08),seam,group,0,1.72,.47);
+    // Torso and decorative chest panels
+    const spine=limb('Spine2',0,2.35,0);
+    mesh(new THREE.CapsuleGeometry(.31,.66,5,10),pale,spine,0,.18,0,1,1,.72);
+    mesh(new THREE.BoxGeometry(.43,.68,.09),ivory,spine,0,.18,.235);
+    mesh(new THREE.BoxGeometry(.055,.67,.045),gold,spine,0,.18,.29);
+    mesh(new THREE.BoxGeometry(.2,.38,.045),green,spine,0,.22,.31);
+    // Shoulder armor
+    for(const s of [-1,1]){
+      const pad=mesh(new THREE.SphereGeometry(1,12,8),green,spine,s*.39,.46,0,.28,.14,.34);
+      pad.rotation.z=s*-.16;
+      const trim=mesh(new THREE.BoxGeometry(.4,.045,.35),gold,spine,s*.39,.48,.005);
+      trim.rotation.z=s*-.12;
+    }
+    // Arms pivot at shoulders; pose() can drive these named bones
+    for(const side of ['Right','Left']){
+      const s=side==='Right'?1:-1;
+      const upper=limb(side+'Arm',s*.43,2.72,0);
+      mesh(new THREE.CapsuleGeometry(.105,.42,4,8),pale,upper,0,-.25,0,1,1,1);
+      mesh(new THREE.BoxGeometry(.22,.16,.2),green,upper,0,-.1,0);
+      const fore= new THREE.Group();fore.name=side+'ForeArm';fore.position.set(0,-.48,0);upper.add(fore);boneMap.set(fore.name,fore);
+      mesh(new THREE.CapsuleGeometry(.085,.36,4,8),ivory,fore,0,-.21,0);
+      mesh(new THREE.BoxGeometry(.18,.2,.13),darkGreen,fore,0,-.13,.035);
+      mesh(new THREE.SphereGeometry(.095,12,10),pale,fore,0,-.46,.02);
+      for(let i=0;i<3;i++) mesh(new THREE.CapsuleGeometry(.018,.09,2,5),pale,fore,(i-1)*.045,-.53,.055,1,1,1);
+    }
+    // Neck, head, hair and crown
+    mesh(new THREE.CylinderGeometry(.095,.12,.2,12),seam,group,0,3.08,0);
+    const head=limb('Head',0,3.28,0);
+    ball(head,ivory,0,.12,0,.24,.31,.22);
+    // swept pale hair and crown silhouette
+    ball(head,mat(0xc7c0b9,.15,.48),0,.34,-.025,.25,.16,.23);
+    for(let i=0;i<5;i++){
+      const spike=mesh(new THREE.ConeGeometry(.055,.23,6),mat(0xb9b1a8,.1,.55),head,-.17+i*.085,.47-(i%2)*.035,-.015,.8,1,.8);
+      spike.rotation.z=(i-2)*-.17;
+    }
+    // Ornate golden face mask, brow and glowing eyes
+    ball(head,mask,0,.11,.188,.22,.2,.075);
+    mesh(new THREE.ConeGeometry(.055,.14,5),gold,head,0,.04,.25,1,1,1);
+    for(const s of [-1,1]){
+      ball(head,eye,s*.095,.17,.248,.055,.035,.022);
+      const horn=mesh(new THREE.ConeGeometry(.035,.16,5),gold,head,s*.16,.34,.06,1,1,1);horn.rotation.z=s*.4;
+    }
+    // Crown with five small gold points
+    mesh(new THREE.CylinderGeometry(.19,.22,.055,10),gold,head,0,.43,0);
+    for(let i=0;i<5;i++){
+      const a=(i/5)*Math.PI*2;
+      const point=mesh(new THREE.ConeGeometry(.035,.15,5),gold,head,Math.cos(a)*.16,.52,Math.sin(a)*.13);
+      point.rotation.z=Math.cos(a)*-.28;
+    }
+    // Green shoulder mantle and long split back cape
+    const cape=mesh(new THREE.ConeGeometry(.48,1.55,8,1,true),darkGreen,group,0,2.08,-.24,1,1,.28);
+    cape.rotation.x=-.06;
+    for(const s of [-1,1]){
+      const flap=mesh(new THREE.BoxGeometry(.16,1.38,.045),ivory,group,s*.24,1.84,-.31);
+      flap.rotation.z=s*.12;
+      const edge=mesh(new THREE.BoxGeometry(.025,1.2,.025),green,group,s*.31,1.83,-.27);
+      edge.rotation.z=s*.12;
+    }
+    // Small ornamental inlays across the coat
+    for(let i=0;i<4;i++){
+      const stripe=mesh(new THREE.BoxGeometry(.26,.025,.025),gold,group,0,2.08-i*.23,.35);
+      stripe.rotation.z=(i%2?-.08:.08);
+    }
+    return group;
+  }
+  model=makeCharacter();
+  model.scale.setScalar(1);
+  scene.add(model);
+  host.classList.add('khl-has-3d');
+  status.classList.add('is-hidden');status.textContent='';
+  playEmote(root.querySelector('#khlobbyCurrentEmote')?.value||'wave');
+  resize();
   tick();
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);observer.disconnect();renderer.dispose();},{once:true});
 })();
