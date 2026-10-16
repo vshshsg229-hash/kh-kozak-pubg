@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.60.0",
+  "version": "17.60.1",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.59.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.60.0",
-  "releaseNotes": "Artifact Forge recovery guard, synchronized version labels, and fresh cache-busted resources."
+  "windowsVersion": "17.60.1",
+  "releaseNotes": "Fix Artifact Forge initialization guard so retries can recover after failed render."
 }
