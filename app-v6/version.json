@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.47.0",
+  "version": "16.48.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.47.0: підвищено надійність лобі Silvanus: резервний Sketchfab-прев’ю запускається навіть якщо модуль Three.js не завантажився; виправлено відображення статусу та оновлено кеш/посилання."
+  "releaseNotes": "v16.48.0: виправлено fallback лобі — коли GLB недоступний, запускається керований 3D-персонаж із процедурними емоціями замість зовнішнього iframe; оновлено кеш скриптів."
 }
