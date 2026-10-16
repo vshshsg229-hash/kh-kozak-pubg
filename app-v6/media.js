@@ -59,8 +59,8 @@ function renderMusic(){
   const title=document.createElement('b');title.textContent=item.title;
   const sub=document.createElement('small');sub.textContent=item.tag+' · YouTube';
   info.append(title,sub);
-  const actions=document.createElement('div');actions.style.cssText='display:flex;gap:6px;align-items:center;flex-wrap:wrap';
-  const favorite=document.createElement('button');favorite.type='button';favorite.className='music-favorite-btn';favorite.setAttribute('aria-label',musicFavorites.has(musicKey(item))?'Прибрати з обраного':'Додати в обране');favorite.setAttribute('aria-pressed',String(musicFavorites.has(musicKey(item))));favorite.textContent=musicFavorites.has(musicKey(item))?'★':'☆';favorite.style.cssText='min-width:40px;min-height:40px;border:1px solid rgba(255,210,55,.45);border-radius:9px;background:rgba(255,210,55,.08);color:#f5ce38;font-size:22px;cursor:pointer';
+  const actions=document.createElement('div');actions.className='music-track-actions';
+  const favorite=document.createElement('button');favorite.type='button';favorite.className='music-favorite-btn';favorite.setAttribute('aria-label',musicFavorites.has(musicKey(item))?'Прибрати з обраного':'Додати в обране');favorite.setAttribute('aria-pressed',String(musicFavorites.has(musicKey(item))));favorite.textContent=musicFavorites.has(musicKey(item))?'★':'☆';
   favorite.addEventListener('click',()=>{const key=musicKey(item);if(musicFavorites.has(key))musicFavorites.delete(key);else musicFavorites.add(key);saveMusicFavorites();updateMusicFavoritesUI();renderMusic()});
   const btn=document.createElement('a');btn.className='music-play-btn';btn.href='https://www.youtube.com/results?search_query='+encodeURIComponent(item.query);btn.target='_blank';btn.rel='noopener noreferrer';btn.textContent='▶ ЗНАЙТИ ТРЕК';
   actions.append(favorite,btn);row.append(num,info,actions);musicList.append(row);
