@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.15.0",
+  "version": "17.16.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.15.0: adds a once-per-day Kozak AI training-plan reward. Completing all three steps unlocks +30 coins, +40 XP and +20 Battle Pass XP; the claim is verified in the profile save and cannot be claimed twice on the same day."
+  "releaseNotes": "v17.16.0: Survival Ops adds selectable Scout/Tactical/Elite difficulty and difficulty-scaled coin, XP, and Battle Pass rewards. Bunker adds a daily Intel Cache unlocked by Radio Node level 2, with verified profile reward saving."
 }
