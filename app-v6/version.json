@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.60.1",
+  "version": "17.61.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.59.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.60.1",
-  "releaseNotes": "Fix Artifact Forge initialization guard so retries can recover after failed render."
+  "windowsVersion": "17.61.0",
+  "releaseNotes": "Artifact Forge command deck provides direct access to the holographic map, missions, tech tree, forge, boss, trials, rewards and profile."
 }
