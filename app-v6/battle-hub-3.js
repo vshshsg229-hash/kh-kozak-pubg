@@ -30,7 +30,7 @@ function injectGameHub(){
   const fav=e.target.closest('[data-bh3-fav]');if(fav){const id=fav.dataset.bh3Fav;data.favorites=data.favorites.includes(id)?data.favorites.filter(x=>x!==id):[...data.favorites,id];save();renderGames(activeFilter());renderCoach();return}
   const play=e.target.closest('[data-bh3-play]');if(play){launch(play.dataset.bh3Play);return}
   const mission=e.target.closest('[data-bh3-mission-claim]');if(mission){claimDailyMission(mission.dataset.bh3MissionClaim);return}
-  const catalog=e.target.closest('[data-bh3-catalog-launch]');if(catalog){const target=Array.from(document.querySelectorAll('#tab-games [data-game]')).find(b=>b.dataset.game===catalog.dataset.bh3CatalogLaunch);if(target)target.click();return}
+  const catalog=e.target.closest('[data-bh3-catalog-launch]');if(catalog){const id=catalog.dataset.bh3CatalogLaunch,type=catalog.dataset.bh3CatalogType||'game';if(type==='arcade'){const target=Array.from(document.querySelectorAll('#kh100Grid [data-kh100]')).find(b=>b.dataset.kh100===id);if(target){target.click();return}}else if(type==='bh3'){const target=Array.from(document.querySelectorAll('[data-bh3-play]')).find(b=>b.dataset.bh3Play===id);if(target){target.click();return}}else{const target=Array.from(document.querySelectorAll('#tab-games [data-game]')).find(b=>b.dataset.game===id);if(target){target.click();return}}const status=$('#khBh3RandomStatus');if(status)status.textContent='Не вдалося відкрити цей режим. Спробуй запустити його з картки гри.';return}
   const planStart=e.target.closest('[data-bh3-plan-start]');if(planStart){startTrainingPlan(planStart.dataset.bh3PlanStart);return}
   if(e.target.closest('[data-bh3-random]')){launchRandomTraining();return}
   if(e.target.closest('[data-bh3-plan-next]')){continueTrainingPlan();return}
@@ -79,24 +79,19 @@ function renderCombatRecord(){
 }
 function renderCatalogMatches(query){
  const box=$('#khBh3CatalogResults');if(!box)return;
- const raw=String(query||'').trim().toLowerCase();
- box.replaceChildren();
+ const raw=String(query||'').trim();box.replaceChildren();
  if(raw.length<2){box.hidden=true;return}
  const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9а-яіїєґ]/gi,'');
- const q=norm(raw);
- const seen=new Set();
- const matches=Array.from(document.querySelectorAll('#tab-games [data-game]')).map(button=>{
-   const tile=button.closest('.game-tile,.kh-bh3-card,[data-game-card],article')||button.parentElement;
-   return {button,tile,name:tile?.querySelector('h3')?.textContent?.trim()||tile?.querySelector('b')?.textContent?.trim()||button.textContent.trim()||button.dataset.game,text:(tile?.textContent||button.textContent||'')+' '+button.dataset.game};
- }).filter(x=>{
-   const id=String(x.button.dataset.game||'');if(!id||seen.has(id))return false;
-   const text=norm(x.text);if(!text.includes(q))return false;seen.add(id);return true;
- });
+ const q=norm(raw),matches=[],seen=new Set();
+ const add=(type,id,name,content)=>{const key=type+':'+id;if(!id||seen.has(key)||!norm(content+' '+name+' '+id).includes(q))return;seen.add(key);matches.push({type,id,name:name||id})};
+ Array.from(document.querySelectorAll('#tab-games [data-game]')).forEach(button=>{const tile=button.closest('.game-tile,.kh-bh3-card,[data-game-card],article')||button.parentElement;add('game',button.dataset.game,tile?.querySelector('h3')?.textContent?.trim()||tile?.querySelector('b')?.textContent?.trim()||button.textContent.trim(),tile?.textContent||button.textContent||'')});
+ Array.from(document.querySelectorAll('#kh100Grid .kh100-card')).forEach(card=>{const button=card.querySelector('[data-kh100]');if(button)add('arcade',button.dataset.kh100,card.querySelector('h3')?.textContent?.trim()||card.dataset.name,card.textContent)});
+ games.forEach(g=>add('bh3',g.id,g.name,g.name+' '+g.tag+' '+g.desc));
  if(!matches.length){box.hidden=true;return}
  box.hidden=false;
  const heading=document.createElement('h3');heading.className='kh-bh3-catalog-title';heading.textContent='ЗНАЙДЕНІ РЕЖИМИ · '+matches.length;
  const list=document.createElement('div');list.className='kh-bh3-catalog-list';
- matches.slice(0,10).forEach(x=>{const b=document.createElement('button');b.type='button';b.dataset.bh3CatalogLaunch=x.button.dataset.game;b.innerHTML='<span></span><b></b><i>ВІДКРИТИ ↗</i>';b.querySelector('span').textContent='▣';b.querySelector('b').textContent=x.name;list.appendChild(b)});
+ matches.slice(0,10).forEach(x=>{const b=document.createElement('button');b.type='button';b.dataset.bh3CatalogLaunch=x.id;b.dataset.bh3CatalogType=x.type;b.innerHTML='<span></span><b></b><i>ВІДКРИТИ ↗</i>';b.querySelector('span').textContent='▣';b.querySelector('b').textContent=x.name;list.appendChild(b)});
  box.append(heading,list);
  if(matches.length>10){const note=document.createElement('p');note.className='kh-bh3-catalog-note';note.textContent='Показано 10 із '+matches.length+' режимів. Уточни запит.';box.appendChild(note)}
 }
