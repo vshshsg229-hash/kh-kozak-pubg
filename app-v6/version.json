@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.24.0",
+  "version": "17.25.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.24.0: Raid outcomes and reward ledger are verified in profile; assault specialization score is recorded consistently."
+  "releaseNotes": "v17.25.0: Added visible recent raid history with saved rewards and corrected medic health bar scaling."
 }
