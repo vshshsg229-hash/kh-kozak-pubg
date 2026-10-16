@@ -34,9 +34,13 @@ function play(raw,title){
  return true;
 }
 function videoId(item){
- const id=item?.videoId||item?.id||item?.url?.match?.(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/)?.[1];
- if(typeof id==='string'&&/^[A-Za-z0-9_-]{6,}$/.test(id))return id;
- return '';
+ const direct=item?.videoId;
+ if(typeof direct==='string'&&/^[A-Za-z0-9_-]{6,}$/.test(direct))return direct;
+ const url=String(item?.url||item?.id||'');
+ const fromUrl=url.match(/(?:v=|youtu\\.be\\/|\\/watch\\/)([A-Za-z0-9_-]{6,})/)?.[1];
+ if(fromUrl)return fromUrl;
+ const id=item?.id;
+ return typeof id==='string'&&/^[A-Za-z0-9_-]{6,}$/.test(id)?id:'';
 }
 function thumbnail(item,id){
  const t=item?.videoThumbnails?.find?.(x=>x?.quality==='medium')?.url||item?.thumbnail||item?.thumbnailUrl||item?.thumbnails?.[0]?.url;
