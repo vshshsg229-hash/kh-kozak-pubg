@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
   "version": "17.39.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.39.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "9.5.7",
-  "releaseNotes": "Reliable cache-clearing updater; fixed profile TikTok video embeds."
+  "windowsVersion": "17.39.0",
+  "releaseNotes": "Synchronized web, PWA and Windows app version labels; updater and TikTok embed fixes."
 }
