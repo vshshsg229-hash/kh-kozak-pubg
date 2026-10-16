@@ -73,3 +73,14 @@
  #tab-artifactforge .af-tree-grid{grid-template-columns:minmax(0,1fr)}
  #tab-artifactforge .af-map{min-height:450px}
 }
+
+/* Secret Sector: hidden until the three-step mission chain is complete */
+#tab-artifactforge .af-secret-locked{display:grid;place-items:center;min-width:58px;min-height:54px;border-style:dashed;border-color:#8a759e;color:#b9a5d4;background:#1a1830;opacity:.9;pointer-events:none}
+#tab-artifactforge .af-secret-locked small{color:#d5c5f0;font-size:7px}
+#tab-artifactforge .af-secret-node{border-color:#c7a6ff;color:#e3d0ff;background:#251843;box-shadow:0 0 0 3px #1a1830}
+#tab-artifactforge .af-secret-node.is-selected{outline-color:#e3d0ff}
+#tab-artifactforge .af-secret-panel{border-color:#6b4d8e;background:linear-gradient(145deg,#171327,#09131f 72%)}
+#tab-artifactforge .af-secret-panel .af-section-title h2{color:#dfc9ff}
+#tab-artifactforge .af-secret-panel .af-mission{border-color:#47345f}
+#tab-artifactforge .af-secret-panel .af-mission.is-complete{border-color:#4aa98f;background:#092620}
+#tab-artifactforge .af-secret-req{display:block;color:#b8a6d5;font-size:11px;margin:6px 0 10px}
