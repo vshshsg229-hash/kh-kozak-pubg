@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.23.0",
+  "version": "16.40.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
-  "updatedAt": "2026-10-15",
+  "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.23.0: прибрано анімації інтерфейсу та оновлено стиль до статичного кіберспортивного дизайну."
+  "releaseNotes": "v16.40.0: оновлено 3D-лобі, виправлено накопичення кісткових поворотів під час емоцій і оновлено сцену за референсами."
 }
