@@ -435,6 +435,8 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     status.style.zIndex='5';
     status.style.pointerEvents='none';
     startLobby();
+    status.classList.remove('is-hidden');
+    status.textContent='Silvanus X Suit · 3D preview';
   });
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);observer.disconnect();renderer.dispose();},{once:true});
 })();
