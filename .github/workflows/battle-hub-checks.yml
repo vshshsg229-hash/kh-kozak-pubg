@@ -141,7 +141,7 @@ jobs:
           assert(arcade.includes('kh100Random'), 'Arcade includes random game launch');
           assert(threeD.includes('7 ГОТОВИХ 3D РЕЖИМІВ') && threeD.includes('const modes=['), '3D Arena accurately advertises its current playable catalog');
           const modeMatch = threeD.match(/const modes=(\[[\s\S]*?\]);\n\nlet selectedModeName/);
-          assert(modeMatch && JSON.parse(modeMatch[1]).length === 7, '3D Arena has exactly 7 implemented modes');
+          assert(modeMatch && (modeMatch[1].match(/\{id:'/g) || []).length === 7, '3D Arena has exactly 7 implemented modes');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
