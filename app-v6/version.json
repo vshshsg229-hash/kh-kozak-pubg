@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.18.0",
+  "version": "17.19.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.18.0: Adds shared daily Survival Ops + Bunker contracts: Scavenger, Return from Raid, and Elite Extraction. Contract progress is stored with shared bunker inventory; rewards include profile coins, XP, Royale Pass XP and rare loot for elite extraction."
+  "releaseNotes": "v17.19.0: Adds daily Bunker Defense with three attack waves, door-upgrade damage reduction, coin-funded repairs, and shared rewards including parts and rare loot."
 }
