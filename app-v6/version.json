@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.99.0",
+  "version": "17.0.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.99.0: award once-per-day XP for meaningful actions in Home, Royale Pass, TikTok, Jokes, Events, Bunker, Arsenal and Missions."
+  "releaseNotes": "v17.0.0: adds Survival Ops tactical survival mode with health, supplies, time, branching actions, results and saved record."
 }
