@@ -34,14 +34,14 @@ function injectGameHub(){
   const planStart=e.target.closest('[data-bh3-plan-start]');if(planStart){startTrainingPlan(planStart.dataset.bh3PlanStart);return}
   if(e.target.closest('[data-bh3-random]')){launchRandomTraining();return}
   if(e.target.closest('[data-bh3-plan-next]')){continueTrainingPlan();return}
-  if(e.target.closest('[data-bh3-last]')){launch(data.recent[0]||'aim');return}
+  if(e.target.closest('[data-bh3-last]')){const last=data.recent.find(id=>games.some(g=>g.id===id))||Object.entries(data.stats||{}).filter(([,s])=>s&&s.lastPlayed).sort((a,b)=>String(b[1].lastPlayed).localeCompare(String(a[1].lastPlayed)))[0]?.[0]||'aim';launch(last);const st=$('#khBh3RandomStatus');if(st)st.textContent='Повторюю останню гру: '+(games.find(g=>g.id===last)?.name||last);return}
   if(e.target.closest('[data-bh3-daily]'))launch(dailyGame());
  });
  $('#khBh3Search')?.addEventListener('input',()=>{renderGames(activeFilter());renderCatalogMatches($('#khBh3Search')?.value||'')});
 }
 function activeFilter(){return $('[data-bh3-filter].active')?.dataset.bh3Filter||'all'}
 function gameCategory(g){return ({aim:'accuracy',reaction:'reaction',zone:'tactics',code:'memory',recoil:'control',loot:'decision',tactics:'tactics'})[g.id]||'other'}
-function launchRandomTraining(){const filter=activeFilter(),q=($('#khBh3Search')?.value||'').toLowerCase();const list=games.filter(g=>(filter==='all'||(filter==='favorites'&&data.favorites.includes(g.id))||(filter==='recent'&&data.recent.includes(g.id)))&&(activeCategory==='all'||gameCategory(g)===activeCategory)&&(g.name+' '+g.tag+' '+g.desc).toLowerCase().includes(q));const status=$('#khBh3RandomStatus');if(!list.length){if(status)status.textContent='За цими фільтрами нічого не знайдено. Очисти пошук або вибери іншу категорію чи фільтр.';return null}const choice=list[Math.floor(Math.random()*list.length)];if(status)status.textContent='Випадково обрано: '+choice.name;launch(choice.id);return choice.id}
+function launchRandomTraining(){const status=$('#khBh3RandomStatus');const filtered=games.filter(g=>(activeFilter()==='all'||(activeFilter()==='favorites'&&data.favorites.includes(g.id))||(activeFilter()==='recent'&&data.recent.includes(g.id)))&&(activeCategory==='all'||gameCategory(g)===activeCategory)&&(g.name+' '+g.tag+' '+g.desc).toLowerCase().includes(($('#khBh3Search')?.value||'').toLowerCase()));const list=filtered.length?filtered:games;if(!list.length){if(status)status.textContent='Наразі немає доступних тренувань.';return null}const choice=list[Math.floor(Math.random()*list.length)];if(status)status.textContent='Випадково обрано: '+choice.name;launch(choice.id);return choice.id}
 function renderGames(filter='all'){
  const grid=$('#khBh3Grid');if(!grid)return;const q=($('#khBh3Search')?.value||'').toLowerCase();
  const list=games.filter(g=>(filter==='all'||(filter==='favorites'&&data.favorites.includes(g.id))||(filter==='recent'&&data.recent.includes(g.id)))&&(activeCategory==='all'||gameCategory(g)===activeCategory)&&(g.name+' '+g.tag+' '+g.desc).toLowerCase().includes(q));
@@ -108,7 +108,7 @@ let activeCleanup=[];
 function cleanup(){activeCleanup.forEach(fn=>{try{fn()}catch{}});activeCleanup=[];const stage=$('#bh3Stage');if(stage)stage.style.position=''}
 function openModal(id){
  const modal=$('#gameModal'),title=$('#modalTitle'),desc=$('#modalDesc'),eyebrow=$('#modalEyebrow'),area=$('#gameArea'),message=$('#gameMessage');
- if(!modal||!area)return;cleanup();const g=games.find(x=>x.id===id)||games[0];data.recent=[id,...data.recent.filter(x=>x!==id)].slice(0,4);save();renderGames(activeFilter());
+ if(!modal||!area){const fallback=Array.from(document.querySelectorAll('#tab-games [data-game]')).find(b=>b.dataset.game===id);if(fallback){fallback.click();return}const status=$('#khBh3RandomStatus');if(status)status.textContent='Не вдалося відкрити вікно гри. Онови вкладку й спробуй ще раз.';return}cleanup();const g=games.find(x=>x.id===id)||games[0];data.recent=[id,...data.recent.filter(x=>x!==id)].slice(0,4);save();renderGames(activeFilter());
  modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';title.textContent=g.name;desc.textContent=g.desc;eyebrow.textContent='KH BATTLE HUB 3.0 / '+g.tag;message.textContent='';
  area.innerHTML='<div class="kh-bh3-game"><div class="kh-bh3-hud"><span id="bh3Score">ОЧКИ: 0</span><span id="bh3Time">ГОТОВИЙ</span></div><div class="kh-bh3-stage" id="bh3Stage"></div><p class="kh-bh3-feedback" id="bh3Feedback" aria-live="polite"></p></div>';
  const stage=$('#bh3Stage'),scoreEl=$('#bh3Score'),timeEl=$('#bh3Time'),feedback=$('#bh3Feedback');let score=0,done=false;const timers=[];
