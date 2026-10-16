@@ -109,3 +109,22 @@
 #tab-artifactforge .af-node.is-locked{border-style:dashed;border-color:#42556b;background:rgba(9,18,30,.94);color:#8a9caf;filter:saturate(.35);box-shadow:none;opacity:.82}
 #tab-artifactforge .af-node.is-locked small{color:#a0b1c2}
 #tab-artifactforge .af-gate-hint{font-size:12px;color:#ffcf83;background:#211a11;border:1px solid #59462a;border-radius:8px;padding:9px;margin-top:8px}
+
+/* Hardcore resource games and GPU upgrade lab */
+#tab-artifactforge .af-mini-lab,#tab-artifactforge .af-cipher-lab{margin:16px 0;border-color:#294b63;background:linear-gradient(145deg,rgba(8,19,31,.98),rgba(13,27,43,.98))}
+#tab-artifactforge .af-gpu-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+#tab-artifactforge .af-gpu-status>div,#tab-artifactforge .af-cipher-display>div{display:flex;flex-direction:column;gap:6px;padding:10px;border:1px solid #28465b;border-radius:8px;background:#07121f}
+#tab-artifactforge .af-gpu-status small,#tab-artifactforge .af-cipher-display small{font-size:9px;letter-spacing:.09em;color:#8aa8bc}
+#tab-artifactforge .af-gpu-status b,#tab-artifactforge .af-cipher-display b{font-size:16px;color:#70e6ff}
+#tab-artifactforge .af-salvage-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+#tab-artifactforge .af-salvage-cell{aspect-ratio:1;border:1px solid #35617b;border-radius:8px;background:linear-gradient(145deg,#142d42,#071522);color:#76ddff;font-size:24px;font-weight:800;cursor:pointer}
+#tab-artifactforge .af-salvage-cell:not(:disabled):hover{border-color:#76ddff;background:#173b53}
+#tab-artifactforge .af-salvage-cell:disabled{cursor:default;opacity:.88}
+#tab-artifactforge .af-salvage-cell.is-loot{color:#8affc1;border-color:#27885f;background:#0c3028}
+#tab-artifactforge .af-salvage-cell.is-trap{color:#ff9a8c;border-color:#a43f43;background:#321719}
+#tab-artifactforge .af-salvage-meta{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#a7c3d7}
+#tab-artifactforge .af-mini-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#tab-artifactforge .af-cipher-display{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:14px 0}
+#tab-artifactforge .af-cipher-keypad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+#tab-artifactforge .af-cipher-keypad .af-btn{min-width:0;padding:10px 4px}
+@media(max-width:560px){#tab-artifactforge .af-gpu-status{grid-template-columns:1fr}#tab-artifactforge .af-gpu-status>div{flex-direction:row;justify-content:space-between;align-items:center}#tab-artifactforge .af-cipher-keypad{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-artifactforge .af-mini-actions .af-btn{flex:1 1 100%}}
