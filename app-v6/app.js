@@ -495,17 +495,16 @@ window.matchMedia('(min-width:721px)').addEventListener('change',event=>{if(even
 render();
 updateSeasonTimers();setInterval(updateSeasonTimers,1000);
 
+function reloadSharedProfile(){try{const fresh=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...fresh,games:{...defaultState.games,...(fresh.games||{})}};state.owned=Array.isArray(state.owned)?state.owned:[];state.completed=Array.isArray(state.completed)?state.completed:[];state.passClaimed=Array.isArray(state.passClaimed)?state.passClaimed:[];state.redeemedCodes=Array.isArray(state.redeemedCodes)?state.redeemedCodes:[];render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:Number(state.coins)||0,xp:Number(state.xp)||0}}));return true}catch(_){return false}}
 window.khkozakProgression = {
   snapshot: () => ({ coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }),
-  spendCoins: amount => {
-    const cost = Math.max(0, Math.floor(Number(amount) || 0));
-    if (!Number.isFinite(cost) || Number(state.coins) < cost) return false;
-    state.coins -= cost;
-    save();
-    render();
-    return true;
-  },
-  refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; }
+  creditCoins: amount => { const value=Math.max(0,Math.floor(Number(amount)||0));if(!value)return false;state.coins=Math.max(0,Number(state.coins)||0)+value;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
+  spendCoins: amount => { const cost=Math.max(0,Math.floor(Number(amount)||0));if(!cost||!Number.isFinite(cost)||Number(state.coins)<cost)return false;state.coins-=cost;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
+  refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; },
+  reload: reloadSharedProfile
 };
+window.addEventListener('kh-battlepass-reward',reloadSharedProfile);
+window.addEventListener('khkozak-profile-storage-updated',reloadSharedProfile);
+try{if(!Storage.prototype.__khkozakSharedProfile){const originalSetItem=Storage.prototype.setItem;Object.defineProperty(Storage.prototype,'__khkozakSharedProfile',{value:true});Storage.prototype.setItem=function(key,value){const isProfile=this===window.localStorage&&key===KEY,previous=isProfile?this.getItem(key):null;const result=originalSetItem.call(this,key,value);if(isProfile&&previous!==String(value)){const notify=()=>window.dispatchEvent(new CustomEvent('khkozak-profile-storage-updated'));if(typeof queueMicrotask==='function')queueMicrotask(notify);else Promise.resolve().then(notify)}return result}}}catch(_){}
 
 })();
