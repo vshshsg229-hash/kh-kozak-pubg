@@ -191,3 +191,19 @@
 #tab-artifactforge .af-archive-item p{margin:0;color:#8ba8bf;font-size:11px}
 #tab-artifactforge .af-archive-item em{font-style:normal;color:#83ffc0;font-size:10px}
 @media(max-width:600px){#tab-artifactforge .af-boss-layout{grid-template-columns:1fr}#tab-artifactforge .af-boss-emblem{max-width:86px;font-size:40px}#tab-artifactforge .af-boss-bars{grid-template-columns:1fr}}
+
+#tab-artifactforge .af-timer-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:10px 0 14px;border:1px solid #28516a;border-radius:8px;background:#071723}
+#tab-artifactforge .af-timer-strip span{font-size:10px;letter-spacing:.09em;color:#8ba9bc}
+#tab-artifactforge .af-timer-strip b{font-variant-numeric:tabular-nums;font-size:18px;letter-spacing:.04em;color:#62e7ff}
+#tab-artifactforge .af-daily-mission-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+#tab-artifactforge .af-daily-mission{padding:14px;border:1px solid #29445c;border-radius:9px;background:#091522}
+#tab-artifactforge .af-daily-mission.is-complete{border-color:#3d826e}
+#tab-artifactforge .af-daily-mission.is-earned{border-color:#315b47;opacity:.88}
+#tab-artifactforge .af-daily-mission-top,#tab-artifactforge .af-daily-mission-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#tab-artifactforge .af-daily-mission-top span{font-size:20px;color:#62e7ff}
+#tab-artifactforge .af-daily-mission-top small{font-size:9px;color:#8ba9bc;letter-spacing:.07em}
+#tab-artifactforge .af-daily-mission h3{font-size:14px;margin:10px 0 5px;color:#eaf6ff}
+#tab-artifactforge .af-daily-mission p{min-height:30px;font-size:11px;line-height:1.5;color:#91a9bd}
+#tab-artifactforge .af-daily-mission-bottom b{color:#83ffc0;font-size:12px}
+#tab-artifactforge [data-countdown]{font-variant-numeric:tabular-nums}
+@media(max-width:600px){#tab-artifactforge .af-timer-strip{align-items:flex-start;flex-direction:column}#tab-artifactforge .af-timer-strip b{font-size:17px}}
