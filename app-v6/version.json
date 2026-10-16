@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.29.0",
+  "version": "17.30.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Додано підрозділ 2D ІГРИ з неоновим зеленим стилем і швидким запуском Класики, Metro Royale та Зомбі режиму."
+  "releaseNotes": "Metro Royale: шанс зараженого боса 10% на рейд; посилені боси зі зброєю, дистанційними пострілами та підвищеною витривалістю в Metro і Zombie Survival."
 }
