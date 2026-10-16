@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.30.0",
+  "version": "17.31.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Metro Royale: шанс зараженого боса 10% на рейд; посилені боси зі зброєю, дистанційними пострілами та підвищеною витривалістю в Metro і Zombie Survival."
+  "releaseNotes": "Більше боєприпасів на старті й у ящиках; у Zombie Survival гравець завдає вдвічі більше шкоди зараженим."
 }
