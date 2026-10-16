@@ -169,3 +169,25 @@
 #tab-artifactforge .af-profile-item b{font-size:13px;color:#d7e8f5}
 #tab-artifactforge .af-profile-item small{font-size:9px;color:#83ffc0;letter-spacing:.06em}
 @media(max-width:760px){#tab-artifactforge .af-daily-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-artifactforge .af-daily-reward{padding:12px}#tab-artifactforge .af-daily-reward>b{font-size:12px}}
+
+#tab-artifactforge .af-boss-layout{display:grid;grid-template-columns:100px minmax(0,1fr);gap:18px;align-items:start}
+#tab-artifactforge .af-boss-emblem{display:grid;place-items:center;aspect-ratio:1;border:1px solid #804b5a;border-radius:12px;background:radial-gradient(circle,#3a1724,#0b111b 72%);color:#ff758c;font-size:52px;text-shadow:0 0 20px #ff315d}
+#tab-artifactforge .af-boss-main>p,#tab-artifactforge .af-archive-panel>p{color:#91a9bd;font-size:12px;line-height:1.55}
+#tab-artifactforge .af-boss-bars{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+#tab-artifactforge .af-boss-bars>div{display:grid;gap:6px}
+#tab-artifactforge .af-boss-bars small{font-size:9px;letter-spacing:.08em;color:#8aa8bc}
+#tab-artifactforge .af-boss-bars b{font-size:13px;color:#eaf6ff}
+#tab-artifactforge .af-boss-track{height:8px;border-radius:99px;overflow:hidden;background:#2b1a28;border:1px solid #4c2b3b}
+#tab-artifactforge .af-boss-track i{display:block;height:100%;background:#ff5576;transition:width .15s}
+#tab-artifactforge .af-boss-track.player{background:#102b34;border-color:#245263}
+#tab-artifactforge .af-boss-track.player i{background:#62e7ff}
+#tab-artifactforge .af-boss-log{padding:10px 12px;border-left:2px solid #62e7ff;background:#091522;color:#c9e4f2!important}
+#tab-artifactforge .af-boss-victory{display:inline-block;color:#83ffc0;font-weight:900;font-size:11px;padding:10px 0}
+#tab-artifactforge .af-archive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px}
+#tab-artifactforge .af-archive-item{display:flex;flex-direction:column;gap:7px;padding:13px;border:1px solid #29445c;border-radius:9px;background:#091522}
+#tab-artifactforge .af-archive-item>span{font-size:24px}
+#tab-artifactforge .af-archive-item b{font-size:13px;color:#eaf6ff}
+#tab-artifactforge .af-archive-item small{font-size:9px;color:#62e7ff;letter-spacing:.07em}
+#tab-artifactforge .af-archive-item p{margin:0;color:#8ba8bf;font-size:11px}
+#tab-artifactforge .af-archive-item em{font-style:normal;color:#83ffc0;font-size:10px}
+@media(max-width:600px){#tab-artifactforge .af-boss-layout{grid-template-columns:1fr}#tab-artifactforge .af-boss-emblem{max-width:86px;font-size:40px}#tab-artifactforge .af-boss-bars{grid-template-columns:1fr}}
