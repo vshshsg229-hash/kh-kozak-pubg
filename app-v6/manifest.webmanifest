@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.71.0",
+  "name": "KH么Kozak Battle Hub 16.72.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.71.0: Battle Hub 3.0 — сім ігрових тренувань, комбат-запис із досягненнями, щоденна операція, Козак AI, місії та адаптивний інтерфейс.",
+  "description": "KH么Kozak Battle Hub 16.72.0: Battle Hub 3.0 — сім тренувань, категорії режимів, випадковий запуск, марафон улюблених ігор, комбат-запис, щоденні місії та Козак AI.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
