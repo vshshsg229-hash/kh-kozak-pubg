@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.74.0",
+  "version": "17.75.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-16",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Fixed app refresh version detection and added ZONG PUBG MOBILE videos to the embedded Quick Start player."
+  "releaseNotes": "Fixed app refresh version detection; added embedded Quick Start videos from ZONG PUBG MOBILE and EdisonPts Minecraft."
 }
