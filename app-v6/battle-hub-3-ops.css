@@ -8,3 +8,19 @@
 .kh-bh3-ops-actions{display:flex;flex-wrap:wrap;gap:8px}.kh-bh3-ops button{min-height:40px;padding:9px 12px;border-radius:8px;border:1px solid #44546a;background:#172333;color:#f1f5fb;font-weight:750;font-size:11px;cursor:pointer}.kh-bh3-ops button.primary{background:#e9c34e;color:#17140a;border-color:#e9c34e}.kh-bh3-ops button:focus-visible{outline:2px solid #fff;outline-offset:3px}.kh-bh3-ops-progress{height:7px;border-radius:99px;overflow:hidden;background:#263244;margin:12px 0 7px}.kh-bh3-ops-progress i{display:block;height:100%;width:0;background:#e9c34e}
 .kh-bh3-ops-status{font-size:11px;color:#aab8cb;min-height:17px;margin-top:9px;overflow-wrap:anywhere}
 @media(max-width:700px){.kh-bh3-ops{grid-template-columns:1fr}.kh-bh3-ops-panel{padding:14px}.kh-bh3-ops-metric b{font-size:18px}}
+
+.kh-bh3-ops-achievements{margin-top:15px;padding-top:12px;border-top:1px solid #2a3545}
+.kh-bh3-ops-ach-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.kh-bh3-ops-ach-head b{font-size:10px;letter-spacing:.12em;color:#e9c34e}
+.kh-bh3-ops-ach-head small{font-size:10px;color:#9eacc0}
+.kh-bh3-ops-ach-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.kh-bh3-ops-ach{display:flex;gap:8px;align-items:center;min-width:0;padding:9px;border:1px solid #2a3545;border-radius:9px;background:#0a1018}
+.kh-bh3-ops-ach>span{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:8px;font-weight:900;background:#263243;color:#9eacc0}
+.kh-bh3-ops-ach.is-unlocked{border-color:#655628;background:#19180f}
+.kh-bh3-ops-ach.is-unlocked>span{background:#e9c34e;color:#17140a}
+.kh-bh3-ops-ach>div{min-width:0;flex:1}
+.kh-bh3-ops-ach b{display:block;font-size:11px;overflow-wrap:anywhere}
+.kh-bh3-ops-ach small{display:block;margin-top:3px;color:#9eacc0;font-size:10px;line-height:1.35}
+.kh-bh3-ops-ach i{font-style:normal;font-size:8px;letter-spacing:.03em;color:#8996a8;text-align:right}
+.kh-bh3-ops-ach.is-unlocked i{color:#e9c34e}
+@media(max-width:420px){.kh-bh3-ops-ach-list{grid-template-columns:1fr}.kh-bh3-ops-ach i{max-width:65px}}
