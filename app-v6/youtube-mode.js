@@ -125,6 +125,7 @@ async function searchOfficial(q,seq){
 async function search(query){
  const seq=++searchSequence,q=String(query||'').trim();if(q.length<2){setMessage('Введи щонайменше 2 символи для пошуку.');return}
  results.replaceChildren();queue=[];currentIndex=-1;setMessage('Шукаю на YouTube: “'+q+'”…');
+ if(officialKey){try{await searchOfficial(q,seq);return}catch(error){if(seq!==searchSequence)return;setMessage('Official YouTube search failed. Check your API key.');return}}
  const jobs=searchProviders.map(endpoint=>requestProvider(endpoint,q).then(data=>({data})).catch(error=>({error})));
  for(const job of jobs){
   const result=await job;if(seq!==searchSequence)return;if(result.error)continue;
