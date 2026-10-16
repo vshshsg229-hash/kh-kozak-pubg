@@ -33,3 +33,9 @@
 .kh-tiktok-upload-status{margin:10px 0;padding:11px 12px;border:1px solid #293c4a;border-radius:10px;background:#0a121b;color:#b8c7d4;font-size:12px;line-height:1.5}
 .kh-tiktok-feed-focused{outline:2px solid rgba(101,245,210,.45);outline-offset:4px}
 @media(max-width:620px){.kh-tiktok-upload-grid{grid-template-columns:1fr}.kh-tiktok-upload-actions{grid-template-columns:1fr}.kh-tiktok-upload-head{flex-direction:column}.kh-tiktok-iframe-wrap{max-height:72vh}}
+
+/* 17.37.0: explicit in-app video actions beside each creator profile */
+.kh-tiktok-inapp-icon{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;margin:8px 6px 0 0;padding:9px 12px;border:1px solid #44d7ff;border-radius:10px;background:#0c2633;color:#a5f0ff;font-size:10px;font-weight:900;letter-spacing:.03em;text-decoration:none;cursor:pointer}
+.kh-tiktok-inapp-icon:hover,.kh-tiktok-inapp-icon:focus-visible{background:#143b4a;border-color:#8be9ff;outline:2px solid #44d7ff;outline-offset:2px}
+.kh-tiktok-inapp-icon .kh-tiktok-icon{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:7px;background:#44d7ff;color:#07131b;font-size:13px}
+@media(max-width:520px){.kh-tiktok-inapp-icon{width:100%;margin:8px 0 0;min-height:44px}}
