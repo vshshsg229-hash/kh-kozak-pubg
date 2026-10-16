@@ -1,0 +1,6 @@
+(()=>{'use strict';
+const $=s=>document.querySelector(s);
+const read=(k,f={})=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v&&typeof v==='object'?v:f}catch{return f}};
+function render(){const p=read('khkozak_hub_v6',{}),xp=Math.max(0,Number(p.xp)||0),level=Math.floor(xp/100)+1,into=xp%100;const x=$('#khHomeBriefXP'),l=$('#khHomeBriefLevel'),bar=$('#khHomeBriefProgress i'),status=$('#khHomeBriefStatus');if(x)x.textContent=xp;if(l)l.textContent='РІВЕНЬ '+level+' · '+into+'/100 XP';if(bar)bar.style.width=into+'%';if(status){const s=read('khkozak_survival_ops_v1',{runs:0,wins:0});status.textContent='Survival Ops: '+(Number(s.wins)||0)+' успішних виходів із '+(Number(s.runs)||0)+' операцій · '+(100-into)+' XP до наступного рівня.'}}
+document.addEventListener('khkozak-profile-updated',render);document.addEventListener('khkozak-xp-awarded',render);document.addEventListener('khkozak-progress-refresh',render);window.addEventListener('storage',render);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render,{once:true});else render();
+})();
