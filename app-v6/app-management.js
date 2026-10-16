@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const APP_VERSION='16.94.0';
+const APP_VERSION='17.7.0';
 const panel=$('.kh-control-panel');
 if(!panel||panel.querySelector('#kh-app-management'))return;
 const section=document.createElement('section');
@@ -21,7 +21,7 @@ style.textContent += '#kh-app-management .kh-control-buttons{display:grid!import
 section.addEventListener('click',async e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.hasAttribute('data-khm-check')){await check();result.textContent='Перевірку завершено.'}
- if(b.hasAttribute('data-khm-reload')){result.textContent='Відкриваю оновлену версію…';b.disabled=true;b.textContent='ЗАВАНТАЖЕННЯ…';const url=new URL('https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/');url.searchParams.set('v','16.94.0');url.searchParams.set('refresh',String(Date.now()));url.searchParams.set('updated',String(Date.now()));try{if('caches'in window)caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('kh-kozak-hub-')).map(k=>caches.delete(k)))).catch(()=>{});if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(async reg=>{try{await reg.update()}catch(_){}try{if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'})}catch(_){}try{await reg.unregister()}catch(_){}}))).catch(()=>{})}catch(_){}location.replace(url.toString())}
+ if(b.hasAttribute('data-khm-reload')){result.textContent='Очищаю застарілий кеш і відкриваю нову версію…';b.disabled=true;b.textContent='ЗАВАНТАЖЕННЯ…';const url=new URL('https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/');url.searchParams.set('v','17.7.0');url.searchParams.set('refresh',String(Date.now()));url.searchParams.set('updated',String(Date.now()));try{if('caches'in window){const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('kh-kozak-hub-')).map(k=>caches.delete(k)))}}catch(_){}try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(async reg=>{try{await reg.update()}catch(_){}}))}}catch(_){}location.replace(url.toString())}
  if(b.hasAttribute('data-khm-reset')){try{localStorage.setItem('khkozak_control_center_v1',JSON.stringify({font:100,focus:false,contrast:false,drills:0,bestReaction:0,correctTactics:0}))}catch{};document.documentElement.style.fontSize='100%';document.documentElement.classList.remove('kh-focus-mode','kh-high-contrast');result.textContent='Масштаб, фокус і контраст скинуто. Прогрес і монети не видалялися.'}
  if(b.hasAttribute('data-khm-diagnostics')){const d={app:'KH么Kozak Battle Hub',version:APP_VERSION,createdAt:new Date().toISOString(),screen:{width:innerWidth,height:innerHeight,pixelRatio:devicePixelRatio||1},browser:{userAgent:navigator.userAgent,language:navigator.language,online:navigator.onLine,standalone:window.matchMedia('(display-mode: standalone)').matches},serviceWorker:'serviceWorker'in navigator};const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='KH-Kozak-Diagnostics.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);result.textContent='Файл діагностики збережено. Він не містить ігрового профілю чи монет.'}
 });
