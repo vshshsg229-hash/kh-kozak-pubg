@@ -383,4 +383,14 @@
 <script src="pc-companion.js?v=1.2.0"></script>
 <script src="battle-hub-3.js?v=17.15.0" defer></script><script src="battle-hub-3-ops.js?v=17.12.0" defer></script><script src="mission-lab.js?v=16.89.0" defer></script><script src="command-deck.js?v=16.89.0" defer></script><script src="kozak-ai-daily-ops.js?v=17.15.0" defer></script><script src="tiktok-hub.js?v=17.59.0" defer></script><script src="app-update.js?v=17.59.0" defer></script><script src="battle-world.js?v=1.0.1" defer></script><script src="creator-studio.js?v=1.1.0" defer></script><script src="app-management.js?v=17.36.0" defer></script><script src="progress-core.js?v=17.11.0" defer></script><script src="player-journey.js?v=17.6.0" defer></script><script src="survival-ops.js?v=17.59.0" defer></script>
 <script src="repair-bridge.js?v=17.11.0" defer></script><script src="control-lab.js?v=1.0.0" defer></script><script src="match-report.js?v=1.0.0" defer></script><script src="fun-expansion.js?v=17.4.0" defer></script><script src="home-briefing.js?v=17.5.0" defer></script><script src="artifact-forge.js?v=17.59.0" defer></script>
+<script>
+/* KH么Kozak updater recovery: keep the versioned app shell and Artifact Forge assets in sync. */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' })
+      .then(registration => registration.update())
+      .catch(() => {});
+  }, { once: true });
+}
+</script>
 </body></html>
