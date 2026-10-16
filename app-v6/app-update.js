@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const WEB_VERSION = '17.71.0',VERSION_URL=new URL('./version.json',location.href).toString(),APP_URL=new URL('./',location.href).toString();
+const WEB_VERSION = '17.72.0',VERSION_URL=new URL('./version.json',location.href).toString(),APP_URL=new URL('./',location.href).toString();
 const RELEASE_URL=v=>'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v'+encodeURIComponent(v);
 const isElectron=/Electron/i.test(navigator.userAgent),CURRENT_VERSION=isElectron?new URLSearchParams(location.search).get('desktopVersion')||'0.0.0':WEB_VERSION;
 let banner,message,action,latestVersion=WEB_VERSION,refreshing=false;
