@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.11.0",
+  "version": "17.12.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.11.0: repairs the update-button flow, forces a fresh app URL, and bumps the service-worker cache to prevent stale screens."
+  "releaseNotes": "v17.12.0: improves Games & Modes quick start; removes the stale type badge and fixes random, last, recommended, find-game and filter-reset controls."
 }
