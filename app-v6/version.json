@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.26.0",
+  "version": "17.27.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "KOZAK AI: об’єднано KOZAK AI Coach і Напарник KH в одному рожевому розділі; оновлено навігацію та кеш."
+  "releaseNotes": "Навігація: Ігри та режими, 3D Арена, Royale Pass і Місії об’єднані в одному рожевому розділі ІГРИ."
 }
