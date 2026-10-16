@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.70.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.70.0",
+  "version": "17.71.0",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.70.0",
-  "releaseNotes": "Fixed YouTube search parsing, added automatic next-video playback, and optional official YouTube Data API search."
+  "windowsVersion": "17.68.0",
+  "releaseNotes": "Fixed YouTube search script syntax, added official YouTube Data API search option, and automatic next-video playback."
 }
