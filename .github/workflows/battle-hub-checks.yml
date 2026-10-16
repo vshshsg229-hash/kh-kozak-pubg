@@ -35,6 +35,7 @@ jobs:
           node --check app-v6/fighter-inventory-v16.12.js
           node --check app-v6/i18n.js
           node --check app-v6/media.js
+          node --check app-v6/background-music.js
           node --check app-v6/arcade-100.js
           node --check app-v6/games-3d.js
           node --check app-v6/bunker.js
@@ -63,13 +64,14 @@ jobs:
             checks.push(message);
           };
 
-          assert(html.includes('character-lobby.js?v=1.4.3') && html.includes('character-lobby.css?v=1.4.1'), 'Fighter 2.0 assets are referenced with fresh cache versions');
-          const fighter = fs.readFileSync(path.join(root, 'character-lobby.js'), 'utf8');
-          const fighterCss = fs.readFileSync(path.join(root, 'character-lobby.css'), 'utf8');
-          for (const feature of ['ТАКТИЧНИЙ ПРОФІЛЬ','ШТУРМОВИК','РОЗВІДНИК','МЕДИК','СЦЕНА ОГЛЯДУ','ОСОБЛИВЕ ЗАВДАННЯ','khMissionDone']) {
-            assert(fighter.includes(feature), 'Fighter 2.0 includes ' + feature);
+          // Validate the active inventory UI, not the retired character-lobby prototype.
+          assert(html.includes('fighter-inventory-v16.12.js?v=16.16.0') && html.includes('fighter-inventory-v16.12.css?v=16.16.0'), 'Active Fighter inventory assets are referenced with cache versions');
+          const fighter = fs.readFileSync(path.join(root, 'fighter-inventory-v16.12.js'), 'utf8');
+          const fighterCss = fs.readFileSync(path.join(root, 'fighter-inventory-v16.12.css'), 'utf8');
+          for (const feature of ['ПОЛЬОВИЙ НОВОБРАНЕЦЬ','M416 EMBER CORE','NEON VIPER','equippedSkin','equippedWeaponSkin']) {
+            assert(fighter.includes(feature), 'Fighter inventory includes ' + feature);
           }
-          assert(fighterCss.includes('.kh-role-picker') && fighterCss.includes('.kh-scene-night') && fighterCss.includes('.kh-daily-fighter'), 'Fighter 2.0 styles are present');
+          assert(fighterCss.includes('.kh-inventory') && fighterCss.includes('.kh-inv-item') && fighterCss.includes('.kh-inv-equipped'), 'Fighter inventory styles are present');
           const creatorEditor = fs.readFileSync(path.join(root, 'creator-editor.js'), 'utf8');
           const creatorEditorCss = fs.readFileSync(path.join(root, 'creator-editor.css'), 'utf8');
           for (const feature of ['khcExport', 'khcCover', 'khcCopyCaption', 'khcStart', 'khcEnd', 'tiktok.com/upload']) assert(creatorEditor.includes(feature), 'Creator editor feature exists: ' + feature);
