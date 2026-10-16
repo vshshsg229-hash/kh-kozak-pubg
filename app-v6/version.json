@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.78.0",
+  "version": "16.80.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.78.0: У профілі тепер видно всі джерела отримання предмета: Колекція, безкоштовний пропуск і Elite Pass, навіть якщо предмет був у колекції раніше."
+  "releaseNotes": "v16.80.0: Battle Hub 3.0 Smart Operations: рекомендації ігор, щотижневий виклик, експорт прогресу та Kozak AI Coach."
 }

@@ -1,0 +1,10 @@
+/* Battle Hub 3.0 — operations dashboard */
+.kh-bh3-ops{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(250px,.8fr);gap:14px;margin:16px 0}
+.kh-bh3-ops-panel{min-width:0;padding:16px;border:1px solid #344257;border-radius:14px;background:linear-gradient(140deg,#111b29,#0c121b);color:#edf3fb}
+.kh-bh3-ops-panel h3{font-size:14px;margin:0 0 7px;letter-spacing:.04em}.kh-bh3-ops-panel p{font-size:12px;color:#aab8cb;line-height:1.55;margin:0 0 12px}
+.kh-bh3-ops-kicker{font-size:10px;font-weight:800;letter-spacing:.15em;color:#e9c34e;display:block;margin-bottom:8px}
+.kh-bh3-ops-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.kh-bh3-ops-metric{padding:10px;border-radius:9px;background:#0a1018;border:1px solid #273548;min-width:0}.kh-bh3-ops-metric b{display:block;font-size:20px;overflow-wrap:anywhere}.kh-bh3-ops-metric small{display:block;font-size:10px;color:#9eacc0;margin-top:3px}
+.kh-bh3-ops-actions{display:flex;flex-wrap:wrap;gap:8px}.kh-bh3-ops button{min-height:40px;padding:9px 12px;border-radius:8px;border:1px solid #44546a;background:#172333;color:#f1f5fb;font-weight:750;font-size:11px;cursor:pointer}.kh-bh3-ops button.primary{background:#e9c34e;color:#17140a;border-color:#e9c34e}.kh-bh3-ops button:focus-visible{outline:2px solid #fff;outline-offset:3px}.kh-bh3-ops-progress{height:7px;border-radius:99px;overflow:hidden;background:#263244;margin:12px 0 7px}.kh-bh3-ops-progress i{display:block;height:100%;width:0;background:#e9c34e}
+.kh-bh3-ops-status{font-size:11px;color:#aab8cb;min-height:17px;margin-top:9px;overflow-wrap:anywhere}
+@media(max-width:700px){.kh-bh3-ops{grid-template-columns:1fr}.kh-bh3-ops-panel{padding:14px}.kh-bh3-ops-metric b{font-size:18px}}
