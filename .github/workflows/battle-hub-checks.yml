@@ -65,6 +65,18 @@ jobs:
             checks.push(message);
           };
 
+          const versionData = JSON.parse(fs.readFileSync(path.join(root, 'version.json'), 'utf8'));
+          const appVersion = versionData.version;
+          const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+          const updater = fs.readFileSync(path.join(root, 'app-update.js'), 'utf8');
+          const management = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
+          assert(html.includes('Battle Hub ' + appVersion), 'HTML document title matches version.json');
+          assert(html.includes('<i>' + appVersion + '</i>'), 'Sidebar version matches version.json');
+          assert(manifest.name.includes(appVersion) && manifest.description.includes(appVersion), 'PWA manifest matches version.json');
+          assert(serviceWorker.includes('kh-kozak-hub-v' + appVersion), 'Service worker cache matches version.json');
+          assert(updater.includes("const WEB_VERSION = '" + appVersion + "'"), 'Update checker matches version.json');
+          assert(management.includes("const APP_VERSION='" + appVersion + "'"), 'Manual refresh diagnostics match version.json');
+
           // Validate the active inventory UI, not the retired character-lobby prototype.
           assert(html.includes('fighter-inventory-v16.12.js?v=16.16.0') && html.includes('fighter-inventory-v16.12.css?v=16.16.0'), 'Active Fighter inventory assets are referenced with cache versions');
           const fighter = fs.readFileSync(path.join(root, 'fighter-inventory-v16.12.js'), 'utf8');
