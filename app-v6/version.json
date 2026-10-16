@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.6.0",
+  "version": "17.7.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.6.0: aligned visible app version labels with the current release."
+  "releaseNotes": "v17.7.0: fixes update buttons by aligning release versions and awaiting cache cleanup before reload without unregistering the active service worker."
 }
