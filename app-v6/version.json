@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.77.0",
+  "version": "17.78.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-17",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Upgraded Nexus Protocol to NIGHTMARE hardcore mode: rebalanced sector rewards, technology costs and final boss combat; corrected boss HP display and XP progress."
+  "releaseNotes": "Nexus Protocol NIGHTMARE: added a three-phase secret boss, escalating encounters, phase-specific HP and rewards. Rebalanced technology costs, sector rewards and corrected boss HP/XP display."
 }
