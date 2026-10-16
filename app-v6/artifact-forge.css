@@ -234,3 +234,6 @@
 #tab-artifactforge .af-map{min-height:510px}
 #tab-artifactforge .af-node small{max-width:92px;white-space:normal;line-height:1.15;text-align:center}
 @media(max-width:600px){#tab-artifactforge .af-map{min-height:560px}#tab-artifactforge .af-node small{font-size:8px;max-width:68px}}
+
+/* Artifact Forge command deck: direct access to every existing subsystem. */
+.af-command-deck{margin:0 0 18px}.af-command-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.af-command-card{display:flex;flex-direction:column;gap:7px;text-align:left;padding:14px;border:1px solid rgba(58,220,239,.28);border-radius:12px;background:linear-gradient(135deg,rgba(12,34,48,.95),rgba(14,18,31,.96));color:var(--af-text,#e8f7ff);cursor:pointer;min-width:0}.af-command-card b{font-size:13px;letter-spacing:.02em}.af-command-card small{color:var(--af-muted,#92a9bb);font-size:11px;line-height:1.45}.af-command-card:active{transform:translateY(1px);border-color:#43e9f6}.af-command-status{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.af-command-status span{padding:7px 10px;border-radius:999px;border:1px solid rgba(58,220,239,.2);font-size:11px;color:var(--af-muted,#92a9bb)}@media(max-width:560px){.af-command-grid{grid-template-columns:1fr}.af-command-card{padding:12px}}
