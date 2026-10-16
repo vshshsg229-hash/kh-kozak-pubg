@@ -16,9 +16,16 @@ function launchGame(id){
 }
 function continuePlan(){
  const selectors=['[data-bh3-plan-next]','#khBh3PlanNext','[data-action="continue-plan"]','[data-training-continue]'];
- for(const selector of selectors){const b=q(selector);if(b){b.click();return true}}
+ for(const selector of selectors){const b=q(selector);if(b&&!b.disabled){b.click();return true}}
+ // Kozak AI's real plan controls use these IDs, not the generic bridge selectors.
+ const generate=q('#kozaiGenerate');
+ if(generate){generate.scrollIntoView({behavior:'auto',block:'center'});generate.click();return true}
+ const tasks=q('#kozaiTasks');
+ if(tasks){tasks.scrollIntoView({behavior:'auto',block:'center'});return true}
  const plan=q('#tab-home [data-bh3-plan-start],#tab-profile [data-bh3-plan-start]');
  if(plan){plan.click();return true}
+ const aiTab=q('[data-tab="home"],[data-tab="kozak-ai"],[data-tab="assistant"]');
+ if(aiTab){aiTab.click();setTimeout(()=>{const b=q('#kozaiGenerate');if(b)b.click()},80);return true}
  return false;
 }
 function refreshProgress(){
