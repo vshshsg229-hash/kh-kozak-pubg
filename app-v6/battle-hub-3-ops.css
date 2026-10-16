@@ -24,3 +24,5 @@
 .kh-bh3-ops-ach i{font-style:normal;font-size:8px;letter-spacing:.03em;color:#8996a8;text-align:right}
 .kh-bh3-ops-ach.is-unlocked i{color:#e9c34e}
 @media(max-width:420px){.kh-bh3-ops-ach-list{grid-template-columns:1fr}.kh-bh3-ops-ach i{max-width:65px}}
+
+.kh-bh3-ops-ach-reward{color:#e9c34e!important;font-weight:800}.kh-bh3-ops-ach>div button{margin-top:7px;min-height:30px;padding:6px 8px;font-size:9px}.kh-bh3-ops-ach>div button:disabled{opacity:.6;cursor:default}
