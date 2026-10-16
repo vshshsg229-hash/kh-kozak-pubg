@@ -12,42 +12,74 @@ const searchProviders=[
  q=>'https://inv.nadeko.net/api/v1/search?q='+encodeURIComponent(q)+'&type=video',
  q=>'https://invidious.nerdvpn.de/api/v1/search?q='+encodeURIComponent(q)+'&type=video',
  q=>'https://inv.tux.pizza/api/v1/search?q='+encodeURIComponent(q)+'&type=video',
- q=>'https://pipedapi.adminforge.de/search?q='+encodeURIComponent(q)+'&filter=videos'
+ q=>'https://pipedapi.adminforge.de/search?q='+encodeURIComponent(q)+'&filter=videos',
+ q=>'https://pipedapi.kavin.rocks/search?q='+encodeURIComponent(q)+'&filter=videos'
 ];
-let searchSequence=0;
-function text(el,value){el.textContent=String(value||'')}
-function play(raw,title){
- let url;try{url=new URL(String(raw||'').trim())}catch{message.textContent='Встав коректне посилання на YouTube-відео або плейлист.';return false}
- const host=url.hostname.toLowerCase();
- if(!allowedHosts.has(host)){message.textContent='Підтримуються посилання youtube.com, youtu.be та YouTube Music.';return false}
- const video=host==='youtu.be'?url.pathname.split('/').filter(Boolean)[0]:(url.searchParams.get('v')||url.pathname.match(/\/(?:shorts|embed|live|v)\/([^/?]+)/)?.[1]||'');
- const list=url.searchParams.get('list')||'';
- if(video&&!/^[A-Za-z0-9_-]{6,}$/.test(video)){message.textContent='Не вдалося прочитати ID відео. Перевір посилання.';return false}
- if(!video&&!list){message.textContent='У посиланні не знайдено ID відео або плейлиста.';return false}
- const params=new URLSearchParams({playsinline:'1',rel:'0',autoplay:'1'});
- if(list)params.set('list',list);
- const src=video?'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(video)+'?'+params.toString():'https://www.youtube-nocookie.com/embed/videoseries?'+params.toString();
- const frame=document.createElement('iframe');frame.title=title||'YouTube player inside KH Kozak Battle Hub';frame.src=src;frame.allow='autoplay; encrypted-media; picture-in-picture; web-share';frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';
- wrap.replaceChildren(frame);directInput.value=String(raw).trim();
- message.textContent='Завантажив у вбудований плеєр. Натисни ▶, якщо відтворення не почалося.';
- try{localStorage.setItem('khkozak_youtube_mode_last_url',directInput.value)}catch{}
- return true;
+let searchSequence=0,queue=[],currentIndex=-1,player=null,playerReady=false,pending=null,apiPromise=null,autoNext=true,loopQueue=false;
+const text=(el,value)=>{el.textContent=String(value||'')};
+function setMessage(value){message.textContent=value}
+function ensureControls(){
+ let bar=document.getElementById('khYoutubePlaybackControls');
+ if(bar)return bar;
+ bar=document.createElement('div');bar.id='khYoutubePlaybackControls';bar.className='youtube-mode-playback-controls';
+ const prev=document.createElement('button');prev.type='button';prev.textContent='⏮ Попереднє';prev.addEventListener('click',()=>playIndex(currentIndex-1,true));
+ const next=document.createElement('button');next.type='button';next.textContent='Наступне ⏭';next.addEventListener('click',()=>playIndex(currentIndex+1,true));
+ const autoLabel=document.createElement('label');const auto=document.createElement('input');auto.type='checkbox';auto.checked=true;auto.addEventListener('change',()=>{autoNext=auto.checked});autoLabel.append(auto,document.createTextNode(' Автоперехід'));
+ const loopLabel=document.createElement('label');const loop=document.createElement('input');loop.type='checkbox';loop.addEventListener('change',()=>{loopQueue=loop.checked});loopLabel.append(loop,document.createTextNode(' Повтор черги'));
+ bar.append(prev,next,autoLabel,loopLabel);wrap.insertAdjacentElement('afterend',bar);return bar;
 }
+function ensureApi(){
+ if(window.YT&&window.YT.Player)return Promise.resolve();
+ if(apiPromise)return apiPromise;
+ apiPromise=new Promise((resolve,reject)=>{
+  const previous=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=()=>{try{if(typeof previous==='function')previous()}catch{}resolve()};
+  let script=document.querySelector('script[data-kh-youtube-iframe-api]');
+  if(!script){script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.dataset.khYoutubeIframeApi='1';script.onerror=()=>reject(new Error('YouTube player API не завантажився'));document.head.appendChild(script)}
+  const timeout=setTimeout(()=>reject(new Error('YouTube player API довго не відповідає')),12000);
+  apiPromise.then(()=>clearTimeout(timeout)).catch(()=>clearTimeout(timeout));
+ });
+ return apiPromise;
+}
+async function ensurePlayer(videoId){
+ pending={videoId};
+ await ensureApi();
+ if(!player){
+  wrap.replaceChildren();const mount=document.createElement('div');mount.id='khYoutubePlayer';mount.style.width='100%';mount.style.height='100%';wrap.appendChild(mount);
+  player=new YT.Player(mount,{width:'100%',height:'100%',videoId:videoId||'M7lc1UVf-VE',playerVars:{playsinline:1,rel:0,autoplay:1,enablejsapi:1,origin:location.origin},events:{
+   onReady:event=>{playerReady=true;if(pending?.videoId)event.target.loadVideoById(pending.videoId);else event.target.pauseVideo()},
+   onStateChange:event=>{if(event.data===YT.PlayerState.ENDED)advanceAfterEnd();},
+   onError:()=>{setMessage('Це відео не дозволяє вбудоване відтворення або недоступне. Перемикаю на наступне…');setTimeout(()=>playIndex(currentIndex+1,true),500)}
+  }});
+ }else if(playerReady&&videoId){player.loadVideoById(videoId)}
+}
+function advanceAfterEnd(){if(!autoNext)return;let next=currentIndex+1;if(next>=queue.length){if(loopQueue)next=0;else{setMessage('Черга завершена. Увімкни «Повтор черги» або вибери інше відео.');return}}playIndex(next,true)}
 function videoId(item){
  const direct=item?.videoId;
  if(typeof direct==='string'&&/^[A-Za-z0-9_-]{6,}$/.test(direct))return direct;
- const url=String(item?.url||item?.id||'');
- const fromUrl=url.match(/(?:v=|youtu\\.be\\/|\\/watch\\/)([A-Za-z0-9_-]{6,})/)?.[1];
- if(fromUrl)return fromUrl;
+ const raw=String(item?.url||item?.id||'');
+ let match=raw.match(/[?&]v=([A-Za-z0-9_-]{6,})/)||raw.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/)||raw.match(/\/watch\/([A-Za-z0-9_-]{6,})/)||raw.match(/\/embed\/([A-Za-z0-9_-]{6,})/);
+ if(match)return match[1];
  const id=item?.id;
  return typeof id==='string'&&/^[A-Za-z0-9_-]{6,}$/.test(id)?id:'';
 }
 function thumbnail(item,id){
  const t=item?.videoThumbnails?.find?.(x=>x?.quality==='medium')?.url||item?.thumbnail||item?.thumbnailUrl||item?.thumbnails?.[0]?.url;
- if(typeof t==='string'&&/^https:\/\//.test(t))return t;
+ if(typeof t==='string'&&/^https?:\/\//.test(t))return t;
  return id?'https://i.ytimg.com/vi/'+encodeURIComponent(id)+'/mqdefault.jpg':'';
 }
-function makeCard(item,provider){
+function playIndex(index,fromUser=false){
+ if(!queue.length)return;
+ if(index<0)index=loopQueue?queue.length-1:0;
+ if(index>=queue.length){if(loopQueue)index=0;else{setMessage('Кінець результатів. Увімкни «Повтор черги» або вибери інше відео.');return}}
+ currentIndex=index;const item=queue[index];const id=videoId(item);if(!id)return;
+ results.querySelectorAll('.youtube-mode-result').forEach((el,i)=>el.classList.toggle('is-playing',i===index));
+ const title=item.title||'YouTube video';
+ setMessage('▶ Відтворюється '+title+' · '+(index+1)+'/'+queue.length);
+ wrap.scrollIntoView?.({behavior:'smooth',block:'nearest'});
+ ensurePlayer(id).catch(()=>{setMessage('Не вдалося завантажити плеєр YouTube. Перевір інтернет і спробуй ще раз.');});
+}
+function makeCard(item,index){
  const id=videoId(item);if(!id)return null;
  const card=document.createElement('button');card.type='button';card.className='youtube-mode-result';card.setAttribute('aria-label','Відтворити '+(item.title||'відео'));
  const img=document.createElement('img');img.loading='lazy';img.alt='';img.src=thumbnail(item,id);img.onerror=()=>{img.style.visibility='hidden'};
@@ -56,29 +88,49 @@ function makeCard(item,provider){
  const author=document.createElement('small');text(author,item.author||item.uploaderName||item.channelName||'YouTube');
  const meta=document.createElement('small');text(meta,item.viewCountText||item.duration||'Відео');
  copy.append(title,author,meta);card.append(img,copy);
- card.addEventListener('click',()=>{play('https://www.youtube.com/watch?v='+encodeURIComponent(id),item.title||'YouTube video');wrap.scrollIntoView?.({behavior:'smooth',block:'nearest'})});
- return card;
+ card.addEventListener('click',()=>playIndex(index,true));return card;
+}
+function normalizeResults(data){
+ const items=Array.isArray(data)?data:(data?.items||data?.relatedStreams||data?.results||[]);
+ return items.map(item=>{
+  if(item.videoId)return item;
+  const raw=String(item.url||item.id||'');
+  const id=videoId(item);if(!id)return null;
+  return {...item,videoId:id,url:raw};
+ }).filter(item=>videoId(item));
+}
+async function requestProvider(endpoint,q){
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),5500);
+ try{const response=await fetch(endpoint(q),{signal:controller.signal,headers:{Accept:'application/json'}});if(!response.ok)throw new Error('HTTP '+response.status);return await response.json()}finally{clearTimeout(timeout)}
 }
 async function search(query){
- const seq=++searchSequence;const q=String(query||'').trim();if(q.length<2){message.textContent='Введи щонайменше 2 символи для пошуку.';return}
- results.replaceChildren();message.textContent='Шукаю відео: “'+q+'”…';
- const errors=[];
- for(const endpoint of searchProviders){
-  if(seq!==searchSequence)return;
-  try{
-   const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),6500);
-   let response;try{response=await fetch(endpoint(q),{signal:controller.signal,headers:{Accept:'application/json'}})}finally{clearTimeout(timeout)}
-   if(!response.ok)throw new Error('HTTP '+response.status);
-   const data=await response.json();const items=Array.isArray(data)?data:(data.items||data.relatedStreams||[]);
-   const cards=items.slice(0,18).map(item=>makeCard(item)).filter(Boolean);
-   if(!cards.length)throw new Error('No video results');
-   results.replaceChildren(...cards);message.textContent='Знайдено '+cards.length+' відео за запитом “'+q+'”. Натисни результат для перегляду в плеєрі нижче.';return;
-  }catch(e){errors.push(e?.message||'search error')}
+ const seq=++searchSequence,q=String(query||'').trim();if(q.length<2){setMessage('Введи щонайменше 2 символи для пошуку.');return}
+ results.replaceChildren();queue=[];currentIndex=-1;setMessage('Шукаю на YouTube: “'+q+'”…');
+ const jobs=searchProviders.map(endpoint=>requestProvider(endpoint,q).then(data=>({data})).catch(error=>({error})));
+ for(const job of jobs){
+  const result=await job;if(seq!==searchSequence)return;if(result.error)continue;
+  const items=normalizeResults(result.data);if(!items.length)continue;
+  queue=items.slice(0,24);results.replaceChildren(...queue.map((item,index)=>makeCard(item,index)).filter(Boolean));
+  if(!results.childElementCount)continue;
+  ensureControls();setMessage('Знайдено '+queue.length+' відео за запитом “'+q+'”. Натисни картку — відео запуститься в плеєрі та автоматично перейде до наступного.');
+  return;
  }
  if(seq!==searchSequence)return;
- const fallback=document.createElement('a');fallback.className='youtube-mode-search-fallback';fallback.href='https://www.youtube.com/results?search_query='+encodeURIComponent(q);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.textContent='Відкрити результати пошуку на YouTube ↗';
- const note=document.createElement('p');note.className='youtube-mode-search-note';text(note,'Зараз публічні пошукові джерела недоступні в цьому браузері. Спробуй ще раз або відкрий пошук YouTube.');
- results.replaceChildren(note,fallback);message.textContent='Не вдалося отримати результати всередині додатка.';
+ const fallback=document.createElement('a');fallback.className='youtube-mode-search-fallback';fallback.href='https://www.youtube.com/results?search_query='+encodeURIComponent(q);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.textContent='Відкрити пошук YouTube ↗';
+ const note=document.createElement('p');note.className='youtube-mode-search-note';text(note,'Пошукові сервери не відповідають або блокуються мережею. Для офіційного пошуку YouTube потрібен YouTube Data API key; відкрий пошук YouTube, якщо джерела тимчасово недоступні.');
+ results.replaceChildren(note,fallback);setMessage('Не вдалося отримати відео всередині додатка. Спробуй ще раз.');
+}
+function play(raw,title){
+ let url;try{url=new URL(String(raw||'').trim())}catch{setMessage('Встав коректне посилання на YouTube-відео або плейлист.');return false}
+ const host=url.hostname.toLowerCase();if(!allowedHosts.has(host)){setMessage('Підтримуються посилання youtube.com, youtu.be та YouTube Music.');return false}
+ const video=host==='youtu.be'?url.pathname.split('/').filter(Boolean)[0]:(url.searchParams.get('v')||url.pathname.match(/\/(?:shorts|embed|live|v)\/([^/?]+)/)?.[1]||'');
+ const list=url.searchParams.get('list')||'';
+ if(video&&!/^[A-Za-z0-9_-]{6,}$/.test(video)){setMessage('Не вдалося прочитати ID відео. Перевір посилання.');return false}
+ if(!video&&!list){setMessage('У посиланні не знайдено ID відео або плейлиста.');return false}
+ queue=[];currentIndex=-1;
+ if(video){queue=[{videoId:video,title:title||'YouTube video',url:'https://www.youtube.com/watch?v='+video}];currentIndex=0;ensurePlayer(video).catch(()=>setMessage('Не вдалося завантажити плеєр YouTube.'))}
+ else{ensureApi().then(()=>{if(!player){wrap.replaceChildren();const mount=document.createElement('div');mount.id='khYoutubePlayer';mount.style.width='100%';mount.style.height='100%';wrap.appendChild(mount);player=new YT.Player(mount,{width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,autoplay:1,loop:1,playlist:list,enablejsapi:1,origin:location.origin},events:{onReady:e=>{playerReady=true;e.target.loadPlaylist({listType:'playlist',list});},onStateChange:e=>{if(e.data===YT.PlayerState.ENDED&&autoNext)e.target.nextVideo()}}})}else player.loadPlaylist({listType:'playlist',list})}).catch(()=>setMessage('Не вдалося завантажити YouTube плеєр.'))}
+ directInput.value=String(raw).trim();setMessage('Завантажую у вбудований YouTube-плеєр…');try{localStorage.setItem('khkozak_youtube_mode_last_url',directInput.value)}catch{}return true;
 }
 searchForm.addEventListener('submit',event=>{event.preventDefault();search(queryInput.value)});
 form.addEventListener('submit',event=>{event.preventDefault();play(directInput.value)});
