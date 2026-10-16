@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.77.0",
+  "name": "KH么Kozak Battle Hub 16.78.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.77.0: збереження нагород Battle Pass та Elite Pass у профілі з історією джерел предметів.",
+  "description": "KH么Kozak Battle Hub 16.78.0: у профілі показуються всі джерела нагород — Колекція, Free Pass та Elite Pass.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
