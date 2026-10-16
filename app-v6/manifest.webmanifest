@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.69.0",
+  "name": "KH么Kozak Battle Hub 16.70.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.69.0: Battle Hub 3.0 — сім ігрових тренувань, щоденна операція, Козак AI, щоденні місії, серія тренувань і швидка навігація, музика, TikTok та адаптивний інтерфейс.",
+  "description": "KH么Kozak Battle Hub 16.70.0: Battle Hub 3.0 — сім ігрових тренувань, щоденна операція, Козак AI, щоденні місії, серія тренувань і швидка навігація, музика, TikTok та адаптивний інтерфейс.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
