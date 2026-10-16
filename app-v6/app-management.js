@@ -1,5 +1,6 @@
 (()=>{'use strict';
-const $=s=>document.querySelector(s);\nconst APP_VERSION='16.58.0';
+const $=s=>document.querySelector(s);
+const APP_VERSION='16.58.0';
 const panel=$('.kh-control-panel');
 if(!panel||panel.querySelector('#kh-app-management'))return;
 const section=document.createElement('section');
@@ -16,7 +17,8 @@ async function check(){
  let sw='не підтримується';try{if('serviceWorker'in navigator){const reg=await navigator.serviceWorker.getRegistration();sw=reg?(reg.waiting?'є готове оновлення':reg.active?'активний':'зареєстрований'):'не зареєстрований'}}catch{sw='помилка перевірки'}
  status.innerHTML='<strong>Стан:</strong> '+(navigator.onLine?'інтернет доступний':'немає інтернету')+'<br><strong>Встановлення:</strong> '+(standalone?'додаток відкрито окремо':'відкрито у браузері')+'<br><strong>Офлайн-кеш:</strong> '+sw+'<br><strong>Екран:</strong> '+innerWidth+' × '+innerHeight+' · <strong>Версія:</strong> '+APP_VERSION;
 }
-style.textContent += '#kh-app-management .kh-control-buttons{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:stretch}#kh-app-management .kh-control-buttons>button{width:100%;min-width:0;min-height:42px;padding:8px 5px;white-space:normal;overflow-wrap:anywhere;line-height:1.25;border-radius:11px}#kh-app-management .kh-control-buttons>button[data-khm-reload]{border-color:#a4ffed;background:linear-gradient(115deg,#65f5d2,#8bdcff);color:#08151a;font-weight:900}#kh-app-management .kh-control-buttons>button:disabled{opacity:.65;cursor:wait}';\nsection.addEventListener('click',async e=>{
+style.textContent += '#kh-app-management .kh-control-buttons{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:stretch}#kh-app-management .kh-control-buttons>button{width:100%;min-width:0;min-height:42px;padding:8px 5px;white-space:normal;overflow-wrap:anywhere;line-height:1.25;border-radius:11px}#kh-app-management .kh-control-buttons>button[data-khm-reload]{border-color:#a4ffed;background:linear-gradient(115deg,#65f5d2,#8bdcff);color:#08151a;font-weight:900}#kh-app-management .kh-control-buttons>button:disabled{opacity:.65;cursor:wait}';
+section.addEventListener('click',async e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.hasAttribute('data-khm-check')){await check();result.textContent='Перевірку завершено.'}
  if(b.hasAttribute('data-khm-reload')){result.textContent='Очищаю кеш і завантажую актуальну версію…';b.disabled=true;const finish=()=>{const url=new URL('https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/');url.searchParams.set('v',APP_VERSION);url.searchParams.set('refresh',String(Date.now()));url.searchParams.set('updated',String(Date.now()));location.replace(url.toString())};try{if('caches'in window){const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('kh-kozak-hub-')).map(k=>caches.delete(k)))}if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(async reg=>{try{await reg.update()}catch(_){}try{if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'})}catch(_){}}))}}catch(_){}finish()}
