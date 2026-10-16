@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.49.0",
+  "version": "16.50.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.49.0: виправлено кнопку «Оновити» в керуванні додатком: очищення кешу KH, оновлення service worker і примусове перезавантаження з новим параметром версії."
+  "releaseNotes": "v16.50.0: повністю прибрано вкладку та сцену лобі PUBG, персонажа й код його емоцій; інші розділи Battle Hub збережено."
 }
