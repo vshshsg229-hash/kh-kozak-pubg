@@ -132,6 +132,7 @@ jobs:
           }
 
           const media = fs.readFileSync(path.join(root, 'media.js'), 'utf8');
+          assert(media.includes('uaMusicDailyKeys') && media.includes("uaMusicPlaylistSelect.value='daily'") && media.includes('Добірка дня:'), 'Ukrainian music automatically rotates its daily playlist');
           assert(html.includes('interface-refresh.css?v=13.9.2'), 'Refreshed interface stylesheet is loaded');
           assert(html.includes('id="tab-music"') && html.includes('id="tab-tiktok"'), 'Music and TikTok tabs exist');
           assert(html.includes('data-unique-id="tiktok.comkhkozak4"') && html.includes('data-unique-id="baggy8364"'), 'Both TikTok creator feeds exist');
@@ -139,7 +140,7 @@ jobs:
           assert(!html.includes('id="tiktokForm"') && !html.includes('id="tiktokSavedList"') && !media.includes("const tiktokForm="), 'Removed TikTok preparation form and saved-video list');
           assert(html.includes('href="https://www.tiktok.com/@tiktok.comkhkozak4" target="_blank"') && html.includes('tab-telegram'), 'Telegram tab includes the working TikTok profile shortcut');
           assert(media.includes('shorts|embed|live|v'), 'YouTube player recognizes Shorts, embeds, live streams, and standard videos');
-          assert(media.includes('khkozak_ua_music_source'), 'Music source preferences are persisted');
+          assert(media.includes('uaMusicDailyKeys') && media.includes("uaMusicPlaylistSelect.value='daily'") && media.includes('Добірка дня:'), 'Ukrainian music automatically rotates its daily playlist');
           assert(media.includes('onStateChange') && media.includes('PlayerState.ENDED') && media.includes('loadVideoById'), 'Embedded music player automatically advances to the next queued track');
           assert(media.includes('khMusicQueueIndex=(khMusicQueueIndex+1)%khMusicQueue.length'), 'Music queue loops after the final track');
 

@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.61.0",
+  "version": "16.62.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.61.0: додано автоматичне перемикання на наступний трек у вбудованому YouTube-плеєрі для KH Gaming Mix та українського списку. Оновлено кеш, версії та перевірки активних ресурсів."
+  "releaseNotes": "v16.62.0: добірка української музики автоматично змінюється щодня між наявними вбудованими YouTube/Spotify-плейлистами; додано індикатор добірки дня та оновлено кеш."
 }
