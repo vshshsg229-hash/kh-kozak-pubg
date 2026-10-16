@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.82.0",
+  "version": "16.83.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.82.0: Нагороди за досягнення можна забрати один раз; монети та XP записуються в профіль."
+  "releaseNotes": "v16.83.0: Щоденний бонус +20 монет і +10 XP; виправлено отримання нагород за досягнення."
 }
