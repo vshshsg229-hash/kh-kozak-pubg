@@ -23,6 +23,7 @@ function attachYouTubePlayer(videoId){
   khYouTubePlayer=new window.YT.Player(node,{events:{
    onReady:event=>{try{event.target.playVideo()}catch{}},
    onStateChange:event=>{
+    if(event.data===window.YT.PlayerState.PLAYING){document.dispatchEvent(new CustomEvent('khkozak-music-playing'));}
     if(event.data===window.YT.PlayerState.ENDED&&khMusicQueue.length){
      khMusicQueueIndex=(khMusicQueueIndex+1)%khMusicQueue.length;
      const next=khMusicQueue[khMusicQueueIndex];
@@ -221,10 +222,11 @@ function setUaMusicSource(key){
  uaMusicEmbed.dataset.dailySource=activeKey;
  if(uaMusicDailyStatus)uaMusicDailyStatus.textContent=daily?'🎵 Добірка дня: '+source.title+' · автоматично змінюється щодня.':'🎵 Обрана добірка: '+source.title+' · завтра можеш повернутися до автодобірки дня.';
 }
-uaMusicPlaylistSelect?.addEventListener('change',()=>setUaMusicSource(uaMusicPlaylistSelect.value));
+uaMusicPlaylistSelect?.addEventListener('change',()=>{setUaMusicSource(uaMusicPlaylistSelect.value);try{localStorage.setItem('khkozak_music_playlist_pref_v1',uaMusicPlaylistSelect.value)}catch{}});
 if(uaMusicPlaylistSelect&&uaMusicEmbed){
  // Автодобірка — стартовий режим; ручний вибір діє до наступного відкриття розділу.
- uaMusicPlaylistSelect.value='daily';
- setUaMusicSource('daily');
+ let saved='daily';try{const pref=localStorage.getItem('khkozak_music_playlist_pref_v1');if(pref==='daily'||uaMusicSources[pref])saved=pref}catch{}
+ uaMusicPlaylistSelect.value=saved;
+ setUaMusicSource(saved);
 }
 })();
