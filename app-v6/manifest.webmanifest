@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.60.0",
+  "name": "KH么Kozak Battle Hub 16.61.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.60.0: музика у вбудованому плеєрі, адаптивний інтерфейс, ігри, тренування, місії та нагороди.",
+  "description": "KH么Kozak Battle Hub 16.61.0: автоматичне перемикання музики у вбудованому плеєрі, адаптивний інтерфейс, ігри, тренування, місії та нагороди.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",

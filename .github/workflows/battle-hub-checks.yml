@@ -140,6 +140,8 @@ jobs:
           assert(html.includes('href="https://www.tiktok.com/@tiktok.comkhkozak4" target="_blank"') && html.includes('tab-telegram'), 'Telegram tab includes the working TikTok profile shortcut');
           assert(media.includes('shorts|embed|live|v'), 'YouTube player recognizes Shorts, embeds, live streams, and standard videos');
           assert(media.includes('khkozak_ua_music_source'), 'Music source preferences are persisted');
+          assert(media.includes('onStateChange') && media.includes('PlayerState.ENDED') && media.includes('loadVideoById'), 'Embedded music player automatically advances to the next queued track');
+          assert(media.includes('khMusicQueueIndex=(khMusicQueueIndex+1)%khMusicQueue.length'), 'Music queue loops after the final track');
 
           for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
             const value = match[1];

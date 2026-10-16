@@ -1,7 +1,43 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
 const youtubeForm=$('#youtubeForm'),youtubeInput=$('#youtubeUrl'),youtubeWrap=$('#youtubeFrameWrap'),youtubeMessage=$('#youtubeMessage');
-function playYouTube(raw){
+let khYouTubePlayer=null,khYouTubeApiLoading=false,khYouTubeApiReady=false;
+let khMusicQueue=[],khMusicQueueIndex=0,khMusicCurrentTrack=null;
+function loadYouTubeApi(){
+ if(window.YT&&window.YT.Player){khYouTubeApiReady=true;return Promise.resolve();}
+ if(window.khYouTubeApiPromise)return window.khYouTubeApiPromise;
+ window.khYouTubeApiPromise=new Promise(resolve=>{
+  const previous=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=()=>{try{if(typeof previous==='function')previous()}catch{}khYouTubeApiReady=true;resolve();};
+  if(!document.querySelector('script[data-kh-youtube-api]')){
+   khYouTubeApiLoading=true;const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.dataset.khYoutubeApi='1';script.onerror=()=>{window.khYouTubeApiPromise=null;khYouTubeApiLoading=false;if(youtubeMessage)youtubeMessage.textContent='Не вдалося завантажити керування плеєром. Перевір інтернет.';resolve();};document.head.appendChild(script);
+  }
+ });
+ return window.khYouTubeApiPromise;
+}
+function attachYouTubePlayer(videoId){
+ loadYouTubeApi().then(()=>{
+  if(!window.YT||!window.YT.Player)return;
+  const node=document.getElementById('khYouTubeMusicFrame');if(!node)return;
+  try{if(khYouTubePlayer&&typeof khYouTubePlayer.destroy==='function')khYouTubePlayer.destroy()}catch{}
+  khYouTubePlayer=new window.YT.Player(node,{events:{
+   onReady:event=>{try{event.target.playVideo()}catch{}},
+   onStateChange:event=>{
+    if(event.data===window.YT.PlayerState.ENDED&&khMusicQueue.length){
+     khMusicQueueIndex=(khMusicQueueIndex+1)%khMusicQueue.length;
+     const next=khMusicQueue[khMusicQueueIndex];
+     if(next&&next[2]){
+      khMusicCurrentTrack=next;
+      try{window.khMusicMediaSession?.setMetadata(next[0],next[1],'KH Gaming Mix')}catch{}
+      if(youtubeMessage)youtubeMessage.textContent='⏭ Далі: '+next[0]+' — '+next[1];
+      try{event.target.loadVideoById(String(next[2]))}catch{}
+     }
+    }
+   }
+  }});
+ }).catch(()=>{});
+}
+function playYouTube(raw,queue=null,queueIndex=0){
  let u;try{u=new URL(raw.trim())}catch{u=null}
  if(!u||!['youtube.com','www.youtube.com','music.youtube.com','youtu.be','m.youtube.com','www.youtube-nocookie.com'].includes(u.hostname.toLowerCase())){if(youtubeMessage)youtubeMessage.textContent='Встав коректне посилання YouTube на відео або плейлист.';return false}
  const host=u.hostname.toLowerCase();
@@ -9,10 +45,13 @@ function playYouTube(raw){
  const list=u.searchParams.get('list')||'';
  if(video&&!/^[A-Za-z0-9_-]{6,}$/.test(video)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося розпізнати ID відео YouTube. Встав повне посилання.';return false}
  if(!video&&!list){if(youtubeMessage)youtubeMessage.textContent='У посиланні не знайдено відео або плейлист.';return false}
- const params=new URLSearchParams();params.set('playsinline','1');params.set('rel','0');params.set('autoplay','1');params.set('controls','1');if(list)params.set('list',list);
+ khMusicQueue=Array.isArray(queue)?queue.filter(track=>track&&/^[A-Za-z0-9_-]{6,}$/.test(String(track[2]||''))):[];
+ khMusicQueueIndex=Math.max(0,Number(queueIndex)||0);khMusicCurrentTrack=khMusicQueue[khMusicQueueIndex]||null;
+ const params=new URLSearchParams();params.set('playsinline','1');params.set('rel','0');params.set('autoplay','1');params.set('controls','1');params.set('enablejsapi','1');params.set('origin',location.origin);if(list)params.set('list',list);
  const src=video?'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(video)+'?'+params.toString():'https://www.youtube-nocookie.com/embed/videoseries?'+params.toString();
- if(youtubeWrap)youtubeWrap.innerHTML='<iframe title="YouTube music player" src="'+src+'" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>';
- if(youtubeMessage)youtubeMessage.textContent='Плеєр завантажено. Натисни ▶ у відео. Якщо відтворення заблоковане, відкрий трек на YouTube.';
+ if(youtubeWrap)youtubeWrap.innerHTML='<iframe id="khYouTubeMusicFrame" title="YouTube music player" src="'+src+'" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>';
+ if(youtubeMessage)youtubeMessage.textContent=khMusicQueue.length>1?'Плеєр готовий. Після треку автоматично ввімкнеться наступний. Натисни ▶ у відео.':'Плеєр завантажено. Натисни ▶ у відео.';
+ if(video)attachYouTubePlayer(video);
  try{localStorage.setItem('khkozak_youtube_url',raw.trim())}catch{}
  return true;
 }
@@ -86,12 +125,14 @@ const khUkrainianTracks=[
 ['Обійми','Океан Ельзи','--Wokwe4-i0'],
 ['Погляд','YAKTAK feat. SOBOL','WHQygkIG8xs']
 ];
-function playTrack(track){
+function playTrack(track,queue=khPlaylist){
  if(!track||!track[2]||!youtubeInput){if(youtubeMessage)youtubeMessage.textContent='Для вбудованого відтворення обери трек із доступним відео.';return false;}
  const videoId=String(track[2]).trim();
  if(!/^[A-Za-z0-9_-]{6,}$/.test(videoId)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося перевірити відео цього треку.';return false;}
  youtubeInput.value='https://www.youtube.com/watch?v='+videoId;
- const loaded=playYouTube(youtubeInput.value);
+ const playableQueue=(Array.isArray(queue)?queue:[]).filter(item=>item&&item[2]&&/^[A-Za-z0-9_-]{6,}$/.test(String(item[2]).trim()));
+ const queueIndex=Math.max(0,playableQueue.findIndex(item=>item[2]===videoId));
+ const loaded=playYouTube(youtubeInput.value,playableQueue,queueIndex);
  if(!loaded)return false;
  if(youtubeMessage)youtubeMessage.textContent='▶ Обрано: '+track[0]+' — '+track[1]+'. Відтворення запускається у вбудованому плеєрі нижче.';
  try{window.khMusicMediaSession?.setMetadata(track[0],track[1],'KH Gaming Mix')}catch{}
@@ -135,8 +176,11 @@ $('#shuffleKhPlaylist')?.addEventListener('click',()=>{
  // Random mode must always use a known video ID so playback stays inside the hub.
  const playableTracks=khPlaylist.filter(track=>track[2]&&/^[A-Za-z0-9_-]{6,}$/.test(String(track[2]).trim()));
  if(!playableTracks.length){if(youtubeMessage)youtubeMessage.textContent='Зараз немає треків із вбудованим відео. Спробуй ще раз пізніше.';return;}
- const track=playableTracks[Math.floor(Math.random()*playableTracks.length)];
- if(track)playTrack(track);
+ const start=Math.floor(Math.random()*playableTracks.length);
+ const shuffled=[...playableTracks.slice(start),...playableTracks.slice(0,start)];
+ if(shuffled.length>1&&Math.random()<0.5)shuffled.splice(1,shuffled.length-1,...shuffled.slice(1).sort(()=>Math.random()-.5));
+ const track=shuffled[0];
+ if(track)playTrack(track,shuffled);
 });
 renderKhPlaylist();
 renderUkrainianTracks();
