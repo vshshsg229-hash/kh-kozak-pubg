@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const WEB_VERSION='17.39.0',VERSION_URL=new URL('./version.json',location.href).toString(),APP_URL=new URL('./',location.href).toString();
-const RELEASE_URL=v=>'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v'+encodeURIComponent(v)+'/KH.Kozak.Battle.Hub.Setup.'+encodeURIComponent(v)+'.exe';
+const RELEASE_URL=v=>'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v'+encodeURIComponent(v);
 const isElectron=/Electron/i.test(navigator.userAgent),CURRENT_VERSION=isElectron?new URLSearchParams(location.search).get('desktopVersion')||'0.0.0':WEB_VERSION;
 let banner,message,action,latestVersion=WEB_VERSION;
 const compare=(a,b)=>{const aa=String(a).split('.').map(n=>Number(n)||0),bb=String(b).split('.').map(n=>Number(n)||0);for(let i=0;i<Math.max(aa.length,bb.length);i++){const d=(aa[i]||0)-(bb[i]||0);if(d)return d>0?1:-1}return 0};
