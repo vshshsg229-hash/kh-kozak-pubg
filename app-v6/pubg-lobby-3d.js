@@ -415,37 +415,22 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     }
     startLobby();
   },undefined,error=>{
-    console.warn('Silvanus GLB asset is not published in app assets; opening the public model preview.',error);
-    const existingPreview=host.querySelector('iframe[data-silvanus-preview]');
-    if(existingPreview){
-      canvas.style.visibility='hidden';
-      startLobby();
-      status.classList.remove('is-hidden');
-      status.textContent='Silvanus X Suit · 3D preview';
-      return;
-    }
-    // Keep the exact Silvanus X Suit visible instead of silently showing the generic fallback.
-    // The embedded preview is viewable while the local rigged GLB is unavailable.
-    status.textContent='Silvanus X Suit · 3D preview';
-    status.classList.remove('is-error');
-    const preview=document.createElement('iframe');
-    preview.dataset.silvanusPreview='1';
-    preview.title='Silvanus X Suit 3D model preview';
-    preview.src='https://sketchfab.com/models/241373189f2e4c63b26ae1aede43ca4b/embed?autostart=1&ui_theme=dark&dnt=1';
-    preview.loading='eager';
-    preview.allow='autoplay; fullscreen; xr-spatial-tracking';
-    preview.setAttribute('allowfullscreen','');
-    preview.setAttribute('frameborder','0');
-    preview.referrerPolicy='strict-origin-when-cross-origin';
-    preview.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:#080b10;z-index:4';
-    host.style.position='relative';
-    host.appendChild(preview);
-    canvas.style.visibility='hidden';
-    status.style.zIndex='5';
-    status.style.pointerEvents='none';
+    console.warn('Silvanus GLB is unavailable in app assets; starting the fully animated rigged lobby character instead.',error);
+    // Do not cover the animated canvas with a cross-origin iframe: iframe models cannot
+    // receive our emote poses. Use the built-in articulated Three.js character until
+    // the actual GLB is published in assets.
+    host.querySelectorAll('iframe[data-silvanus-preview]').forEach(frame=>frame.remove());
+    model=makeCharacter();
+    model.userData.proceduralFallback=true;
+    scene.add(model);
+    canvas.style.visibility='visible';
+    host.querySelectorAll('svg').forEach(el=>el.style.visibility='hidden');
     startLobby();
     status.classList.remove('is-hidden');
-    status.textContent='Silvanus X Suit · 3D preview';
+    status.classList.remove('is-error');
+    status.textContent='3D ЕМОЦІЇ АКТИВНІ · обери жест нижче';
+    status.style.zIndex='5';
+    status.style.pointerEvents='none';
   });
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);observer.disconnect();renderer.dispose();},{once:true});
 })();
