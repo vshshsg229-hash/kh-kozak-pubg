@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.94.0",
+  "version": "16.95.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.94.0: fix both update buttons to navigate immediately with a cache-busting URL; update version checks and app-management version label."
+  "releaseNotes": "v16.95.0: improve Kozak AI continue-plan fallback and refresh unified progress when game results are saved."
 }
