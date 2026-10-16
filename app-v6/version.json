@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.16.0",
+  "version": "17.17.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.16.0: Survival Ops adds selectable Scout/Tactical/Elite difficulty and difficulty-scaled coin, XP, and Battle Pass rewards. Bunker adds a daily Intel Cache unlocked by Radio Node level 2, with verified profile reward saving."
+  "releaseNotes": "v17.17.0: Adds a pink 'Бункер виживання' navigation group and links Survival Ops + Bunker through one shared inventory. Successful raids deposit parts and rare loot; Bunker crafts raid kits that can be consumed in Survival Ops. Both modes use the same profile coins, XP and Battle Pass XP."
 }
