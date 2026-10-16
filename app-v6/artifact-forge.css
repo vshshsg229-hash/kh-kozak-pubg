@@ -104,3 +104,8 @@
 #tab-artifactforge .af-node:hover{transform:translate(-50%,-50%) scale(1.08)}
 #tab-artifactforge .af-secret-locked{animation:af-route-pulse 4s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){#tab-artifactforge .af-map,#tab-artifactforge .af-map:before,#tab-artifactforge .af-map:after,#tab-artifactforge .af-node,#tab-artifactforge .af-secret-locked{animation:none!important;transition:none!important}}
+
+/* Artifact Forge progression gates */
+#tab-artifactforge .af-node.is-locked{border-style:dashed;border-color:#42556b;background:rgba(9,18,30,.94);color:#8a9caf;filter:saturate(.35);box-shadow:none;opacity:.82}
+#tab-artifactforge .af-node.is-locked small{color:#a0b1c2}
+#tab-artifactforge .af-gate-hint{font-size:12px;color:#ffcf83;background:#211a11;border:1px solid #59462a;border-radius:8px;padding:9px;margin-top:8px}
