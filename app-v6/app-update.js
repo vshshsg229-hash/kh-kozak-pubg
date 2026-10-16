@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const WEB_VERSION = '16.89.0';
+  const WEB_VERSION = '16.92.0';
   const VERSION_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/version.json';
   const APP_URL = 'https://vshshsg229-hash.github.io/kh-kozak-pubg/app-v6/';
   const RELEASE_URL = version => 'https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/download/pc-v' + encodeURIComponent(version) + '/KH.Kozak.Battle.Hub.Setup.' + encodeURIComponent(version) + '.exe';
@@ -39,27 +39,32 @@
       action.style.pointerEvents = 'none';
       const targetVersion = latestVersion || WEB_VERSION;
       try {
-        // Clear this app's old service-worker caches so stale scripts cannot be restored.
+        // Prefer a cache-busted reload first: it still works in embedded browsers
+        // where CacheStorage or ServiceWorker management is unavailable.
+        const targetVersion = latestVersion || WEB_VERSION;
+        const url = new URL(APP_URL, location.href);
+        url.searchParams.set('v', targetVersion);
+        url.searchParams.set('updated', String(Date.now()));
+        url.searchParams.set('refresh', '1');
+        action.textContent = 'ВІДКРИВАЄМО ОНОВЛЕНУ ВЕРСІЮ…';
+        // Clean up stale caches asynchronously; never block the navigation on unregister.
         if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)));
+          caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)))).catch(() => {});
         }
         if ('serviceWorker' in navigator) {
-          const registrations = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(registrations.map(async reg => {
+          navigator.serviceWorker.getRegistrations().then(regs => Promise.all(regs.map(async reg => {
             try { await reg.update(); } catch (_) {}
             try { if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (_) {}
             try { await reg.unregister(); } catch (_) {}
-          }));
+          }))).catch(() => {});
         }
+        location.replace(url.toString());
       } catch (_) {
-        // Continue with a cache-busted reload even if an embedded browser blocks cache APIs.
+        const url = new URL(APP_URL, location.href);
+        url.searchParams.set('v', latestVersion || WEB_VERSION);
+        url.searchParams.set('refresh', String(Date.now()));
+        location.href = url.toString();
       }
-      const url = new URL(APP_URL, location.href);
-      url.searchParams.set('v', targetVersion);
-      url.searchParams.set('updated', String(Date.now()));
-      url.searchParams.set('refresh', '1');
-      location.replace(url.toString());
     });
   }
   function showUpdate(version) {
