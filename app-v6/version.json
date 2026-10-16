@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.81.0",
+  "version": "17.82.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-17",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Update button repair: synchronized the app version checker, update assets and service-worker cache to prevent repeated update prompts."
+  "releaseNotes": "Responsive redesign: separate phone, tablet and desktop layouts with portrait and landscape tuning."
 }
