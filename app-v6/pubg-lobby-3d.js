@@ -278,26 +278,103 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     }
     return group;
   }
+  // Build a lightweight humanoid rig for unrigged GLB assets.
+  // Geometry is baked into normalized model space, then weighted to nearby bone segments.
   function prepareLoadedModel(object){
-    boneMap.clear();
-    object.traverse(node=>{
-      if(node.isBone) boneMap.set(node.name,node);
-      if(node.isMesh){node.castShadow=true;node.receiveShadow=true;
-        if(node.material){const materials=Array.isArray(node.material)?node.material:[node.material];
-          for(const material of materials){if(material.map)material.map.colorSpace=THREE.SRGBColorSpace;material.needsUpdate=true;}
-        }
-      }
-    });
+    object.updateMatrixWorld(true);
     const bounds=new THREE.Box3().setFromObject(object);
     const size=bounds.getSize(new THREE.Vector3());
     const height=Math.max(size.y,.01);
-    object.scale.setScalar(3.65/height);
-    object.updateMatrixWorld(true);
-    const fitted=new THREE.Box3().setFromObject(object);
-    object.position.y-=fitted.min.y;
-    object.position.x-=(fitted.min.x+fitted.max.x)/2;
-    object.position.z-=(fitted.min.z+fitted.max.z)/2;
-    return object;
+    const scale=3.65/height;
+    const center=new THREE.Vector3((bounds.min.x+bounds.max.x)/2,bounds.min.y,(bounds.min.z+bounds.max.z)/2);
+    const normalize=new THREE.Matrix4().makeScale(scale,scale,scale);
+    normalize.premultiply(new THREE.Matrix4().makeTranslation(-center.x*scale,-center.y*scale,-center.z*scale));
+    const inverseRoot=object.matrixWorld.clone().invert();
+    const rigRoot=new THREE.Group();
+    rigRoot.name='Silvanus_AutoRig';
+    boneMap.clear();
+
+    const rootBone=new THREE.Bone();rootBone.name='mixamorigHipsRoot';rootBone.position.set(0,0,0);rigRoot.add(rootBone);
+    const bones=[];
+    const boneWorld=new Map();
+    function addBone(name,parent,x,y,z){
+      const b=new THREE.Bone();b.name=name;
+      const wp=new THREE.Vector3(x,y,z);
+      const parentWp=boneWorld.get(parent)||new THREE.Vector3();
+      b.position.copy(wp).sub(parentWp);parent.add(b);
+      boneWorld.set(b,wp);bones.push(b);boneMap.set(name,b);return b;
+    }
+    const hips=addBone('mixamorigHips',rootBone,0,.91,0);
+    const spine=addBone('mixamorigSpine',hips,0,1.55,0);
+    const chest=addBone('mixamorigSpine1',spine,0,2.18,0);
+    addBone('mixamorigSpine2',chest,0,2.53,0);
+    const neck=addBone('mixamorigNeck',chest,0,2.98,0);
+    addBone('mixamorigHead',neck,0,3.22,0);
+    for(const side of ['Right','Left']){
+      const sign=side==='Right'?1:-1;
+      const upper=addBone('mixamorig'+side+'Arm',chest,sign*.34,2.63,0);
+      const fore=addBone('mixamorig'+side+'ForeArm',upper,sign*.49,2.22,.015);
+      addBone('mixamorig'+side+'Hand',fore,sign*.61,1.91,.025);
+      const thigh=addBone('mixamorig'+side+'UpLeg',hips,sign*.16,.82,0);
+      const shin=addBone('mixamorig'+side+'Leg',thigh,sign*.17,.45,0);
+      addBone('mixamorig'+side+'Foot',shin,sign*.17,.10,.06);
+    }
+    rigRoot.updateMatrixWorld(true);
+    const boneIndex=new Map(bones.map((b,i)=>[b,i]));
+    const segments=[];
+    for(const b of bones){
+      for(const child of b.children){
+        if(!child.isBone) continue;
+        const a=boneWorld.get(b)||new THREE.Vector3(), z=boneWorld.get(child)||new THREE.Vector3();
+        segments.push({index:boneIndex.get(b),a:a.clone(),z:z.clone()});
+      }
+    }
+    // If source nodes contain meshes, preserve each material while baking transforms.
+    object.traverse(node=>{
+      if(!node.isMesh || !node.geometry) return;
+      const geometry=node.geometry.clone();
+      const relative=inverseRoot.clone().multiply(node.matrixWorld);
+      const transform=normalize.clone().multiply(relative);
+      geometry.applyMatrix4(transform);
+      const pos=geometry.getAttribute('position');
+      const count=pos.count;
+      const joints=new Uint16Array(count*4), weights=new Float32Array(count*4);
+      const p=new THREE.Vector3();
+      const dist=new Float32Array(segments.length);
+      for(let i=0;i<count;i++){
+        p.fromBufferAttribute(pos,i);
+        let total=0;
+        for(let j=0;j<segments.length;j++){
+          const s=segments[j], ab=s.z.clone().sub(s.a), ap=p.clone().sub(s.a);
+          const denom=Math.max(ab.lengthSq(),1e-8);
+          const t=THREE.MathUtils.clamp(ap.dot(ab)/denom,0,1);
+          dist[j]=p.distanceTo(s.a.clone().addScaledVector(ab,t));
+        }
+        const nearest=Array.from(dist,(d,j)=>({d,j})).sort((a,b)=>a.d-b.d).slice(0,4);
+        let sum=0;
+        for(let k=0;k<4;k++){
+          const item=nearest[k], w=1/Math.pow(item.d+.035,3);
+          joints[i*4+k]=segments[item.j].index;weights[i*4+k]=w;sum+=w;
+        }
+        for(let k=0;k<4;k++) weights[i*4+k]/=sum||1;
+      }
+      geometry.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(joints,4));
+      geometry.setAttribute('skinWeight',new THREE.Float32BufferAttribute(weights,4));
+      const skinned=new THREE.SkinnedMesh(geometry,node.material);
+      skinned.name=node.name||'SilvanusPart';
+      skinned.castShadow=true;skinned.receiveShadow=true;
+      if(skinned.material){const materials=Array.isArray(skinned.material)?skinned.material:[skinned.material];
+        for(const material of materials){if(material.map)material.map.colorSpace=THREE.SRGBColorSpace;material.needsUpdate=true;}
+      }
+      rigRoot.add(skinned);
+      skinned.bind(new THREE.Skeleton(bones));
+    });
+    rigRoot.updateMatrixWorld(true);
+    // Rebind after every mesh has its final world matrix.
+    const skeleton=new THREE.Skeleton(bones);
+    for(const child of rigRoot.children) if(child.isSkinnedMesh) child.bind(skeleton);
+    rigRoot.userData.autoRig=true;
+    return rigRoot;
   }
   function startLobby(){
     host.classList.add('khl-has-3d');
