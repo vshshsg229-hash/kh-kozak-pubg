@@ -35,8 +35,8 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package.json
 
-      - name: Check Artifact Forge JavaScript syntax
-        run: node --check app-v6/artifact-forge.js
+      - name: Check Nexus Protocol JavaScript syntax
+        run: node --check app-v6/nexus-ops.js
 
       - name: Check app update notifier JavaScript syntax
         run: node --check app-v6/app-update.js
