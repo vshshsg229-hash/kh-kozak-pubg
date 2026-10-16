@@ -64,6 +64,21 @@ import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/
     heart:{label:'Серце',emoji:'🫶',duration:3.4},
     bow:{label:'Поклін',emoji:'🙇',duration:2.8}
   };
+  const sceneHost=root.querySelector('.khlobby-scene');
+  if(sceneHost && !sceneHost.querySelector('.khl-real3d-emote-grid')){
+    const gallery=document.createElement('div');
+    gallery.className='khl-real3d-emote-grid';
+    gallery.setAttribute('aria-label','Швидкий вибір емоцій');
+    gallery.innerHTML='<div class="khl-real3d-emote-title">ЕМОЦІЇ <span>3D</span></div>';
+    for(const [id,item] of Object.entries(emotes)){
+      const button=document.createElement('button');
+      button.type='button'; button.dataset.khlEmote=id; button.setAttribute('aria-pressed',String(id==='wave'));
+      button.title=item.label; button.innerHTML='<span class="khl-real3d-emote-icon">'+item.emoji+'</span><span class="khl-real3d-emote-name">'+item.label+'</span>';
+      gallery.appendChild(button);
+    }
+    sceneHost.appendChild(gallery);
+  }
+
   const boneMap = new Map();
   const previousDeltas = new Map();
   let model=null, mixer=null, idleAction=null, currentAction=null, clips=[];
