@@ -132,6 +132,7 @@ jobs:
           }
 
           const media = fs.readFileSync(path.join(root, 'media.js'), 'utf8');
+          assert(media.includes('uaMusicDailyKeys') && media.includes("uaMusicPlaylistSelect.value='daily'") && media.includes('Добірка дня:'), 'Ukrainian music automatically rotates its daily playlist');
           assert(html.includes('interface-refresh.css?v=13.9.2'), 'Refreshed interface stylesheet is loaded');
           assert(html.includes('id="tab-music"') && html.includes('id="tab-tiktok"'), 'Music and TikTok tabs exist');
           assert(html.includes('data-unique-id="tiktok.comkhkozak4"') && html.includes('data-unique-id="baggy8364"'), 'Both TikTok creator feeds exist');
