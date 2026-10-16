@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.9.0",
+  "version": "17.10.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.9.0: fixes quick-start random/replay, recommended and weekly challenge launch, refreshes achievement/progress panels, and removes the outdated '10 types' navigation label."
+  "releaseNotes": "v17.10.0: fixes update detection and refresh using the current app origin, bumps the service-worker cache, and aligns update controls to the current version."
 }
