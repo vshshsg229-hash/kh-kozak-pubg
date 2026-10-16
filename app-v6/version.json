@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.96.0",
+  "version": "16.98.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.96.0: search all game launch controls, normalize query text and deduplicate launchable results."
+  "releaseNotes": "v16.98.0: preserve inventory sync success/error feedback after re-rendering the progress panel."
 }
