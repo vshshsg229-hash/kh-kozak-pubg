@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.20.0",
+  "version": "17.21.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.20.0: Adds a shared Survival Ops ↔ Bunker workshop. Elite raids and successful bunker defense award blueprints; recipes craft raid kits, medkits, and armor plates, with armor usable in Survival Ops."
+  "releaseNotes": "v17.21.0: Adds bunker generator power, persistent raid specializations, mini-boss encounters, and keyed secret caches to the shared Survival Ops ↔ Bunker loop."
 }
