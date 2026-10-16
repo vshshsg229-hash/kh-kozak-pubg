@@ -47,6 +47,46 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&isTikTokTabVisible())refreshEmbeds()});
 window.addEventListener('pageshow',()=>{if(isTikTokTabVisible())refreshEmbeds()});
+
+/* KH Creator Lab: ideas, captions, hashtags and a persistent local queue. */
+const CREATOR_QUEUE_KEY='khkozak_creator_queue_v1';
+const creatorSets={
+ pubg:[
+  {title:'Розворот у фіналі',hook:'Він думав, що раунд уже виграний… 👀',caption:'Один момент — і весь матч перевернувся. Дивись до кінця!',tags:'#PUBGMobile #PUBGHighlights #Kozak #GamingUA #УкраїнськийTikTok'},
+  {title:'Клатч 1 проти 3',hook:'1 проти 3. Ти б пішов у цей бій?',caption:'Без паніки, тільки позиція й таймінг. Оціни цей клатч!',tags:'#PUBGMobile #Clutch #PUBG #Kozak #Геймінг'},
+  {title:'Найкращий момент матчу',hook:'Ось заради чого я запускаю PUBG 🔥',caption:'Збережи цей момент і напиши, як би зіграв ти.',tags:'#PUBGMobile #GamingHighlights #PUBGClips #GamingUA #Kozak'}
+ ],
+ tips:[
+  {title:'Одна помилка в перестрілці',hook:'Не роби цього, коли ворог уже поруч.',caption:'Коротка порада для наступного матчу. Збережи, щоб не забути.',tags:'#PUBGTips #PUBGMobile #GamingTips #Kozak #УкраїнськийTikTok'},
+  {title:'Як займати укриття',hook:'Ця дрібниця може врятувати твій матч.',caption:'Позиція важливіша за хаотичний пуш. Спробуй у наступній грі.',tags:'#PUBGGuide #PUBGMobileTips #GamingUA #Kozak #PUBG'},
+  {title:'Передфінальна перевірка',hook:'Перевір ці 3 речі перед фінальною зоною.',caption:'Аптечки, дим і маршрут. Яку пораду додав би ти?',tags:'#PUBGTips #BattleRoyale #PUBGMobile #Kozak #Геймінг'}
+ ],
+ fun:[
+  {title:'Очікування проти реальності',hook:'План був ідеальний… до першого пострілу 😂',caption:'У кого теж так було? Познач напарника, який робить саме так.',tags:'#GamingMemes #PUBGFunny #PUBGMobile #Kozak #УкраїнськийTikTok'},
+  {title:'Напарник із дивним планом',hook:'Коли твій тімейт каже: «Довірся мені».',caption:'Найнебезпечніші слова в командному матчі 😅',tags:'#PUBGMoments #GamingFunny #Squad #Kozak #GamingUA'},
+  {title:'Лут не за планом',hook:'Знайшов усе… крім того, що потрібно.',caption:'Чесно: це невезіння чи мій звичайний лут?',tags:'#PUBGMemes #GamingMoments #PUBGMobile #Kozak #Геймінг'}
+ ],
+ challenge:[
+  {title:'Челендж однієї зброї',hook:'Чи реально виграти матч лише з цією зброєю?',caption:'Приймаєш виклик? Напиши, яку зброю спробувати наступною.',tags:'#PUBGChallenge #PUBGMobile #GamingChallenge #Kozak #GamingUA'},
+  {title:'Гра без поспіху',hook:'Сьогодні виграє не найшвидший, а найрозумніший.',caption:'Тактичний матч: менше хаосу, більше рішень. Спробував би?',tags:'#PUBGTactics #PUBGMobile #GamingChallenge #Kozak #УкраїнськийTikTok'},
+  {title:'Коментар обирає наступний ролик',hook:'Ви обираєте моє наступне випробування.',caption:'Напиши челендж у коментарях — найцікавіший перевірю в наступному відео.',tags:'#TikTokChallenge #PUBGMobile #Kozak #GamingUA #PUBG'}
+ ]
+};
+const creatorHooks=['Ти б ризикнув зробити цей пуш? 👀','Дивись до кінця — ось де все змінилося.','Оціни рішення від 1 до 10.','Цей момент я точно не планував.','Збережи перед наступним матчем.','Твій напарник теж так робить? 😅'];
+const creatorCaptions=['Дивись до кінця й напиши, як би зіграв ти.','Збережи ідею для наступного матчу.','Оціни момент і запропонуй наступний челендж.','Познач напарника, якому треба це побачити.'];
+const creatorTagSets=['#PUBGMobile #Kozak #GamingUA #PUBGHighlights #УкраїнськийTikTok','#PUBGClips #BattleRoyale #Gaming #Kozak #PUBGMobile','#PUBGTips #Геймінг #GamingUA #Kozak #TikTokGaming','#PUBGMoments #Squad #PUBGMobile #Kozak #УкраїнськийTikTok'];
+let currentCreatorIdea=creatorSets.pubg[0];
+const creatorIdeaEl=$('#khCreatorIdea'),creatorCaptionEl=$('#khCreatorCaption'),creatorTagsEl=$('#khCreatorHashtags');
+const readCreatorQueue=()=>{try{const x=JSON.parse(localStorage.getItem(CREATOR_QUEUE_KEY)||'[]');return Array.isArray(x)?x:[]}catch{return []}};
+const writeCreatorQueue=x=>{try{localStorage.setItem(CREATOR_QUEUE_KEY,JSON.stringify(x));return true}catch{return false}};
+function pickCreator(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function renderCreatorIdea(item){currentCreatorIdea=item;if(creatorIdeaEl)creatorIdeaEl.innerHTML='<b>'+safeText(item.title)+'</b><span>'+safeText(item.hook)+'</span><span>'+safeText(item.caption)+'</span>'}
+function renderCreatorCaption(){const hook=pickCreator(creatorHooks),caption=pickCreator(creatorCaptions);if(creatorCaptionEl)creatorCaptionEl.innerHTML='<b>ХУК</b><span>'+safeText(hook)+'</span><b>ПІДПИС</b><span>'+safeText(caption)+'</span>';creatorCaptionEl.dataset.copy=hook+'\n'+caption}
+function renderCreatorQueue(){const host=$('#khCreatorQueueList'),count=$('#khCreatorQueueCount');if(!host)return;const list=readCreatorQueue();if(count)count.textContent=list.length+' '+(list.length===1?'ідея':list.length>=2&&list.length<=4?'ідеї':'ідей');host.innerHTML=list.length?list.map((v,i)=>'<article class="kh-creator-queue-item"><div><b>'+safeText(v.title)+'</b><small>'+safeText(v.hook)+'<br>'+safeText(v.caption)+'</small></div><button type="button" data-creator-remove="'+i+'">ВИДАЛИТИ</button></article>').join(''):'<p class="kh-creator-empty">Збережи першу ідею з генератора — вона з’явиться тут.</p>'}
+async function creatorCopy(text){try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);if(status)status.textContent='Скопійовано. Можеш вставити текст у TikTok.';return}}catch{}if(status)status.textContent='Не вдалося скопіювати автоматично. Виділи текст і скопіюй вручну.'}
+document.addEventListener('click',event=>{const b=event.target.closest('[data-creator-action]');if(b){const action=b.dataset.creatorAction;if(action==='idea'){const key=$('#khCreatorCategory')?.value||'pubg';renderCreatorIdea(pickCreator(creatorSets[key]||creatorSets.pubg));if(status)status.textContent='Нову ідею підготовлено.'}else if(action==='caption'){renderCreatorCaption();if(status)status.textContent='Новий хук і підпис готові.'}else if(action==='hashtags'){if(creatorTagsEl)creatorTagsEl.textContent=pickCreator(creatorTagSets);if(status)status.textContent='Набір хештегів оновлено.'}else if(action==='copy-caption'){creatorCopy(creatorCaptionEl?.dataset.copy||'Ти б ризикнув зробити цей пуш? 👀\nДивись до кінця — фінал вирішив усе.')}else if(action==='copy-hashtags'){creatorCopy(creatorTagsEl?.textContent||'')}else if(action==='save'){const list=readCreatorQueue();if(list.some(v=>v.title===currentCreatorIdea.title&&v.hook===currentCreatorIdea.hook)){if(status)status.textContent='Ця ідея вже є у твоєму плані.';return}list.unshift({...currentCreatorIdea,savedAt:new Date().toISOString()});if(!writeCreatorQueue(list.slice(0,100))){if(status)status.textContent='Не вдалося зберегти ідею на цьому пристрої.';return}renderCreatorQueue();if(status)status.textContent='Ідею додано до плану публікацій.'}return}const remove=event.target.closest('[data-creator-remove]');if(remove){const list=readCreatorQueue();list.splice(Number(remove.dataset.creatorRemove),1);writeCreatorQueue(list);renderCreatorQueue();if(status)status.textContent='Ідею видалено з плану.'}});
+renderCreatorQueue();
+
 window.khTikTokPlayVideo=playVideo;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderWatch,{once:true});else renderWatch();
 })();
