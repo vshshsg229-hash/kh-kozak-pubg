@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.80.0",
+  "version": "16.81.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.80.0: Battle Hub 3.0 Smart Operations: рекомендації ігор, щотижневий виклик, експорт прогресу та Kozak AI Coach."
+  "releaseNotes": "v16.81.0: Battle Hub 3.0 Achievement Hall — 5 досягнень, адаптивна панель прогресу та оновлення Kozak AI Coach."
 }
