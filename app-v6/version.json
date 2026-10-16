@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.56.0",
+  "version": "17.57.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.40.0",
   "updatedAt": "2026-10-16",
   "windowsVersion": "17.40.0",
-  "releaseNotes": "Artifact Forge: 30-day season with visible countdown, hardcore 950 HP seasonal boss and stronger counterattacks, expanded relic collection, six mini-games with saved rewards, and 12 research upgrades. Survival Bunker, Metro Royale, and Battle Pass use 30-day seasons."
+  "releaseNotes": "Fix update button and cache refresh; playable three-stage Trial Polygon mini-games; clearer Artifact Forge recipes and dynamic requirements; consistent 30-day season countdown; preserve rewards and boss progress."
 }
