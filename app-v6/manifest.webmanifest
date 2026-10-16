@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.83.0",
+  "name": "KH么Kozak Battle Hub 16.84.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.83.0: Щоденні нагороди, Зал слави, Smart Operations та Kozak AI Coach.",
+  "description": "KH么Kozak Battle Hub 16.84.0: Резервне копіювання прогресу, щоденні нагороди, Зал слави та Kozak AI Coach.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
