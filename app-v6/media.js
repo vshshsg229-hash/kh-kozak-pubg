@@ -18,6 +18,15 @@ function playYouTube(raw){
 }
 youtubeForm?.addEventListener('submit',e=>{e.preventDefault();playYouTube(youtubeInput?.value||'')});
 const musicSearch=$('#musicSearch'),musicCategory=$('#musicCategory'),musicList=$('#musicLibraryList'),musicCount=$('#musicCount'),musicStatus=$('#musicLibraryStatus'),musicMore=$('#musicLoadMore');
+const musicFavoritesToggle=$('#musicFavoritesToggle');
+const MUSIC_FAVORITES_KEY='khkozak_music_favorites_v1';
+let musicFavorites=new Set();
+let musicFavoritesOnly=false;
+try{const saved=JSON.parse(localStorage.getItem(MUSIC_FAVORITES_KEY)||'[]');if(Array.isArray(saved))musicFavorites=new Set(saved.filter(v=>typeof v==='string'))}catch{}
+function musicKey(item){return item.genre+'|'+item.query}
+function saveMusicFavorites(){try{localStorage.setItem(MUSIC_FAVORITES_KEY,JSON.stringify([...musicFavorites]))}catch{}}
+function updateMusicFavoritesUI(){if(musicFavoritesToggle){musicFavoritesToggle.setAttribute('aria-pressed',String(musicFavoritesOnly));musicFavoritesToggle.style.background=musicFavoritesOnly?'rgba(255,210,55,.22)':'rgba(255,210,55,.08)';musicFavoritesToggle.textContent='★ Обрані ('+musicFavorites.size+')'}}
+
 const musicGenres=[
 {id:'phonk',name:'Phonk',terms:['drift phonk','aggressive phonk','Brazilian phonk','cowbell phonk','dark phonk','gym phonk','viral phonk','chill phonk','Memphis phonk','phonk mix']},
 {id:'gaming',name:'Gaming / PUBG',terms:['PUBG Mobile music','gaming montage music','clutch music','battle royale soundtrack','gaming EDM','PUBG phonk','FPS montage music','victory music','gaming trap','epic gaming mix']},
@@ -41,7 +50,7 @@ let musicShown=30;
 function renderMusic(){
  if(!musicList)return;
  const q=(musicSearch?.value||'').trim().toLowerCase(),cat=musicCategory?.value||'all';
- const filtered=musicItems.filter(item=>(cat==='all'||item.genre===cat)&&(!q||(item.title+' '+item.query+' '+item.tag).toLowerCase().includes(q)));
+ const filtered=musicItems.filter(item=>(!musicFavoritesOnly||musicFavorites.has(musicKey(item)))&&(cat==='all'||item.genre===cat)&&(!q||(item.title+' '+item.query+' '+item.tag).toLowerCase().includes(q)));
  musicList.innerHTML='';
  filtered.slice(0,musicShown).forEach((item,index)=>{
   const row=document.createElement('div');row.className='music-track-row';
@@ -50,16 +59,21 @@ function renderMusic(){
   const title=document.createElement('b');title.textContent=item.title;
   const sub=document.createElement('small');sub.textContent=item.tag+' · YouTube';
   info.append(title,sub);
+  const actions=document.createElement('div');actions.style.cssText='display:flex;gap:6px;align-items:center;flex-wrap:wrap';
+  const favorite=document.createElement('button');favorite.type='button';favorite.className='music-favorite-btn';favorite.setAttribute('aria-label',musicFavorites.has(musicKey(item))?'Прибрати з обраного':'Додати в обране');favorite.setAttribute('aria-pressed',String(musicFavorites.has(musicKey(item))));favorite.textContent=musicFavorites.has(musicKey(item))?'★':'☆';favorite.style.cssText='min-width:40px;min-height:40px;border:1px solid rgba(255,210,55,.45);border-radius:9px;background:rgba(255,210,55,.08);color:#f5ce38;font-size:22px;cursor:pointer';
+  favorite.addEventListener('click',()=>{const key=musicKey(item);if(musicFavorites.has(key))musicFavorites.delete(key);else musicFavorites.add(key);saveMusicFavorites();updateMusicFavoritesUI();renderMusic()});
   const btn=document.createElement('a');btn.className='music-play-btn';btn.href='https://www.youtube.com/results?search_query='+encodeURIComponent(item.query);btn.target='_blank';btn.rel='noopener noreferrer';btn.textContent='▶ ЗНАЙТИ ТРЕК';
-  row.append(num,info,btn);musicList.append(row);
+  actions.append(favorite,btn);row.append(num,info,actions);musicList.append(row);
  });
  if(musicCount)musicCount.textContent=filtered.length+' пошукових варіантів';
- if(musicStatus)musicStatus.textContent=filtered.length?'Показано '+Math.min(musicShown,filtered.length)+' із '+filtered.length+'. Натисни «Знайти трек»; YouTube відкриється у цій вкладці.':'Нічого не знайдено — спробуй інший запит.';
+ if(musicStatus)musicStatus.textContent=filtered.length?'Показано '+Math.min(musicShown,filtered.length)+' із '+filtered.length+(musicFavoritesOnly?' обраних':' варіантів')+'. Натисни ★, щоб зберегти трек у своєму списку; обране зберігається на цьому пристрої.':'Нічого не знайдено — спробуй інший запит або вимкни фільтр обраного.';
  if(musicMore)musicMore.hidden=filtered.length<=musicShown;
 }
 musicSearch?.addEventListener('input',()=>{musicShown=30;renderMusic()});
 musicCategory?.addEventListener('change',()=>{musicShown=30;renderMusic()});
 musicMore?.addEventListener('click',()=>{musicShown+=30;renderMusic()});
+musicFavoritesToggle?.addEventListener('click',()=>{musicFavoritesOnly=!musicFavoritesOnly;musicShown=30;updateMusicFavoritesUI();renderMusic()});
+updateMusicFavoritesUI();
 document.querySelectorAll('[data-music-genre]').forEach(btn=>btn.addEventListener('click',()=>{if(musicCategory)musicCategory.value=btn.dataset.musicGenre;musicShown=30;renderMusic();musicList?.scrollIntoView({behavior:'smooth',block:'start'})}));
 renderMusic();
 
