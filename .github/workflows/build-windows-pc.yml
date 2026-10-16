@@ -35,6 +35,9 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package.json
 
+      - name: Check Artifact Forge JavaScript syntax
+        run: node --check app-v6/artifact-forge.js
+
       - name: Check app update notifier JavaScript syntax
         run: node --check app-v6/app-update.js
 
@@ -64,7 +67,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: KH-Kozak-Battle-Hub-Windows-17.39.0
+          name: KH-Kozak-Battle-Hub-Windows-17.40.0
           path: |
             desktop/dist/*.exe
             desktop/dist/*.blockmap
@@ -74,13 +77,13 @@ jobs:
       - name: Publish downloadable Windows release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: pc-v17.39.0
-          name: KH么Kozak Battle Hub for Windows 17.39.0
+          tag_name: pc-v17.40.0
+          name: KH么Kozak Battle Hub for Windows 17.40.0
           body: |
             Windows PC release of KH么Kozak Battle Hub.
             
-            - KH.Kozak.Battle.Hub.Setup.17.39.0.exe: installer with Start Menu and desktop shortcuts.
-            - KH.Kozak.Battle.Hub.17.39.0.exe: portable build, no installation required.
+            - KH.Kozak.Battle.Hub.Setup.17.40.0.exe: installer with Start Menu and desktop shortcuts.
+            - KH.Kozak.Battle.Hub.17.40.0.exe: portable build, no installation required.
             
             Windows x64.
           files: |
