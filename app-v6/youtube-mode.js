@@ -155,4 +155,5 @@ searchForm.addEventListener('submit',event=>{event.preventDefault();search(query
 form.addEventListener('submit',event=>{event.preventDefault();play(directInput.value)});
 document.querySelectorAll('[data-kh-yt-url]').forEach(button=>button.addEventListener('click',()=>play(button.getAttribute('data-kh-yt-url'))));
 try{const saved=localStorage.getItem('khkozak_youtube_mode_last_url');if(saved)directInput.value=saved}catch{}
+ensureOfficialSearchSettings();
 })();
