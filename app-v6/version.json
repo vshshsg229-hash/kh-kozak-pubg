@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.17.0",
+  "version": "17.18.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.17.0: Adds the pink 'Бункер виживання' navigation group. Survival Ops and Bunker share one inventory, parts, raid kits, medkits, rare loot, profile coins, XP and Royale Pass XP. Successful raids deposit loot; craft kits in Bunker for 3 parts, use kits/medkits in Survival Ops, and exchange rare loot for +75 coins and +20 XP."
+  "releaseNotes": "v17.18.0: Adds shared daily Survival Ops + Bunker contracts: Scavenger, Return from Raid, and Elite Extraction. Contract progress is stored with shared bunker inventory; rewards include profile coins, XP, Royale Pass XP and rare loot for elite extraction."
 }
