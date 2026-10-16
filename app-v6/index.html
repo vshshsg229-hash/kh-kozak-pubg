@@ -395,6 +395,18 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 </script>
 
 <script>
+/* Artifact Forge diagnostic: surface the real script error instead of leaving a blank tab. */
+(function(){
+  function showError(message, source, line){
+    const root=document.getElementById('tab-artifactforge');
+    if(!root || root.querySelector('.af-hero')) return;
+    const detail=String(message||'Невідома помилка');
+    const file=String(source||'').split('/').pop();
+    root.innerHTML='<section style="margin:18px;padding:20px;border:1px solid #b94b59;border-radius:14px;background:#160d14;color:#fff"><h2 style="margin-top:0">Artifact Forge · помилка модуля</h2><p>Карта не змогла запуститися. Причина: <b>'+detail.replace(/[&<>"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]})+'</b></p><p style="opacity:.8">Файл: '+file.replace(/[&<>"]/g,'')+' · рядок '+(line||'?')+'</p><button type="button" onclick="location.reload()" style="padding:12px;border-radius:8px;border:1px solid #62e7ff;background:#10283a;color:#e8f7ff;font-weight:800">Перезапустити</button></section>';
+  }
+  window.addEventListener('error',function(e){if(String(e.filename||'').includes('artifact-forge.js'))showError(e.message,e.filename,e.lineno)});
+  window.addEventListener('unhandledrejection',function(e){showError(e.reason&&e.reason.message||e.reason,'promise','?')});
+})();
 /* Artifact Forge recovery guard: retry the existing feature script if its view stayed empty. */
 (function(){
   const root=document.getElementById('tab-artifactforge');
