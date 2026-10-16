@@ -1,0 +1,48 @@
+#tab-nexusops{color:#eaf6ff;--nx-line:#24485c;--nx-cyan:#66edff;--nx-violet:#bd7bff;--nx-muted:#9ab4c7;padding:clamp(10px,2vw,22px);font-family:inherit}
+#tab-nexusops *{box-sizing:border-box}
+#tab-nexusops .nx-hero,#tab-nexusops .nx-panel{border:1px solid var(--nx-line);border-radius:16px;background:linear-gradient(145deg,#081622,#101326 70%,#17102a);padding:clamp(14px,2.4vw,23px);margin:0 0 16px;box-shadow:0 12px 30px #0003}
+#tab-nexusops .nx-kicker,#tab-nexusops .nx-heading small,#tab-nexusops .nx-stats small,#tab-nexusops .nx-selected small{color:var(--nx-cyan);font-size:10px;font-weight:900;letter-spacing:.14em}
+#tab-nexusops .nx-hero h1{font-size:clamp(30px,5vw,56px);line-height:1;margin:12px 0;background:linear-gradient(90deg,#fff,var(--nx-cyan),var(--nx-violet));background-clip:text;color:transparent;font-weight:1000;letter-spacing:.06em}
+#tab-nexusops .nx-hero h1 span{color:var(--nx-cyan)}
+#tab-nexusops p{line-height:1.5}#tab-nexusops .nx-hero>p,#tab-nexusops .nx-muted{color:var(--nx-muted)}
+#tab-nexusops .nx-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:18px}
+#tab-nexusops .nx-stats>div{padding:11px;border:1px solid #284457;border-radius:10px;background:#07111dcc;min-width:0}
+#tab-nexusops .nx-stats b{display:block;font-size:clamp(13px,1.5vw,19px);margin-top:6px;overflow-wrap:anywhere}
+#tab-nexusops .nx-shortcuts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:16px}
+#tab-nexusops .nx-shortcuts button{background:#111e30;border:1px solid #34576b;border-radius:10px;color:#eaf6ff;padding:12px 6px;font-weight:800;cursor:pointer}
+#tab-nexusops .nx-shortcuts button:hover,#tab-nexusops .nx-btn:hover{border-color:var(--nx-cyan);filter:brightness(1.15)}
+#tab-nexusops .nx-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+#tab-nexusops .nx-heading h2{font-size:clamp(20px,2.4vw,28px);margin:5px 0}
+#tab-nexusops .nx-pill{border:1px solid #4b6e86;border-radius:30px;padding:6px 10px;color:var(--nx-cyan);font-size:10px;font-weight:900;white-space:nowrap}
+#tab-nexusops .nx-map{position:relative;height:clamp(340px,53vw,590px);margin:18px 0;background:radial-gradient(ellipse at 50% 50%,#16425a66,transparent 60%),linear-gradient(90deg,#58d7ff12 1px,transparent 1px),linear-gradient(#58d7ff12 1px,transparent 1px),#06101b;background-size:auto,30px 30px,30px 30px,auto;border:1px solid #31556b;border-radius:14px;overflow:hidden}
+#tab-nexusops .nx-map:before{content:"";position:absolute;inset:8% 10%;border:1px dashed #4ee8ff5c;border-radius:45% 30% 40% 25%;transform:rotate(-12deg);pointer-events:none}
+#tab-nexusops .nx-map:after{content:"NEXUS GRID · SECURE SECTORS";position:absolute;bottom:10px;left:12px;color:#69cce7a8;font-size:9px;letter-spacing:.16em;pointer-events:none}
+#tab-nexusops .nx-node{position:absolute;z-index:2;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;border:1px solid #62e7ff;background:#0b2134;color:#8ef4ff;box-shadow:0 0 15px #31c8ff4d;cursor:pointer;display:grid;place-items:center}
+#tab-nexusops .nx-node span{font-size:18px;font-weight:900}
+#tab-nexusops .nx-node small{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);width:max-content;max-width:115px;text-align:center;color:#d6eaff;background:#07111de8;padding:3px 5px;border-radius:4px;font-size:9px;pointer-events:none}
+#tab-nexusops .nx-node.is-found{border-color:#67f2a4;color:#67f2a4;background:#12392c}
+#tab-nexusops .nx-node.is-selected{outline:3px solid #bd7bff;box-shadow:0 0 24px #bd7bffb0}
+#tab-nexusops .nx-node.is-target:not(.is-found){animation:nx-pulse 2s infinite}
+@keyframes nx-pulse{50%{box-shadow:0 0 26px #66edff;transform:translate(-50%,-50%) scale(1.1)}}
+#tab-nexusops .nx-selected{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #2b536a;border-radius:12px;background:#08121e;padding:15px}
+#tab-nexusops .nx-selected h3{margin:5px 0;font-size:20px}#tab-nexusops .nx-selected p{margin:5px 0;color:var(--nx-muted)}#tab-nexusops .nx-selected span{font-size:10px;color:var(--nx-cyan);font-weight:900}
+#tab-nexusops .nx-btn{border:1px solid #3b6178;background:#14263a;color:#eaf6ff;border-radius:8px;padding:10px 13px;font-weight:900;font-size:11px;cursor:pointer;max-width:100%}
+#tab-nexusops .nx-btn.primary{background:linear-gradient(100deg,#0b697c,#49337a);border-color:#66edff}
+#tab-nexusops .nx-btn:disabled{opacity:.45;cursor:not-allowed}
+#tab-nexusops .nx-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+#tab-nexusops .nx-card{border:1px solid #28475d;background:linear-gradient(145deg,#0b1a29,#111426);border-radius:12px;padding:14px;min-width:0}
+#tab-nexusops .nx-card>small{color:var(--nx-cyan);font-size:9px;letter-spacing:.12em;font-weight:900}
+#tab-nexusops .nx-card h3{margin:8px 0;font-size:16px}
+#tab-nexusops .nx-card p{color:var(--nx-muted);font-size:12px;min-height:36px}
+#tab-nexusops .nx-card .nx-btn{width:100%}
+#tab-nexusops .nx-cipher{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px}
+#tab-nexusops .nx-code{display:flex;gap:7px;flex-wrap:wrap}#tab-nexusops .nx-code input{width:100px;background:#050c16;color:#fff;border:1px solid #3b6178;border-radius:8px;padding:10px;text-align:center;letter-spacing:.3em}
+#tab-nexusops .nx-item>span{font-size:26px;color:var(--nx-cyan)}
+#tab-nexusops .nx-boss{display:flex;align-items:center;gap:22px;padding:18px;border:1px solid #4a345f;border-radius:12px;background:radial-gradient(ellipse at left,#682d6933,transparent 60%),#0b1220}
+#tab-nexusops .nx-boss-core{width:100px;height:100px;flex:0 0 100px;display:grid;place-items:center;border-radius:50%;border:1px solid #b97bff;color:#ff9aef;font-size:44px;box-shadow:0 0 35px #b65eff55}
+#tab-nexusops .nx-boss-info{flex:1;min-width:0}#tab-nexusops .nx-health{height:10px;background:#351a2c;border-radius:20px;overflow:hidden;margin:10px 0}#tab-nexusops .nx-health span{display:block;height:100%;background:linear-gradient(90deg,#ff537d,#bd7bff);transition:width .2s}
+#tab-nexusops .nx-challenge-active,#tab-nexusops .nx-collection{margin-top:14px;padding:14px;border:1px solid #31556b;border-radius:10px;background:#07121f}
+#tab-nexusops .nx-collection-item{display:inline-block;margin:3px;padding:7px 9px;border:1px solid #4c7d87;border-radius:8px;color:#83f3d0;font-size:11px}
+#tab-nexusops .nx-notice{padding:12px;border:1px solid #31556b;border-radius:10px;color:var(--nx-cyan);background:#07121f}
+@media(max-width:900px){#tab-nexusops .nx-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-nexusops .nx-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}#tab-nexusops .nx-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){#tab-nexusops{padding:8px}#tab-nexusops .nx-grid{grid-template-columns:1fr}#tab-nexusops .nx-selected,#tab-nexusops .nx-cipher,#tab-nexusops .nx-boss{align-items:stretch;flex-direction:column}#tab-nexusops .nx-boss-core{width:70px;height:70px;flex-basis:70px;font-size:30px}#tab-nexusops .nx-node{width:30px;height:30px}#tab-nexusops .nx-node span{font-size:14px}#tab-nexusops .nx-node small{font-size:8px;max-width:75px;white-space:normal}#tab-nexusops .nx-map{height:430px}}
