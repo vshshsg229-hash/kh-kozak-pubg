@@ -1,5 +1,6 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let activeCategory='all';
 const KEY='khkozak_bh3_v1',TODAY=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
 let data={favorites:[],recent:[],dailyChallenge:''};
 try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{}
@@ -18,18 +19,20 @@ function addStyles(){if($('#kh-bh3-style'))return;const l=document.createElement
 function injectGameHub(){
  const section=$('#tab-games');if(!section||$('#khBh3Hub'))return;addStyles();
  const hub=document.createElement('section');hub.id='khBh3Hub';hub.className='kh-bh3-hub';hub.innerHTML=
- '<div class="kh-bh3-head"><div><span class="kh-bh3-kicker">BATTLE HUB 3.0 · QUICK OPS</span><h2>Швидкий старт <span>без зайвих кліків</span></h2><p>Сім коротких режимів, особисті рекорди, збережені ігри й швидкий повтор останнього запуску.</p></div><button type="button" class="kh-bh3-last" data-bh3-last>↻ ОСТАННЯ ГРА</button></div>'+
+ '<div class="kh-bh3-head"><div><span class="kh-bh3-kicker">BATTLE HUB 3.0 · QUICK OPS</span><h2>Швидкий старт <span>без зайвих кліків</span></h2><p>Сім коротких режимів, особисті рекорди, збережені ігри й швидкий повтор останнього запуску.</p></div><div class="kh-bh3-head-actions"><button type="button" class="kh-bh3-random" data-bh3-random>⤨ ВИПАДКОВА ГРА</button><button type="button" class="kh-bh3-last" data-bh3-last>↻ ОСТАННЯ ГРА</button></div></div>'+
  '<div class="kh-bh3-tools"><label class="kh-bh3-search">⌕ <input id="khBh3Search" type="search" placeholder="Знайти тренування…" aria-label="Пошук тренувань"></label><div class="kh-bh3-filters" role="group" aria-label="Фільтр тренувань"><button type="button" class="active" data-bh3-filter="all">Усі</button><button type="button" data-bh3-filter="favorites">★ Збережені</button><button type="button" data-bh3-filter="recent">Останні</button></div></div>'+
- '<div class="kh-bh3-grid" id="khBh3Grid"></div><div class="kh-bh3-catalog" id="khBh3CatalogResults" hidden></div><div class="kh-bh3-record" id="khBh3Record"></div><div class="kh-bh3-daily" id="khBh3Daily"></div><div class="kh-bh3-coach" id="khBh3Coach"></div>';
+ '<div class="kh-bh3-categories" role="group" aria-label="Категорії ігор"><button type="button" class="active" data-bh3-category="all" aria-pressed="true">Усі типи</button><button type="button" data-bh3-category="accuracy" aria-pressed="false">🎯 Точність</button><button type="button" data-bh3-category="reaction" aria-pressed="false">⚡ Реакція</button><button type="button" data-bh3-category="tactics" aria-pressed="false">🧭 Тактика</button><button type="button" data-bh3-category="memory" aria-pressed="false">🔐 Пам’ять</button><button type="button" data-bh3-category="control" aria-pressed="false">〰️ Контроль</button><button type="button" data-bh3-category="decision" aria-pressed="false">🎒 Рішення</button></div><div class="kh-bh3-grid" id="khBh3Grid"></div><div class="kh-bh3-catalog" id="khBh3CatalogResults" hidden></div><div class="kh-bh3-record" id="khBh3Record"></div><div class="kh-bh3-daily" id="khBh3Daily"></div><div class="kh-bh3-coach" id="khBh3Coach"></div>';
  const toolbar=$('#kh100Toolbar'),heading=section.querySelector('.page-heading');if(toolbar)toolbar.before(hub);else if(heading)heading.after(hub);else section.prepend(hub);
  renderGames();renderCombatRecord();renderDaily();renderCoach();
  hub.addEventListener('click',e=>{
-  const filter=e.target.closest('[data-bh3-filter]');if(filter){$$('[data-bh3-filter]').forEach(b=>b.classList.toggle('active',b===filter));renderGames(filter.dataset.bh3Filter);return}
-  const fav=e.target.closest('[data-bh3-fav]');if(fav){const id=fav.dataset.bh3Fav;data.favorites=data.favorites.includes(id)?data.favorites.filter(x=>x!==id):[...data.favorites,id];save();renderGames(activeFilter());return}
+  const category=e.target.closest('[data-bh3-category]');if(category){activeCategory=category.dataset.bh3Category;$('[data-bh3-category]').forEach(b=>{const active=b===category;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});renderGames(activeFilter());return}
+  const filter=e.target.closest('[data-bh3-filter]');if(filter){$('[data-bh3-filter]').forEach(b=>b.classList.toggle('active',b===filter));renderGames(filter.dataset.bh3Filter);return}
+  const fav=e.target.closest('[data-bh3-fav]');if(fav){const id=fav.dataset.bh3Fav;data.favorites=data.favorites.includes(id)?data.favorites.filter(x=>x!==id):[...data.favorites,id];save();renderGames(activeFilter());renderCoach();return}
   const play=e.target.closest('[data-bh3-play]');if(play){launch(play.dataset.bh3Play);return}
   const mission=e.target.closest('[data-bh3-mission-claim]');if(mission){claimDailyMission(mission.dataset.bh3MissionClaim);return}
   const catalog=e.target.closest('[data-bh3-catalog-launch]');if(catalog){const target=Array.from(document.querySelectorAll('#tab-games [data-game]')).find(b=>b.dataset.game===catalog.dataset.bh3CatalogLaunch);if(target)target.click();return}
   const planStart=e.target.closest('[data-bh3-plan-start]');if(planStart){startTrainingPlan(planStart.dataset.bh3PlanStart);return}
+  if(e.target.closest('[data-bh3-random]')){launchRandomTraining();return}
   if(e.target.closest('[data-bh3-plan-next]')){continueTrainingPlan();return}
   if(e.target.closest('[data-bh3-last]')){launch(data.recent[0]||'aim');return}
   if(e.target.closest('[data-bh3-daily]'))launch(dailyGame());
@@ -37,9 +40,11 @@ function injectGameHub(){
  $('#khBh3Search')?.addEventListener('input',()=>renderGames(activeFilter()));
 }
 function activeFilter(){return $('[data-bh3-filter].active')?.dataset.bh3Filter||'all'}
+function gameCategory(g){return ({aim:'accuracy',reaction:'reaction',zone:'tactics',code:'memory',recoil:'control',loot:'decision',tactics:'tactics'})[g.id]||'other'}
+function launchRandomTraining(){const filter=activeFilter(),q=($('#khBh3Search')?.value||'').toLowerCase();let list=games.filter(g=>(filter==='all'||(filter==='favorites'&&data.favorites.includes(g.id))||(filter==='recent'&&data.recent.includes(g.id)))&&(activeCategory==='all'||gameCategory(g)===activeCategory)&&(g.name+' '+g.tag+' '+g.desc).toLowerCase().includes(q));if(!list.length)list=games.filter(g=>activeCategory==='all'||gameCategory(g)===activeCategory);if(!list.length)list=games;const choice=list[Math.floor(Math.random()*list.length)];launch(choice.id)}
 function renderGames(filter='all'){
  const grid=$('#khBh3Grid');if(!grid)return;const q=($('#khBh3Search')?.value||'').toLowerCase();
- const list=games.filter(g=>(filter==='all'||(filter==='favorites'&&data.favorites.includes(g.id))||(filter==='recent'&&data.recent.includes(g.id)))&&(g.name+' '+g.tag+' '+g.desc).toLowerCase().includes(q));
+ const list=games.filter(g=>(filter==='all'||(filter==='favorites'&&data.favorites.includes(g.id))||(filter==='recent'&&data.recent.includes(g.id)))&&(activeCategory==='all'||gameCategory(g)===activeCategory)&&(g.name+' '+g.tag+' '+g.desc).toLowerCase().includes(q));
  grid.innerHTML=list.length?list.map(g=>{const st=data.stats[g.id]||{plays:0,best:0};return '<article class="kh-bh3-card"><div class="kh-bh3-card-top"><span>'+g.icon+'</span><button type="button" data-bh3-fav="'+g.id+'" aria-label="'+(data.favorites.includes(g.id)?'Прибрати зі збережених':'Зберегти гру')+'" class="'+(data.favorites.includes(g.id)?'is-fav':'')+'">'+(data.favorites.includes(g.id)?'★':'☆')+'</button></div><small>'+g.tag+'</small><h3>'+g.name+'</h3><p>'+g.desc+'</p><div class="kh-bh3-statline"><span>Спроб: <b>'+Number(st.plays||0)+'</b></span><span>Рекорд: <b>'+Number(st.best||0)+'</b></span></div><div class="kh-bh3-reward">'+g.reward+'</div><button class="kh-bh3-play" type="button" data-bh3-play="'+g.id+'">▶ ГРАТИ ЗАРАЗ</button></article>'}).join(''):'<div class="kh-bh3-empty">Нічого не знайдено. Зміни пошук або фільтр.</div>';  renderCatalogMatches(q);
 }
 function resultTip(id,score){
