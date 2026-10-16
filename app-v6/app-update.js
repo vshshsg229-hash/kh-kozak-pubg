@@ -34,31 +34,27 @@
         return;
       }
       event.preventDefault();
-      action.textContent = 'ОЧИЩАЄМО КЕШ…';
-      action.setAttribute('aria-busy', 'true');
-      action.style.pointerEvents = 'none';
       const targetVersion = latestVersion || WEB_VERSION;
-      try {
-        // Clear this app's old service-worker caches so stale scripts cannot be restored.
-        if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)));
-        }
-        if ('serviceWorker' in navigator) {
-          const registrations = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(registrations.map(async reg => {
-            try { await reg.update(); } catch (_) {}
-            try { if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (_) {}
-            try { await reg.unregister(); } catch (_) {}
-          }));
-        }
-      } catch (_) {
-        // Continue with a cache-busted reload even if an embedded browser blocks cache APIs.
-      }
       const url = new URL(APP_URL, location.href);
       url.searchParams.set('v', targetVersion);
       url.searchParams.set('updated', String(Date.now()));
       url.searchParams.set('refresh', '1');
+      action.textContent = 'ВІДКРИВАЄМО ОНОВЛЕНУ ВЕРСІЮ…';
+      action.setAttribute('aria-busy', 'true');
+      action.style.pointerEvents = 'none';
+      // Cleanup runs in background; it must not block the actual refresh.
+      try {
+        if ('caches' in window) {
+          caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('kh-kozak-hub-')).map(key => caches.delete(key)))).catch(() => {});
+        }
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(regs => Promise.all(regs.map(async reg => {
+            try { await reg.update(); } catch (_) {}
+            try { if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (_) {}
+            try { await reg.unregister(); } catch (_) {}
+          }))).catch(() => {});
+        }
+      } catch (_) {}
       location.replace(url.toString());
     });
   }
