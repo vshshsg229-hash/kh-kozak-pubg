@@ -147,3 +147,25 @@
 #tab-artifactforge .af-cipher-keypad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 #tab-artifactforge .af-cipher-keypad .af-btn{min-width:0;padding:10px 4px}
 @media(max-width:560px){#tab-artifactforge .af-gpu-status{grid-template-columns:1fr}#tab-artifactforge .af-gpu-status>div{flex-direction:row;justify-content:space-between;align-items:center}#tab-artifactforge .af-cipher-keypad{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-artifactforge .af-mini-actions .af-btn{flex:1 1 100%}}
+
+/* Daily login and profile rewards */
+#tab-artifactforge .af-daily-panel,#tab-artifactforge .af-profile-rewards{margin:16px 0;border-color:#294b63;background:linear-gradient(145deg,rgba(8,19,31,.98),rgba(13,27,43,.98))}
+#tab-artifactforge .af-daily-head{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+#tab-artifactforge .af-daily-head>div{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid #28465b;border-radius:8px;background:#07121f}
+#tab-artifactforge .af-daily-head small{font-size:9px;letter-spacing:.09em;color:#8aa8bc}
+#tab-artifactforge .af-daily-head b{color:#70e6ff;font-size:15px}
+#tab-artifactforge .af-daily-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:14px 0}
+#tab-artifactforge .af-daily-reward{min-width:0;display:flex;flex-direction:column;gap:7px;padding:10px 8px;border:1px solid #2b4053;border-radius:8px;background:#091522}
+#tab-artifactforge .af-daily-reward>span{font-size:22px;color:#70e6ff}
+#tab-artifactforge .af-daily-reward>small{font-size:9px;color:#91a9bd;letter-spacing:.08em}
+#tab-artifactforge .af-daily-reward>b{font-size:11px;line-height:1.3;color:#d7e8f5;overflow-wrap:anywhere}
+#tab-artifactforge .af-daily-reward p{font-size:10px;line-height:1.4;color:#8da6b9;margin:0}
+#tab-artifactforge .af-daily-reward em{font-style:normal;font-size:9px;color:#83ffc0;font-weight:800}
+#tab-artifactforge .af-daily-reward.is-earned{border-color:#286b55;background:#0a211d}
+#tab-artifactforge .af-daily-reward.is-next{border-color:#5cacc5;box-shadow:inset 0 0 0 1px #22536b}
+#tab-artifactforge .af-profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+#tab-artifactforge .af-profile-item{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid #31546a;border-radius:9px;background:#091522}
+#tab-artifactforge .af-profile-item>span{font-size:26px;color:#70e6ff}
+#tab-artifactforge .af-profile-item b{font-size:13px;color:#d7e8f5}
+#tab-artifactforge .af-profile-item small{font-size:9px;color:#83ffc0;letter-spacing:.06em}
+@media(max-width:760px){#tab-artifactforge .af-daily-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-artifactforge .af-daily-reward{padding:12px}#tab-artifactforge .af-daily-reward>b{font-size:12px}}
