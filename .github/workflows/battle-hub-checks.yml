@@ -210,9 +210,10 @@ jobs:
           }
           assert(battleHub3.includes('kh-bh3-finished') && battleHub3.includes('kh_bh3_reward_'), 'Battle Hub 3.0 rewards are routed to progression and protected against same-day duplicate claims');
           assert(battleHub3.includes('data.stats[g.id]') && battleHub3.includes('Особистий рекорд'), 'Battle Hub 3.0 tracks plays and personal best scores');
+          assert(battleHub3.includes('function dailyChallenges()') && battleHub3.includes('function dailyStreak()') && battleHub3.includes('data-bh3-mission-claim'), 'Battle Hub 3.0 includes daily missions and a training streak');
           assert(battleHub3.includes('function enhanceAssistant()') && battleHub3.includes('Відкриваю «Ігри та режими»'), 'Kozak AI can navigate to requested app sections');
           assert(battleHub3Css.includes('.kh-bh3-grid') && battleHub3Css.includes('@media(max-width:620px)'), 'Battle Hub 3.0 has responsive game cards and mobile styles');
-          assert(html.includes('battle-hub-3.js?v=16.67.0') && html.includes('battle-hub-3.css?v=16.67.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
+          assert(html.includes('battle-hub-3.js?v=16.68.0') && html.includes('battle-hub-3.css?v=16.68.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
