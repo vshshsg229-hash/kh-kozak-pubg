@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 16.74.0",
+  "name": "KH么Kozak Battle Hub 16.75.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 16.74.0: Battle Hub 3.0 — Козак AI керує запуском ігор, категоріями та марафоном улюблених режимів.",
+  "description": "KH么Kozak Battle Hub 16.75.0: Battle Hub 3.0 — ігрові категорії, марафон улюблених режимів і точний випадковий запуск за фільтрами.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
