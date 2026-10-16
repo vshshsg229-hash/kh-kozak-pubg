@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.38.0",
+  "version": "17.39.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "Updater force-refresh fix; compact in-profile TikTok video players."
+  "releaseNotes": "Reliable cache-clearing updater; fixed profile TikTok video embeds."
 }
