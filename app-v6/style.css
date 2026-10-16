@@ -1422,3 +1422,10 @@ img,svg,canvas,video{animation:none!important;transition:none!important}
 
 /* 16.29.0 — cosmetic collection filters */
 .cosmetic-inventory-filters{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 14px}.cosmetic-inventory-filters button{min-height:36px;padding:8px 11px;border:1px solid #354255;border-radius:6px;background:#111923;color:#b8c4d4;font-size:10px;font-weight:850}.cosmetic-inventory-filters button.active{border-color:#d2ae48;background:#252317;color:#ffe08a}.profile-cosmetic-info small{display:block;color:#d2b85e;font-size:10px;line-height:1.5;margin-top:3px}@media(max-width:560px){.cosmetic-inventory-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.cosmetic-inventory-filters button{padding:8px 5px;font-size:9px}.cosmetic-inventory-filters button:first-child{grid-column:1/-1}}
+
+/* Seasonal UI: countdown + persistent Metro profile rewards */
+.metro-season-countdown{display:inline-block;color:#72eaff;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.metro-profile-rewards{margin:12px 0 16px;padding:12px 14px;border:1px solid #28516a;border-radius:10px;background:linear-gradient(120deg,rgba(7,23,35,.96),rgba(10,30,43,.9))}
+.metro-profile-rewards>small{display:block;margin-bottom:8px;color:#8ba9bc;font-size:10px;letter-spacing:.1em}
+.metro-profile-rewards>div{display:flex;flex-wrap:wrap;gap:8px}
+.metro-profile-rewards span{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border:1px solid #36566a;border-radius:7px;color:#d8f4ff;font-size:12px}
