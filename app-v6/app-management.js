@@ -14,7 +14,7 @@ const status=section.querySelector('[data-khm-status]'),result=section.querySele
 async function check(){
  const standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
  let sw='не підтримується';try{if('serviceWorker'in navigator){const reg=await navigator.serviceWorker.getRegistration();sw=reg?(reg.waiting?'є готове оновлення':reg.active?'активний':'зареєстрований'):'не зареєстрований'}}catch{sw='помилка перевірки'}
- status.innerHTML='<strong>Стан:</strong> '+(navigator.onLine?'інтернет доступний':'немає інтернету')+'<br><strong>Встановлення:</strong> '+(standalone?'додаток відкрито окремо':'відкрито у браузері')+'<br><strong>Офлайн-кеш:</strong> '+sw+'<br><strong>Екран:</strong> '+innerWidth+' × '+innerHeight+' · <strong>Версія:</strong> 16.16.0';
+ status.innerHTML='<strong>Стан:</strong> '+(navigator.onLine?'інтернет доступний':'немає інтернету')+'<br><strong>Встановлення:</strong> '+(standalone?'додаток відкрито окремо':'відкрито у браузері')+'<br><strong>Офлайн-кеш:</strong> '+sw+'<br><strong>Екран:</strong> '+innerWidth+' × '+innerHeight+' · <strong>Версія:</strong> 16.49.0';
 }
 section.addEventListener('click',async e=>{
  const b=e.target.closest('button');if(!b)return;
