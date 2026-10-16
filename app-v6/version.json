@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.65.0",
-  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.64.0",
+  "version": "17.66.0",
+  "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.66.0",
   "updatedAt": "2026-10-16",
-  "windowsVersion": "17.64.0",
-  "releaseNotes": "Unified profile and My Progress+ XP, 24-hour daily task countdown, persistent full activity journal, merged player statistics heading."
+  "windowsVersion": "17.66.0",
+  "releaseNotes": "Shared profile wallet and mode progression bridge; fixed updater version/cache mismatch and refresh behavior."
 }
