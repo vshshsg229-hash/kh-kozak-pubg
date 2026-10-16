@@ -87,9 +87,16 @@ const khUkrainianTracks=[
 ['Погляд','YAKTAK feat. SOBOL','WHQygkIG8xs']
 ];
 function playTrack(track){
- const query=track[1]+' '+track[0]+' official audio';
- if(track[2]&&youtubeInput){youtubeInput.value='https://www.youtube.com/watch?v='+track[2];playYouTube(youtubeInput.value);youtubeWrap?.scrollIntoView({behavior:'smooth',block:'center'});}
- else {if(youtubeMessage)youtubeMessage.textContent='Відкриваю пошук офіційного треку на YouTube в окремій вкладці.';window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(query),'_blank','noopener,noreferrer');}
+ if(!track||!track[2]||!youtubeInput){if(youtubeMessage)youtubeMessage.textContent='Для вбудованого відтворення обери трек із доступним відео.';return false;}
+ const videoId=String(track[2]).trim();
+ if(!/^[A-Za-z0-9_-]{6,}$/.test(videoId)){if(youtubeMessage)youtubeMessage.textContent='Не вдалося перевірити відео цього треку.';return false;}
+ youtubeInput.value='https://www.youtube.com/watch?v='+videoId;
+ const loaded=playYouTube(youtubeInput.value);
+ if(!loaded)return false;
+ if(youtubeMessage)youtubeMessage.textContent='▶ Обрано: '+track[0]+' — '+track[1]+'. Відтворення запускається у вбудованому плеєрі нижче.';
+ try{window.khMusicMediaSession?.setMetadata(track[0],track[1],'KH Gaming Mix')}catch{}
+ youtubeWrap?.scrollIntoView({behavior:'smooth',block:'center'});
+ return true;
 }
 const khUkrainianList=$('#khUkrainianTracks');
 function renderUkrainianTracks(){
@@ -125,7 +132,10 @@ function renderKhPlaylist(){
  });
 }
 $('#shuffleKhPlaylist')?.addEventListener('click',()=>{
- const track=khPlaylist[Math.floor(Math.random()*khPlaylist.length)];
+ // Random mode must always use a known video ID so playback stays inside the hub.
+ const playableTracks=khPlaylist.filter(track=>track[2]&&/^[A-Za-z0-9_-]{6,}$/.test(String(track[2]).trim()));
+ if(!playableTracks.length){if(youtubeMessage)youtubeMessage.textContent='Зараз немає треків із вбудованим відео. Спробуй ще раз пізніше.';return;}
+ const track=playableTracks[Math.floor(Math.random()*playableTracks.length)];
  if(track)playTrack(track);
 });
 renderKhPlaylist();
