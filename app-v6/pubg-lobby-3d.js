@@ -415,11 +415,25 @@ import { GLTFLoader } from 'https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
     }
     startLobby();
   },undefined,error=>{
-    console.warn('Silvanus GLB unavailable; using built-in animated lobby character.',error);
-    boneMap.clear();
-    model=makeCharacter();
-    model.scale.setScalar(1);
-    scene.add(model);
+    console.warn('Silvanus GLB asset is not published in app assets; opening the public model preview.',error);
+    // Keep the exact Silvanus X Suit visible instead of silently showing the generic fallback.
+    // The embedded preview is viewable while the local rigged GLB is unavailable.
+    status.textContent='Silvanus X Suit · 3D preview';
+    status.classList.remove('is-error');
+    const preview=document.createElement('iframe');
+    preview.title='Silvanus X Suit 3D model preview';
+    preview.src='https://sketchfab.com/models/241373189f2e4c63b26ae1aede43ca4b/embed?autostart=1&ui_theme=dark&dnt=1';
+    preview.loading='eager';
+    preview.allow='autoplay; fullscreen; xr-spatial-tracking';
+    preview.setAttribute('allowfullscreen','');
+    preview.setAttribute('frameborder','0');
+    preview.referrerPolicy='strict-origin-when-cross-origin';
+    preview.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:#080b10;z-index:4';
+    host.style.position='relative';
+    host.appendChild(preview);
+    canvas.style.visibility='hidden';
+    status.style.zIndex='5';
+    status.style.pointerEvents='none';
     startLobby();
   });
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);observer.disconnect();renderer.dispose();},{once:true});
