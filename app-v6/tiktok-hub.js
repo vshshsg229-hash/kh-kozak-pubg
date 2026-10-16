@@ -33,10 +33,10 @@ function parseVideo(raw){
 function playVideo(raw){
  const video=parseVideo(raw);
  if(!video){if(status)status.textContent='Посилання не розпізнано. Встав повний URL виду https://www.tiktok.com/@username/video/123456789…';return}
- if(player)player.innerHTML='<blockquote class="tiktok-embed kh-tiktok-single-embed" cite="'+safeText(video.url)+'" data-video-id="'+safeText(video.id)+'" style="max-width:605px;min-width:288px"><section><a target="_blank" rel="noopener noreferrer" href="'+safeText(video.url)+'">@'+safeText(video.user)+' · Відкрити оригінал ↗</a></section></blockquote>';
+ if(player)player.innerHTML='<div class="kh-tiktok-iframe-wrap"><iframe class="kh-tiktok-player-iframe" src="https://www.tiktok.com/player/v1/'+encodeURIComponent(video.id)+'?controls=1&description=1&music_info=1" title="TikTok відео від @'+safeText(video.user)+'" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><a class="kh-tiktok-original-link" href="'+safeText(video.url)+'" target="_blank" rel="noopener noreferrer">ВІДКРИТИ ОРИГІНАЛ У TIKTOK ↗</a>';
  if(input)input.value=video.url;
- if(status)status.textContent='Відео додано до плеєра. Якщо TikTok дозволяє вбудовування, натисни ▶ у відео нижче.';
- let saveButton=$('#khTikTokSaveCurrent');if(!saveButton&&player){saveButton=document.createElement('button');saveButton.type='button';saveButton.id='khTikTokSaveCurrent';saveButton.textContent='★ ЗБЕРЕГТИ В ДОБІРКУ';saveButton.style.cssText='margin:10px 0;padding:10px 14px;border:1px solid #f2c94c;border-radius:8px;background:#182334;color:#f2c94c;font-weight:800';player.prepend(saveButton)}if(saveButton){saveButton.dataset.url=video.url;saveButton.dataset.user=video.user;saveButton.dataset.id=video.id;}
+ if(status)status.textContent='Відео відтворюється у вбудованому плеєрі Battle Hub. Якщо автор обмежив вбудовування, TikTok може не показати ролик.';
+ let saveButton=$('#khTikTokSaveCurrent');if(!saveButton&&player){saveButton=document.createElement('button');saveButton.type='button';saveButton.id='khTikTokSaveCurrent';saveButton.textContent='★ ЗБЕРЕГТИ В ДОБІРКУ';saveButton.className='kh-tiktok-save-current';player.append(saveButton)}if(saveButton){saveButton.dataset.url=video.url;saveButton.dataset.user=video.user;saveButton.dataset.id=video.id;}
  refreshEmbeds(true);
 }
 form?.addEventListener('submit',event=>{event.preventDefault();playVideo(input?.value||'')});
@@ -87,6 +87,48 @@ async function creatorCopy(text){try{if(navigator.clipboard&&navigator.clipboard
 document.addEventListener('click',event=>{const b=event.target.closest('[data-creator-action]');if(b){const action=b.dataset.creatorAction;if(action==='idea'){const key=$('#khCreatorCategory')?.value||'pubg';renderCreatorIdea(pickCreator(creatorSets[key]||creatorSets.pubg));if(status)status.textContent='Нову ідею підготовлено.'}else if(action==='caption'){renderCreatorCaption();if(status)status.textContent='Новий хук і підпис готові.'}else if(action==='hashtags'){if(creatorTagsEl)creatorTagsEl.textContent=pickCreator(creatorTagSets);if(status)status.textContent='Набір хештегів оновлено.'}else if(action==='copy-caption'){creatorCopy(creatorCaptionEl?.dataset.copy||'Ти б ризикнув зробити цей пуш? 👀\nДивись до кінця — фінал вирішив усе.')}else if(action==='copy-hashtags'){creatorCopy(creatorTagsEl?.textContent||'')}else if(action==='save'){const list=readCreatorQueue();if(list.some(v=>v.title===currentCreatorIdea.title&&v.hook===currentCreatorIdea.hook)){if(status)status.textContent='Ця ідея вже є у твоєму плані.';return}list.unshift({...currentCreatorIdea,savedAt:new Date().toISOString()});if(!writeCreatorQueue(list.slice(0,100))){if(status)status.textContent='Не вдалося зберегти ідею на цьому пристрої.';return}renderCreatorQueue();if(status)status.textContent='Ідею додано до плану публікацій.'}return}const remove=event.target.closest('[data-creator-remove]');if(remove){const list=readCreatorQueue();list.splice(Number(remove.dataset.creatorRemove),1);writeCreatorQueue(list);renderCreatorQueue();if(status)status.textContent='Ідею видалено з плану.'}});
 renderCreatorQueue();
 
+/* In-app upload handoff: share the selected video to TikTok when the device supports file sharing. */
+const uploadInput=$('#khTikTokUploadFile'),uploadPreview=$('#khTikTokUploadPreview'),uploadStatus=$('#khTikTokUploadStatus'),uploadCaption=$('#khTikTokUploadCaption');
+let selectedUploadFile=null,uploadPreviewUrl='';
+function setUploadStatus(message){if(uploadStatus)uploadStatus.textContent=message}
+uploadInput?.addEventListener('change',()=>{
+ const file=uploadInput.files?.[0];selectedUploadFile=file||null;
+ if(uploadPreviewUrl){URL.revokeObjectURL(uploadPreviewUrl);uploadPreviewUrl=''}
+ if(uploadPreview)uploadPreview.innerHTML='';
+ if(!file){setUploadStatus('Обери відеофайл, щоб підготувати публікацію.');return}
+ if(!file.type.startsWith('video/')){selectedUploadFile=null;uploadInput.value='';setUploadStatus('Це не схоже на відеофайл. Обери MP4 або інше відео.');return}
+ if(file.size>500*1024*1024){selectedUploadFile=null;uploadInput.value='';setUploadStatus('Файл завеликий для швидкого передавання через браузер (ліміт 500 МБ). Спробуй коротший ролик.');return}
+ uploadPreviewUrl=URL.createObjectURL(file);
+ if(uploadPreview)uploadPreview.innerHTML='<video controls playsinline preload="metadata" src="'+uploadPreviewUrl+'" aria-label="Попередній перегляд відео перед публікацією"></video><div><b>'+safeText(file.name)+'</b><small>'+(file.size/1024/1024).toFixed(1)+' МБ · готове до передавання</small></div>';
+ setUploadStatus('Відео готове. Натисни «Передати в TikTok» — якщо пристрій підтримує передавання файлів, вибери TikTok у системному меню й заверши публікацію там.');
+});
+$('#khTikTokShareUpload')?.addEventListener('click',async()=>{
+ if(!selectedUploadFile){setUploadStatus('Спочатку обери відеофайл.');uploadInput?.click();return}
+ const caption=(uploadCaption?.value||'').trim();
+ try{
+  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[selectedUploadFile]})){
+   const data={files:[selectedUploadFile],title:'KH么Kozak TikTok'};
+   if(caption)data.text=caption;
+   await navigator.share(data);
+   setUploadStatus('Меню передавання відкрито. Вибери TikTok, якщо він є у списку, та заверши публікацію в застосунку.');
+   return;
+  }
+ }catch(error){if(error?.name==='AbortError'){setUploadStatus('Передавання скасовано. Відео залишилося вибраним.');return}}
+ setUploadStatus('Цей браузер не передає відеофайли напряму в TikTok. Відкриваю офіційну сторінку завантаження — там вибери цей самий файл вручну.');
+ window.open('https://www.tiktok.com/upload?lang=uk-UA','_blank','noopener,noreferrer');
+});
+$('#khTikTokOpenUpload')?.addEventListener('click',()=>{
+ setUploadStatus(selectedUploadFile?'Відкриваю TikTok Studio. Вибери підготовлений файл у TikTok, щоб опублікувати його.':'Відкриваю TikTok Studio. Спочатку або там вибери відеофайл для публікації.');
+ window.open('https://www.tiktok.com/upload?lang=uk-UA','_blank','noopener,noreferrer');
+});
+document.addEventListener('click',event=>{
+ const profile=event.target.closest('[data-kh-profile-open]');
+ if(!profile)return;
+ event.preventDefault();
+ const card=profile.closest('.tiktok-profile-unit');
+ const feed=card?.querySelector('.tiktok-creator-feed');
+ if(feed){feed.scrollIntoView({behavior:'auto',block:'center'});feed.classList.add('kh-tiktok-feed-focused');setUploadStatus('Профіль відкрито у вбудованій стрічці Battle Hub. Для відео, які TikTok відкриває назовні, встав посилання в плеєр нижче.')}
+});
 window.khTikTokPlayVideo=playVideo;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderWatch,{once:true});else renderWatch();
 })();
