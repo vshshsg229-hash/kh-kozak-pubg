@@ -37,7 +37,7 @@ function injectGameHub(){
   if(e.target.closest('[data-bh3-last]')){launch(data.recent[0]||'aim');return}
   if(e.target.closest('[data-bh3-daily]'))launch(dailyGame());
  });
- $('#khBh3Search')?.addEventListener('input',()=>renderGames(activeFilter()));
+ $('#khBh3Search')?.addEventListener('input',()=>{renderGames(activeFilter());renderCatalogMatches($('#khBh3Search')?.value||'')});
 }
 function activeFilter(){return $('[data-bh3-filter].active')?.dataset.bh3Filter||'all'}
 function gameCategory(g){return ({aim:'accuracy',reaction:'reaction',zone:'tactics',code:'memory',recoil:'control',loot:'decision',tactics:'tactics'})[g.id]||'other'}
