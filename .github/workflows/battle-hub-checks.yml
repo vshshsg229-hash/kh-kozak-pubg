@@ -138,10 +138,10 @@ jobs:
           assert(html.includes('games-3d.js?v='), 'HTML loads the versioned 3D engine');
           const arcade = fs.readFileSync(path.join(root, 'arcade-100.js'), 'utf8');
           assert(arcade.includes('const names=[') && arcade.includes('10 ігор · 10 різних механік') && arcade.includes('10 механік'), 'Arcade catalog accurately describes its 10 unique game mechanics');
-          assert(arcade.includes('kh100Random') || arcade.includes('kh100Random'), 'Arcade includes random game launch');
-          assert(threeD.includes('50 3D РЕЖИМІВ') && threeD.includes('const extraModeSpecs='), '3D Arena advertises the expanded catalog');
-          const extraModeMatch = threeD.match(/const extraModeSpecs=(\[[\s\S]*?\]);\nmodes\.push/);
-          assert(extraModeMatch && JSON.parse(extraModeMatch[1]).length === 43, '3D Arena has exactly 50 modes including 7 base modes');
+          assert(arcade.includes('kh100Random'), 'Arcade includes random game launch');
+          assert(threeD.includes('7 ГОТОВИХ 3D РЕЖИМІВ') && threeD.includes('const modes=['), '3D Arena accurately advertises its current playable catalog');
+          const modeMatch = threeD.match(/const modes=(\[[\s\S]*?\]);\n\nlet selectedModeName/);
+          assert(modeMatch && JSON.parse(modeMatch[1]).length === 7, '3D Arena has exactly 7 implemented modes');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
           assert(html.includes('bunker.js?v=1.1.0'), 'HTML loads Bunker mode');
