@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "16.92.0",
+  "version": "16.93.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v16.92.0: fix game catalog search so filtered results appear while typing and can be launched."
+  "releaseNotes": "v16.93.0: update button navigates immediately with a cache-busted URL; cache and service-worker cleanup runs in the background."
 }
