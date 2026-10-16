@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.25.0",
+  "version": "17.26.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v9.5.7",
   "updatedAt": "2026-10-16",
   "windowsVersion": "9.5.7",
-  "releaseNotes": "v17.25.0: Added visible recent raid history with saved rewards and corrected medic health bar scaling."
+  "releaseNotes": "KOZAK AI: об’єднано KOZAK AI Coach і Напарник KH в одному рожевому розділі; оновлено навігацію та кеш."
 }
