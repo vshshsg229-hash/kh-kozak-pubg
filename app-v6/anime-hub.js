@@ -89,7 +89,7 @@
     {name:'Anime Girl · Moemiku Yuni',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Moemiku_yuni.png',rarity:'Anime · Character Art',favorite:false},
     {name:'Anime Girl · Silver-Hair Sci-Fi',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Paulliu_girl_with_silver_hair.svg',rarity:'Sci-Fi · Glam',favorite:false},
     {name:'Anime Girl · Purple Star Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Purple_Haired_Anime_Girl_With_Star_Background.svg',rarity:'Ecchi · Glam',favorite:false},
-    {name:'Anime Girl · Mecha Pilot',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mirain_Suenaga_-_6839970960.jpg',rarity:'Mecha · Pilot',favorite:false},
+    {name:'Anime Girl · Mecha Pilot',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mirai_Suenaga_-_6839970960.jpg',rarity:'Mecha · Pilot',favorite:false},
     {name:'Anime Girl · Manga Pin-up',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/PanchiraIlustration.png',rarity:'Ecchi · Pin-up',favorite:false}
   ];
   {
