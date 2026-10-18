@@ -112,3 +112,9 @@
 #tab-animeafterdark .aad-online-link small{opacity:.75;line-height:1.35}
 #tab-animeafterdark .aad-online-link em{margin-top:auto;color:#d9b8ff;font-size:.7rem;font-style:normal;font-weight:700}
 #tab-animeafterdark .aad-online-search{margin-top:14px;width:100%;padding:12px;border:1px solid #b78bff;border-radius:12px;background:#24143b;color:#f5eaff;font-weight:800}
+
+/* v18.2.0: embedded artwork previews in online art hunt */
+#tab-animeafterdark .aad-online-link{padding:0 0 12px;overflow:hidden;gap:8px}
+#tab-animeafterdark .aad-online-thumb{display:block;width:100%;height:190px;object-fit:cover;object-position:center 25%;background:#11131d}
+#tab-animeafterdark .aad-online-link strong,#tab-animeafterdark .aad-online-link small,#tab-animeafterdark .aad-online-link em{margin-left:12px;margin-right:12px}
+#tab-animeafterdark .aad-online-link em{margin-top:auto}
