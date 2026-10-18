@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KH么Kozak Battle Hub 17.89.0",
+  "name": "KH么Kozak Battle Hub 17.90.0",
   "short_name": "KH Kozak",
-  "description": "KH么Kozak Battle Hub 17.89.0: Єдиний командний центр, режими, спільні монети, профіль, прогрес, нагороди та KOZAK Assistant.",
+  "description": "KH么Kozak Battle Hub 17.90.0: Єдиний командний центр, режими, спільні монети, профіль, прогрес, нагороди та KOZAK Assistant.",
   "lang": "uk",
   "start_url": "./?source=pwa",
   "scope": "./",
