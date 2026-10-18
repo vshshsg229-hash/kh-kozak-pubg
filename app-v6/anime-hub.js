@@ -25,6 +25,12 @@
       <div class="anime-actions">
         <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button><button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime ecchi pin-up illustration lingerie bunny girl fantasy pin-up">🔥 Ecchi / Hentai-style</button>
         <button class="anime-btn" type="button" data-anime-search="videos">▶ Знайти відео в Google</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime gothic pin-up character illustration non-explicit">🖤 Gothic Pin-up</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime bunny girl glamour illustration non-explicit">🐰 Bunny Glam</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime succubus fantasy character art non-explicit">😈 Succubus Fantasy</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime maid glamour pin-up illustration non-explicit">🖤 Maid Glam</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime swimsuit beach pin-up illustration non-explicit">☀️ Beach Pin-up</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime fantasy lingerie fashion illustration non-explicit">✨ Fantasy Glam</button>
       </div>
     </div>
     <div class="anime-panel">
