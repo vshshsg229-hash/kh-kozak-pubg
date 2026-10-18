@@ -21,16 +21,16 @@
     <div class="anime-hero">
       <div class="anime-eyebrow">KH么KOZAK · ANIME HUB</div>
       <h1>ANIME <span>HUB</span></h1>
-      <p>Велика добірка аніме-героїнь з інтернету: милі, готичні, стильні та виразні образи. Усе в одному розділі Battle Hub.</p>
+      <p>Аніме-героїні, дорослий ecchi та hentai-inspired pin-up арт без графічних сексуальних сцен. Усі персонажі в цій добірці — вигадані дорослі образи.</p>
       <div class="anime-actions">
-        <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button>
+        <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button><button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime ecchi pin-up illustration">🔥 Ecchi / Hentai-style</button>
         <button class="anime-btn" type="button" data-anime-search="videos">▶ Знайти відео в Google</button>
       </div>
     </div>
     <div class="anime-panel">
       <div class="anime-eyebrow">01 / GOOGLE SEARCH</div><h2>Знайти персонажа</h2>
       <form id="animeSearchForm" class="anime-search-row">
-        <input id="animeSearchQuery" class="anime-input" type="search" placeholder="Наприклад: anime girl blue hair" value="anime girl character art" aria-label="Пошуковий запит">
+        <input id="animeSearchQuery" class="anime-input" type="search" placeholder="Наприклад: anime girl blue hair" value="adult anime ecchi pin-up illustration" aria-label="Пошуковий запит">
         <button class="anime-btn primary" type="submit">Пошук у Google ↗</button>
       </form>
     </div>
@@ -57,7 +57,7 @@
     const base = kind === 'videos' ? 'https://www.google.com/search?tbm=vid&q=' : 'https://www.google.com/search?tbm=isch&q=';
     window.open(base + encodeURIComponent(query || 'anime girl character art'), '_blank', 'noopener,noreferrer');
   };
-  view.querySelectorAll('[data-anime-search]').forEach(b=>b.addEventListener('click',()=>googleSearch(b.dataset.animeSearch,document.getElementById('animeSearchQuery').value)));
+  view.querySelectorAll('[data-anime-search]').forEach(b=>b.addEventListener('click',()=>googleSearch(b.dataset.animeSearch,b.dataset.animeQuery||document.getElementById('animeSearchQuery').value)));
   document.getElementById('animeSearchForm').addEventListener('submit',e=>{e.preventDefault();googleSearch('images',document.getElementById('animeSearchQuery').value.trim());});
 
   const STORAGE_KEY='khkozak_anime_collection_v1';
@@ -95,7 +95,12 @@
     {name:'Anime Girl · Silver-Hair Sci-Fi',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Paulliu_girl_with_silver_hair.svg',rarity:'Sci-Fi · Glam',favorite:false},
     {name:'Anime Girl · Purple Star Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Purple_Haired_Anime_Girl_With_Star_Background.svg',rarity:'Ecchi · Glam',favorite:false},
     {name:'Anime Girl · Mecha Pilot',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mirai_Suenaga_-_6839970960.jpg',rarity:'Mecha · Pilot',favorite:false},
-    {name:'Anime Girl · Manga Pin-up',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/PanchiraIlustration.png',rarity:'Ecchi · Pin-up',favorite:false}
+    {name:'Anime Girl · Manga Pin-up',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/PanchiraIlustration.png',rarity:'Ecchi · Pin-up',favorite:false},
+    {name:'Ecchi Art · Classic Anime',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl.svg',rarity:'Adult-style · Ecchi',favorite:false},
+    {name:'Ecchi Art · Beach Pin-up',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_girl_at_beach.jpg',rarity:'Adult-style · Pin-up',favorite:false},
+    {name:'Ecchi Art · Purple Bunny Girl',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bunny_girl_with_purple_hair.svg',rarity:'Adult-style · Bunny',favorite:false},
+    {name:'Ecchi Art · Anime Girl PNG',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl.png',rarity:'Adult-style · Illustration',favorite:false},
+    {name:'Ecchi Art · Anime Girl Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_upright_version.jpg',rarity:'Adult-style · Portrait',favorite:false}
   ];
   {
     const current=safeRead();
