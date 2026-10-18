@@ -23,7 +23,7 @@
       <h1>ANIME <span>HUB</span></h1>
       <p>Аніме-героїні, дорослий ecchi та hentai-inspired pin-up арт без графічних сексуальних сцен. Усі персонажі в цій добірці — вигадані дорослі образи.</p>
       <div class="anime-actions">
-        <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button><button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime ecchi pin-up illustration">🔥 Ecchi / Hentai-style</button>
+        <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button><button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime ecchi pin-up illustration lingerie bunny girl fantasy pin-up">🔥 Ecchi / Hentai-style</button>
         <button class="anime-btn" type="button" data-anime-search="videos">▶ Знайти відео в Google</button>
       </div>
     </div>
@@ -100,8 +100,7 @@
     {name:'Ecchi Art · Beach Pin-up',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_girl_at_beach.jpg',rarity:'Adult-style · Pin-up',favorite:false},
     {name:'Ecchi Art · Purple Bunny Girl',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bunny_girl_with_purple_hair.svg',rarity:'Adult-style · Bunny',favorite:false},
     {name:'Ecchi Art · Anime Girl PNG',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl.png',rarity:'Adult-style · Illustration',favorite:false},
-    {name:'Ecchi Art · Anime Girl Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_upright_version.jpg',rarity:'Adult-style · Portrait',favorite:false}
-  ];
+    {name:'Ecchi Art · Anime Girl Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_upright_version.jpg',rarity:'Adult-style · Portrait',favorite:false}  ];
   {
     const current=safeRead();
     const seen=new Set(current.map(item=>item.image));
