@@ -22,17 +22,22 @@ extraGirls.forEach(g=>{const card=document.createElement('article');card.classNa
 function addAnimeDetails(svg,index){
  const ns='http://www.w3.org/2000/svg';
  const el=(tag,attrs)=>{const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));svg.append(n);return n};
- svg.classList.add('aad-face-detailed');
+ svg.classList.add('aad-face-detailed','aad-style-'+(index%6));
  const palette=['#ff8ab7','#a9a0ff','#63e8ff','#ffd27b','#f58abf','#a9dcff','#ff9b78','#63eee0','#d4ff6a','#d4b0ff','#ff729d','#ffda83'];
  const iris=palette[index%palette.length];
  // Big irises, dark pupils and multiple catchlights give the eyes a classic anime expression.
  [[38.5,49],[61.5,49]].forEach(([x,y])=>{
-  el('ellipse',{cx:x,cy:y,rx:4.15,ry:5.1,fill:iris,stroke:'#35203f','stroke-width':.75,class:'aad-iris'});
-  el('ellipse',{cx:x,cy:y+1,rx:2.05,ry:3.35,fill:'#24162e',class:'aad-pupil'});
-  el('circle',{cx:x-1.15,cy:y-1.8,r:1.55,fill:'#fff',class:'aad-eye-shine'});
-  el('circle',{cx:x+1.2,cy:y+1.7,r:.72,fill:'#fff9',class:'aad-eye-shine'});
-  el('path',{d:`M${x-5.2} ${y-2.2} Q${x} ${y-7.6} ${x+5.2} ${y-2.1}`,fill:'none',stroke:'#392039','stroke-width':1.3,'stroke-linecap':'round',class:'aad-lash'});
+  el('ellipse',{cx:x,cy:y,rx:5.05,ry:6.15,fill:iris,stroke:'#35203f','stroke-width':.75,class:'aad-iris'});
+  el('ellipse',{cx:x,cy:y+1,rx:2.45,ry:4.15,fill:'#24162e',class:'aad-pupil'});
+  el('circle',{cx:x-1.5,cy:y-2.35,r:1.85,fill:'#fff',class:'aad-eye-shine'});
+  el('circle',{cx:x+1.45,cy:y+2.15,r:.85,fill:'#fff9',class:'aad-eye-shine'});
+  el('path',{d:`M${x-5.2} ${y-2.2} Q${x} ${y-8.4} ${x+5.2} ${y-2.1}`,fill:'none',stroke:'#392039','stroke-width':1.3,'stroke-linecap':'round',class:'aad-lash'});
  });
+ // Brows, ears, face highlights and flowing hair strands add a polished anime illustration feel.
+ [[38.5,41.2],[61.5,41.2]].forEach(([x,y])=>el('path',{d:`M${x-5.1} ${y} Q${x} ${y-3.1} ${x+5.1} ${y+.2}`,class:'aad-brow'}));
+ [[23.4,52],[76.6,52]].forEach(([cx,cy])=>el('ellipse',{cx,cy,rx:2.7,ry:5.2,class:'aad-ear'}));
+ el('path',{d:'M31 38 Q34 32 40 33 M60 33 Q67 32 70 38',fill:'none',stroke:'#fff9','stroke-width':.8,'stroke-linecap':'round',class:'aad-face-light'});
+ [[29,29,33,21],[34,24,39,17],[66,20,71,28],[61,24,66,17],[17,61,19,87],[83,58,81,91]].forEach(([x1,y1,x2,y2])=>el('path',{d:`M${x1} ${y1} Q${(x1+x2)/2-2} ${(y1+y2)/2} ${x2} ${y2}`,class:'aad-strand'}));
  // Soft blush, tiny nose and a more expressive mouth.
  [[30.5,58],[69.5,58]].forEach(([cx,cy])=>el('ellipse',{cx,cy,rx:4.1,ry:1.7,fill:'#f28e9c',opacity:.48,class:'aad-blush'}));
  el('path',{d:'M49 56.5l-1 2.1 2 .2',fill:'none',stroke:'#d18a83','stroke-width':.8,'stroke-linecap':'round',class:'aad-nose'});
@@ -51,6 +56,15 @@ function addAnimeDetails(svg,index){
  }else{
   el('path',{d:'M24 19l4 5-4 5-4-5Z',fill:iris,stroke:'#fff9','stroke-width':.8,class:'aad-accessory'});
  }
+ // Distinct costume lines: gothic lace, techwear seams, eveningwear and sporty accents.
+ const style=index%6;
+ if(style===0){el('path',{d:'M25 105 Q34 95 40 102 M75 105 Q66 95 60 102 M33 112 L38 108 M67 112 L62 108',class:'aad-costume-line'});}
+ else if(style===1){el('path',{d:'M25 91 L35 119 M75 91 L65 119 M35 99 L41 105 L35 111 M65 99 L59 105 L65 111',class:'aad-costume-line'});}
+ else if(style===2){el('path',{d:'M27 95 Q50 108 73 95 M30 101 Q50 113 70 101 M38 89 L43 96 M62 89 L57 96',class:'aad-costume-line'});}
+ else if(style===3){el('path',{d:'M24 94 L38 100 L32 108 L42 115 M76 94 L62 100 L68 108 L58 115',class:'aad-costume-line'});}
+ else if(style===4){el('path',{d:'M29 94 L39 101 L35 117 M71 94 L61 101 L65 117 M43 104 L50 111 L57 104',class:'aad-costume-line'});}
+ else{el('path',{d:'M28 98 L39 96 L50 104 L61 96 L72 98 M35 112 L43 108 M65 112 L57 108',class:'aad-costume-line'});}
+ el('path',{d:'M45 81 Q50 84 55 81',fill:'none',stroke:'#fff9','stroke-width':.7,class:'aad-costume-line'});
  // Tailored collars and a small jewel make the outfits read as designed costumes.
  el('path',{d:'M37 88 L45 96 L50 91 L55 96 L63 88',fill:'none',stroke:iris,'stroke-width':2.1,'stroke-linejoin':'round',class:'aad-collar'});
  el('path',{d:'M46 96 L50 102 L54 96 L50 92Z',fill:iris,stroke:'#fff9','stroke-width':.7,class:'aad-jewel'});
