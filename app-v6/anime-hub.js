@@ -31,6 +31,14 @@
         <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime maid glamour pin-up illustration non-explicit">🖤 Maid Glam</button>
         <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime swimsuit beach pin-up illustration non-explicit">☀️ Beach Pin-up</button>
         <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime fantasy lingerie fashion illustration non-explicit">✨ Fantasy Glam</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime elf queen elegant fantasy illustration">🧝 Elf Queen</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime vampire queen gothic glamour illustration">🦇 Vampire Queen</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime catgirl glamour pin-up illustration">🐈 Catgirl Glam</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime kitsune fox spirit woman fantasy art">🦊 Kitsune</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime cyberpunk woman futuristic bodysuit character art">⚡ Cyber Glam</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime succubus queen fantasy character illustration">😈 Succubus Queen</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime lingerie fashion illustration character design">💜 Lingerie Fashion</button>
+        <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime fantasy swimwear pin-up illustration">🌊 Fantasy Swimwear</button>
         <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime elf queen elegant fantasy pin-up illustration">🧝 Elf Queen</button>
         <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime vampire queen gothic glamour illustration">🦇 Vampire Queen</button>
         <button class="anime-btn" type="button" data-anime-search="images" data-anime-query="adult anime catgirl fashion pin-up illustration">🐈 Catgirl Glam</button>
