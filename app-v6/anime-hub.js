@@ -16,7 +16,7 @@
     <div class="anime-hero">
       <div class="anime-eyebrow">KH么KOZAK · ANIME HUB</div>
       <h1>ANIME <span>HUB</span></h1>
-      <p>Галерея аніме-персонажів із фото з інтернету та власна колекція. Усе в одному розділі Battle Hub.</p>
+      <p>Велика добірка аніме-героїнь з інтернету: милі, готичні, стильні та виразні образи. Усе в одному розділі Battle Hub.</p>
       <div class="anime-actions">
         <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button>
         <button class="anime-btn" type="button" data-anime-search="videos">▶ Знайти відео в Google</button>
@@ -64,7 +64,23 @@
     {name:'Black Hair · Anime Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Black_long_haired_anime_girl_portrait.jpg',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Blue Sky',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_rendersvg.png',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Kimono',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/A_girl_in_kimono_playing_hanafuda.webp',rarity:'Інтернет-добірка',favorite:false},
-    {name:'Anime Girl · Sailor Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Girl_in_sailor_fuku_publicdomainq.png',rarity:'Інтернет-добірка',favorite:false}
+    {name:'Anime Girl · Sailor Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Girl_in_sailor_fuku_publicdomainq.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Orange Outfit',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_girl_in_orange_shirt.svg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Purple Hair',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Purple_Haired_Anime_Girl.svg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Red Outfit',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Red_suit_anime_girl_with_board_2.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Cyan Hair',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gray_cyan_hair_anime_girl.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Wolf Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gray-Haired_Wolf_Girl_with_Collar.jpg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · AI Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_GAN_generated.jpg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Woman · Elegant',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Moe_Manga_Lady.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Mecha Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mecha-girl.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Colorful Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_Cola_Mateya.svg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Classic Art',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Moe-3251269_1920.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Manga Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Frontviewofananimeface.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Soft Aesthetic',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Aesthetic-anime-girl.jpg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Portrait Collection',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Artbreeder_example_anime_portraits.jpg',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Red Hair',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Angry_anime_girl.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Cute Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/AnimeGirlXzit.png',rarity:'Інтернет-добірка',favorite:false},
+    {name:'Anime Girl · Purple Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/All_Weather_Girls_Portrait.png',rarity:'Інтернет-добірка',favorite:false}
   ];
   {
     const current=safeRead();
