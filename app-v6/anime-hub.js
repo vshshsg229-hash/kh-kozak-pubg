@@ -85,7 +85,7 @@
     {name:'Anime Girl · Portrait Collection',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Artbreeder_example_anime_portraits.jpg',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Red Hair',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Angry_anime_girl.png',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Cute Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/AnimeGirlXzit.png',rarity:'Інтернет-добірка',favorite:false},
-    {name:'Anime Girl · Purple Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/All_Weather_Girls_Portrait.png',rarity:'Інтернет-добірка',favorite:false}
+    {name:'Anime Girl · Purple Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/All_Weather_Girls_Portrait.png',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Mecha Ecchi Armor',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mecha-girl.png',rarity:'Mecha · Pin-up',favorite:false},
     {name:'Anime Girl · Maid Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Meido.png',rarity:'Ecchi · Glam',favorite:false},
     {name:'Anime Girl · Mikaela',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mikaela_color.png',rarity:'Anime · Character Art',favorite:false},
