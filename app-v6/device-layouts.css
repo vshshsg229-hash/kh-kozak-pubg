@@ -37,7 +37,7 @@ input,select,textarea{max-width:100%;font-size:16px}
  .main{margin-left:0!important;padding:0 18px 92px!important}
  .topbar{height:64px;position:sticky;top:0;z-index:30;backdrop-filter:blur(14px)}
  .mobile-brand{display:flex!important;align-items:center}
- .mobile-nav{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr));position:fixed;left:10px;right:10px;bottom:max(8px,env(safe-area-inset-bottom));z-index:1000;padding:7px 5px;border:1px solid rgba(143,169,197,.25);border-radius:17px;background:rgba(8,13,20,.97);box-shadow:0 10px 35px #0008}
+ .mobile-nav{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));position:fixed;left:10px;right:10px;bottom:max(8px,env(safe-area-inset-bottom));z-index:1000;padding:7px 5px;border:1px solid rgba(143,169,197,.25);border-radius:17px;background:rgba(8,13,20,.97);box-shadow:0 10px 35px #0008}
  .mobile-nav button{min-width:0;min-height:54px;padding:5px 2px;font-size:10px;white-space:normal}
  .mobile-nav button span{font-size:19px}
  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -49,7 +49,7 @@ input,select,textarea{max-width:100%;font-size:16px}
  .topbar{height:58px;gap:8px;position:sticky;top:0;z-index:30;backdrop-filter:blur(14px)}
  .mobile-brand{display:flex!important;align-items:center;min-width:0}
  .mobile-brand b,.mobile-brand strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
- .mobile-nav{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr));position:fixed;left:7px;right:7px;bottom:max(6px,env(safe-area-inset-bottom));z-index:1000;padding:5px 3px;border:1px solid rgba(143,169,197,.25);border-radius:15px;background:rgba(8,13,20,.97);box-shadow:0 10px 35px #0009}
+ .mobile-nav{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));position:fixed;left:7px;right:7px;bottom:max(6px,env(safe-area-inset-bottom));z-index:1000;padding:5px 3px;border:1px solid rgba(143,169,197,.25);border-radius:15px;background:rgba(8,13,20,.97);box-shadow:0 10px 35px #0009}
  .mobile-nav button{min-width:0;min-height:51px;padding:4px 1px;gap:2px;font-size:9px;line-height:1.15;white-space:normal}
  .mobile-nav button span{font-size:18px}
  .panel,.card{padding:14px!important}
@@ -70,7 +70,7 @@ input,select,textarea{max-width:100%;font-size:16px}
 @media(max-width:900px) and (orientation:landscape){
  .topbar{height:50px;margin-bottom:8px}
  .main{padding-top:0!important;padding-bottom:72px!important}
- .mobile-nav{left:12px;right:12px;bottom:5px;grid-template-columns:repeat(8,minmax(0,1fr));padding:3px 6px}
+ .mobile-nav{left:12px;right:12px;bottom:5px;grid-template-columns:repeat(7,minmax(0,1fr));padding:3px 6px}
  .mobile-nav button{min-height:43px;flex-direction:row;justify-content:center;gap:6px;font-size:10px}
  .mobile-nav button span{font-size:17px}
  .hero,.hero-card{grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
