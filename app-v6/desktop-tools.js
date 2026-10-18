@@ -21,6 +21,7 @@ if(!button||!backdrop||!input||!list)return;
 const commands=[
  ['home','Головна','Стартова панель, статистика та щоденний бонус','⌂'],
  ['games','Ігри та режими','Каталог мініігор та аркада','▣'],
+ ['roblox','Roblox Worlds','Сім ігрових світів: Fruits, Night Shift, Tower, Bed Wars, 99 Nights, Brainrot і Token Rush','🎮'],
  ['3d','3D Арена','Окремі масштабні 3D-ігри','◈'],
  ['bunker','Бункер','База, покращення та трофеї','⌂'],
  ['missions','Місії та завдання','Щоденні завдання й бонуси','◈'],
