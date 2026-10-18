@@ -32,3 +32,33 @@
 #tab-animeafterdark .aad-card{box-shadow:inset 0 0 0 1px #ffffff06,0 10px 28px #0003}
 #tab-animeafterdark .aad-card:hover{border-color:#c777ce;box-shadow:0 0 22px #d66be51a}
 @media(max-width:560px){#tab-animeafterdark .aad-art{min-height:190px}#tab-animeafterdark .aad-portrait{width:132px;height:142px}}
+
+
+/* v17.95.0 — desktop-first heroine gallery, consistent across PC/tablet/mobile */
+#tab-animeafterdark .aad-shell{width:100%;max-width:1500px;margin-inline:auto}
+#tab-animeafterdark .aad-hero{position:relative;overflow:hidden}
+#tab-animeafterdark .aad-hero:after{content:"✦";position:absolute;right:5%;top:12%;font-size:clamp(70px,12vw,170px);color:#ffb8f31c;pointer-events:none}
+#tab-animeafterdark .aad-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#tab-animeafterdark .aad-art{min-height:290px}
+#tab-animeafterdark .aad-portrait{width:220px;height:250px;max-width:75%;filter:drop-shadow(0 0 22px #f6b8ff40)}
+#tab-animeafterdark .aad-card-copy{padding:18px}
+#tab-animeafterdark .aad-card-copy h3{font-size:clamp(16px,1.3vw,21px)}
+#tab-animeafterdark .aad-card-copy p{font-size:13px;min-height:58px}
+#tab-animeafterdark .aad-card-copy button{font-size:11px;letter-spacing:.04em}
+#tab-animeafterdark .aad-art:before{width:210px;height:210px}
+#tab-animeafterdark .aad-art:after{width:270px;height:270px}
+#tab-animeafterdark .aad-portrait .aad-lash{stroke-width:1.65}
+#tab-animeafterdark .aad-portrait .aad-brow{fill:none;stroke:#552b4a;stroke-width:1.35;stroke-linecap:round}
+#tab-animeafterdark .aad-portrait .aad-face-light{fill:#fff;opacity:.17}
+#tab-animeafterdark .aad-portrait .aad-ear{fill:#ffd0bf;stroke:#e6a49e;stroke-width:.7}
+#tab-animeafterdark .aad-portrait .aad-strand{fill:none;stroke:#ffffffa8;stroke-width:.7;stroke-linecap:round}
+#tab-animeafterdark .aad-portrait .aad-costume-line{fill:none;stroke:var(--eye,#ffb3e5);stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
+#tab-animeafterdark .aad-portrait .aad-style-accent{fill:var(--eye,#ffb3e5);stroke:#fff9;stroke-width:.55}
+#tab-animeafterdark .aad-card:hover .aad-portrait{transform:translateY(-3px) scale(1.035);filter:drop-shadow(0 0 28px #f6b8ff66)}
+#tab-animeafterdark .aad-portrait{transition:transform .22s ease,filter .22s ease}
+@media(min-width:720px){#tab-animeafterdark .aad-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}#tab-animeafterdark .aad-art{min-height:310px}#tab-animeafterdark .aad-portrait{width:235px;height:265px}}
+@media(min-width:1100px){#tab-animeafterdark .aad-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}#tab-animeafterdark .aad-art{min-height:330px}#tab-animeafterdark .aad-portrait{width:250px;height:280px}#tab-animeafterdark .aad-hero{padding:34px 40px}#tab-animeafterdark .aad-card-copy{padding:18px}}
+@media(min-width:1500px){#tab-animeafterdark .aad-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}}
+@media(max-width:719px){#tab-animeafterdark .aad-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}#tab-animeafterdark .aad-art{min-height:230px}#tab-animeafterdark .aad-portrait{width:170px;height:195px;max-width:88%}#tab-animeafterdark .aad-card-copy{padding:12px}#tab-animeafterdark .aad-card-copy p{font-size:11px;min-height:0}}
+@media(max-width:420px){#tab-animeafterdark .aad-grid{grid-template-columns:1fr}#tab-animeafterdark .aad-art{min-height:245px}#tab-animeafterdark .aad-portrait{width:190px;height:215px}}
+@media(prefers-reduced-motion:reduce){#tab-animeafterdark .aad-portrait{transition:none}}
