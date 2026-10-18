@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.82.0",
+  "version": "17.90.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
-  "updatedAt": "2026-10-17",
+  "updatedAt": "2026-10-18",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Responsive redesign: separate phone, tablet and desktop layouts with portrait and landscape tuning."
+  "releaseNotes": "KOZAK Assistant: Ukrainian voice commands, Android and Windows app launching, searchable apps, persistent command history and saved spoken-response preference."
 }

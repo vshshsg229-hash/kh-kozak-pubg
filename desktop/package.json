@@ -18,6 +18,7 @@
     "asar": true,
     "files": [
       "main.cjs",
+      "preload.cjs",
       "web/**/*",
       "package.json"
     ],
