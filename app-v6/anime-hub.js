@@ -122,7 +122,13 @@
     {name:'Ecchi Art · Sakura Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_librsvg.png',rarity:'Adult-style · Portrait',favorite:false},
     {name:'Ecchi Art · Summer Illustration',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_girl_at_beach.jpg',rarity:'Adult-style · Summer',favorite:false},
     {name:'Ecchi Art · Purple Hair Bunny',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bunny_girl_with_purple_hair.svg',rarity:'Adult-style · Bunny',favorite:false},
-    {name:'Ecchi Art · Airy Fairy',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Carefree_as_a_fairy_by_karbo_59804362.jpg',rarity:'Adult-style · Fantasy',favorite:false}
+    {name:'Ecchi Art · Lizard-Girl Bikini',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_art_of_lizard_girl_with_bikini.jpg',rarity:'Adult-style · Fantasy',favorite:false},
+    {name:'Ecchi Art · Elf Fantasy',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Elf_girl_on_bench.jpg',rarity:'Adult-style · Elf',favorite:false},
+    {name:'Ecchi Art · Wikipe-tan Bikini',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Fan_service_by_Wikipe-tan_with_bikini.jpg',rarity:'Adult-style · Bikini',favorite:false},
+    {name:'Ecchi Art · Manga Stockings',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Ecchi_manga_-_Dibujo_estilo_manga_de_una_chica_con_pantimedias_puestas.jpg',rarity:'Adult-style · Fashion',favorite:false},
+    {name:'Ecchi Art · Dojikko Illustration',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Dojikko.png',rarity:'Adult-style · Manga',favorite:false},
+    {name:'Ecchi Art · Fantasy Bikini Armor',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bikini_armor.jpg',rarity:'Adult-style · Fantasy Armor',favorite:false},
+    {name:'Ecchi Art · Lingerie Manga',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Lingerie_in_anime_and_manga.jpg',rarity:'Adult-style · Lingerie',favorite:false}
   ];
   {
     const current=safeRead();
