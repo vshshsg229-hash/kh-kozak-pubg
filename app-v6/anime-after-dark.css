@@ -100,3 +100,15 @@
 #tab-animeafterdark .aad-image-credit{display:block;font-size:.72rem;opacity:.75;margin-top:4px}
 #tab-animeafterdark .aad-image-credit a{color:#c9a4ff;text-decoration:underline}
 #tab-animeafterdark .aad-themed-image .aad-rarity{z-index:2;position:absolute;top:10px;left:10px}
+
+/* v18.1.0 online art discovery cards */
+#tab-animeafterdark .aad-online-picks{margin:22px 0;padding:18px;border:1px solid #9b6cff55;border-radius:18px;background:linear-gradient(135deg,#151324,#0b101c)}
+#tab-animeafterdark .aad-online-heading h2{margin:0 0 6px;color:#e5c6ff}
+#tab-animeafterdark .aad-online-heading p{margin:0 0 14px;opacity:.8}
+#tab-animeafterdark .aad-online-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+#tab-animeafterdark .aad-online-link{display:flex;flex-direction:column;gap:8px;min-height:150px;padding:14px;border:1px solid #b68cff55;border-radius:13px;background:radial-gradient(circle at 90% 0,#43204e,#101321 65%);color:inherit;text-decoration:none}
+#tab-animeafterdark .aad-online-link>span{font-size:1.7rem}
+#tab-animeafterdark .aad-online-link strong{font-size:.86rem;letter-spacing:.04em}
+#tab-animeafterdark .aad-online-link small{opacity:.75;line-height:1.35}
+#tab-animeafterdark .aad-online-link em{margin-top:auto;color:#d9b8ff;font-size:.7rem;font-style:normal;font-weight:700}
+#tab-animeafterdark .aad-online-search{margin-top:14px;width:100%;padding:12px;border:1px solid #b78bff;border-radius:12px;background:#24143b;color:#f5eaff;font-weight:800}
