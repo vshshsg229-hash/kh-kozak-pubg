@@ -29,3 +29,11 @@
 #tab-anime .anime-collection-stats span{padding:8px 10px;border:1px solid #463051;border-radius:9px;background:#100e19;color:#e8d9f4;font-size:12px}
 @media(max-width:720px){#tab-anime .anime-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-anime .anime-search-row{grid-template-columns:1fr}#tab-anime .anime-hero{padding:16px}}
 @media(max-width:380px){#tab-anime .anime-grid{grid-template-columns:1fr}}
+
+#tab-anime .anime-collection-tools{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) auto auto auto;gap:8px;align-items:center;margin-top:12px}
+#tab-anime .anime-collection-tools .anime-input{min-height:40px}
+#tab-anime .anime-favorites-filter{display:flex;align-items:center;gap:6px;color:#f5dff5;font-size:12px;white-space:nowrap}
+#tab-anime .anime-import-label{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+#tab-anime .anime-card-actions .anime-btn[aria-pressed="true"]{border-color:#e879c4;color:#ff9cdd;background:#2a1328}
+@media(max-width:850px){#tab-anime .anime-collection-tools{grid-template-columns:1fr 1fr}#tab-anime .anime-collection-tools .anime-favorites-filter{grid-column:1/-1}#tab-anime .anime-collection-tools .anime-btn,#tab-anime .anime-import-label{width:100%;box-sizing:border-box}}
+@media(max-width:420px){#tab-anime .anime-collection-tools{grid-template-columns:1fr}}
