@@ -27,6 +27,25 @@ function renderHistory(){historyBox.replaceChildren();if(!commandHistory.length)
 function renderApps(){installed.replaceChildren();const term=norm(filter.value);const shown=apps.filter(a=>norm(a.label).includes(term));if(!shown.length){const empty=document.createElement('span');empty.className='koz-device-history-empty';empty.textContent=term?'Немає збігів за цією назвою.':'Список програм порожній.';installed.append(empty);return}shown.forEach(a=>{const b=document.createElement('button');b.type='button';b.innerHTML='<span>▣</span>';const label=document.createElement('span');label.textContent=a.label;b.append(label);b.addEventListener('click',async()=>{if(desktop){const result=await desktop.launchApp(a.id);setStatus(result?.ok?'Запускаю '+a.label+'…':'Не вдалося запустити '+a.label+'.')}else if(device.launchApp(a.packageName)){setStatus('Запускаю '+a.label+'…')}else{device.openStore(a.packageName);setStatus('Не вдалося запустити '+a.label+'. Відкрив магазин.')}});installed.append(b)})}
 const norm=s=>String(s||'').toLocaleLowerCase('uk-UA').replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
 async function openItem(item){if(item.action){item.action();return}
+if(item.name==='PUBG Mobile'){
+  if(desktop){
+    const found=apps.find(a=>/pubg\s*mobile/i.test(a.label||'')||/com\.tencent\.ig/i.test(a.id||''));
+    if(found){const result=await desktop.launchApp(found.id);if(result?.ok){setStatus('Запускаю PUBG Mobile…');return}}
+    await desktop.openExternal('https://play.google.com/store/apps/details?id=com.tencent.ig');
+    setStatus('На цьому пристрої не знайшов встановлену PUBG Mobile. Відкрив сторінку гри.');return;
+  }
+  if(device&&item.pkg){
+    try{const list=JSON.parse(device.getInstalledApps()||'[]');const found=list.find(a=>a.packageName===item.pkg);
+      if(found&&device.launchApp(item.pkg)){setStatus('Запускаю PUBG Mobile…');return}
+    }catch(e){}
+  }
+  if(/Android/i.test(navigator.userAgent)){
+    const fallback='https://play.google.com/store/apps/details?id=com.tencent.ig';
+    setStatus('Намагаюся запустити встановлену PUBG Mobile…');
+    window.location.href='intent://launch/#Intent;scheme=pubgmobile;package=com.tencent.ig;S.browser_fallback_url='+encodeURIComponent(fallback)+';end';
+    return;
+  }
+}
 if(desktop){const found=apps.find(a=>norm(a.label).includes(norm(item.name))||norm(item.name).includes(norm(a.label)));if(found){const result=await desktop.launchApp(found.id);setStatus(result?.ok?'Запускаю '+found.label+'…':'Не вдалося запустити '+found.label+'.');return}if(item.desktopStore){await desktop.openStore(item.name);setStatus('Відкрив Microsoft Store для пошуку '+item.name+'.');return}}
 if(device&&item.pkg){try{const list=JSON.parse(device.getInstalledApps()||'[]');const found=list.find(a=>a.packageName===item.pkg);if(found&&device.launchApp(item.pkg)){setStatus('Запускаю '+found.label+'…');return}setStatus(item.name+' не знайдено серед встановлених. Відкриваю магазин…');device.openStore(item.pkg);return}catch(e){}}
 if(item.url){if(desktop){await desktop.openExternal(item.url)}else{window.open(item.url,'_blank','noopener,noreferrer')}setStatus('Відкрив посилання для '+item.name+'. Якщо застосунок встановлений, пристрій може запропонувати відкрити його.');}}
