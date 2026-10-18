@@ -16,12 +16,11 @@
     <div class="anime-hero">
       <div class="anime-eyebrow">KH么KOZAK · ANIME HUB</div>
       <h1>ANIME <span>HUB</span></h1>
-      <p>Галерея персонажів, пошук зображень, відео та власна колекція. Усе в одному розділі Battle Hub.</p>
+      <p>Галерея аніме-персонажів із фото з інтернету та власна колекція. Усе в одному розділі Battle Hub.</p>
       <div class="anime-actions">
         <button class="anime-btn primary" type="button" data-anime-search="images">⌕ Шукати тянок у Google</button>
         <button class="anime-btn" type="button" data-anime-search="videos">▶ Знайти відео в Google</button>
       </div>
-      <div class="anime-note">Пошук відкриває Google у новій вкладці. Google не надає універсального вбудованого плеєра для всіх знайдених відео — нижче можна відкрити сумісне відео прямо в додатку.</div>
     </div>
     <div class="anime-panel">
       <div class="anime-eyebrow">01 / GOOGLE SEARCH</div><h2>Знайти персонажа</h2>
@@ -31,19 +30,10 @@
       </form>
     </div>
     <div class="anime-panel">
-      <div class="anime-eyebrow">02 / IN-APP VIDEO PLAYER</div><h2>Відео всередині додатка</h2>
-      <p>Встав посилання на прямий MP4/WebM або на відео Google Drive, доступне за посиланням. Для Google Drive використовується офіційний preview player.</p>
-      <form id="animeVideoForm" class="anime-search-row">
-        <input id="animeVideoUrl" class="anime-input" type="url" placeholder="Посилання на MP4 або Google Drive" aria-label="Посилання на відео" required>
-        <button class="anime-btn primary" type="submit">Відкрити плеєр ▶</button>
-      </form>
-      <div id="animeVideoPlayer" style="margin-top:12px"><div class="anime-empty">Відеоплеєр готовий. Додай посилання на сумісне відео.</div></div>
-      <p class="anime-note">Відео, яке блокує вбудовування або вимагає авторизації, може не відтворюватися. Не вставляй приватні посилання.</p>
-    </div>
-    <div class="anime-panel">
-      <div class="anime-eyebrow">03 / YOUR COLLECTION</div><h2>Моя колекція</h2>
+      <div class="anime-eyebrow">02 / YOUR COLLECTION</div><h2>Моя колекція</h2>
       <div class="anime-collection-stats"><span>Карток: <b id="animeCollectionCount">0</b></span><span>Збереження на цьому пристрої</span><span>Обране: <b id="animeFavoritesCount">0</b></span></div>
       <div class="anime-collection-tools">
+        <button id="animeLoadInternetPhotos" class="anime-btn primary" type="button">＋ Додати фото з інтернету</button>
         <input id="animeCollectionSearch" class="anime-input" type="search" placeholder="Знайти у своїй колекції…" aria-label="Фільтр колекції">
         <select id="animeCollectionSort" class="anime-input" aria-label="Сортування колекції"><option value="newest">Спочатку нові</option><option value="name">За ім'ям А—Я</option><option value="favorites">Обране спочатку</option></select>
         <label class="anime-favorites-filter"><input id="animeFavoritesOnly" type="checkbox"> Лише обране</label>
@@ -55,7 +45,7 @@
         <input id="animeCardImage" class="anime-input" type="url" placeholder="Пряме посилання на зображення (https://…)" aria-label="Посилання на зображення" required>
         <button class="anime-btn primary" type="submit">＋ Додати картку</button>
       </form>
-      <p class="anime-note">Після пошуку в Google Images відкрий зображення, скопіюй пряме посилання на файл і додай його сюди. Використовуй зображення, які маєш право зберігати/показувати.</p>
+      <p class="anime-note">Фото можна автоматично завантажити з відкритої SFW-аніме-галереї. Також можеш додавати власні посилання.</p>
       <div id="animeCollectionGrid" class="anime-grid" style="margin-top:12px"></div>
     </div>
   `;
@@ -142,22 +132,40 @@
     e.target.reset();renderCollection();
   });
 
-  function getDriveId(url){const m=url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([a-zA-Z0-9_-]+)/);return m?m[1]:null;}
-  document.getElementById('animeVideoForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    const raw=document.getElementById('animeVideoUrl').value.trim();
-    let parsed;try{parsed=new URL(raw)}catch{alert('Перевір посилання на відео.');return;}
-    if(!/^https?:$/.test(parsed.protocol)){alert('Дозволені лише HTTP/HTTPS посилання.');return;}
-    const host=parsed.hostname.toLowerCase();
-    const player=document.getElementById('animeVideoPlayer');player.replaceChildren();
-    const driveId=getDriveId(raw);
-    if(host==='drive.google.com'&&driveId){
-      const frame=document.createElement('iframe');frame.className='anime-video-frame';frame.src='https://drive.google.com/file/d/'+encodeURIComponent(driveId)+'/preview';frame.title='Google Drive video player';frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;frame.referrerPolicy='no-referrer';player.append(frame);return;
+
+  async function loadInternetPhotos(){
+    const button=document.getElementById('animeLoadInternetPhotos');
+    button.disabled=true;button.textContent='Завантажую фото…';
+    try{
+      const response=await fetch('https://api.waifu.pics/many/sfw/waifu',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({})
+      });
+      if(!response.ok)throw new Error('gallery-unavailable');
+      const payload=await response.json();
+      const urls=Array.isArray(payload.files)?payload.files.filter(url=>typeof url==='string'&&/^https:\/\//i.test(url)):[];
+      if(!urls.length)throw new Error('no-images');
+      const items=safeRead();
+      const seen=new Set(items.map(item=>item.image));
+      let added=0;
+      urls.forEach(url=>{
+        if(!seen.has(url)){
+          seen.add(url);
+          items.unshift({name:'Anime photo '+(items.length+1),image:url,rarity:'Фото з інтернету',favorite:false});
+          added++;
+        }
+      });
+      if(!safeWrite(items))throw new Error('storage');
+      renderCollection();
+      if(!added)alert('Ці фото вже є в колекції. Натисни ще раз, щоб отримати інші.');
+    }catch(error){
+      alert('Не вдалося автоматично завантажити фото. Перевір інтернет і спробуй ще раз або скористайся пошуком Google Images.');
+    }finally{
+      button.disabled=false;button.textContent='＋ Додати фото з інтернету';
     }
-    if(/\.(mp4|webm|ogg)(?:$|\?)/i.test(parsed.pathname+parsed.search)){
-      const video=document.createElement('video');video.className='anime-video-frame';video.controls=true;video.playsInline=true;video.preload='metadata';video.src=raw;player.append(video);return;
-    }
-    const msg=document.createElement('div');msg.className='anime-empty';msg.textContent='Це посилання не схоже на прямий MP4/WebM або Google Drive файл. Google Search не дозволяє універсально вбудувати результати відео. Знайди відео з підтримкою вбудовування або використай пряме посилання.';player.append(msg);
-  });
+  }
+  document.getElementById('animeLoadInternetPhotos').addEventListener('click',loadInternetPhotos);
+  if(!safeRead().length) loadInternetPhotos();
   renderCollection();
 })();
