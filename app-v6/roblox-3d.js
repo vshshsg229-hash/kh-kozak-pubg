@@ -98,7 +98,7 @@ function createWorld(T,mode,stage){
  const item=state.items.find(o=>o.visible&&distance(player.position,o.position)<2.3);
  if(item){item.visible=false;state.collected++;profile.tokens+=mode.id==='tokens'?12:mode.id==='nights'?4:mode.id==='fruits'?8:5;save();updateWallet();state.hud.querySelector('#rb3dCount').textContent=state.collected+' / '+goalCount+' ЗІБРАНО';say('Здобич зібрано! +'+(mode.id==='tokens'?12:mode.id==='nights'?4:mode.id==='fruits'?8:5)+' 🪙');if(mode.id==='tokens'&&distance(player.position,{x:homeX,z:homeZ+3})<5)say('Токени на базі можна вкласти в будинок унизу меню.');if(state.collected>=goalCount)complete();return}
  if(mode.id==='tower'&&player.position.x>9&&player.position.z<6){complete();return}
- if(mode.id==='doors'&&state.collected>=3){complete();return}
+ if(mode.id==='doors'&&state.collected>=3&&player.position.z>10){complete();return}
  if(mode.id==='nights'&&distance(player.position,{x:0,z:0})<3){complete();return}
  if(mode.id==='bedwars'&&distance(player.position,{x:homeX,z:homeZ+3})<4){complete();return}
  say(mode.id==='tokens'?'Збирай золоті токени на карті, потім покращуй будинок!':mode.id==='nights'?'Збери деревину та повернись до багаття в центрі.':mode.id==='tower'?'Дістанься золотої платформи на вершині.':'Підійди ближче до предмета та натисни ДІЯ.');
@@ -119,7 +119,7 @@ function createWorld(T,mode,stage){
  state.items.forEach((o,i)=>{if(o.visible){o.position.y=o.userData.baseY+Math.sin(now*.002+i)*.16;o.rotation.y+=dt*.8}});
  state.rivalBases.forEach((b,i)=>{b.glow.position.y=1.35+Math.sin(now*.003+i)*.25;b.glow.rotation.y+=dt});
  if(mode.id==='nights'){const f=scene.children.find(o=>o.userData.fire);if(f){f.scale.setScalar(1+Math.sin(now*.012)*.12)}}
- const target=new T.Vector3(player.position.x,player.position.y+1.4,player.position.z);const behind=new T.Vector3(Math.sin(player.rotation.y)*8,5.4,Math.cos(player.rotation.y)*8);camera.position.lerp(new T.Vector3(target.x+behind.x,target.y+behind.y,target.z+behind.z),Math.min(1,dt*5));camera.lookAt(target);
+ const target=new T.Vector3(player.position.x,player.position.y+1.4,player.position.z);const behind=new T.Vector3(-Math.sin(player.rotation.y)*8,5.4,-Math.cos(player.rotation.y)*8);camera.position.lerp(new T.Vector3(target.x+behind.x,target.y+behind.y,target.z+behind.z),Math.min(1,dt*5));camera.lookAt(target);
  }
  state.keys={};state.jump=()=>state.jumpQueued=true;
  const keydown=e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();state.keys[e.code]=true;if(e.code==='Space')state.jumpQueued=true;if(e.code==='KeyE'||e.code==='Enter')action()};
