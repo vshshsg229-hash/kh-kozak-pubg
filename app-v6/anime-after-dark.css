@@ -18,4 +18,4 @@
 #tab-animeafterdark .aad-portrait-rose .eye{fill:#b13c66}
 
 /* Expanded heroine gallery v17.93.0 */
-#tab-animeafterdark .aad-art-extra{background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--hair) 48%,#151222),#171321 72%,#0b1018)}#tab-animeafterdark .aad-portrait-extra .hair-back,#tab-animeafterdark .aad-portrait-extra .hair-front{fill:var(--hair)}#tab-animeafterdark .aad-portrait-extra .shoulders{fill:var(--outfit)}#tab-animeafterdark .aad-portrait-extra .eye{fill:var(--eye)}#tab-animeafterdark .footer span:last-child{cursor:pointer;user-select:none}
+#tab-animeafterdark .aad-art-extra{background:radial-gradient(circle at 50% 35%,var(--hair),#171321 72%,#0b1018)}#tab-animeafterdark .aad-portrait-extra .hair-back,#tab-animeafterdark .aad-portrait-extra .hair-front{fill:var(--hair)}#tab-animeafterdark .aad-portrait-extra .shoulders{fill:var(--outfit)}#tab-animeafterdark .aad-portrait-extra .eye{fill:var(--eye)}#tab-animeafterdark .footer span:last-child{cursor:pointer;user-select:none}
