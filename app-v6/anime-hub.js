@@ -108,7 +108,15 @@
     {name:'Ecchi Art · Anime Girl Portrait PNG',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_librsvg.png',rarity:'Adult-style · Portrait',favorite:false},
     {name:'Ecchi Art · Beautiful Anime Girl',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Beautiful_girl.jpg',rarity:'Adult-style · Pin-up',favorite:false},
     {name:'Ecchi Art · Fairy Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Carefree_as_a_fairy_by_karbo_59804362.jpg',rarity:'Adult-style · Fantasy',favorite:false},
-    {name:'Ecchi Art · Manga Pin-up 2',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Dojikko2.3.svg',rarity:'Adult-style · Manga',favorite:false}
+    {name:'Ecchi Art · Manga Pin-up 2',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Dojikko2.3.svg',rarity:'Adult-style · Manga',favorite:false},
+    {name:'Ecchi Art · Bowsette Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bowsette_by_Kira_I.png',rarity:'Adult-style · Glam',favorite:false},
+    {name:'Ecchi Art · Fantasy Trio',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Butterfly_trio_and_tasty_trains_by_joanhonekawa_dbjyygv.jpg',rarity:'Adult-style · Fantasy',favorite:false},
+    {name:'Ecchi Art · Manga Character',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Attack_of_the_giant_muscle_by_joanhonekawa_d4mlg5g.jpg',rarity:'Adult-style · Manga Art',favorite:false},
+    {name:'Ecchi Art · Witch Fantasy',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Sabbat_of_the_Witch_OP_screenshot.png',rarity:'Adult-style · Fantasy',favorite:false},
+    {name:'Ecchi Art · Sakura Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_Girl_librsvg.png',rarity:'Adult-style · Portrait',favorite:false},
+    {name:'Ecchi Art · Summer Illustration',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Anime_girl_at_beach.jpg',rarity:'Adult-style · Summer',favorite:false},
+    {name:'Ecchi Art · Purple Hair Bunny',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bunny_girl_with_purple_hair.svg',rarity:'Adult-style · Bunny',favorite:false},
+    {name:'Ecchi Art · Airy Fairy',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Carefree_as_a_fairy_by_karbo_59804362.jpg',rarity:'Adult-style · Fantasy',favorite:false}
   ];
   {
     const current=safeRead();
