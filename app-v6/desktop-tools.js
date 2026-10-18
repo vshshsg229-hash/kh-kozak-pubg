@@ -1,4 +1,18 @@
 (()=>{'use strict';
+const sidebar=document.querySelector('.sidebar');
+const nav=sidebar?.querySelector('.nav');
+if(sidebar&&nav&&!document.getElementById('sidebarQuickSearch')){
+ const wrap=document.createElement('div');wrap.className='sidebar-quick-search';
+ wrap.innerHTML='<label for="sidebarQuickSearchInput"><span aria-hidden="true">⌕</span><span class="sidebar-quick-search-label">ШВИДКИЙ ПОШУК</span><kbd>⌕</kbd></label><input id="sidebarQuickSearchInput" type="search" placeholder="Знайти розділ…" autocomplete="off" aria-label="Пошук розділів меню"><p class="sidebar-search-empty" hidden>Нічого не знайдено</p>';
+ nav.before(wrap);
+ const input=wrap.querySelector('input'),empty=wrap.querySelector('.sidebar-search-empty');
+ const style=document.createElement('style');style.id='sidebar-quick-search-style';style.textContent='.sidebar-quick-search{margin:8px 0 12px;padding:0 2px}.sidebar-quick-search label{display:flex;align-items:center;gap:7px;color:#8c9aaa;font-size:9px;font-weight:800;letter-spacing:1px;margin:0 4px 6px}.sidebar-quick-search label>span:first-child{font-size:18px;color:var(--yellow,#f2c94c)}.sidebar-quick-search label kbd{margin-left:auto;border:1px solid #39424d;border-radius:4px;padding:2px 5px;color:#8793a0}.sidebar-quick-search input{box-sizing:border-box;width:100%;height:40px;padding:0 12px;border:1px solid #343d49;border-radius:9px;background:#11171e;color:#f2f5f8;font:600 12px inherit;outline:none}.sidebar-quick-search input:focus{border-color:var(--yellow,#f2c94c);box-shadow:0 0 0 2px #f2c94c22}.sidebar-quick-search input::placeholder{color:#74808d}.sidebar-search-empty{margin:7px 4px;color:#e0b5c5;font-size:11px}.sidebar .nav .nav-group[hidden],.sidebar .nav .nav-item[hidden],.sidebar .nav .kozak-2d-nav[hidden]{display:none!important}@media(max-width:720px){.sidebar-quick-search{padding:0 12px;margin:6px 0 12px}.sidebar-quick-search input{background:#fff;color:#27232a;border-color:#e5d6df}.sidebar-quick-search input::placeholder{color:#91838c}.sidebar-quick-search label{color:#6e6470}.sidebar-quick-search label kbd{border-color:#e5d6df;color:#8b7e88}}';
+ document.head.append(style);
+ const apply=()=>{const q=input.value.trim().toLocaleLowerCase('uk');let count=0;nav.querySelectorAll('.nav-item').forEach(item=>{const hay=(item.innerText+' '+(item.getAttribute('title')||'')+' '+(item.dataset.tab||'')+' '+(item.dataset.game||'')).toLocaleLowerCase('uk');const match=!q||hay.includes(q);item.hidden=!match;if(match)count++;});nav.querySelectorAll('.nav-group').forEach(group=>{const items=[...group.querySelectorAll('.nav-item')];group.hidden=items.length>0&&!items.some(item=>!item.hidden);});empty.hidden=!q||count>0;};
+ input.addEventListener('input',apply);
+ nav.addEventListener('click',e=>{if(e.target.closest('.nav-item')&&input.value){input.value='';apply();}});
+ new MutationObserver(()=>apply()).observe(nav,{childList:true,subtree:true});
+}
 const button=document.getElementById('desktopCommandButton');
 const backdrop=document.getElementById('desktopCommandBackdrop');
 const input=document.getElementById('desktopCommandInput');
@@ -22,7 +36,8 @@ const commands=[
  ['pass','Royale Pass','Сезонний прогрес і нагороди','⬆'],
  ['telegram','Telegram і бот','Прив’язка та налаштування Telegram','➤'],
  ['admin','Адмін-панель','Керування хабом','⚙'],
- ['assistant','Напарник KH','Підказки та допомога','✧']
+ ['assistant','Напарник KH','Підказки та допомога','✧'],
+ ['animeafterdark','Anime Gallery','Відкрита аніме-колекція та пошук зображень','🌙']
 ];
 let visible=[],active=0,lastFocus=null;
 const isDesktop=()=>window.matchMedia('(min-width: 1024px)').matches;
