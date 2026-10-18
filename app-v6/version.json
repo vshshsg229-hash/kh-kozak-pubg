@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "17.92.0",
+  "version": "17.93.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-18",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Secret Anime After Dark: new avatar-hold unlock gesture and illustrated anime heroine collection."
+  "releaseNotes": "Anime After Dark: new five-tap footer unlock, eight new illustrated adult heroines, and repaired cache-busting update controls."
 }
