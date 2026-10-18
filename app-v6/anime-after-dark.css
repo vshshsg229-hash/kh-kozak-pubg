@@ -28,7 +28,7 @@
 #tab-animeafterdark .aad-portrait .aad-blush{filter:blur(.35px)}
 #tab-animeafterdark .aad-portrait .aad-accessory{filter:drop-shadow(0 0 3px #fff6)}
 #tab-animeafterdark .aad-art{min-height:205px}
-#tab-animeafterdark .aad-art-extra{background:radial-gradient(ellipse at 50% 38%,color-mix(in srgb,var(--hair) 58%,#30203e),#171321 72%,#0b1018)}
+#tab-animeafterdark .aad-art-extra{background:radial-gradient(ellipse at 50% 38%,var(--hair),#171321 72%,#0b1018)}
 #tab-animeafterdark .aad-card{box-shadow:inset 0 0 0 1px #ffffff06,0 10px 28px #0003}
 #tab-animeafterdark .aad-card:hover{border-color:#c777ce;box-shadow:0 0 22px #d66be51a}
 @media(max-width:560px){#tab-animeafterdark .aad-art{min-height:190px}#tab-animeafterdark .aad-portrait{width:132px;height:142px}}
