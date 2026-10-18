@@ -9,15 +9,75 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.JavascriptInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.List;
 
 public class MainActivity extends Activity {
     private WebView webView;
+
+    public final class KozakDeviceBridge {
+        @JavascriptInterface
+        public String getInstalledApps() {
+            JSONArray apps = new JSONArray();
+            try {
+                Intent query = new Intent(Intent.ACTION_MAIN, null);
+                query.addCategory(Intent.CATEGORY_LAUNCHER);
+                PackageManager pm = getPackageManager();
+                List<ResolveInfo> results;
+                if (Build.VERSION.SDK_INT >= 33) {
+                    results = pm.queryIntentActivities(query, PackageManager.ResolveInfoFlags.of(0));
+                } else {
+                    results = pm.queryIntentActivities(query, 0);
+                }
+                for (ResolveInfo info : results) {
+                    if (info.activityInfo == null) continue;
+                    JSONObject app = new JSONObject();
+                    app.put("label", String.valueOf(info.loadLabel(pm)));
+                    app.put("packageName", info.activityInfo.packageName);
+                    apps.put(app);
+                }
+            } catch (Exception ignored) {}
+            return apps.toString();
+        }
+
+        @JavascriptInterface
+        public boolean launchApp(String packageName) {
+            if (packageName == null || !packageName.matches("[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)+")) return false;
+            try {
+                Intent launch = getPackageManager().getLaunchIntentForPackage(packageName);
+                if (launch == null) return false;
+                launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(launch);
+                return true;
+            } catch (Exception ignored) { return false; }
+        }
+
+        @JavascriptInterface
+        public void openStore(String packageName) {
+            if (packageName == null || !packageName.matches("[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)+")) return;
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (Exception ignored) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (Exception ignoredAgain) {}
+            }
+        }
+    }
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +85,6 @@ public class MainActivity extends Activity {
         getWindow().setNavigationBarColor(Color.rgb(11, 14, 18));
         getWindow().getDecorView().setSystemUiVisibility(0);
         if (Build.VERSION.SDK_INT >= 35) {
-            // Android 15/16 enforce edge-to-edge for apps targeting recent SDKs.
             getWindow().setStatusBarColor(Color.TRANSPARENT);
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
             getWindow().setDecorFitsSystemWindows(false);
@@ -46,6 +105,7 @@ public class MainActivity extends Activity {
         webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        webView.addJavascriptInterface(new KozakDeviceBridge(), "KozakDevice");
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -56,7 +116,7 @@ public class MainActivity extends Activity {
                     return true;
                 }
                 if (("http".equals(scheme) || "https".equals(scheme)) &&
-                    !uri.getHost().equals("localhost") &&
+                    uri.getHost() != null && !uri.getHost().equals("localhost") &&
                     !uri.toString().contains("github.io/kh-kozak-pubg/")) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, uri)); } catch (Exception ignored) {}
                     return true;
