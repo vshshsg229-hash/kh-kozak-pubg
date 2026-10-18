@@ -50,6 +50,9 @@ jobs:
       - name: Check TikTok video editor JavaScript syntax
         run: node --check app-v6/creator-editor.js
 
+      - name: Check KOZAK Assistant JavaScript syntax
+        run: node --check app-v6/kozak-device-assistant.js
+
       - name: Check PC companion JavaScript syntax
         run: node --check app-v6/pc-companion.js
 
@@ -75,6 +78,7 @@ jobs:
           retention-days: 30
 
       - name: Publish downloadable Windows release
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: pc-v17.40.0
