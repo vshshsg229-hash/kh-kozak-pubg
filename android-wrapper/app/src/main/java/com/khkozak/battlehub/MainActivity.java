@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.JavascriptInterface;
 import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -23,9 +24,26 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class MainActivity extends Activity {
+    private static final int KOZAK_VOICE_REQUEST = 5107;
     private WebView webView;
 
     public final class KozakDeviceBridge {
+        @JavascriptInterface
+        public void startVoiceRecognition() {
+            runOnUiThread(() -> {
+                try {
+                    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "uk-UA");
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "uk-UA");
+                    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Скажи команду для KOZAK Assistant");
+                    startActivityForResult(intent, KOZAK_VOICE_REQUEST);
+                } catch (Exception ignored) {
+                    if (webView != null) webView.evaluateJavascript("window.dispatchEvent(new CustomEvent('kozak-native-voice-error'))", null);
+                }
+            });
+        }
+
         @JavascriptInterface
         public String getInstalledApps() {
             JSONArray apps = new JSONArray();
@@ -130,6 +148,20 @@ public class MainActivity extends Activity {
         setContentView(webView);
         if (savedInstanceState == null) webView.loadUrl("file:///android_asset/www/index.html");
         else webView.restoreState(savedInstanceState);
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != KOZAK_VOICE_REQUEST || webView == null) return;
+        if (resultCode == RESULT_OK && data != null) {
+            java.util.ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && !matches.isEmpty()) {
+                String spoken = JSONObject.quote(matches.get(0));
+                webView.evaluateJavascript("window.dispatchEvent(new CustomEvent('kozak-native-voice',{detail:{text:" + spoken + "}}))", null);
+                return;
+            }
+        }
+        webView.evaluateJavascript("window.dispatchEvent(new CustomEvent('kozak-native-voice-error'))", null);
     }
 
     @Override protected void onSaveInstanceState(Bundle outState) {
