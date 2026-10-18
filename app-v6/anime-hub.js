@@ -81,6 +81,16 @@
     {name:'Anime Girl · Red Hair',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Angry_anime_girl.png',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Cute Style',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/AnimeGirlXzit.png',rarity:'Інтернет-добірка',favorite:false},
     {name:'Anime Girl · Purple Portrait',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/All_Weather_Girls_Portrait.png',rarity:'Інтернет-добірка',favorite:false}
+    {name:'Anime Girl · Mecha Ecchi Armor',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mecha-girl.png',rarity:'Mecha · Pin-up',favorite:false},
+    {name:'Anime Girl · Maid Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Meido.png',rarity:'Ecchi · Glam',favorite:false},
+    {name:'Anime Girl · Mikaela',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mikaela_color.png',rarity:'Anime · Character Art',favorite:false},
+    {name:'Anime Girl · Fuwafuwa',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Fuwafuwa-chan.jpg',rarity:'Anime · Character Art',favorite:false},
+    {name:'Anime Girl · Mahuri',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mahuri.jpg',rarity:'Anime · Character Art',favorite:false},
+    {name:'Anime Girl · Moemiku Yuni',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Moemiku_yuni.png',rarity:'Anime · Character Art',favorite:false},
+    {name:'Anime Girl · Silver-Hair Sci-Fi',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Paulliu_girl_with_silver_hair.svg',rarity:'Sci-Fi · Glam',favorite:false},
+    {name:'Anime Girl · Purple Star Glam',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Purple_Haired_Anime_Girl_With_Star_Background.svg',rarity:'Ecchi · Glam',favorite:false},
+    {name:'Anime Girl · Mecha Pilot',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mirain_Suenaga_-_6839970960.jpg',rarity:'Mecha · Pilot',favorite:false},
+    {name:'Anime Girl · Manga Pin-up',image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/PanchiraIlustration.png',rarity:'Ecchi · Pin-up',favorite:false}
   ];
   {
     const current=safeRead();
