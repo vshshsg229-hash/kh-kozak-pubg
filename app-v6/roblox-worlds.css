@@ -1,0 +1,52 @@
+/* Roblox-inspired game portal — original KH mini-games, not affiliated with Roblox. */
+#tab-roblox{color:#f7eaf5}
+#tab-roblox .rb-hero{position:relative;overflow:hidden;padding:clamp(18px,4vw,34px);margin:0 0 16px;border:1px solid #f472b6;border-radius:18px;background:radial-gradient(ellipse at 90% 0%,#9d286b55,transparent 48%),linear-gradient(135deg,#28102b,#111421 68%,#190e20);box-shadow:inset 0 0 0 1px #ff8bd522,0 0 24px #f472b615}
+#tab-roblox .rb-kicker{color:#ff8bd5;font-size:10px;font-weight:950;letter-spacing:.18em}
+#tab-roblox .rb-hero h1{margin:9px 0;font-size:clamp(29px,5vw,48px);line-height:1.03;letter-spacing:-.035em}
+#tab-roblox .rb-hero h1 span{color:#ff8bd5;text-shadow:0 0 18px #f472b655}
+#tab-roblox .rb-hero p{max-width:720px;color:#d3bfd2;font-size:13px;line-height:1.65}
+#tab-roblox .rb-top-stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+#tab-roblox .rb-stat{padding:9px 12px;border:1px solid #58314f;border-radius:10px;background:#0c101b;color:#e9cfe4;font-size:11px}
+#tab-roblox .rb-stat b{color:#ff9bdb;font-size:15px;margin-right:4px}
+#tab-roblox .rb-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 10px}
+#tab-roblox .rb-section-title h2{margin:0;font-size:17px;letter-spacing:.04em}
+#tab-roblox .rb-section-title small{color:#b98fb0;font-size:9px;letter-spacing:.1em}
+#tab-roblox .rb-games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+#tab-roblox .rb-card{min-width:0;overflow:hidden;display:flex;flex-direction:column;padding:14px;border:1px solid #59304f;border-radius:14px;background:linear-gradient(150deg,#1b1422,#0b111b 72%);transition:border-color .15s,transform .15s,box-shadow .15s}
+#tab-roblox .rb-card:hover{border-color:#ff8bd5;box-shadow:0 0 16px #f472b61b;transform:translateY(-2px)}
+#tab-roblox .rb-card-top{display:flex;align-items:center;gap:11px}
+#tab-roblox .rb-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #87466f;border-radius:12px;background:linear-gradient(145deg,#45213e,#151320);font-size:25px}
+#tab-roblox .rb-card h3{margin:0 0 4px;font-size:14px;color:#fff}
+#tab-roblox .rb-card .rb-subtitle{color:#ff9bdb;font-size:9px;font-weight:850;letter-spacing:.09em}
+#tab-roblox .rb-card p{margin:12px 0;color:#bbaebe;font-size:12px;line-height:1.55;flex:1}
+#tab-roblox .rb-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+#tab-roblox .rb-tags span{padding:4px 7px;border:1px solid #3f2c41;border-radius:6px;color:#cdb5cd;font-size:9px}
+#tab-roblox .rb-play,#tab-roblox .rb-action,#tab-roblox .rb-quit{min-height:42px;padding:10px 12px;border:1px solid #f472b6;border-radius:9px;background:linear-gradient(135deg,#6c2456,#35172f);color:#fff;font-weight:900;font-size:11px;letter-spacing:.04em;cursor:pointer}
+#tab-roblox .rb-play{width:100%;margin-top:auto}
+#tab-roblox .rb-play:active,#tab-roblox .rb-action:active{transform:scale(.985)}
+#tab-roblox .rb-card[data-game-id="tokens"]{border-color:#9c8742;background:linear-gradient(145deg,#251f12,#0b111b 72%)}
+#tab-roblox .rb-card[data-game-id="tokens"] .rb-icon{border-color:#bca34c;background:#342b13}
+#tab-roblox .rb-card[data-game-id="tokens"] .rb-subtitle{color:#f5d76e}
+#tab-roblox .rb-card[data-game-id="tokens"] .rb-play{border-color:#d6b84d;background:linear-gradient(135deg,#80621a,#44320f)}
+#tab-roblox .rb-card[data-game-id="brainrot"]{border-color:#a855f7}
+#tab-roblox .rb-card[data-game-id="brainrot"] .rb-icon{border-color:#a855f7;background:linear-gradient(145deg,#49216b,#171123)}
+#tab-roblox .rb-card[data-game-id="brainrot"] .rb-subtitle{color:#d8a8ff}
+#tab-roblox .rb-runner{margin:14px 0 0;padding:clamp(14px,3vw,22px);border:1px solid #ff8bd5;border-radius:15px;background:radial-gradient(ellipse at 100% 0%,#67294d50,transparent 45%),#0b101a;box-shadow:0 0 22px #f472b615}
+#tab-roblox .rb-runner[hidden]{display:none!important}
+#tab-roblox .rb-runner-head{display:flex;justify-content:space-between;gap:10px;align-items:start}
+#tab-roblox .rb-runner h2{margin:5px 0;font-size:22px}
+#tab-roblox .rb-runner p{color:#c7b4c8;font-size:12px;line-height:1.55}
+#tab-roblox .rb-progress{height:8px;overflow:hidden;border-radius:9px;background:#272031;margin:14px 0}
+#tab-roblox .rb-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#e879f9,#ff8bd5);transition:width .2s}
+#tab-roblox .rb-run-log{min-height:54px;margin:12px 0;padding:12px;border:1px solid #3d2c42;border-radius:9px;background:#080d15;color:#e8d9e8;font-size:12px;line-height:1.6}
+#tab-roblox .rb-run-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+#tab-roblox .rb-quit{border-color:#4c4050;background:#181621;color:#d2bfd1}
+#tab-roblox .rb-runner .rb-action{width:100%}
+#tab-roblox .rb-tip{margin:15px 0 0;padding:12px;border-left:3px solid #f472b6;background:#1b1220;color:#cbb8cb;font-size:11px;line-height:1.6}
+#tab-roblox .rb-records{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+#tab-roblox .rb-record{padding:11px 8px;text-align:center;border:1px solid #3c2a40;border-radius:9px;background:#0c1019}
+#tab-roblox .rb-record b{display:block;color:#ff9bdb;font-size:18px}
+#tab-roblox .rb-record small{color:#a991aa;font-size:9px}
+#tab-roblox .roblox-worlds-nav{border-color:#f472b6!important;box-shadow:inset 0 0 0 1px #ff8bd522,0 0 9px #f472b622}
+@media(max-width:600px){#tab-roblox .rb-games{grid-template-columns:1fr}#tab-roblox .rb-card{padding:12px}#tab-roblox .rb-hero{padding:18px}#tab-roblox .rb-runner-head{flex-direction:column}#tab-roblox .rb-records{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){#tab-roblox *{transition:none!important}}
