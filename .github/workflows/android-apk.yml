@@ -1,6 +1,11 @@
 name: Build Android APK
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'app-v6/**'
+      - 'android-wrapper/**'
+      - '.github/workflows/android-apk.yml'
   push:
     branches: [main]
     paths:
@@ -38,6 +43,8 @@ jobs:
         run: |
           mkdir -p android-wrapper/app/src/main/assets/www
           cp -R app-v6/. android-wrapper/app/src/main/assets/www/
+      - name: Check KOZAK Assistant JavaScript syntax
+        run: node --check app-v6/kozak-device-assistant.js
       - name: Check universal control center JavaScript syntax
         run: node --check app-v6/global-control-center.js
       - name: Check TikTok video editor JavaScript syntax
@@ -54,6 +61,7 @@ jobs:
           path: KH-Kozak-Battle-Hub.apk
           retention-days: 30
       - name: Publish APK release
+        if: github.event_name != 'pull_request'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: apk-build-${{ github.run_number }}
