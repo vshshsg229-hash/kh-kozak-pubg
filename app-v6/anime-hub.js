@@ -8,6 +8,11 @@
   group.className = 'nav-group anime-hub-nav';
   group.innerHTML = '<div class="nav-group-title"><span style="color:#ff8bd5">✦</span> ANIME ZONE <small>GALLERY · COLLECTION</small></div><button class="nav-item" type="button" data-tab="anime" title="Відкрити Anime Hub"><span>🌸</span><span class="nav-label">Anime Hub & Collection</span><em>NEW</em></button>';
   nav.appendChild(group);
+  group.querySelector('[data-tab="anime"]').addEventListener('click',function(){
+    document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id==='tab-anime')});
+    document.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('active',b.dataset.tab==='anime')});
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
 
   const view = document.createElement('section');
   view.className = 'view';
