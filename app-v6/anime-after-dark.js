@@ -18,6 +18,47 @@ const hairPaths=['M18 53Q7 9 43 7Q83 1 84 39L91 99L71 88L27 96L12 77Z','M15 53Q8
 const fringePaths=['M23 44Q17 8 49 12Q80 7 78 39L67 31L57 39L48 24L39 42L26 51Z','M23 43Q14 9 47 12Q82 8 77 44L67 37L61 24L50 39L43 23L32 43L25 53Z','M23 44Q17 11 45 13Q77 9 78 40L69 35L63 20L51 39L44 25L34 43L24 51Z','M23 44Q15 8 48 12Q81 7 78 43L68 32L57 39L49 23L39 42L26 52Z'];
 extraGirls.forEach(g=>{const card=document.createElement('article');card.className='aad-card';card.innerHTML='<div class="aad-art aad-art-extra" style="--hair:'+g.hair+';--outfit:'+g.outfit+';--eye:'+g.eye+'"><span class="aad-rarity">'+g.rarity+'</span><svg class="aad-avatar aad-portrait aad-portrait-extra" viewBox="0 0 100 120" role="img" aria-label="'+g.name+', аніме-портрет"><path class="hair-back" d="'+hairPaths[g.shape]+'"/><path class="neck" d="M40 70H60V88H40Z"/><path class="shoulders" d="M18 119Q21 87 40 84L50 91L60 84Q82 88 82 119Z"/><ellipse class="face" cx="50" cy="48" rx="27" ry="34"/><path class="hair-front" d="'+fringePaths[g.shape]+'"/><path class="eye" d="M32 48Q39 42 45 49Q39 57 32 48M55 49Q62 42 69 48Q62 57 55 49Z"/><circle class="eye-glint" cx="39" cy="48" r="2"/><circle class="eye-glint" cx="62" cy="48" r="2"/><path class="mouth" d="M44 64Q50 69 56 64"/></svg><span class="aad-card-label">'+g.title+'</span></div><div class="aad-card-copy"><h3>'+g.name+'</h3><p>'+g.desc+'</p><button type="button" data-aad-fav="'+g.id+'">☆ ДОДАТИ ДО КОЛЕКЦІЇ</button></div>';extraGrid.append(card)});
 
+/* Upgrade the placeholder faces into expressive, original anime-style portraits. */
+function addAnimeDetails(svg,index){
+ const ns='http://www.w3.org/2000/svg';
+ const el=(tag,attrs)=>{const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));svg.append(n);return n};
+ svg.classList.add('aad-face-detailed');
+ const palette=['#ff8ab7','#a9a0ff','#63e8ff','#ffd27b','#f58abf','#a9dcff','#ff9b78','#63eee0','#d4ff6a','#d4b0ff','#ff729d','#ffda83'];
+ const iris=palette[index%palette.length];
+ // Big irises, dark pupils and multiple catchlights give the eyes a classic anime expression.
+ [[38.5,49],[61.5,49]].forEach(([x,y])=>{
+  el('ellipse',{cx:x,cy:y,rx:4.15,ry:5.1,fill:iris,stroke:'#35203f','stroke-width':.75,class:'aad-iris'});
+  el('ellipse',{cx:x,cy:y+1,rx:2.05,ry:3.35,fill:'#24162e',class:'aad-pupil'});
+  el('circle',{cx:x-1.15,cy:y-1.8,r:1.55,fill:'#fff',class:'aad-eye-shine'});
+  el('circle',{cx:x+1.2,cy:y+1.7,r:.72,fill:'#fff9',class:'aad-eye-shine'});
+  el('path',{d:`M${x-5.2} ${y-2.2} Q${x} ${y-7.6} ${x+5.2} ${y-2.1}`,fill:'none',stroke:'#392039','stroke-width':1.3,'stroke-linecap':'round',class:'aad-lash'});
+ });
+ // Soft blush, tiny nose and a more expressive mouth.
+ [[30.5,58],[69.5,58]].forEach(([cx,cy])=>el('ellipse',{cx,cy,rx:4.1,ry:1.7,fill:'#f28e9c',opacity:.48,class:'aad-blush'}));
+ el('path',{d:'M49 56.5l-1 2.1 2 .2',fill:'none',stroke:'#d18a83','stroke-width':.8,'stroke-linecap':'round',class:'aad-nose'});
+ el('path',{d:'M43 64 Q50 69.2 57 64',fill:'none',stroke:'#b54f77','stroke-width':1.6,'stroke-linecap':'round',class:'aad-smile'});
+ el('path',{d:'M46 65.2 Q50 67.4 54 65.2',fill:'none',stroke:'#ffb5c5','stroke-width':.7,'stroke-linecap':'round'});
+ // Shiny hair strands and head accessories, different for every heroine.
+ el('path',{d:'M27 25 Q33 14 42 15 M29 29 Q34 20 39 20 M61 15 Q72 17 74 28',fill:'none',stroke:'#fff','stroke-width':1.15,opacity:.62,'stroke-linecap':'round',class:'aad-hair-shine'});
+ const mode=index%4;
+ if(mode===0){
+  el('path',{d:'M70 19l2.5 4.2 4.8.7-3.5 3.3.8 4.8-4.6-2.3-4.2 2.3.8-4.8-3.4-3.3 4.8-.7Z',fill:iris,stroke:'#fff8','stroke-width':.7,class:'aad-accessory'});
+ }else if(mode===1){
+  el('path',{d:'M27 17 Q17 9 18 22 Q22 27 27 20 Q32 27 36 22 Q37 10 27 17Z',fill:iris,stroke:'#fff9','stroke-width':.8,class:'aad-accessory'});
+ }else if(mode===2){
+  el('circle',{cx:73,cy:27,r:4,fill:iris,stroke:'#fff','stroke-width':.9,class:'aad-accessory'});
+  el('circle',{cx:73,cy:27,r:1.5,fill:'#fff9'});
+ }else{
+  el('path',{d:'M24 19l4 5-4 5-4-5Z',fill:iris,stroke:'#fff9','stroke-width':.8,class:'aad-accessory'});
+ }
+ // Tailored collars and a small jewel make the outfits read as designed costumes.
+ el('path',{d:'M37 88 L45 96 L50 91 L55 96 L63 88',fill:'none',stroke:iris,'stroke-width':2.1,'stroke-linejoin':'round',class:'aad-collar'});
+ el('path',{d:'M46 96 L50 102 L54 96 L50 92Z',fill:iris,stroke:'#fff9','stroke-width':.7,class:'aad-jewel'});
+ el('path',{d:'M29 101 Q50 108 71 101',fill:'none',stroke:'#fff8','stroke-width':.8,class:'aad-outfit-detail'});
+}
+view.querySelectorAll('.aad-portrait').forEach((svg,i)=>addAnimeDetails(svg,i));
+
+
 function unlockSecret(){const b=$('#animeSecretNav');b.style.display='flex';b.classList.add('aad-revealed');const small=group.querySelector('.nav-group-title small');if(small)small.textContent='UNLOCKED';try{sessionStorage.setItem('kh_aad_discovered','1')}catch{}}
 const footerVersion=document.querySelector('.footer span:last-child');let secretTaps=0,secretTapAt=0;footerVersion?.setAttribute('title','Секретний доступ: натисни тут 5 разів');footerVersion?.addEventListener('click',()=>{const now=Date.now();secretTaps=now-secretTapAt<2400?secretTaps+1:1;secretTapAt=now;if(secretTaps>=5){unlockSecret();secretTaps=0;footerVersion.setAttribute('title','Секретний розділ відкрито')}else if(secretTaps>=3){footerVersion.setAttribute('title','Ще '+(5-secretTaps)+' дот. до секретного розділу')}});let profileTaps=0,profileTapTime=0;$('#profileAvatar')?.addEventListener('click',()=>{const now=Date.now();profileTaps=now-profileTapTime<1600?profileTaps+1:1;profileTapTime=now;if(profileTaps>=7){unlockSecret();profileTaps=0}});try{if(sessionStorage.getItem('kh_aad_discovered')==='1')$('#animeSecretNav').style.display='flex'}catch{}
 function openView(){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v===view));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===$('#animeSecretNav')));window.scrollTo({top:0,behavior:'smooth'})}
