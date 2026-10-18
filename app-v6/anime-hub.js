@@ -37,7 +37,6 @@
         <select id="animeCollectionSort" class="anime-input" aria-label="Сортування колекції"><option value="newest">Спочатку нові</option><option value="name">За ім'ям А—Я</option><option value="favorites">Обране спочатку</option></select>
         <label class="anime-favorites-filter"><input id="animeFavoritesOnly" type="checkbox"> Лише обране</label>
         <button id="animeExportCollection" class="anime-btn" type="button">⇩ Експорт</button>
-        <label class="anime-btn anime-import-label" for="animeImportCollection">⇧ Імпорт JSON</label><input id="animeImportCollection" type="file" accept="application/json,.json" hidden>
       </div>
       <p class="anime-note">Добірку аніме-зображень уже додано в колекцію. Фото відкриваються з Wikimedia Commons; завантажувати файли вручну не потрібно.</p>
       <div id="animeCollectionGrid" class="anime-grid" style="margin-top:12px"></div>
