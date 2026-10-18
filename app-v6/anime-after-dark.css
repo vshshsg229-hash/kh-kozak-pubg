@@ -78,3 +78,16 @@
 #tab-animeafterdark .aad-safesearch-link{display:inline-block;margin-top:13px;color:#dcb6ff;font-size:11px;text-decoration:underline;text-underline-offset:3px}
 #tab-animeafterdark .aad-search-note{display:block;margin-top:8px;color:#9d8da9;font-size:10px;line-height:1.5}
 @media(max-width:520px){#tab-animeafterdark .aad-search-form{flex-direction:column}#tab-animeafterdark .aad-search-form button{width:100%}#tab-animeafterdark .aad-search-presets button{flex:1 1 42%}}
+
+/* Refined original heroine illustration details */
+#tab-animeafterdark .aad-illustrated-costume{pointer-events:none}
+#tab-animeafterdark .aad-costume-base{stroke-linejoin:round;filter:drop-shadow(0 0 2px #0008)}
+#tab-animeafterdark .aad-portrait .aad-costume-base{fill:var(--outfit,#30213d)}
+#tab-animeafterdark .aad-style-0 .aad-costume-base{fill:#28111f}
+#tab-animeafterdark .aad-style-1 .aad-costume-base{fill:#10212d}
+#tab-animeafterdark .aad-style-2 .aad-costume-base{fill:#211321}
+#tab-animeafterdark .aad-style-3 .aad-costume-base{fill:#17212d}
+#tab-animeafterdark .aad-style-4 .aad-costume-base{fill:#222315}
+#tab-animeafterdark .aad-style-5 .aad-costume-base{fill:#21182c}
+#tab-animeafterdark .aad-portrait .aad-costume-base{stroke-width:1.2}
+#tab-animeafterdark .aad-card:hover .aad-costume-base{filter:drop-shadow(0 0 4px #f6b8ff55)}

@@ -25,6 +25,33 @@ function addAnimeDetails(svg,index){
  svg.classList.add('aad-face-detailed','aad-style-'+(index%6));
  const palette=['#ff8ab7','#a9a0ff','#63e8ff','#ffd27b','#f58abf','#a9dcff','#ff9b78','#63eee0','#d4ff6a','#d4b0ff','#ff729d','#ffda83'];
  const iris=palette[index%palette.length];
+ // Original illustrated costume art: adult heroines in fully clothed gothic, cyber and dark-fantasy designs.
+ const costumeGroup=document.createElementNS(ns,'g');
+ costumeGroup.setAttribute('class','aad-illustrated-costume aad-costume-'+(index%3));
+ const outfit=palette[(index+3)%palette.length];
+ const addCostume=(tag,attrs)=>{const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));costumeGroup.append(n);return n};
+ addCostume('path',{d:'M18 120 Q19 94 35 86 L43 81 Q50 88 57 81 L65 86 Q82 94 82 120 Z',fill:'var(--outfit,#30213d)',stroke:'#ffffff88','stroke-width':1.2,class:'aad-costume-base'});
+ const costumeStyle=index%3;
+ if(costumeStyle===0){
+  addCostume('path',{d:'M34 87 Q39 91 43 89 L50 96 L57 89 Q62 91 66 87 L72 120 L28 120 Z',fill:'#17101f',stroke:outfit,'stroke-width':1.1});
+  addCostume('path',{d:'M34 89 Q39 98 43 92 Q50 100 57 92 Q62 98 66 89',fill:'none',stroke:outfit,'stroke-width':1.8,'stroke-linecap':'round'});
+  for(let k=0;k<5;k++)addCostume('circle',{cx:37+k*6.5,cy:103+(k%2)*2,r:1.05,fill:outfit,stroke:'#fff8','stroke-width':.35});
+  addCostume('path',{d:'M31 108 Q50 114 69 108 M34 114 Q50 119 66 114',fill:'none',stroke:'#f8b4e8','stroke-width':.8,'stroke-dasharray':'1.4 2'});
+ }else if(costumeStyle===1){
+  addCostume('path',{d:'M35 87 L42 92 L50 88 L58 92 L65 87 L71 120 L29 120 Z',fill:'#111c2a',stroke:outfit,'stroke-width':1.2});
+  addCostume('path',{d:'M39 91 L44 103 L39 116 M61 91 L56 103 L61 116 M44 96 L56 96 M43 105 L57 105',fill:'none',stroke:outfit,'stroke-width':1.6,'stroke-linecap':'round'});
+  addCostume('path',{d:'M29 101 L37 104 M71 101 L63 104 M31 115 L38 112 M69 115 L62 112',fill:'none',stroke:'#ffffffb8','stroke-width':.8});
+  addCostume('path',{d:'M46 90 L50 95 L54 90',fill:'none',stroke:'#fff','stroke-width':1});
+ }else{
+  addCostume('path',{d:'M35 87 L42 91 L50 88 L58 91 L65 87 L72 120 L28 120 Z',fill:'#211625',stroke:outfit,'stroke-width':1.3});
+  addCostume('path',{d:'M36 91 L44 97 L50 93 L56 97 L64 91 M34 103 Q50 110 66 103',fill:'none',stroke:outfit,'stroke-width':1.5,'stroke-linejoin':'round'});
+  addCostume('path',{d:'M50 96 L53 102 L50 108 L47 102 Z',fill:outfit,stroke:'#fff9','stroke-width':.6});
+  addCostume('path',{d:'M32 111 L40 115 M68 111 L60 115',fill:'none',stroke:'#f9d9a2','stroke-width':1.1,'stroke-linecap':'round'});
+ }
+ // Collar, shoulder accents and jewelry give each portrait a more finished illustration look.
+ addCostume('path',{d:'M39 84 Q44 91 50 94 Q56 91 61 84',fill:'none',stroke:outfit,'stroke-width':2.1,'stroke-linecap':'round'});
+ addCostume('circle',{cx:50,cy:96,r:2.1,fill:outfit,stroke:'#fff','stroke-width':.65});
+ svg.insertBefore(costumeGroup,svg.querySelector('.face'));
  // Big irises, dark pupils and multiple catchlights give the eyes a classic anime expression.
  [[38.5,49],[61.5,49]].forEach(([x,y])=>{
   el('ellipse',{cx:x,cy:y,rx:5.05,ry:6.15,fill:iris,stroke:'#35203f','stroke-width':.75,class:'aad-iris'});
