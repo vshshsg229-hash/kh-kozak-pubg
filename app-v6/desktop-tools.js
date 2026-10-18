@@ -37,7 +37,6 @@ const commands=[
  ['telegram','Telegram і бот','Прив’язка та налаштування Telegram','➤'],
  ['admin','Адмін-панель','Керування хабом','⚙'],
  ['assistant','Напарник KH','Підказки та допомога','✧'],
- ['animeafterdark','Anime Gallery','Відкрита аніме-колекція та пошук зображень','🌙']
 ];
 let visible=[],active=0,lastFocus=null;
 const isDesktop=()=>window.matchMedia('(min-width: 1024px)').matches;
