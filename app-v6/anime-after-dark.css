@@ -91,3 +91,12 @@
 #tab-animeafterdark .aad-style-5 .aad-costume-base{fill:#21182c}
 #tab-animeafterdark .aad-portrait .aad-costume-base{stroke-width:1.2}
 #tab-animeafterdark .aad-card:hover .aad-costume-base{filter:drop-shadow(0 0 4px #f6b8ff55)}
+
+/* v18.0.0: real external artwork cards */
+#tab-animeafterdark .aad-themed-image{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:260px;background:radial-gradient(circle at 50% 20%,#34203f,#0b0e18 72%)}
+#tab-animeafterdark .aad-themed-image img{display:block;width:100%;height:280px;object-fit:cover;object-position:center 25%;border-radius:12px 12px 0 0;}
+#tab-animeafterdark .aad-themed-copy{display:flex;flex-direction:column;gap:8px}
+#tab-animeafterdark .aad-theme-tag{display:inline-flex;align-self:flex-start;padding:4px 9px;border:1px solid #bb7dff88;border-radius:999px;color:#e5c6ff;font-size:.72rem;letter-spacing:.09em}
+#tab-animeafterdark .aad-image-credit{display:block;font-size:.72rem;opacity:.75;margin-top:4px}
+#tab-animeafterdark .aad-image-credit a{color:#c9a4ff;text-decoration:underline}
+#tab-animeafterdark .aad-themed-image .aad-rarity{z-index:2;position:absolute;top:10px;left:10px}
