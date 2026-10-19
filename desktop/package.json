@@ -1,9 +1,9 @@
 {
   "name": "kh-kozak-battle-hub",
   "version": "17.40.0",
-  "description": "KH么Kozak Battle Hub 17.40.0 universal desktop app",
+  "description": "KOZAK NEXUS premium universal desktop app",
   "main": "main.cjs",
-  "author": "KH么Kozak",
+  "author": "KOZAK NEXUS",
   "license": "UNLICENSED",
   "scripts": {
     "dist:win": "electron-builder --win nsis portable"
@@ -14,7 +14,7 @@
   },
   "build": {
     "appId": "com.khkozak.battlehub",
-    "productName": "KH Kozak Battle Hub",
+    "productName": "KOZAK NEXUS",
     "asar": true,
     "files": [
       "main.cjs",
