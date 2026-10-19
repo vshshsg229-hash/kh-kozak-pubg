@@ -67,7 +67,7 @@ function createWindow() {
     height: 900,
     minWidth: 900,
     minHeight: 620,
-    title: `KH么Kozak Battle Hub ${app.getVersion()}`,
+    title: `KOZAK NEXUS ${app.getVersion()}`,
     autoHideMenuBar: true,
     backgroundColor: "#090b12",
     webPreferences: {
