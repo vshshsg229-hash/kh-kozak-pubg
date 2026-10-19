@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="kozak_icon_background">#080D14</color>
-    <color name="kozak_icon_green">#39FF88</color>
+    <color name="kozak_icon_background">#080808</color>
+    <color name="kozak_icon_green">#D8B15A</color>
 </resources>
