@@ -1,27 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">KOZAK NEXUS</title><desc id="desc">Premium black and gold gaming emblem</desc>
 <defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17212b"/><stop offset=".55" stop-color="#070b12"/><stop offset="1" stop-color="#123b2c"/></linearGradient>
- <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".45" stop-color="#aebdcc"/><stop offset="1" stop-color="#536578"/></linearGradient>
- <linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b6ffcf"/><stop offset="1" stop-color="#19e879"/></linearGradient>
- <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17130b"/><stop offset=".48" stop-color="#080808"/><stop offset="1" stop-color="#211909"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b0"/><stop offset=".32" stop-color="#f5d98b"/><stop offset=".68" stop-color="#bd8730"/><stop offset="1" stop-color="#fff0b0"/></linearGradient>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<rect width="512" height="512" rx="112" fill="#03070c"/>
-<rect x="14" y="14" width="484" height="484" rx="100" fill="url(#bg)" stroke="#39ff88" stroke-width="8"/>
-<path d="M50 365 90 110 175 55 256 92 337 55 422 110 462 365 400 450 112 450Z" fill="#0c141e" stroke="#233746" stroke-width="5"/>
-<!-- silver-haired tactical fighter -->
-<path d="M121 218 133 129 186 77 229 91 257 66 303 91 347 78 390 129 400 218 365 178 348 138 319 165 284 137 255 161 221 138 187 165 163 140 151 180Z" fill="url(#hair)" stroke="#e3f1ff" stroke-width="5" stroke-linejoin="round"/>
-<path d="M149 190 168 122 205 100 185 157 226 123 215 169 256 127 260 172 300 124 293 168 340 111 364 151 367 203 337 179 315 190 283 176 256 192 225 176 192 191 168 176Z" fill="#d8e4ef" opacity=".88"/>
-<path d="M157 199 196 181 240 190 256 207 273 190 316 181 355 200 344 255 321 286 298 307 256 322 214 307 190 286 168 255Z" fill="#a9b6c5" stroke="#dce7f0" stroke-width="5"/>
-<path d="M171 220 217 208 246 223 237 247 198 245Z" fill="#061018" stroke="#1b2a34" stroke-width="5"/>
-<path d="M341 220 295 208 266 223 275 247 314 245Z" fill="#061018" stroke="#1b2a34" stroke-width="5"/>
-<path d="M190 228 220 220 238 228 231 237 201 237Z" fill="url(#green)" filter="url(#glow)"/>
-<path d="M322 228 292 220 274 228 281 237 311 237Z" fill="url(#green)" filter="url(#glow)"/>
-<path d="M245 242 256 253 267 242 279 264 256 278 233 264Z" fill="#111a24"/>
-<path d="M178 267 211 282 256 290 301 282 334 267 322 324 289 355 256 366 223 355 190 324Z" fill="#05090f" stroke="#596a7a" stroke-width="5"/>
-<path d="M198 292 230 304 256 308 282 304 314 292 305 323 280 340 256 346 232 340 207 323Z" fill="#101d28"/>
-<path d="M211 307 256 320 301 307" fill="none" stroke="#39ff88" stroke-width="6" stroke-linecap="round"/>
-<path d="M95 382 164 355 207 370 256 386 305 370 348 355 417 382 390 449 122 449Z" fill="#101923" stroke="#344555" stroke-width="5"/>
-<path d="M150 406 201 389 256 408 311 389 362 406 340 449 172 449Z" fill="#172431"/>
-<path d="M188 420 256 437 324 420" fill="none" stroke="#39ff88" stroke-width="7" stroke-linecap="round"/>
-<text x="256" y="478" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="900" letter-spacing="4" fill="#eafff1">KH KOZAK</text>
+<rect width="512" height="512" rx="112" fill="#050505"/>
+<rect x="13" y="13" width="486" height="486" rx="100" fill="url(#bg)" stroke="url(#gold)" stroke-width="7"/>
+<path d="M256 45 415 112 398 300 256 451 114 300 97 112Z" fill="#0b0a08" stroke="url(#gold)" stroke-width="5"/>
+<path d="M256 73 385 127 371 286 256 409 141 286 127 127Z" fill="none" stroke="#8c682b" stroke-width="2"/>
+<path d="M161 151 207 151 207 220 278 151 336 151 266 229 350 355 291 355 231 268 207 292 207 355 161 355Z" fill="url(#gold)" filter="url(#glow)"/>
+<path d="M171 118 198 91 225 118 256 82 287 118 314 91 341 118" fill="none" stroke="url(#gold)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M153 382H359" stroke="url(#gold)" stroke-width="3" opacity=".8"/>
+<text x="256" y="431" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="900" letter-spacing="5" fill="#f5d98b">NEXUS</text>
+<circle cx="70" cy="70" r="4" fill="#f5d98b"/><circle cx="442" cy="70" r="4" fill="#f5d98b"/><circle cx="70" cy="442" r="4" fill="#f5d98b"/><circle cx="442" cy="442" r="4" fill="#f5d98b"/>
 </svg>
