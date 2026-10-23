@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.13.0",
+  "version": "18.14.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS stable interface recovery 18.13.0: disable the overreaching full redesign layer and return to the previous interface stylesheet. Existing app features, navigation and handlers remain intact."
+  "releaseNotes": "KOZAK NEXUS Command Deck UI 18.14.0: global black-and-gold tactical interface refresh. Existing features, navigation and handlers preserved."
 }
