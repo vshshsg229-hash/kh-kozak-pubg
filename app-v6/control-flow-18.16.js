@@ -1,4 +1,4 @@
-/* KOZAK NEXUS Control Flow 18.17.0 — responsive controls, existing tab actions preserved */
+/* KOZAK NEXUS Control Flow 18.18.0 — responsive controls, existing tab actions preserved */
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
 const body=document.body,menu=$('#mobileMenuToggle'),close=$('#mobileSidebarClose'),backdrop=$('#mobileMenuBackdrop'),side=$('.sidebar'),desktop=$('#desktopSidebarToggle');
