@@ -1,4 +1,4 @@
-/* KOZAK NEXUS Control Flow 18.17.0 — device-specific navigation behavior */
+/* KOZAK NEXUS Control Flow 18.18.0 — device-specific navigation behavior */
 .nexus-control-dock{display:none!important}
 body{padding-bottom:0!important}
 @media(min-width:1101px){
@@ -59,7 +59,7 @@ body{padding-bottom:0!important}
 @media(prefers-reduced-motion:reduce){.sidebar,.mobile-menu-backdrop{transition:none!important;animation:none!important}}
 
 
-/* KOZAK NEXUS 18.17.0 — phone viewport containment and readable cards */
+/* KOZAK NEXUS 18.18.0 — phone viewport containment and readable cards */
 @media(max-width:699px){
  html,body{width:100%;max-width:100%;overflow-x:clip!important}
  body{margin:0!important}
@@ -75,4 +75,18 @@ body{padding-bottom:0!important}
  img,video,canvas,iframe,svg{max-width:100%;height:auto}
  input,select,textarea,button{max-width:100%;box-sizing:border-box}
  pre,code,.table-wrap,.horizontal-scroll{max-width:100%;overflow-x:auto}
+}
+
+
+/* KOZAK NEXUS 18.18.0 — remove legacy mobile dock and neutralize old desktop offsets */
+@media(max-width:699px){
+ html,body{position:relative!important;left:auto!important;right:auto!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:hidden!important}
+ body .app-shell{display:block!important;position:relative!important;left:0!important;right:0!important;transform:none!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important;grid-template-columns:minmax(0,1fr)!important}
+ body .main{position:relative!important;left:0!important;right:0!important;float:none!important;transform:none!important;display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:12px max(12px,env(safe-area-inset-right)) 24px max(12px,env(safe-area-inset-left))!important;box-sizing:border-box!important}
+ body .mobile-nav{display:none!important;visibility:hidden!important;pointer-events:none!important}
+ body .view:not(.active){display:none!important}
+ body .view.active{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;transform:none!important;overflow:visible!important}
+ body .topbar{position:relative!important;left:0!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+ body .footer{width:100%!important;max-width:100%!important;box-sizing:border-box!important;flex-wrap:wrap!important;overflow-wrap:anywhere}
+ body .sidebar{max-width:88vw!important}
 }
