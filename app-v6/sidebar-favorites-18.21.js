@@ -28,8 +28,8 @@ function render(){
   const yes=pinned.includes(b.dataset.tab);b.classList.toggle('nxf-pinned',yes);star.textContent=yes?'★':'☆';star.setAttribute('aria-pressed',String(yes));star.setAttribute('aria-label',yes?'Відкріпити з обраного':'Закріпити в обраному');star.title=yes?'Відкріпити з обраного':'Закріпити в обраному';
  });
 }
-nav.addEventListener('click',e=>{const star=e.target.closest('.nxf-star');if(!star)return;e.preventDefault();e.stopPropagation();const item=star.closest('.nav-item'),id=item?.dataset.tab;if(!id)return;pinned=pinned.includes(id)?pinned.filter(x=>x!==id):[...pinned,id];save();render();});
+nav.addEventListener('click',e=>{const star=e.target.closest('.nxf-star');if(!star)return;e.preventDefault();e.stopImmediatePropagation();const item=star.closest('.nav-item'),id=item?.dataset.tab;if(!id)return;pinned=pinned.includes(id)?pinned.filter(x=>x!==id):[...pinned,id];save();render();},true);
 render();
 const observer=new MutationObserver(()=>{if(!sidebar.querySelector('#nexusFavorites')){nav.insertBefore(box,nav.firstChild)}render()});
-observer.observe(nav,{childList:true,subtree:true});
+observer.observe(nav,{childList:true,subtree:false});
 })();
