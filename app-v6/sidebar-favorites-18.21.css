@@ -1,0 +1,32 @@
+/* KOZAK NEXUS v18.21.0 — cyan esports carbon sidebar + favorites */
+:root{--nxf-cyan:#39e7f5;--nxf-cyan-soft:rgba(57,231,245,.12);--nxf-line:rgba(57,231,245,.32)}
+.sidebar{
+ background-color:#07121c!important;
+ background-image:
+  linear-gradient(135deg,rgba(5,17,27,.96),rgba(8,23,35,.94)),
+  repeating-linear-gradient(45deg,rgba(90,150,170,.06) 0 2px,transparent 2px 6px),
+  repeating-linear-gradient(-45deg,rgba(90,150,170,.035) 0 1px,transparent 1px 5px)!important;
+ border-right:1px solid var(--nxf-line)!important;
+ box-shadow:5px 0 28px rgba(0,0,0,.28),inset -1px 0 rgba(57,231,245,.06)!important;
+}
+.sidebar .brand{border-bottom:1px solid rgba(57,231,245,.2)!important}
+.sidebar .nav-group-title{color:#63dce7!important;letter-spacing:.13em!important}
+.sidebar .nav-item{position:relative;border:1px solid transparent!important;border-radius:10px!important;transition:background-color .15s,border-color .15s!important}
+.sidebar .nav-item:hover{background:rgba(57,231,245,.075)!important;border-color:rgba(57,231,245,.24)!important}
+.sidebar .nav-item.active{background:linear-gradient(100deg,rgba(57,231,245,.18),rgba(57,231,245,.045))!important;border-color:rgba(57,231,245,.52)!important;box-shadow:inset 3px 0 #39e7f5,0 0 15px rgba(57,231,245,.06)!important}
+#nexusFavorites{margin:10px 10px 14px;padding:10px;border:1px solid rgba(57,231,245,.28);border-radius:12px;background:rgba(2,10,17,.58);box-shadow:inset 0 0 18px rgba(57,231,245,.035)}
+#nexusFavorites .nxf-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;color:#75eaf2;font-size:11px;font-weight:800;letter-spacing:.12em}
+#nexusFavorites .nxf-count{font-size:10px;color:#8baeb7}
+#nexusFavorites .nxf-empty{font-size:11px;line-height:1.45;color:#8ca7b0;padding:3px 0 5px}
+#nexusFavorites .nxf-list{display:grid;gap:4px}
+#nexusFavorites .nxf-link{display:flex;align-items:center;gap:9px;width:100%;min-height:38px;padding:7px 9px;text-align:left;color:#d9f4f7;background:rgba(57,231,245,.055);border:1px solid rgba(57,231,245,.1);border-radius:8px;font:inherit;font-size:12px;cursor:pointer}
+#nexusFavorites .nxf-link:hover{background:rgba(57,231,245,.13);border-color:rgba(57,231,245,.38)}
+#nexusFavorites .nxf-link .nxf-icon{width:19px;flex:0 0 19px;text-align:center}
+#nexusFavorites .nxf-link .nxf-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebar .nav-item .nxf-star{position:absolute;right:7px;top:50%;transform:translateY(-50%);z-index:2;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid transparent;border-radius:7px;background:transparent;color:#6e8d98;font-size:16px;line-height:1;cursor:pointer;opacity:.4}
+.sidebar .nav-item:hover .nxf-star,.sidebar .nav-item:focus-visible .nxf-star,.sidebar .nav-item.nxf-pinned .nxf-star{opacity:1}
+.sidebar .nav-item .nxf-star:hover{background:rgba(57,231,245,.12);border-color:rgba(57,231,245,.3);color:#39e7f5}
+.sidebar .nav-item.nxf-pinned .nxf-star{color:#39e7f5;text-shadow:0 0 10px rgba(57,231,245,.5)}
+.sidebar .nav-item .nav-label{padding-right:27px}
+@media(max-width:1100px){#nexusFavorites{margin:8px 9px 12px}}
+@media(prefers-reduced-motion:reduce){.sidebar .nav-item{transition:none!important}}
