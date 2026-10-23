@@ -137,3 +137,22 @@
 #tab-atlaszero .az-map-node.is-focus{filter:drop-shadow(0 0 7px #f4df9b)}
 #tab-atlaszero .az-map-node text{font-size:12px}
 @media(max-width:600px){#tab-atlaszero .az-map-tools{align-items:stretch;flex-direction:column}#tab-atlaszero .az-map-focus-label{min-width:0}#tab-atlaszero .az-map-tools button{width:100%}#tab-atlaszero .az-map-legend{gap:8px}}
+
+/* ATLAS ZERO 2.3 — research progression */
+#tab-atlaszero .az-upgrade-tree{margin:22px 0;padding:clamp(16px,3vw,26px);border:1px solid #263e49;border-radius:18px;background:linear-gradient(145deg,#101a23,#0b1219)}
+#tab-atlaszero .az-upgrade-head{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:18px}
+#tab-atlaszero .az-upgrade-head h2{margin:8px 0;font-size:clamp(21px,3vw,29px)}
+#tab-atlaszero .az-upgrade-head p{max-width:620px;color:#9db0bb;font-size:12px;line-height:1.7}
+#tab-atlaszero .az-skill-points{flex-shrink:0;display:grid;gap:4px;text-align:center;padding:14px;border:1px solid #665c3e;border-radius:12px;background:#211f18}
+#tab-atlaszero .az-skill-points b{font-size:27px;color:#e6d28d}
+#tab-atlaszero .az-skill-points span{font-size:8px;letter-spacing:.12em;color:#b5a878}
+#tab-atlaszero .az-upgrade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#tab-atlaszero .az-upgrade-card{padding:16px;border:1px solid #2d4651;border-radius:13px;background:#111e27}
+#tab-atlaszero .az-upgrade-icon{display:grid;place-items:center;width:36px;height:36px;margin-bottom:14px;border:1px solid #416773;border-radius:10px;color:#91d5de;font-size:20px}
+#tab-atlaszero .az-upgrade-card h3{margin:8px 0;font-size:16px}
+#tab-atlaszero .az-upgrade-card p{min-height:58px;color:#9eafb9;font-size:11px;line-height:1.7}
+#tab-atlaszero .az-upgrade-meta{margin:12px 0;color:#dfce91;font-size:10px}
+#tab-atlaszero .az-upgrade-card button{width:100%;padding:10px;border:1px solid #536a65;border-radius:9px;background:#1d302e;color:#e4eee6;font-size:11px;cursor:pointer}
+#tab-atlaszero .az-upgrade-card button:disabled{opacity:.45;cursor:not-allowed}
+#tab-atlaszero .az-upgrade-note{margin-top:13px;color:#91a5b1;font-size:10px;line-height:1.6}
+@media(max-width:700px){#tab-atlaszero .az-upgrade-grid{grid-template-columns:1fr}#tab-atlaszero .az-upgrade-head{align-items:flex-start;flex-direction:column}#tab-atlaszero .az-upgrade-card p{min-height:0}}
