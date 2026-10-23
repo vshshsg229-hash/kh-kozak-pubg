@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.26.0",
+  "version": "18.27.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "NEXUS BLACK ZONE: рух кліком по карті, спринт зі стаміною, стелс, приховані кеші, ривок, гранати та сканер."
+  "releaseNotes": "BLACK ZONE: рух по точці, спринт, стелс, три типи зброї, магазини й перезарядка, контракти, тривога секторів та секретні кеші."
 }
