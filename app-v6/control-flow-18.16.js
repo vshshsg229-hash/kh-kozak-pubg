@@ -10,7 +10,7 @@ function closeMenu(){body.classList.remove('nexus-nav-open');menu?.setAttribute(
 menu?.addEventListener('click',e=>{if(isDrawer()){e.preventDefault();e.stopImmediatePropagation();body.classList.contains('nexus-nav-open')?closeMenu():openMenu();}},true);
 close?.addEventListener('click',e=>{if(isDrawer()){e.preventDefault();closeMenu();}});
 backdrop?.addEventListener('click',()=>closeMenu());
-desktop?.addEventListener('click',e=>{if(!isDrawer()){e.preventDefault();e.stopImmediatePropagation();body.classList.toggle('nexus-sidebar-collapsed');desktop.setAttribute('aria-expanded',String(!body.classList.contains('nexus-sidebar-collapsed')));}});
+desktop?.addEventListener('click',e=>{if(!isDrawer()){e.preventDefault();e.stopImmediatePropagation();body.classList.toggle('nexus-sidebar-collapsed');desktop.setAttribute('aria-expanded',String(!body.classList.contains('nexus-sidebar-collapsed')));}},true);
 side.addEventListener('click',e=>{if(isDrawer()&&e.target.closest('.nav-item,[data-tab-link]'))closeMenu();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
 let wasDrawer=isDrawer();window.addEventListener('resize',()=>{const now=isDrawer();if(now!==wasDrawer){closeMenu();wasDrawer=now;}},{passive:true});
