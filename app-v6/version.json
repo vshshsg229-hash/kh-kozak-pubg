@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.31.0",
+  "version": "18.31.1",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "BLACK ZONE Operation Omega: сезонна кампанія з наслідками, погодними модифікаторами, адаптивним босом, майстернею, страхуванням, репутацією, генераторами й документами; старі трофеї збережено."
+  "releaseNotes": "Виправлено кнопку оновлення: очищення кешу, оновлення посилань і перезавантаження актуальної версії."
 }
