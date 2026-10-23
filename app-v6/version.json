@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.15.0",
+  "version": "18.16.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS Control Flow 18.15.0: new persistent mobile/tablet navigation dock for direct access to Home, Games, Missions and Progress, with the existing full menu preserved."
+  "releaseNotes": "KOZAK NEXUS Control Flow 18.16.0: phone navigation uses a full-height section drawer without a bottom dock; tablet navigation uses a two-column section launcher; PC gains a functional collapsible sidebar. Existing tab handlers preserved."
 }
