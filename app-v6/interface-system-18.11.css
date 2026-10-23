@@ -149,3 +149,22 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  .mobile-nav{left:4px!important;right:4px!important;gap:1px!important}.mobile-nav button{font-size:7px!important}.mobile-brand{font-size:10px!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Preserve the existing three-state desktop sidebar control. */
+@media(min-width:721px){
+ body.sidebar-compact .sidebar{width:78px!important;padding-left:7px!important;padding-right:7px!important}
+ body.sidebar-compact .main{margin-left:78px!important}
+ body.sidebar-compact .brand{justify-content:center!important;padding-left:0!important;padding-right:0!important}
+ body.sidebar-compact .brand>span:last-child{display:none!important}
+ body.sidebar-compact .nav-group{padding:5px!important}
+ body.sidebar-compact .nav-group-title{justify-content:center!important;font-size:0!important;letter-spacing:0!important;padding-left:0!important;padding-right:0!important}
+ body.sidebar-compact .nav-group-title small,body.sidebar-compact .nav-item .nav-label,body.sidebar-compact .nav-item em,body.sidebar-compact .kozak-2d-title span:not(:first-child),body.sidebar-compact .kozak-2d-title small{display:none!important}
+ body.sidebar-compact .nav-item{justify-content:center!important;padding:6px 2px!important;gap:0!important}
+ body.sidebar-compact .nav-item>span:first-child{width:29px!important;height:29px!important;flex-basis:29px!important}
+ body.sidebar-hidden .sidebar{width:0!important;padding:0!important;border:0!important;transform:translateX(-100%)!important;visibility:hidden!important}
+ body.sidebar-hidden .main{margin-left:0!important}
+}
+@media(max-width:720px){
+ body.mobile-menu-open:after{content:"";position:fixed;inset:0;background:#020407a8;z-index:90}
+ body.mobile-menu-open .sidebar{z-index:100!important}
+}
