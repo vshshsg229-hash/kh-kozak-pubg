@@ -155,3 +155,62 @@ body.sidebar-hidden .desktop-sidebar-toggle{color:#ffe6a1!important}
  .sidebar{width:min(290px,78vw)!important}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+/* KOZAK NEXUS 18.13 — universal button system.
+   Re-skins every existing control without changing labels, IDs, handlers, navigation, or game logic. */
+:root{
+ --kn-btn-bg:#151a20;--kn-btn-bg-hover:#262013;--kn-btn-border:#3c4650;
+ --kn-btn-border-hover:#b08c43;--kn-btn-text:#e7e1d2;--kn-btn-accent:#d8b45d;
+ --kn-btn-radius:8px;
+}
+:where(button,[type=button],[type=submit],[type=reset],input[type=button],input[type=submit],input[type=reset],a[role=button],[role=button],summary,.button,.btn,.action,.action-button,.icon-button,.tab-button,.menu-button,.nav-button,.control-button,.toggle-button,.chip-button,.pill-button,.link-button,.primary,.secondary,.danger,.success,.warning,.ghost,.outline,.cta,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.close-button,.back-button,.settings-button,.install-button,.update-button,.floating-button,.fab,.quick-action,.quick-panel button,.mobile-nav button,.mobile-nav a,.sidebar button,.sidebar a,.topbar button,.topbar a){
+ -webkit-appearance:none!important;appearance:none!important;
+ border:1px solid var(--kn-btn-border)!important;
+ border-radius:var(--kn-btn-radius)!important;
+ background-color:var(--kn-btn-bg)!important;
+ background-image:none!important;
+ color:var(--kn-btn-text)!important;
+ box-shadow:none!important;text-shadow:none!important;
+ font-family:inherit!important;font-weight:750!important;
+ letter-spacing:.025em!important;text-decoration:none!important;
+ transform:none!important;filter:none!important;
+ transition:none!important;animation:none!important;
+}
+:where(button,[type=button],[type=submit],[type=reset],input[type=button],input[type=submit],input[type=reset],a[role=button],[role=button],summary,.button,.btn,.action,.action-button,.icon-button,.tab-button,.menu-button,.nav-button,.control-button,.toggle-button,.chip-button,.pill-button,.link-button,.primary,.secondary,.danger,.success,.warning,.ghost,.outline,.cta,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.close-button,.back-button,.settings-button,.install-button,.update-button,.floating-button,.fab,.quick-action,.quick-panel button,.mobile-nav button,.mobile-nav a,.sidebar button,.sidebar a,.topbar button,.topbar a):not(:disabled):not([aria-disabled=true]):hover{
+ border-color:var(--kn-btn-border-hover)!important;background-color:var(--kn-btn-bg-hover)!important;color:#ffedbc!important;
+}
+:where(button,[type=button],[type=submit],[type=reset],input[type=button],input[type=submit],input[type=reset],a[role=button],[role=button],summary,.button,.btn,.action,.action-button,.icon-button,.tab-button,.menu-button,.nav-button,.control-button,.toggle-button,.chip-button,.pill-button,.link-button,.primary,.secondary,.danger,.success,.warning,.ghost,.outline,.cta,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.close-button,.back-button,.settings-button,.install-button,.update-button,.floating-button,.fab,.quick-action,.quick-panel button,.mobile-nav button,.mobile-nav a,.sidebar button,.sidebar a,.topbar button,.topbar a):is(.active,[aria-current=page],[aria-pressed=true],[aria-selected=true],.selected,.is-active){
+ border-color:#96763b!important;background-color:#332817!important;color:#ffe7a1!important;
+}
+:where(button,[type=button],[type=submit],[type=reset],input[type=button],input[type=submit],input[type=reset],[role=button],.button,.btn,.action-button,.icon-button,.tab-button,.menu-button,.nav-button,.control-button,.toggle-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.close-button,.back-button,.settings-button,.install-button,.update-button,.floating-button,.fab):disabled,
+:where(button,[type=button],[type=submit],[type=reset],[role=button],.button,.btn,.action-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button):is([aria-disabled=true],.disabled){
+ opacity:.48!important;cursor:not-allowed!important;filter:none!important;
+}
+:where(button,.button,.btn,.action-button,.icon-button,.tab-button,.menu-button,.nav-button,.control-button,.toggle-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.close-button,.back-button,.settings-button,.install-button,.update-button,.floating-button,.fab) :is(svg,img,.icon){filter:none!important;opacity:1!important}
+:where(button,.button,.btn,.action-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.primary,.cta,.install-button,.update-button,.nx-btn.primary){
+ --kn-btn-border:#9b7a3b;
+ background-color:#392d18!important;color:#ffe8aa!important;
+}
+:where(.danger,.delete,.remove,.logout,.reset-button,[data-action*=delete],[data-action*=remove]){
+ border-color:#694044!important;background-color:#241316!important;color:#f0b7b7!important;
+}
+:where(.success,.confirm,.save-button,[data-action*=save],[data-action*=claim]){
+ border-color:#4c654d!important;background-color:#152018!important;color:#c9e1c6!important;
+}
+:where(.ghost,.secondary,.outline,.icon-button,.close-button,.back-button){
+ background-color:#0d1115!important;color:#b9c1c9!important;
+}
+:where(.icon-button,.close-button,.back-button,.settings-button,.floating-button,.fab,.quick-action){
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-width:38px;min-height:38px;padding:7px!important;
+}
+:where(.nav-item,.nav-item.active,.mobile-nav button,.mobile-nav a,.desktop-command-button,.desktop-sidebar-toggle,.mobile-menu-toggle){
+ box-shadow:none!important;transform:none!important;transition:none!important;
+}
+:where(.nav-item,.mobile-nav button,.mobile-nav a){background-color:transparent!important}
+:where(.nav-item.active,.mobile-nav button.active,.mobile-nav a.active){background-color:#211b10!important;border-color:#806633!important;color:#ffe7a1!important}
+:where(button,a[role=button],[role=button],summary,input[type=button],input[type=submit],input[type=reset]){cursor:pointer}
+:where(button,a[role=button],[role=button],summary):focus-visible{outline:2px solid #ffe7a1!important;outline-offset:2px!important}
+:where(.tab,.tab-button,[role=tab],.tabs button,.tab-list button){border-radius:7px!important}
+:where(.segmented-control button,.toggle-group button,.filter-group button,.button-group button){border-radius:6px!important}
