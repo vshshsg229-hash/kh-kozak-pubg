@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.02.0",
+  "version": "18.10.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Global Update 18.02.0: refreshed black-and-gold visual layer, responsive touch targets, reduced-motion support, and fixed stale web-version/update-banner and service-worker cache versioning. Existing navigation and local progression remain unchanged."
+  "releaseNotes": "KOZAK NEXUS Interface Rebuild 18.10.0: complete black-and-gold redesign across desktop, tablet portrait/landscape, and phone portrait/landscape. Existing navigation, tab IDs, game actions, and local progression preserved; motion reduced and service-worker cache version synchronized."
 }
