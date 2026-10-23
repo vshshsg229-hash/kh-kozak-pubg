@@ -1,0 +1,63 @@
+/* KOZAK NEXUS GLOBAL UPDATE 18.02.0
+   Visual-only layer: preserves the approved navigation structure and behavior.
+   Static esports presentation; no new server or remote account dependency. */
+:root {
+  --nexus-gold: #d8b15a;
+  --nexus-gold-bright: #f5d98b;
+  --nexus-ink: #080a0d;
+  --nexus-panel: #10141b;
+  --nexus-border: #3a3324;
+  --nexus-muted: #aab2bf;
+}
+html { color-scheme: dark; }
+body {
+  background-color: var(--nexus-ink);
+  background-image: radial-gradient(ellipse at 50% -18%, #332713 0, #111318 42%, #080a0d 76%);
+}
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--nexus-gold-bright);
+  outline-offset: 3px;
+}
+.panel, .card, .game-card, .kozai-card, .survival-card, .survival-hero {
+  border-color: color-mix(in srgb, var(--nexus-gold) 28%, #26303d) !important;
+}
+.brand-mark, .mobile-brand, .eyebrow { --accent: var(--nexus-gold); }
+.brand-mark { color: var(--nexus-gold-bright) !important; }
+.nav-item, .mobile-nav button {
+  transition: none !important;
+}
+.nav-item:focus-visible, .mobile-nav button:focus-visible {
+  outline: 2px solid var(--nexus-gold-bright);
+  outline-offset: 2px;
+}
+.view { min-width: 0; }
+.view img, .view video, .view iframe, .view canvas { max-width: 100%; }
+.view :is(.grid, .cards, .game-grid, .games-grid, .rewards-grid, .mission-grid) {
+  min-width: 0;
+}
+.view :is(button, .btn, a.button) { touch-action: manipulation; }
+.view :is(input, select, textarea) {
+  max-width: 100%;
+}
+.footer { border-top-color: #39301f !important; color: #a9a18e; }
+.footer b { color: var(--nexus-gold-bright); }
+@media (max-width: 760px) {
+  main, .main-content, .content, .app-content { min-width: 0; }
+  .view { overflow-wrap: anywhere; }
+  .view :is(.panel, .card, article) { min-width: 0; }
+  .view :is(button, .btn) { min-height: 42px; }
+  .footer { padding-bottom: max(18px, env(safe-area-inset-bottom)); }
+}
+@media (min-width: 761px) {
+  .view { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
