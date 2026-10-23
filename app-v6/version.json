@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.20.0",
+  "version": "18.21.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS 18.20.0: restores a fixed, always-visible phone menu button and makes all sidebar sections visible and tappable again. Legacy bottom dock stays hidden."
+  "releaseNotes": "KOZAK NEXUS 18.21.0: cyan esports carbon sidebar and persistent pinned favorites; original navigation preserved."
 }
