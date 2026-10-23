@@ -45,4 +45,4 @@
 .bz-actions #bzSprint{border-color:#2d795c;color:#8affc5}.bz-actions #bzStealth{border-color:#52658a;color:#c3d4ff}#bzCanvas{cursor:crosshair;touch-action:manipulation}
 
 /* Field mechanics 18.27 */
-.bz-actions #bzWeapon1,.bz-actions #bzWeapon2,.bz-actions #bzWeapon3{border-color:#587a91;color:#d4f1ff}.bz-actions #bzReload{border-color:#a47d38;color:#ffe3a1}#bzContract{font-size:.78rem;color:#f5d98a;line-height:1.5;margin-top:8px}
+.bz-actions #bzWeapon1,.bz-actions #bzWeapon2,.bz-actions #bzWeapon3{border-color:#587a91;color:#d4f1ff} .bz-portfolio-row{display:grid;grid-template-columns:1fr auto;gap:7px 12px;padding:10px;border:1px solid #29465a;background:#0a151d;border-radius:8px;font-size:11px;color:#9eb3cc}.bz-portfolio-row b{color:#67e8f9;font-size:15px}.bz-actions #bzReload{border-color:#a47d38;color:#ffe3a1}#bzContract{font-size:.78rem;color:#f5d98a;line-height:1.5;margin-top:8px}
