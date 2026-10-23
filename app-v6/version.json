@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.17.0",
+  "version": "18.18.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS 18.17.0: fixes phone-width overflow, keeps all content inside the viewport, and stacks cards and grids for easier one-hand use. Navigation and existing tab actions preserved."
+  "releaseNotes": "KOZAK NEXUS 18.18.0: fixes mobile layout shifted off-screen, removes the legacy six-button bottom dock, resets old desktop offsets on phones, and constrains the active view to the viewport."
 }
