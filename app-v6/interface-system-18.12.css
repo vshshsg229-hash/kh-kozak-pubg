@@ -214,3 +214,103 @@ body.sidebar-hidden .desktop-sidebar-toggle{color:#ffe6a1!important}
 :where(button,a[role=button],[role=button],summary):focus-visible{outline:2px solid #ffe7a1!important;outline-offset:2px!important}
 :where(.tab,.tab-button,[role=tab],.tabs button,.tab-list button){border-radius:7px!important}
 :where(.segmented-control button,.toggle-group button,.filter-group button,.button-group button){border-radius:6px!important}
+
+
+/* KOZAK NEXUS — safe global interface refinement 18.13.1
+   CSS-only: no DOM, navigation labels, handlers, storage, game rules or services changed. */
+:root{
+  --knx-bg:#07090c;
+  --knx-panel:#0e1218;
+  --knx-panel-raised:#141a22;
+  --knx-gold:#d8b45d;
+  --knx-gold-light:#ffe6a0;
+  --knx-line:#2a3038;
+  --knx-text:#f3f1eb;
+  --knx-muted:#9aa3ae;
+}
+html{background:var(--knx-bg);color-scheme:dark}
+body{background:var(--knx-bg);color:var(--knx-text)}
+/* Shared surfaces: visual treatment only; preserve natural dimensions and flow. */
+:where(.app-shell,.app-main,.main-content,.main,.content,.workspace,.page-content,.view-container){
+  color:var(--knx-text);
+}
+:where(.sidebar,.desktop-sidebar,.side-panel,.mobile-drawer){
+  background:linear-gradient(180deg,#0d1117 0%,#080a0e 100%);
+  border-color:#292d33;
+}
+:where(.topbar,.top-bar,.app-header,.page-header,.view-header,.section-header){
+  border-color:#292d33;
+}
+:where(.brand,.brand-area,.app-brand,.sidebar-header){
+  border-color:#393020;
+}
+:where(.brand b,.brand strong,.app-brand b,.app-brand strong){
+  color:var(--knx-gold-light);
+  letter-spacing:.045em;
+}
+:where(.card,.panel,.widget,.module-card,.feature-card,.content-card,.settings-card,.stat-card,.game-card,.mission-card,.reward-card,.profile-card,.modal-content,.dialog-content){
+  background-color:#10151c;
+  border-color:#2a3038;
+  box-shadow:0 5px 18px #00000020;
+}
+:where(.card h1,.card h2,.card h3,.panel h1,.panel h2,.panel h3,.section-title,.view-title,.page-title){
+  color:#f4e8c6;
+}
+:where(.muted,.subtle,.secondary-text,.description,.helper-text,.card small,.panel small){
+  color:var(--knx-muted);
+}
+/* Navigation keeps its existing selectors, order, labels and click targets. */
+:where(.nav-item,.nav-link,.sidebar-nav a,.sidebar-nav button,.side-nav a,.side-nav button,.mobile-nav a,.mobile-nav button){
+  border-color:transparent;
+  border-radius:9px;
+  text-decoration:none;
+}
+:where(.nav-item,.nav-link,.sidebar-nav a,.sidebar-nav button,.side-nav a,.side-nav button):hover{
+  background-color:#1b1a15;
+  border-color:#594a2c;
+  color:#fff0c3;
+}
+:where(.nav-item.active,.nav-link.active,.sidebar-nav .active,.side-nav .active,.mobile-nav .active,[aria-current="page"]){
+  background-color:#282114;
+  border-color:#8a6d35;
+  color:#ffe7a0;
+}
+/* Inputs and action controls remain fully interactive; no pointer or display overrides. */
+:where(input:not([type=checkbox]):not([type=radio]),select,textarea){
+  background-color:#0b0f14;
+  border-color:#333b45;
+  color:#f3f1eb;
+  border-radius:8px;
+}
+:where(input,select,textarea):focus-visible{
+  outline:2px solid #d8b45d;
+  outline-offset:2px;
+}
+:where(button,[role=button],a[role=button],.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button){
+  border-radius:9px;
+}
+:where(button,.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button):active{
+  filter:brightness(.96);
+}
+:where(hr,.divider,.separator){border-color:#292f37}
+:where(table th){color:#e8d29a}
+:where(table td,table th){border-color:#292f37}
+img,svg,canvas,video{max-width:100%}
+/* Responsive comfort without changing navigation mode or hiding controls. */
+@media(max-width:760px){
+  :where(.card,.panel,.widget,.module-card,.feature-card,.content-card,.settings-card,.stat-card,.game-card,.mission-card,.reward-card,.profile-card){
+    border-radius:11px;
+  }
+  :where(button,.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button){
+    min-height:38px;
+  }
+  :where(input:not([type=checkbox]):not([type=radio]),select,textarea){font-size:16px}
+}
+@media(min-width:761px){
+  :where(.card,.panel,.widget,.module-card,.feature-card,.content-card,.settings-card,.stat-card,.game-card,.mission-card,.reward-card,.profile-card):hover{
+    border-color:#51452c;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
