@@ -1,0 +1,101 @@
+/* KOZAK NEXUS — Command Deck UI 18.14.0
+   Dedicated visual layer. Does not alter DOM, handlers, data, routes, storage or game rules. */
+:root{
+ --nxd-bg:#06080b;--nxd-surface:#0d1218;--nxd-raised:#121922;
+ --nxd-gold:#d8b45d;--nxd-gold-hot:#ffe4a0;--nxd-border:#29323d;
+ --nxd-muted:#9aa6b4;--nxd-ink:#f4f2ed;
+}
+html,body{background:var(--nxd-bg)!important;color:var(--nxd-ink)}
+body{background-image:radial-gradient(ellipse at 55% 0%,#b58a2410 0,transparent 42%)!important}
+.app-shell{background:transparent!important}
+.sidebar{
+ width:270px!important;padding:20px 14px 18px!important;
+ background:linear-gradient(180deg,#111720 0%,#090c11 58%,#07090d 100%)!important;
+ border-right:1px solid #594722!important;box-shadow:7px 0 30px #0008!important;
+}
+.brand{
+ margin:0 0 18px!important;padding:10px 8px 18px!important;
+ border-bottom:1px solid #3c3321!important;gap:12px!important;
+}
+.brand-mark{
+ width:49px!important;height:49px!important;flex:0 0 49px!important;
+ clip-path:none!important;border-radius:12px!important;
+ background:linear-gradient(145deg,#ffe6a0,#b68a32)!important;
+ color:#111!important;border:1px solid #ffe5a0!important;
+ box-shadow:0 0 0 4px #d8b45d12!important;
+}
+.brand b{color:#ffe6a0!important;font-size:14px!important;letter-spacing:.13em!important}
+.brand small{color:#a89a78!important;letter-spacing:.16em!important}
+.side-label{padding:12px 12px 8px!important;color:#8c8061!important;font-size:9px!important;letter-spacing:.18em!important;text-transform:uppercase}
+.nav{gap:6px!important}
+.nav-group{padding:7px!important;margin:5px 0!important;border:1px solid #242c35!important;border-radius:12px!important;background:#0b1016!important}
+.nav-group-title{color:#d6c18b!important;letter-spacing:.1em!important}
+.nav-item{
+ position:relative!important;min-height:43px!important;padding:10px 12px!important;gap:12px!important;
+ border:1px solid transparent!important;border-radius:9px!important;
+ background:transparent!important;color:#aeb7c2!important;
+ font-size:12px!important;font-weight:700!important;letter-spacing:.015em!important;
+ box-shadow:none!important;text-decoration:none!important;
+}
+.nav-item>span:first-child{width:22px!important;min-width:22px!important;color:#c7a452!important}
+.nav-item:hover{background:#191b1b!important;border-color:#5b4a2b!important;color:#fff1c8!important}
+.nav-item.active{
+ background:linear-gradient(100deg,#302718,#171710)!important;
+ border-color:#8a6b31!important;color:#ffe8a5!important;
+ box-shadow:inset 3px 0 #e0bd67,0 3px 12px #0004!important;
+}
+.nav-item.active>span:first-child{color:#ffe29a!important}
+.main{margin-left:270px!important;padding:0 30px!important;min-width:0!important}
+.topbar{
+ min-height:76px!important;height:auto!important;padding:12px 0!important;margin-bottom:26px!important;
+ border-bottom:1px solid #3a3325!important;gap:12px!important;
+}
+.topbar .season{color:#a7aeb8!important;letter-spacing:.14em!important}
+.topbar .season b{color:#e6c873!important}
+.view{animation:none!important}
+.view h1,.view h2,.view h3{letter-spacing:.015em}
+.view h1{color:#f7e9bf!important}
+:where(.hero,.hero-card,.dashboard-hero,.welcome-card){
+ border:1px solid #594927!important;
+ background-color:#10151b!important;
+ box-shadow:inset 0 1px #ffffff08,0 14px 32px #0005!important;
+}
+:where(.card,.panel,.widget,.module-card,.feature-card,.content-card,.settings-card,.stat-card,.game-card,.mission-card,.reward-card,.profile-card,.modal-content,.dialog-content){
+ background:linear-gradient(145deg,#131a23,#0c1117)!important;
+ border:1px solid #2a3440!important;border-radius:13px!important;
+ box-shadow:inset 0 1px #ffffff07,0 8px 24px #0003!important;
+}
+:where(.card h1,.card h2,.card h3,.panel h1,.panel h2,.panel h3,.section-title,.view-title,.page-title){color:#f2dfac!important}
+:where(button,[role=button],a[role=button],.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button){
+ border:1px solid #594927!important;border-radius:9px!important;
+ background:linear-gradient(180deg,#282317,#171711)!important;
+ color:#f6e5b6!important;box-shadow:inset 0 1px #ffffff0a!important;
+ font-weight:750!important;text-decoration:none!important;
+}
+:where(button,[role=button],a[role=button],.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button):hover{
+ border-color:#c4a04d!important;background:linear-gradient(180deg,#3a301b,#211b11)!important;color:#fff2c9!important;
+}
+:where(button,[role=button],a[role=button],.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button):active{filter:brightness(.94)!important}
+:where(button:disabled,[role=button][aria-disabled=true]){opacity:.5!important}
+:where(input:not([type=checkbox]):not([type=radio]),select,textarea){
+ border:1px solid #343e49!important;border-radius:8px!important;background:#090e13!important;color:#f4f2ed!important;
+}
+:where(input,select,textarea):focus-visible{outline:2px solid #e2c36f!important;outline-offset:2px!important}
+:where(.progress,.progress-bar,.xp-bar,.meter){border-radius:999px}
+:where(table th){color:#e7cc83!important}
+:where(table td,table th,hr,.divider,.separator){border-color:#29323d!important}
+:where(.mobile-menu-toggle,.desktop-sidebar-toggle){
+ border:1px solid #80652f!important;border-radius:10px!important;background:#19170f!important;color:#ffe6a0!important;
+}
+@media(max-width:900px){
+ .main{padding-left:18px!important;padding-right:18px!important}
+ .topbar{margin-bottom:18px!important}
+}
+@media(max-width:600px){
+ .main{padding-left:12px!important;padding-right:12px!important}
+ .topbar{min-height:60px!important;padding:8px 0!important}
+ :where(.card,.panel,.widget,.module-card,.feature-card,.content-card,.settings-card,.stat-card,.game-card,.mission-card,.reward-card,.profile-card){border-radius:11px!important}
+ :where(button,.button,.btn,.action-button,.control-button,.launch-button,.play-button,.claim-button,.buy-button,.upgrade-button,.update-button){min-height:40px}
+ :where(input:not([type=checkbox]):not([type=radio]),select,textarea){font-size:16px!important}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
