@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.23.0",
+  "version": "18.25.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "18.23.0: tactical radar showing current section and app state; configurable 5-slot Quick Launch; daily mission progress summary; retained 18.22 sidebar search, favorites, compact mode and profile snapshot. Existing mobile navigation labels/order/behavior preserved."
+  "releaseNotes": "NEXUS BLACK ZONE: ривок, імпульсні гранати, сканер, нові класи ворогів, секретні сховки та друга фаза боса."
 }
