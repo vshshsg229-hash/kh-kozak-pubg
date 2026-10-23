@@ -73,3 +73,20 @@
 @media(max-width:850px){#tab-atlaszero .az-workspace{grid-template-columns:1fr}#tab-atlaszero .az-side{grid-template-columns:repeat(2,minmax(0,1fr))}#tab-atlaszero .az-orbit-art{opacity:.25;width:70%}}
 @media(max-width:600px){#tab-atlaszero{padding:12px}#tab-atlaszero .az-hero{padding:22px;border-radius:17px}#tab-atlaszero .az-hero-row{display:block}#tab-atlaszero h1{font-size:clamp(38px,12vw,56px)}#tab-atlaszero .az-status{text-align:left;display:inline-block;margin-top:10px}#tab-atlaszero .az-orbit-art{opacity:.18;width:95%;height:100px}#tab-atlaszero .az-daily{align-items:flex-start;flex-direction:column;padding:17px}#tab-atlaszero .az-tools{flex-wrap:wrap}#tab-atlaszero .az-search{flex-basis:100%}#tab-atlaszero .az-tools>.az-primary{width:100%}#tab-atlaszero .az-side{grid-template-columns:1fr}#tab-atlaszero .az-card{padding:16px}#tab-atlaszero .az-card-actions button{flex:1}#tab-atlaszero .az-foot{font-size:8px}#tab-atlaszero .az-section-head{align-items:center}#tab-atlaszero h2{font-size:20px}}
 @media(prefers-reduced-motion:reduce){#tab-atlaszero button{transition:none}#tab-atlaszero button:active{transform:none}}
+
+
+/* ATLAS ZERO 1.6 — missions and researcher progression */
+.az-mission{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:8px 22px;padding:24px;margin:18px 0;border:1px solid #3e6570;border-radius:16px;background:linear-gradient(115deg,#14262c,#101821 60%,#252318);overflow:hidden}
+.az-mission h2{margin:8px 0;font-size:clamp(20px,3vw,30px);color:#f1e5bd}.az-mission p{margin:0;color:#a8bbc1;line-height:1.6;max-width:650px;font-size:13px}
+.az-rank{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px}.az-rank span,.az-rank small{font-size:10px;letter-spacing:.14em;color:#8ea7ae}.az-rank strong{font-size:19px;color:#e3cc87}.az-rank b{font-size:12px;color:#8fd8df}
+.az-progress{grid-column:1/-1;height:6px;border-radius:9px;background:#26373d;overflow:hidden;margin-top:12px}.az-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5eb9c8,#e2c77e);transition:width .2s}
+#az-progress-label{grid-column:1/-1;color:#8ca5ad;font-size:10px}
+.az-quest-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.az-quest{padding:17px;border:1px solid #293f48;border-radius:13px;background:#101920;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}
+.az-quest h3{margin:0;color:#e9e2cb;font-size:16px}.az-quest p{margin:0 0 4px;color:#9aafb6;font-size:12px;line-height:1.6;flex:1}
+.az-quest button{width:100%;padding:10px;border-radius:8px;border:1px solid #39525b;background:#16262d;color:#d9e7e9;font-size:11px;cursor:pointer}
+.az-quest button.az-quest-done{border-color:#786a3d;background:#282619;color:#e2cf8d}.az-quest button:disabled{opacity:.8;color:#8ed4bd;cursor:default}
+.az-insight{display:flex;align-items:flex-start;gap:12px;margin:12px 0 22px;padding:15px 18px;border:1px solid #2e4c53;border-radius:12px;background:#101c21}
+.az-insight>span{font-size:23px;color:#e2c982}.az-insight b{font-size:12px;color:#e4d8b1}.az-insight p{margin:5px 0 0;font-size:12px;line-height:1.6;color:#9cb1b7}
+@media(max-width:700px){.az-quest-grid{grid-template-columns:1fr}.az-quest{padding:15px}.az-mission{grid-template-columns:minmax(0,1fr) 100px;padding:17px;gap:10px}.az-rank strong{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.az-progress span{transition:none}}
