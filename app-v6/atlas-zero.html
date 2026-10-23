@@ -4,20 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080d11">
-<meta name="description" content="ATLAS ZERO — незалежний особистий простір для ідей, без зв’язку з ігровими режимами.">
+<meta name="description" content="ATLAS ZERO — незалежна особиста обсерваторія ідей. Локальні дані, без сервера та зв’язку з ігровими режимами.">
 <title>ATLAS ZERO · Independent Space</title>
-<link rel="stylesheet" href="atlas-zero.css?v=1.2.2">
+<link rel="stylesheet" href="atlas-zero.css?v=1.3.0">
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080d11;color:#e5edf0;font-family:Inter,system-ui,sans-serif}
-.az-standalone-bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(12px,3vw,28px);border-bottom:1px solid #253a40;background:#080d11f2;backdrop-filter:blur(10px)}
+.az-standalone-bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(12px,3vw,28px);border-bottom:1px solid #253a40;background:#080d11f2}
 .az-standalone-brand{font-size:12px;letter-spacing:.16em;font-weight:900;color:#e2cb8b}.az-standalone-brand small{display:block;margin-top:4px;font-size:9px;letter-spacing:.1em;color:#82989e;font-weight:500}
 .az-back{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border:1px solid #3b535a;border-radius:8px;background:#111b20;color:#e4edf0;text-decoration:none;font-size:12px}
 #tab-atlaszero{min-height:calc(100vh - 58px)}
+.az-boot{max-width:680px;margin:32px auto;padding:24px;border:1px solid #30464d;border-radius:12px;background:#111b20;color:#a9bcc2;line-height:1.7}
+.az-boot strong{color:#dfc982;letter-spacing:.12em}.az-boot button{padding:10px 14px;border:1px solid #58747b;border-radius:7px;background:#17272d;color:#edf4f5}
 </style>
 </head>
 <body>
 <header class="az-standalone-bar"><div class="az-standalone-brand">ATLAS ZERO<small>INDEPENDENT PERSONAL SPACE · 001</small></div><a class="az-back" href="./?v=18.36.0">← Повернутися в KOZAK NEXUS</a></header>
-<main><section id="tab-atlaszero" aria-label="ATLAS ZERO independent idea observatory"><div style="max-width:1000px;margin:24px auto;padding:22px;background:#111b20;border:1px solid #3b535a;border-radius:12px;color:#e5edf0;font-family:system-ui,sans-serif"><p style="color:#d6bf7d;font-weight:800;letter-spacing:.15em">ATLAS ZERO · RECOVERY VIEW</p><h1>Обсерваторія ідей</h1><p>Інтерфейс завантажується. Якщо інтерактивні функції не з’явилися, онови сторінку або відкрий її в браузері, а не у вбудованому переглядачі.</p><h2>Стартові ідеї</h2><ul><li>Інкубатор несподіваних ідей</li><li>Щоденник сигналів</li><li>Мікролабораторія</li><li>Архів рішень</li><li>Карта особистої енергії</li><li>Мислення навпаки</li><li>Особистий довідник відкриттів</li><li>Колекція відкритих питань</li><li>Генератор корисних обмежень</li><li>Міст між ідеями</li></ul><p id="az-recovery-note">Перевірка запуску інтерактивного модуля…</p></div></section></main>
-<script src="atlas-zero.js?v=1.2.2"></script>
+<main><section id="tab-atlaszero" aria-label="ATLAS ZERO independent idea observatory"><div class="az-boot"><strong>ATLAS ZERO · ЗАПУСК</strong><p>Готуємо твою обсерваторію ідей. Стартові записи та інструменти з’являться тут автоматично.</p><noscript>Для роботи цього модуля потрібно дозволити JavaScript у браузері.</noscript><p id="az-boot-error" hidden>Інтерактивний модуль не завантажився. Перезапусти його кнопкою нижче.</p><button type="button" onclick="location.reload()">Перезапустити модуль</button></div></section></main>
+<script src="atlas-zero.js?v=1.3.0" onerror="document.getElementById('az-boot-error').hidden=false"></script>
 </body>
 </html>
