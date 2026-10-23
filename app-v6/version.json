@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.28.0",
+  "version": "18.29.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "BLACK ZONE: випадкові припаси з ворогів, індикатор витривалості, розумніший спринт і оновлений кеш."
+  "releaseNotes": "BLACK ZONE: XP успішних рейдів інтегровано з профілем і Мій прогрес, серія евакуацій, розвіддані та XP-бонус."
 }
