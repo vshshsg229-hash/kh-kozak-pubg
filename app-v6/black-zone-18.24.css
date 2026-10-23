@@ -40,3 +40,6 @@
 
 /* 18.25 gameplay controls */
 .bz-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.bz-actions button{min-height:40px}.bz-actions #bzDash{border-color:#246b80;color:#79e9ff}.bz-actions #bzGrenade{border-color:#816334;color:#ffdb8b}.bz-actions #bzScan{border-color:#375c91;color:#b4cfff}@media(max-width:600px){.bz-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.bz-actions button{min-width:0;font-size:10px;padding:10px 5px}}
+
+/* 18.26 field mechanics */
+.bz-actions #bzSprint{border-color:#2d795c;color:#8affc5}.bz-actions #bzStealth{border-color:#52658a;color:#c3d4ff}#bzCanvas{cursor:crosshair;touch-action:manipulation}
