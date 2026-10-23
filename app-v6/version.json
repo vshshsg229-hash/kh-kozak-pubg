@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.32.0",
+  "version": "18.33.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Додано NEXUS Command Center: цілі, локальні нотатки, план дня, журнал подій та експорт даних."
+  "releaseNotes": "Виправлено видимість NEXUS Command Center, додано тактичну офлайн-карту ситуацій."
 }
