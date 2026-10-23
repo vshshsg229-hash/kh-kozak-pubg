@@ -16,7 +16,7 @@
 .bz-map-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 14px;color:#72dff4;font:700 10px ui-monospace,monospace}
 .bz-map-head span:last-child{color:#9bb5c2}
 #bzCanvas{display:block;width:100%;height:auto;aspect-ratio:800/440;background:#071522;border-top:1px solid #183c4e;border-bottom:1px solid #183c4e;touch-action:none}
-.bz-hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:10px 12px;background:#050e17}
+ .bz-hud{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:10px 12px;background:#050e17}
 .bz-hud span{font:10px ui-monospace,monospace;color:#87aab9}.bz-hud b{color:#e2f9ff;font-size:12px}
 .bz-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;flex-wrap:wrap}
 .bz-pad{display:none;gap:4px}.bz-pad>div{display:flex;gap:4px}.bz-controls button,.bz-panel button{border:1px solid #24556a;background:#0d2635;color:#d9f8ff;border-radius:8px;padding:10px 12px;font-weight:800;font-size:11px;cursor:pointer;touch-action:manipulation}
@@ -35,7 +35,7 @@
 .bz-foot{padding:15px 4px 4px;text-align:center;color:#587b8b;font:9px ui-monospace,monospace;letter-spacing:.07em}
 .black-zone-nav .nav-item{border-color:#24546a!important}.black-zone-nav .nav-item em{font-size:9px;color:#55e2fa}
 @media(max-width:900px){.bz-layout{grid-template-columns:1fr}.bz-side{grid-template-columns:repeat(2,minmax(0,1fr))}.bz-side .bz-panel:last-child{grid-column:1/-1}}
-@media(max-width:600px){#tab-black-zone{padding:8px!important}.bz-hero{border-radius:12px;padding:14px}.bz-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.bz-stats>div{padding:9px}.bz-stats strong{font-size:17px}.bz-layout{gap:9px}.bz-play,.bz-panel{border-radius:11px}.bz-map-head{font-size:9px}.bz-hud{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:8px}.bz-controls{align-items:stretch}.bz-pad{display:flex;flex-direction:column;align-items:center}.bz-pad button{min-width:42px;min-height:40px;padding:8px}.bz-actions{flex:1;align-content:center}.bz-actions button{flex:1;min-width:105px;padding:12px 7px}.bz-side{grid-template-columns:1fr}.bz-side .bz-panel:last-child{grid-column:auto}.bz-upgrade{align-items:flex-start}.bz-upgrade button{max-width:52%;white-space:normal}.bz-title-row h1{font-size:25px}.bz-threat{padding:7px}.bz-hint{line-height:1.5}}
+@media(max-width:600px){#tab-black-zone{padding:8px!important}.bz-hero{border-radius:12px;padding:14px}.bz-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.bz-stats>div{padding:9px}.bz-stats strong{font-size:17px}.bz-layout{gap:9px}.bz-play,.bz-panel{border-radius:11px}.bz-map-head{font-size:9px}.bz-hud{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:8px}.bz-controls{align-items:stretch}.bz-pad{display:flex;flex-direction:column;align-items:center}.bz-pad button{min-width:42px;min-height:40px;padding:8px}.bz-actions{flex:1;align-content:center}.bz-actions button{flex:1;min-width:105px;padding:12px 7px}.bz-side{grid-template-columns:1fr}.bz-side .bz-panel:last-child{grid-column:auto}.bz-upgrade{align-items:flex-start}.bz-upgrade button{max-width:52%;white-space:normal}.bz-title-row h1{font-size:25px}.bz-threat{padding:7px}.bz-hint{line-height:1.5}}
 @media(prefers-reduced-motion:reduce){.bz-shell *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
 /* 18.25 gameplay controls */
