@@ -1,4 +1,4 @@
-/* KOZAK NEXUS Control Flow 18.19.0 — device-specific navigation behavior */
+/* KOZAK NEXUS Control Flow 18.20.0 — device-specific navigation behavior */
 .nexus-control-dock{display:none!important}
 body{padding-bottom:0!important}
 @media(min-width:1101px){
@@ -59,7 +59,7 @@ body{padding-bottom:0!important}
 @media(prefers-reduced-motion:reduce){.sidebar,.mobile-menu-backdrop{transition:none!important;animation:none!important}}
 
 
-/* KOZAK NEXUS 18.19.0 — phone viewport containment and readable cards */
+/* KOZAK NEXUS 18.20.0 — phone viewport containment and readable cards */
 @media(max-width:699px){
  html,body{width:100%;max-width:100%;overflow-x:clip!important}
  body{margin:0!important}
@@ -78,7 +78,7 @@ body{padding-bottom:0!important}
 }
 
 
-/* KOZAK NEXUS 18.19.0 — remove legacy mobile dock and neutralize old desktop offsets */
+/* KOZAK NEXUS 18.20.0 — remove legacy mobile dock and neutralize old desktop offsets */
 @media(max-width:699px){
  html,body{position:relative!important;left:auto!important;right:auto!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:hidden!important}
  body .app-shell{display:block!important;position:relative!important;left:0!important;right:0!important;transform:none!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important;grid-template-columns:minmax(0,1fr)!important}
@@ -92,7 +92,7 @@ body{padding-bottom:0!important}
 }
 
 
-/* KOZAK NEXUS 18.19.0 — hard left alignment and eliminate empty legacy phone dock */
+/* KOZAK NEXUS 18.20.0 — hard left alignment and eliminate empty legacy phone dock */
 @media(max-width:699px){
  html,body{position:relative!important;inset:auto!important;left:0!important;right:0!important;margin:0!important;padding:0!important;width:100%!important;max-width:100vw!important;min-width:0!important;overflow-x:hidden!important}
  body>.app-shell,.app-shell{display:block!important;position:relative!important;inset:auto!important;left:0!important;right:0!important;transform:translateX(0)!important;width:100%!important;max-width:100vw!important;min-width:0!important;margin:0!important;padding:0!important;overflow:visible!important;box-sizing:border-box!important}
@@ -104,4 +104,33 @@ body{padding-bottom:0!important}
  body .topbar,body .footer{left:0!important;right:0!important;transform:none!important;margin-left:0!important;margin-right:0!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
  body .hero-grid,body .hero-copy,body .hero-art,body .hero,body .panel,body .page-heading,body .section-heading{margin-left:0!important;margin-right:0!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
  body .hero-grid,body .stats-grid,body .feature-grid,body .bottom-panels,body .games-grid,body .fun-grid,body .daily-shop-grid,body .rewards-grid,body .events-grid,body .official-game-grid,body .kh-replica-video-grid,body .tiktok-profiles-grid,body .kh-creator-tools-grid,body .kh-tiktok-upload-grid,body .bunker-lower-grid,body .mr-form-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+
+
+/* KOZAK NEXUS 18.20.0 — restore reliable access to all phone navigation */
+@media(max-width:699px){
+ body .mobile-menu-toggle{
+   display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+   position:fixed!important;top:max(12px,env(safe-area-inset-top))!important;left:max(12px,env(safe-area-inset-left))!important;
+   right:auto!important;bottom:auto!important;z-index:10060!important;
+   width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;
+   padding:0!important;border:1px solid #52e8ff!important;border-radius:12px!important;
+   background:#080d17!important;color:#fff!important;font-size:23px!important;
+   box-shadow:0 0 16px #18cfff45!important;transform:none!important;
+ }
+ body .topbar{padding-left:58px!important}
+ body .sidebar{
+   display:block!important;visibility:hidden;opacity:1!important;pointer-events:none;
+   position:fixed!important;top:0!important;bottom:0!important;left:0!important;right:auto!important;
+   width:min(88vw,360px)!important;max-width:360px!important;height:100dvh!important;
+   overflow-x:hidden!important;overflow-y:auto!important;z-index:10055!important;
+   transform:translateX(-105%)!important;background:#090e17!important;
+ }
+ body.nexus-nav-open .sidebar{visibility:visible!important;pointer-events:auto!important;transform:translateX(0)!important}
+ body .sidebar .nav,body .sidebar .nav-group{display:block!important;visibility:visible!important;opacity:1!important}
+ body .sidebar .nav-item{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:100%!important;min-width:0!important;min-height:48px!important}
+ body .sidebar .nav-label{display:inline!important;visibility:visible!important;opacity:1!important}
+ body .mobile-menu-heading{display:flex!important;visibility:visible!important}
+ body .mobile-menu-backdrop{z-index:10050!important}
+ body .mobile-nav{display:none!important}
 }
