@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.34.0",
+  "version": "18.35.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Покращено NEXUS Command Center та оновлено локальну систему версій."
+  "releaseNotes": "Додано окремий ATLAS ZERO — незалежну офлайн-лабораторію ідей із власним сховищем."
 }
