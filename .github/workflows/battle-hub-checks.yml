@@ -93,10 +93,10 @@ jobs:
           const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
           const updater = fs.readFileSync(path.join(root, 'app-update.js'), 'utf8');
           const management = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
-          assert(html.includes('Battle Hub ' + appVersion), 'HTML document title matches version.json');
+          assert(html.includes('<title>' + versionData.app + '</title>'), 'HTML document title matches version.json app name');
           assert(html.includes('<i>' + appVersion + '</i>'), 'Sidebar version matches version.json');
-          assert(manifest.name.includes(appVersion) && manifest.description.includes(appVersion), 'PWA manifest matches version.json');
-          assert(serviceWorker.includes('kh-kozak-hub-v' + appVersion), 'Service worker cache matches version.json');
+          assert(manifest.name.includes(versionData.app) && manifest.description.includes(versionData.app), 'PWA manifest matches version.json app name');
+          assert(serviceWorker.includes('kozak-nexus-v' + appVersion), 'Service worker cache matches version.json');
           assert(updater.includes("const WEB_VERSION = '" + appVersion + "'"), 'Update checker matches version.json');
           assert(management.includes("const APP_VERSION='" + appVersion + "'"), 'Manual refresh diagnostics match version.json');
 
