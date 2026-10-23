@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.14.0",
+  "version": "18.15.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS Command Deck UI 18.14.0: global black-and-gold tactical interface refresh. Existing features, navigation and handlers preserved."
+  "releaseNotes": "KOZAK NEXUS Control Flow 18.15.0: new persistent mobile/tablet navigation dock for direct access to Home, Games, Missions and Progress, with the existing full menu preserved."
 }
