@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.14.0",
+  "version": "18.13.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS Total Interface Redesign 18.14.0: complete visual overhaul across navigation, every screen, panels, cards, forms, dialogs, tables, status elements, controls and responsive phone/tablet/desktop layouts. Existing feature logic, labels, IDs and handlers preserved."
+  "releaseNotes": "KOZAK NEXUS stable interface recovery 18.13.0: disable the overreaching full redesign layer and return to the previous interface stylesheet. Existing app features, navigation and handlers remain intact."
 }
