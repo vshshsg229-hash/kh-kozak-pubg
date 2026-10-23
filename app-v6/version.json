@@ -1,8 +1,8 @@
 {
-  "app": "KH么Kozak Battle Hub",
-  "version": "17.95.0",
+  "app": "KOZAK NEXUS",
+  "version": "18.02.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
-  "updatedAt": "2026-10-18",
+  "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Anime After Dark: expanded desktop gallery and more detailed anime-inspired heroine portraits, costume accents and responsive PC layout."
+  "releaseNotes": "Global Update 18.02.0: adds a static responsive black-and-gold visual layer, clearer keyboard focus states, mobile touch-target refinements, and reduced-motion support. Existing navigation and offline-only progression rules remain unchanged."
 }
