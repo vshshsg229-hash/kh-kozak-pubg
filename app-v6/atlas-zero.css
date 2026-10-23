@@ -90,3 +90,21 @@
 .az-insight>span{font-size:23px;color:#e2c982}.az-insight b{font-size:12px;color:#e4d8b1}.az-insight p{margin:5px 0 0;font-size:12px;line-height:1.6;color:#9cb1b7}
 @media(max-width:700px){.az-quest-grid{grid-template-columns:1fr}.az-quest{padding:15px}.az-mission{grid-template-columns:minmax(0,1fr) 100px;padding:17px;gap:10px}.az-rank strong{font-size:15px}}
 @media(prefers-reduced-motion:reduce){.az-progress span{transition:none}}
+/* ATLAS ZERO 1.9 discovery engine */
+#tab-atlaszero .az-discovery{margin:18px 0 24px;padding:clamp(16px,2.4vw,25px);border:1px solid #3a4b5c;border-radius:18px;background:radial-gradient(ellipse at 90% 0%,#27334b 0,transparent 42%),linear-gradient(135deg,#111923,#0a1119 75%);box-shadow:0 18px 44px #0003}
+#tab-atlaszero .az-discovery-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+#tab-atlaszero .az-discovery-head h2{margin:7px 0 5px;color:#f0e4c3}
+#tab-atlaszero .az-discovery-head p{margin:0;color:#96a9b9;font-size:12px;line-height:1.6}
+#tab-atlaszero .az-live-pill{border:1px solid #34584d;border-radius:999px;padding:7px 10px;background:#10241c;color:#9de0b7;font:10px ui-monospace,monospace;white-space:nowrap}
+#tab-atlaszero .az-discovery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#tab-atlaszero .az-discovery-card{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:18px;border:1px solid #2a3b4c;border-top:2px solid #d9c17d;border-radius:14px;background:linear-gradient(150deg,#172332,#101720);min-height:210px}
+#tab-atlaszero .az-discovery-card:nth-child(2){border-top-color:#77c8d5}#tab-atlaszero .az-discovery-card:nth-child(3){border-top-color:#9a9de0}
+#tab-atlaszero .az-discovery-icon{font-size:26px;color:#e4ce8d;margin-bottom:13px}
+#tab-atlaszero .az-discovery-card h3{font-size:17px;margin:8px 0;color:#edf1f4}
+#tab-atlaszero .az-discovery-card p{font-size:12px;line-height:1.7;color:#9fb0bf;margin:0 0 17px;flex:1}
+#tab-atlaszero .az-discovery-card button{width:100%;margin-top:auto}
+#tab-atlaszero .az-discovery-result{margin-top:13px;padding:18px;border:1px solid #4a5963;border-radius:13px;background:#0b131c}
+#tab-atlaszero .az-discovery-result h3{font-size:18px;color:#e8d69d;margin:8px 0}
+#tab-atlaszero .az-discovery-result p{font-size:13px;line-height:1.8;color:#b3c2ce}
+#tab-atlaszero .az-discovery-result button{margin:5px 6px 0 0}
+@media(max-width:700px){#tab-atlaszero .az-discovery-grid{grid-template-columns:1fr}#tab-atlaszero .az-discovery-card{min-height:0;padding:16px}#tab-atlaszero .az-discovery-head{align-items:flex-start}}
