@@ -1,0 +1,59 @@
+/* KOZAK NEXUS Control Flow 18.16.0 — device-specific navigation behavior */
+.nexus-control-dock{display:none!important}
+body{padding-bottom:0!important}
+@media(min-width:1101px){
+ .app-shell{grid-template-columns:260px minmax(0,1fr)!important}
+ body.nexus-sidebar-collapsed .app-shell{grid-template-columns:76px minmax(0,1fr)!important}
+ body.nexus-sidebar-collapsed .sidebar{width:76px!important;padding-left:10px!important;padding-right:10px!important}
+ body.nexus-sidebar-collapsed .sidebar .brand>span:last-child,
+ body.nexus-sidebar-collapsed .sidebar .nav-group-title,
+ body.nexus-sidebar-collapsed .sidebar .nav-label,
+ body.nexus-sidebar-collapsed .sidebar .nav-item em,
+ body.nexus-sidebar-collapsed .sidebar .side-bottom>span,
+ body.nexus-sidebar-collapsed .sidebar .side-bottom small,
+ body.nexus-sidebar-collapsed .sidebar .sidebar-quick-search,
+ body.nexus-sidebar-collapsed .sidebar .mobile-menu-heading{display:none!important}
+ body.nexus-sidebar-collapsed .sidebar .brand{justify-content:center;padding:12px 0}
+ body.nexus-sidebar-collapsed .sidebar .nav-item{justify-content:center;padding:12px 0;min-height:46px}
+ body.nexus-sidebar-collapsed .sidebar .nav-item>span:first-child{font-size:20px}
+ body.nexus-sidebar-collapsed .sidebar .nav-group{margin-bottom:8px}
+ .desktop-sidebar-toggle{display:inline-flex!important}
+}
+@media(min-width:700px) and (max-width:1100px){
+ body{overflow-x:hidden}
+ .app-shell{display:block!important}
+ .sidebar{position:fixed!important;z-index:10040!important;inset:0 auto 0 0!important;width:min(88vw,520px)!important;max-width:520px!important;transform:translateX(-105%);visibility:hidden;overflow-y:auto!important;box-shadow:18px 0 50px #0008}
+ body.nexus-nav-open .sidebar{transform:translateX(0);visibility:visible}
+ body.nexus-nav-open .mobile-menu-backdrop{display:block!important;position:fixed!important;inset:0!important;z-index:10035!important;background:#03060bd9!important;backdrop-filter:blur(3px)}
+ .sidebar .nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;align-content:start}
+ .sidebar .nav-group{min-width:0;margin:0 0 12px!important;align-self:start}
+ .sidebar .nav-group-title{grid-column:1/-1}
+ .sidebar .nav-item{min-height:56px!important;display:flex!important;align-items:center;gap:10px!important;padding:10px!important;border-radius:12px!important}
+ .sidebar .nav-label{white-space:normal!important;line-height:1.2}
+ .sidebar-quick-search{position:sticky;top:0;z-index:2;padding:8px 0;background:inherit}
+ .nexus-control-dock{display:none!important}
+ .main{width:100%!important;min-width:0!important}
+}
+@media(max-width:699px){
+ body{padding-bottom:0!important;overflow-x:hidden}
+ .app-shell{display:block!important}
+ .sidebar{position:fixed!important;z-index:10040!important;inset:0 auto 0 0!important;width:min(88vw,360px)!important;max-width:360px!important;transform:translateX(-105%);visibility:hidden;overflow-y:auto!important;box-shadow:18px 0 50px #0009}
+ body.nexus-nav-open .sidebar{transform:translateX(0);visibility:visible}
+ body.nexus-nav-open .mobile-menu-backdrop{display:block!important;position:fixed!important;inset:0!important;z-index:10035!important;background:#03060be0!important}
+ .sidebar .nav{display:block!important}
+ .sidebar .nav-group{margin-bottom:12px!important}
+ .sidebar .nav-group-title{font-size:10px!important;letter-spacing:.11em}
+ .sidebar .nav-item{min-height:50px!important;display:flex!important;align-items:center;gap:12px!important;padding:12px 14px!important;margin:3px 0!important;border-radius:12px!important}
+ .sidebar .nav-item>span:first-child{width:25px;flex:0 0 25px;text-align:center;font-size:20px}
+ .sidebar .nav-label{white-space:normal!important;line-height:1.25;font-size:14px!important}
+ .mobile-menu-heading{position:sticky;top:0;z-index:3;padding:12px 12px!important;background:#0b0e13!important;border-bottom:1px solid #403722}
+ .mobile-menu-heading strong{font-size:13px!important}
+ .mobile-menu-heading small{display:block;margin-top:4px}
+ .mobile-menu-toggle{display:inline-flex!important;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+ .topbar{gap:8px!important}
+ .season{display:none!important}
+ .desktop-command-button,.desktop-sidebar-toggle{display:none!important}
+ .main{width:100%!important;min-width:0!important}
+ .nexus-control-dock{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){.sidebar,.mobile-menu-backdrop{transition:none!important;animation:none!important}}
