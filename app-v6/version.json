@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.18.0",
+  "version": "18.19.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-23",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS 18.18.0: fixes mobile layout shifted off-screen, removes the legacy six-button bottom dock, resets old desktop offsets on phones, and constrains the active view to the viewport."
+  "releaseNotes": "KOZAK NEXUS 18.19.0: hard left-aligns the mobile app shell and active view, removes the legacy mobile navigation dock completely, and stacks card grids to fit phone width."
 }
