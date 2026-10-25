@@ -187,3 +187,157 @@
     .mobile-nav button,.kn-mobile-link { transition:none !important; }
   }
 }
+
+
+/* KOZAK NEXUS · FULL APP PHONE EXPERIENCE 1.2
+   Global phone-only design system: unify every tab without changing feature behavior. */
+@media (max-width:720px) {
+  :root {
+    --kn-phone-bg:#070b12;
+    --kn-phone-panel:#101925;
+    --kn-phone-panel-2:#141f2d;
+    --kn-phone-line:rgba(147,168,194,.19);
+    --kn-phone-gold:#f4c44f;
+    --kn-phone-muted:#9eacbf;
+  }
+  html { background:var(--kn-phone-bg) !important; }
+  body {
+    background:
+      radial-gradient(ellipse at 95% 0%,rgba(191,140,38,.09),transparent 32%),
+      linear-gradient(180deg,#080c13 0%,#0a1019 45%,#070b12 100%) !important;
+    color:#f4f6fa !important;
+    -webkit-tap-highlight-color:rgba(244,196,79,.12);
+  }
+  /* Give every screen a consistent, comfortable mobile canvas. */
+  main, #mainContent, .main-content, .content, .tab-content, .tab-pane, [id^="tab-"] {
+    box-sizing:border-box;
+    min-width:0;
+  }
+  main, #mainContent, .main-content {
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+  .tab-content, .tab-pane, [id^="tab-"] {
+    max-width:100% !important;
+    overflow-wrap:anywhere;
+  }
+  /* Responsive titles and section labels across the whole app. */
+  [id^="tab-"] h1, [id^="tab-"] .page-title, [id^="tab-"] .section-title {
+    max-width:100%;
+    line-height:1.16 !important;
+    letter-spacing:-.025em;
+  }
+  [id^="tab-"] h1 { font-size:clamp(23px,6vw,30px) !important; }
+  [id^="tab-"] h2 { font-size:clamp(19px,5vw,24px);line-height:1.22; }
+  [id^="tab-"] h3 { font-size:clamp(15px,4vw,19px);line-height:1.3; }
+  [id^="tab-"] p { line-height:1.55; }
+  /* Cards and panels: richer surfaces, consistent radius and subtle gold edge. */
+  [id^="tab-"] .card,
+  [id^="tab-"] .panel,
+  [id^="tab-"] .module-card,
+  [id^="tab-"] .feature-card,
+  [id^="tab-"] .game-card,
+  [id^="tab-"] .mode-card,
+  [id^="tab-"] .mission-card,
+  [id^="tab-"] .reward-card,
+  [id^="tab-"] .stat-card,
+  [id^="tab-"] .quest-card,
+  [id^="tab-"] .tool-card,
+  [id^="tab-"] .content-card {
+    min-width:0;
+    max-width:100%;
+    border-radius:16px !important;
+    border-color:var(--kn-phone-line) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 7px 22px rgba(0,0,0,.16);
+  }
+  /* Keep columns readable instead of letting desktop grids squeeze off-screen. */
+  [id^="tab-"] .grid,
+  [id^="tab-"] .cards-grid,
+  [id^="tab-"] .features-grid,
+  [id^="tab-"] .games-grid,
+  [id^="tab-"] .mode-grid,
+  [id^="tab-"] .mission-grid,
+  [id^="tab-"] .reward-grid,
+  [id^="tab-"] .stats-grid,
+  [id^="tab-"] .tools-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+  /* Every button feels tappable and belongs to the same premium interface. */
+  [id^="tab-"] button:not(.mobile-nav button):not(.kn-mobile-link):not(.kn-mobile-categories button),
+  [id^="tab-"] .btn, [id^="tab-"] .button, [id^="tab-"] a.button {
+    max-width:100%;
+    min-height:40px;
+    border-radius:12px;
+    touch-action:manipulation;
+  }
+  [id^="tab-"] button:active, [id^="tab-"] .btn:active, [id^="tab-"] .button:active {
+    filter:brightness(1.12);
+  }
+  /* Gold is an accent, not a flood: preserve each module's own identity. */
+  [id^="tab-"] button.primary, [id^="tab-"] .btn-primary, [id^="tab-"] .primary-button,
+  [id^="tab-"] button[data-primary="true"] {
+    background:linear-gradient(135deg,#ffe08a,#e7b842 62%,#bb8120) !important;
+    color:#17130a !important;
+    border:1px solid rgba(255,226,147,.55) !important;
+    box-shadow:0 5px 16px rgba(214,163,44,.14),inset 0 1px 0 rgba(255,255,255,.4);
+    font-weight:850;
+  }
+  /* Inputs work well with thumbs and the dark theme. */
+  [id^="tab-"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  [id^="tab-"] select, [id^="tab-"] textarea {
+    box-sizing:border-box;
+    max-width:100%;
+    min-height:43px;
+    border-radius:12px !important;
+    border:1px solid #354358 !important;
+    background:#0a111b !important;
+    color:#f4f6fa !important;
+    font-size:16px !important;
+  }
+  [id^="tab-"] textarea { min-height:92px; }
+  [id^="tab-"] input:focus, [id^="tab-"] select:focus, [id^="tab-"] textarea:focus {
+    outline:none !important;
+    border-color:rgba(244,196,79,.75) !important;
+    box-shadow:0 0 0 3px rgba(244,196,79,.1) !important;
+  }
+  [id^="tab-"] img, [id^="tab-"] video, [id^="tab-"] canvas, [id^="tab-"] iframe {
+    max-width:100%;
+  }
+  [id^="tab-"] table { display:block;max-width:100%;overflow-x:auto;white-space:nowrap; }
+  [id^="tab-"] pre { max-width:100%;overflow-x:auto; }
+  /* Prevent fixed-width desktop layouts from pushing the phone viewport sideways. */
+  [id^="tab-"] [style*="width: 1000px"], [id^="tab-"] [style*="width:1000px"],
+  [id^="tab-"] [style*="min-width: 900px"], [id^="tab-"] [style*="min-width:900px"] {
+    width:100% !important;min-width:0 !important;max-width:100% !important;
+  }
+  /* Modals and game overlays should fit within the visible phone screen. */
+  .modal, .modal-content, .dialog, .game-modal, .game-modal-content,
+  .desktop-command, .update-modal, .kn-modal {
+    box-sizing:border-box;
+    max-width:calc(100vw - 20px) !important;
+    max-height:calc(100dvh - 28px - env(safe-area-inset-top)) !important;
+    overflow:auto;
+    border-radius:19px !important;
+  }
+  .modal-backdrop, .modal-overlay, .dialog-backdrop {
+    padding:12px !important;
+    align-items:center;
+  }
+  /* Small-screen phones: keep layouts legible and avoid accidental overflow. */
+  @media (max-width:390px) {
+    main, #mainContent, .main-content { padding-left:9px !important;padding-right:9px !important; }
+    [id^="tab-"] .grid, [id^="tab-"] .cards-grid, [id^="tab-"] .features-grid,
+    [id^="tab-"] .games-grid, [id^="tab-"] .mode-grid, [id^="tab-"] .mission-grid,
+    [id^="tab-"] .reward-grid, [id^="tab-"] .stats-grid, [id^="tab-"] .tools-grid {
+      gap:8px !important;
+    }
+    [id^="tab-"] .card, [id^="tab-"] .panel, [id^="tab-"] .module-card,
+    [id^="tab-"] .feature-card, [id^="tab-"] .game-card, [id^="tab-"] .mode-card {
+      border-radius:13px !important;
+    }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    *,*::before,*::after { scroll-behavior:auto !important;animation-duration:.01ms !important;transition-duration:.01ms !important; }
+  }
+}
