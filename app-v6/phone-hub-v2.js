@@ -17,7 +17,7 @@
       document.body.appendChild(nav);
     }
     const originalButtons = () => Array.from(sourceNav.querySelectorAll('.nav-item'));
-    const clean = s => String(s || '').replace(/\\s+/g, ' ').trim();
+    const clean = s => String(s || '').replace(/\s+/g, ' ').trim();
     const nameOf = el => clean(el.querySelector('.nav-label')?.textContent || el.textContent || 'Розділ');
     const groupOf = el => {
       const group = el.closest('.nav-group');
