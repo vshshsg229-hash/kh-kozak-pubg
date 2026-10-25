@@ -493,9 +493,6 @@ mobileMenuBackdrop?.addEventListener('click',()=>setMobileMenu(false));
 document.querySelectorAll('.sidebar [data-tab],.sidebar [data-tab-link]').forEach(item=>item.addEventListener('click',()=>setMobileMenu(false)));
 document.addEventListener('keydown',event=>{if(event.key==='Escape')setMobileMenu(false)});
 window.matchMedia('(min-width:721px)').addEventListener('change',event=>{if(event.matches)setMobileMenu(false)});
-render();
-updateSeasonTimers();setInterval(updateSeasonTimers,1000);
-
 function reloadSharedProfile(){try{const fresh=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...fresh,games:{...defaultState.games,...(fresh.games||{})}};state.owned=Array.isArray(state.owned)?state.owned:[];state.completed=Array.isArray(state.completed)?state.completed:[];state.passClaimed=Array.isArray(state.passClaimed)?state.passClaimed:[];state.redeemedCodes=Array.isArray(state.redeemedCodes)?state.redeemedCodes:[];render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:Number(state.coins)||0,xp:Number(state.xp)||0}}));return true}catch(_){return false}}
 window.khkozakProgression = {
   snapshot: () => ({ coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }),
@@ -519,6 +516,10 @@ window.khkozakProgression = {
   },
   reload: reloadSharedProfile
 };
+
+render();
+updateSeasonTimers();setInterval(updateSeasonTimers,1000);
+
 window.addEventListener('kh-battlepass-reward',reloadSharedProfile);
 window.addEventListener('khkozak-profile-storage-updated',reloadSharedProfile);
 try{if(!Storage.prototype.__khkozakSharedProfile){const originalSetItem=Storage.prototype.setItem;Object.defineProperty(Storage.prototype,'__khkozakSharedProfile',{value:true});Storage.prototype.setItem=function(key,value){const isProfile=this===window.localStorage&&key===KEY,previous=isProfile?this.getItem(key):null;const result=originalSetItem.call(this,key,value);if(isProfile&&previous!==String(value)){const notify=()=>window.dispatchEvent(new CustomEvent('khkozak-profile-storage-updated'));if(typeof queueMicrotask==='function')queueMicrotask(notify);else Promise.resolve().then(notify)}return result}}}catch(_){}
