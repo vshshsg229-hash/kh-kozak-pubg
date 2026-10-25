@@ -1,8 +1,10 @@
 /* KOZAK NEXUS — dedicated phone navigation v3 */
 .kn-mobile-home-hub { display:none; }
 @media (max-width: 720px) {
-  /* The legacy side drawer is replaced on phones by the searchable function catalog. Original nav controls remain hidden in DOM as working action sources. */
+  /* Hide only the phone sidebar. Keep the original navigation controls in the DOM as action sources, preserving every existing mode. */
   .sidebar, .mobile-menu-backdrop, #mobileMenuToggle, .mobile-menu-toggle, .mobile-menu-heading { display:none !important; visibility:hidden !important; pointer-events:none !important; }
+  .app-shell { display:block !important; width:100% !important; max-width:100% !important; min-width:0 !important; margin:0 !important; }
+  .app-shell > main, .app-shell > .main-content, main { width:100% !important; max-width:100% !important; min-width:0 !important; margin-left:0 !important; }
   .mobile-nav { z-index: 3000 !important; }
   body { padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important; }
   .mobile-nav {
@@ -82,6 +84,11 @@
   .kn-mobile-home-actions button b {font-size:12px;}
   .kn-mobile-home-actions button span {font-size:20px;color:#f5c342;}
   .kn-mobile-home-actions button small {font-size:10px;color:#9ba8b8;line-height:1.3;}
+  .kn-mobile-media-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:9px;}
+  .kn-mobile-media-actions button {min-width:0;min-height:62px;border:1px solid #d7ad4d55;border-radius:13px;background:linear-gradient(145deg,#211b10,#121923);color:#fff;text-align:left;padding:11px;display:grid;grid-template-columns:28px 1fr;grid-template-rows:auto auto;column-gap:8px;align-content:center;}
+  .kn-mobile-media-actions button span {grid-row:1/3;align-self:center;font-size:22px;color:#f5c342;}
+  .kn-mobile-media-actions button b {font-size:12px;}
+  .kn-mobile-media-actions button small {font-size:10px;color:#9ba8b8;line-height:1.3;margin-top:3px;}
   #tab-home .kn-replica-layout {gap:10px!important;}
   #tab-home .kn-replica-hero {min-height:690px!important;height:auto!important;}
 }
