@@ -96,3 +96,94 @@
   .kn-mobile-sheet-list {grid-template-columns:minmax(0,1fr);}
   .kn-mobile-link {min-height:58px;}
 }
+
+
+/* KOZAK NEXUS · MOBILE UI POLISH 1.1 — premium black/gold, phone-only */
+@media (max-width:720px) {
+  :root { color-scheme: dark; }
+  body { background: #070a10 !important; }
+  .mobile-nav {
+    background: linear-gradient(180deg,rgba(13,19,29,.98),rgba(5,8,13,.99)) !important;
+    border-top: 1px solid rgba(246,194,66,.38) !important;
+    box-shadow: 0 -12px 36px rgba(0,0,0,.58), 0 -1px 0 rgba(255,220,130,.07) !important;
+    backdrop-filter: blur(18px) !important;
+    padding-left: 10px !important; padding-right: 10px !important;
+  }
+  .mobile-nav button { border-radius: 13px !important; font-weight: 800 !important; transition: background .16s ease,border-color .16s ease,color .16s ease !important; }
+  .mobile-nav button.active, .mobile-nav button[aria-current="page"] {
+    background: linear-gradient(145deg,rgba(255,211,100,.18),rgba(194,137,33,.07)) !important;
+    border-color: rgba(255,205,85,.42) !important;
+    box-shadow: inset 0 1px 0 rgba(255,230,160,.13),0 4px 15px rgba(212,158,42,.08) !important;
+  }
+  .mobile-nav button.active span { filter: drop-shadow(0 0 7px rgba(255,203,75,.35)); }
+  .kn-mobile-sheet-backdrop { align-items:flex-end; background:rgba(2,5,10,.78); backdrop-filter:blur(12px) saturate(130%); }
+  .kn-mobile-sheet {
+    max-height:min(91dvh,960px) !important;
+    background: radial-gradient(ellipse at 100% 0%,rgba(194,142,44,.13),transparent 34%),linear-gradient(155deg,#101925 0%,#090e16 62%,#080b11 100%) !important;
+    border:1px solid rgba(246,195,70,.38) !important;
+    border-bottom:0 !important; border-radius:25px 25px 0 0 !important;
+    box-shadow:0 -24px 75px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,225,145,.08) !important;
+  }
+  .kn-mobile-sheet::before { content:""; display:block; width:42px;height:4px;border-radius:9px;background:#697587;opacity:.7;margin:9px auto 0;flex:0 0 auto; }
+  .kn-mobile-sheet-head { padding:13px 16px 14px !important; border-bottom:1px solid rgba(144,164,190,.15) !important; background:linear-gradient(180deg,rgba(255,255,255,.018),transparent); }
+  .kn-mobile-sheet-mark { width:42px !important;height:42px !important;border-radius:13px !important;background:linear-gradient(145deg,#ffe9a1 0%,#e3b64e 43%,#9c681a 100%) !important;box-shadow:0 5px 18px rgba(212,162,53,.2),inset 0 1px 0 rgba(255,255,255,.55) !important; }
+  .kn-mobile-sheet-title b { font-size:16px !important; letter-spacing:.055em !important; }
+  .kn-mobile-sheet-title small { font-size:10px !important;color:#a4b1c2 !important; }
+  .kn-mobile-sheet-close { border-radius:13px !important;background:rgba(255,255,255,.045) !important;border-color:#3a4656 !important; }
+  .kn-mobile-search { border-radius:14px !important;background:rgba(3,7,13,.62) !important;border-color:#39485b !important;box-shadow:inset 0 1px 3px rgba(0,0,0,.35); }
+  .kn-mobile-search:focus-within { border-color:#d9ad49 !important;box-shadow:0 0 0 3px rgba(235,184,63,.1) !important; }
+  .kn-mobile-search input { caret-color:#f5c342; }
+  .kn-mobile-categories { padding:12px 15px 11px !important;gap:8px !important;border-bottom-color:rgba(144,164,190,.12) !important; }
+  .kn-mobile-categories button { border-radius:999px !important;background:rgba(255,255,255,.035) !important;border-color:#354256 !important;font-size:11px !important;letter-spacing:.01em; }
+  .kn-mobile-categories button.active { background:linear-gradient(135deg,#ffe28a,#e8b941 65%,#c28a24) !important;color:#17130a !important;border-color:#ffdf81 !important;box-shadow:0 3px 12px rgba(224,173,55,.17) !important; }
+  .kn-mobile-sheet-count { padding:10px 16px 0 !important;color:#9caabd !important;letter-spacing:.06em;text-transform:uppercase; }
+  .kn-mobile-sheet-list { padding:12px 14px 28px !important;gap:10px !important; }
+  .kn-mobile-group-title { display:flex;align-items:center;gap:8px;margin:8px 2px 1px !important;color:#e9bd55 !important;letter-spacing:.15em !important; }
+  .kn-mobile-group-title::after { content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(233,189,85,.3),transparent); }
+  .kn-mobile-link {
+    position:relative;min-height:76px !important;padding:11px !important;gap:10px !important;
+    border-radius:16px !important;border-color:rgba(113,137,165,.24) !important;
+    background:linear-gradient(145deg,rgba(27,39,55,.92),rgba(12,19,29,.96)) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 5px 14px rgba(0,0,0,.12) !important;
+    transition:transform .15s ease,border-color .15s ease,background .15s ease !important;
+  }
+  .kn-mobile-link:active { transform:scale(.975) !important;border-color:rgba(255,205,85,.72) !important;background:linear-gradient(145deg,#2a2b27,#111a25) !important; }
+  .kn-mobile-link-icon { width:39px !important;height:39px !important;flex-basis:39px !important;border-radius:12px !important;background:linear-gradient(145deg,rgba(246,195,70,.16),rgba(246,195,70,.045)) !important;border:1px solid rgba(246,195,70,.14);font-size:19px !important; }
+  .kn-mobile-link-copy b { font-size:11.5px !important;line-height:1.35 !important;color:#f7f8fb; }
+  .kn-mobile-link-copy small { color:#91a0b3 !important;font-size:9px !important;letter-spacing:.015em; }
+  .kn-mobile-link-badge { padding:3px 5px;border-radius:6px;background:rgba(245,195,66,.1); }
+  .kn-mobile-link-arrow { font-size:23px !important;color:#dcb44f !important;opacity:.8; }
+  .kn-mobile-empty { padding:34px 14px !important;border:1px dashed #3b4859;border-radius:15px;background:rgba(255,255,255,.02); }
+  .kn-mobile-home-hub { padding-bottom:6px; }
+  .kn-mobile-home-head {
+    position:relative;overflow:hidden;padding:18px !important;border-radius:21px !important;
+    border:1px solid rgba(246,195,70,.35) !important;
+    background:radial-gradient(ellipse at 100% 0%,rgba(242,190,67,.23),transparent 38%),radial-gradient(ellipse at 0% 100%,rgba(32,101,139,.13),transparent 42%),linear-gradient(145deg,#172231 0%,#0c121c 64%,#0a0e15 100%) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 12px 28px rgba(0,0,0,.16) !important;
+  }
+  .kn-mobile-home-head::after { content:"N";position:absolute;right:-8px;top:0;font-size:155px;line-height:1;font-weight:1000;color:rgba(245,195,66,.035);pointer-events:none; }
+  .kn-mobile-home-eyebrow { display:flex;align-items:center;gap:7px;font-size:9px !important;letter-spacing:.18em !important; }
+  .kn-mobile-home-eyebrow::before { content:"";width:6px;height:6px;border-radius:50%;background:#f5c342;box-shadow:0 0 10px rgba(245,195,66,.6); }
+  #tab-home .kn-mobile-home-hub h2 { font-size:25px !important;letter-spacing:-.035em;margin:9px 0 6px !important; }
+  #tab-home .kn-mobile-home-hub p { font-size:12px !important;color:#b0bdcc !important;max-width:290px; }
+  .kn-mobile-home-actions { gap:10px !important;margin-top:17px !important; }
+  .kn-mobile-home-actions button {
+    position:relative;overflow:hidden;min-height:92px !important;padding:13px !important;border-radius:16px !important;
+    border-color:rgba(127,151,180,.23) !important;background:linear-gradient(145deg,rgba(31,44,61,.91),rgba(15,23,34,.96)) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 5px 15px rgba(0,0,0,.12) !important;
+  }
+  .kn-mobile-home-actions button:first-child { border-color:rgba(245,195,66,.38) !important;background:linear-gradient(145deg,rgba(86,65,27,.42),rgba(17,25,36,.98)) !important; }
+  .kn-mobile-home-actions button span { font-size:22px !important;filter:drop-shadow(0 3px 8px rgba(245,195,66,.15)); }
+  .kn-mobile-home-actions button b { font-size:12px !important;letter-spacing:.01em; }
+  .kn-mobile-home-actions button small { font-size:10px !important;color:#9eacbd !important; }
+  .kn-mobile-media-actions { gap:10px !important;margin-top:11px !important; }
+  .kn-mobile-media-actions button { min-height:76px !important;border-radius:16px !important;border-color:rgba(245,195,66,.25) !important;background:linear-gradient(145deg,rgba(39,33,22,.9),rgba(14,21,31,.98)) !important; }
+  .kn-mobile-media-actions button:first-child { border-color:rgba(255,255,255,.15) !important;background:linear-gradient(145deg,#202c3b,#101720) !important; }
+  .kn-mobile-media-actions button span { font-size:24px !important; }
+  .kn-mobile-media-actions button b { font-size:12px !important; }
+  .kn-mobile-media-actions button small { font-size:10px !important;color:#a3b0c0 !important; }
+  #tab-home .kn-replica-layout { gap:12px !important; }
+  @media (prefers-reduced-motion:reduce) {
+    .mobile-nav button,.kn-mobile-link { transition:none !important; }
+  }
+}
