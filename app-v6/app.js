@@ -502,6 +502,21 @@ window.khkozakProgression = {
   creditCoins: amount => { const value=Math.max(0,Math.floor(Number(amount)||0));if(!value)return false;state.coins=Math.max(0,Number(state.coins)||0)+value;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
   spendCoins: amount => { const cost=Math.max(0,Math.floor(Number(amount)||0));if(!cost||!Number.isFinite(cost)||Number(state.coins)<cost)return false;state.coins-=cost;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
   refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; },
+  awardChallenge: (challengeId, coins, xp) => {
+    const id=String(challengeId||'').trim(), coinValue=Math.max(0,Math.floor(Number(coins)||0)), xpValue=Math.max(0,Math.floor(Number(xp)||0));
+    if(!id||(!coinValue&&!xpValue))return {ok:false,reason:'invalid'};
+    state.pubgChallengeClaims=Array.isArray(state.pubgChallengeClaims)?state.pubgChallengeClaims:[];
+    if(state.pubgChallengeClaims.includes(id))return {ok:false,reason:'already-claimed'};
+    const snapshot=JSON.stringify(state);
+    state.coins=Math.max(0,Number(state.coins)||0)+coinValue;
+    addXP(xpValue);
+    state.pubgChallengeClaims.push(id);
+    if(!save()){restoreRewardState(snapshot);return {ok:false,reason:'save-failed'};}
+    render();
+    window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source:'pubg-challenge'}}));
+    window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));
+    return {ok:true,coins:state.coins,xp:state.xp,level:level()};
+  },
   reload: reloadSharedProfile
 };
 window.addEventListener('kh-battlepass-reward',reloadSharedProfile);
