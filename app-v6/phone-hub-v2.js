@@ -87,12 +87,13 @@
     const catBox=sheet.querySelector('.kn-mobile-categories');
     catBox.innerHTML=cats.map(c=>'<button type="button" data-category="'+c+'" class="'+(activeCategory===c?'active':'')+'">'+c+'</button>').join('');
     const list=sheet.querySelector('.kn-mobile-sheet-list');
-    const items=collectItems().filter(it=>(activeCategory==='Усі розділи'||it.bucket===activeCategory)&&(!query||(it.name+' '+it.group+' '+it.bucket+' '+it.id+' '+it.game).toLocaleLowerCase('uk').includes(query)));
+    const allItems=collectItems();
+    const items=allItems.filter(it=>(activeCategory==='Усі розділи'||it.bucket===activeCategory)&&(!query||(it.name+' '+it.group+' '+it.bucket+' '+it.id+' '+it.game).toLocaleLowerCase('uk').includes(query)));
     if(!items.length){list.innerHTML='<div class="kn-mobile-empty">Нічого не знайдено. Спробуй іншу назву.</div>';return;}
     let html='',last='';
     items.forEach(it=>{
       if(activeCategory==='Усі розділи'&&it.group!==last){html+='<div class="kn-mobile-group-title">'+escapeHtml(it.group)+'</div>';last=it.group;}
-      html+='<button type="button" class="kn-mobile-link" data-index="'+collectItems().indexOf(it)+'"><span class="kn-mobile-link-icon">'+escapeHtml(it.el.querySelector(':scope > span:first-child')?.textContent||'◈')+'</span><span class="kn-mobile-link-copy"><b>'+escapeHtml(it.name)+'</b><small>'+escapeHtml(it.bucket==='Інше'?it.group:it.bucket)+'</small></span>'+(it.badge?'<span class="kn-mobile-link-badge">'+escapeHtml(it.badge)+'</span>':'')+'</button>';
+      html+='<button type="button" class="kn-mobile-link" data-index="'+allItems.indexOf(it)+'"><span class="kn-mobile-link-icon">'+escapeHtml(it.el.querySelector(':scope > span:first-child')?.textContent||'◈')+'</span><span class="kn-mobile-link-copy"><b>'+escapeHtml(it.name)+'</b><small>'+escapeHtml(it.bucket==='Інше'?it.group:it.bucket)+'</small></span>'+(it.badge?'<span class="kn-mobile-link-badge">'+escapeHtml(it.badge)+'</span>':'')+'</button>';
     });
     list.innerHTML=html;
   }
@@ -101,10 +102,6 @@
   window.addEventListener('resize',()=>{if(!mobile()&&sheet)closeSheet();});
   ensureHomeHub();
   makeNav();
-  document.addEventListener('click',e=>{
-    const b=e.target.closest('[data-kn-open]');
-    if(b){e.preventDefault();openSheet(b.dataset.knOpen);}
-  });
   document.addEventListener('click',e=>{
     const tab=e.target.closest('[data-tab]');
     if(tab&&tab.closest('.sidebar')){setActiveNav(tab.dataset.tab==='home'?'home':(['profile','progress','rewards','matchreport'].includes(tab.dataset.tab)?'progress':''));}
