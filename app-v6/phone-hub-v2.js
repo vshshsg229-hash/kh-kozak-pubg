@@ -18,7 +18,7 @@
     const id = el.dataset.tab || '';
     const game = el.dataset.game || '';
     const g = groupName(el).toLowerCase();
-    if (game || /коzak-2d|2d ігри/i.test(g) || ['games','roblox','nexusops','3d','survival','bunker','pass','missions'].includes(id)) return 'Ігри';
+    if (game || el.classList.contains('atlas-zero-nav') || /коzak-2d|2d ігри|ігри/i.test(g) || ['games','roblox','nexusops','3d','survival','bunker','pass','missions'].includes(id)) return 'Ігри';
     if (['events','arsenal','tactical','control','commandcenter'].includes(id) || /завдан|план|тактич|бункер|command/i.test(g)) return 'Тактика';
     if (['fun','challenges'].includes(id) || /fun|pubg|challenge/i.test(g)) return 'Челенджі';
     if (['music','youtube','tiktok'].includes(id) || /контент/i.test(g)) return 'Контент';
