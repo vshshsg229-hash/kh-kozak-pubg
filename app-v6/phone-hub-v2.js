@@ -27,7 +27,7 @@
     const bucketOf = el => {
       const id = el.dataset.tab || '', game = el.dataset.game || '';
       const g = groupOf(el).toLowerCase(), n = nameOf(el).toLowerCase();
-      if (game || el.classList.contains('atlas-zero-nav') || /ігри|roblox|arena|режим/.test(g+' '+n) || ['games','roblox','nexusops','3d','survival','bunker','pass','missions'].includes(id)) return 'Ігри';
+      if (game || el.classList.contains('atlas-zero-nav') || /ігри|roblox|arena|режим/.test(g+' '+n) || ['games','roblox','nexusops','3d','survival','bunker','missions'].includes(id)) return 'Ігри';
       if (['events','arsenal','tactical','control','commandcenter'].includes(id) || /тактик|план|штаб|арсенал|операц|бункер/.test(g+' '+n)) return 'Тактика';
       if (['fun','challenges'].includes(id) || /challenge|челендж|рандом|прикол/.test(g+' '+n)) return 'Челенджі';
       if (['music','youtube','tiktok'].includes(id) || /контент|музик|youtube|tiktok/.test(g+' '+n)) return 'Медіа';
@@ -111,9 +111,9 @@
       const home = document.getElementById('tab-home');
       if (!home || home.querySelector('.kn-mobile-home-hub')) return;
       const hub = document.createElement('section'); hub.className = 'kn-mobile-home-hub';
-      hub.innerHTML = '<div class="kn-mobile-home-head"><div class="kn-mobile-home-eyebrow">KOZAK NEXUS · MOBILE</div><h2>Керування без зламаної бічної панелі</h2><p>Відкривай будь-який режим через пошук або каталог функцій.</p><div class="kn-mobile-home-actions"><button type="button" data-kn-open="Ігри"><span>🎮</span><b>Знайти режим</b><small>Усі ігри та режими</small></button><button type="button" data-kn-open="Челенджі"><span>🎯</span><b>Челенджі</b><small>Рандом і PUBG</small></button><button type="button" data-kn-open="Тактика"><span>🧭</span><b>Тактичний центр</b><small>Арсенал і штаб</small></button><button type="button" data-kn-open="Усі функції"><span>▦</span><b>Усі функції</b><small>Повний каталог</small></button></div></div>';
+      hub.innerHTML = '<div class="kn-mobile-home-head"><div class="kn-mobile-home-eyebrow">KOZAK NEXUS · MOBILE</div><h2>Усе під рукою</h2><p>Ігри, інструменти, відео та музика — без бічної панелі.</p><div class="kn-mobile-home-actions"><button type="button" data-kn-open="Ігри"><span>🎮</span><b>Знайти режим</b><small>Усі ігри та режими</small></button><button type="button" data-kn-open="Челенджі"><span>🎯</span><b>Челенджі</b><small>Рандом і PUBG</small></button><button type="button" data-kn-open="Тактика"><span>🧭</span><b>Тактичний центр</b><small>Арсенал і штаб</small></button><button type="button" data-kn-open="Усі функції"><span>▦</span><b>Усі функції</b><small>Повний каталог</small></button></div><div class="kn-mobile-media-actions"><button type="button" data-kn-tab="youtube"><span>▶</span><b>YouTube</b><small>Відео та плейлисти</small></button><button type="button" data-kn-tab="music"><span>♫</span><b>Музика</b><small>Музичний плеєр</small></button></div></div>';
       home.insertBefore(hub, home.firstChild);
-      hub.addEventListener('click', e => { const b=e.target.closest('[data-kn-open]'); if(b) openSheet(b.dataset.knOpen); });
+      hub.addEventListener('click', e => { const tab=e.target.closest('[data-kn-tab]'); if(tab){const item=collect().find(it=>it.id===tab.dataset.knTab);if(item)item.el.click();return;} const b=e.target.closest('[data-kn-open]'); if(b) openSheet(b.dataset.knOpen); });
     }
     buildBottomNav();
     ensureHomeHub();
