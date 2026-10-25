@@ -1,0 +1,85 @@
+/* KOZAK NEXUS — dedicated phone navigation v2 */
+@media (max-width: 720px) {
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important; }
+  .mobile-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0,1fr)) !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    left: 0 !important; right: 0 !important; bottom: 0 !important;
+    width: 100% !important; max-width: 100% !important;
+    padding: 7px 8px max(7px, env(safe-area-inset-bottom)) !important;
+    overflow: visible !important;
+    background: rgba(7,11,17,.98) !important;
+    border-top: 1px solid #d7ad4d55 !important;
+    box-shadow: 0 -8px 30px #0008 !important;
+  }
+  .mobile-nav button {
+    flex: initial !important; min-width: 0 !important; width: 100% !important;
+    min-height: 51px !important; padding: 5px 2px !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important; gap: 3px !important;
+    border: 1px solid transparent !important; border-radius: 11px !important;
+    background: transparent !important; color: #aeb8c5 !important;
+    font-size: 10px !important; line-height: 1.1 !important; overflow-wrap: normal !important;
+  }
+  .mobile-nav button span { display:block !important; font-size: 19px !important; line-height: 1 !important; }
+  .mobile-nav button.active, .mobile-nav button[aria-current="page"] {
+    color: #f5c342 !important; background: #f5c34214 !important;
+    border-color: #f5c34235 !important;
+  }
+  .kn-mobile-sheet-backdrop {
+    position: fixed; inset: 0; z-index: 4000; display: flex; align-items: flex-end;
+    background: #02050bd9; backdrop-filter: blur(7px);
+  }
+  .kn-mobile-sheet {
+    width: 100%; max-height: min(88dvh, 900px); display:flex; flex-direction:column;
+    background: #0b111a; color: #f4f6fa; border:1px solid #d7ad4d55;
+    border-bottom:0; border-radius: 20px 20px 0 0;
+    box-shadow: 0 -18px 55px #0009; overflow:hidden;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+  .kn-mobile-sheet-head { padding: 15px 16px 12px; border-bottom:1px solid #283341; }
+  .kn-mobile-sheet-top { display:flex; align-items:center; gap:10px; }
+  .kn-mobile-sheet-mark { width:38px;height:38px;display:grid;place-items:center;border-radius:11px;
+    color:#111;background:linear-gradient(135deg,#ffe08a,#c18c28);font-weight:1000;font-size:19px; }
+  .kn-mobile-sheet-title { flex:1; min-width:0; }
+  .kn-mobile-sheet-title b { display:block;font-size:16px;letter-spacing:.04em; }
+  .kn-mobile-sheet-title small { display:block;color:#9ba8b8;font-size:11px;margin-top:3px; }
+  .kn-mobile-sheet-close { width:40px;height:40px;border:1px solid #394656;border-radius:11px;background:#141e2b;color:#fff;font-size:23px; }
+  .kn-mobile-search { display:flex;gap:8px;align-items:center;margin-top:13px;padding:0 12px;border:1px solid #3b4655;border-radius:12px;background:#101925; }
+  .kn-mobile-search span {font-size:20px;color:#f5c342;}
+  .kn-mobile-search input {width:100%;min-width:0;height:44px;min-height:44px;background:transparent!important;border:0!important;outline:none;color:#fff;font-size:16px!important;padding:0!important;}
+  .kn-mobile-categories {display:flex;gap:7px;overflow-x:auto;padding:12px 15px 10px;scrollbar-width:none;border-bottom:1px solid #202c3a;}
+  .kn-mobile-categories::-webkit-scrollbar {display:none;}
+  .kn-mobile-categories button {flex:0 0 auto;min-height:34px;padding:7px 12px;border:1px solid #344153;border-radius:999px;background:#121c29;color:#b7c2d0;font-size:11px;font-weight:800;}
+  .kn-mobile-categories button.active {background:#f5c342;color:#17191c;border-color:#f5c342;}
+  .kn-mobile-sheet-list {padding:12px 14px 22px;overflow-y:auto;overscroll-behavior:contain;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:9px;}
+  .kn-mobile-group-title {grid-column:1/-1;margin:7px 2px 0;color:#f5c342;font-size:10px;letter-spacing:.12em;font-weight:900;}
+  .kn-mobile-link {min-width:0;min-height:66px;display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #293747;border-radius:13px;background:linear-gradient(145deg,#141f2d,#0e151f);color:#f2f5f9;text-align:left;}
+  .kn-mobile-link:active {transform:scale(.985);border-color:#f5c342;}
+  .kn-mobile-link-icon {width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:10px;background:#f5c34213;color:#f5c342;font-size:18px;}
+  .kn-mobile-link-copy {min-width:0;flex:1;}
+  .kn-mobile-link-copy b {display:block;font-size:11px;line-height:1.3;overflow-wrap:anywhere;}
+  .kn-mobile-link-copy small {display:block;color:#8998aa;font-size:9px;line-height:1.35;margin-top:4px;}
+  .kn-mobile-link-badge {color:#f5c342;font-size:9px;font-weight:900;}
+  .kn-mobile-empty {grid-column:1/-1;padding:25px 10px;text-align:center;color:#a7b2c1;font-size:13px;}
+  .kn-mobile-quick-label {grid-column:1/-1;color:#8190a2;font-size:10px;letter-spacing:.1em;font-weight:900;margin:5px 2px 0;}
+  /* The phone gets a compact content dashboard; the existing detailed home and all original views remain in the document. */
+  #tab-home .kn-mobile-home-hub {display:block;margin:0 0 20px;}
+  #tab-home .kn-mobile-home-hub h2 {font-size:22px;line-height:1.15;margin:5px 0;color:#fff;}
+  #tab-home .kn-mobile-home-hub p {font-size:12px;line-height:1.5;color:#a5b1c1;margin:0;}
+  .kn-mobile-home-head {padding:16px;border:1px solid #d7ad4d55;border-radius:16px;background:radial-gradient(ellipse at 90% 0%,#c28d2830,transparent 55%),linear-gradient(145deg,#151e2a,#0c121b);}
+  .kn-mobile-home-eyebrow {font-size:9px;letter-spacing:.14em;color:#e9bd55;font-weight:900;}
+  .kn-mobile-home-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px;}
+  .kn-mobile-home-actions button {min-width:0;min-height:72px;border:1px solid #394556;border-radius:13px;background:#121b27;color:#fff;text-align:left;padding:11px;display:flex;flex-direction:column;justify-content:center;gap:7px;}
+  .kn-mobile-home-actions button b {font-size:12px;}
+  .kn-mobile-home-actions button span {font-size:20px;color:#f5c342;}
+  .kn-mobile-home-actions button small {font-size:10px;color:#9ba8b8;line-height:1.3;}
+  #tab-home .kn-replica-layout {gap:10px!important;}
+  #tab-home .kn-replica-hero {min-height:690px!important;height:auto!important;}
+}
+@media (max-width: 380px) {
+  .kn-mobile-sheet-list {grid-template-columns:minmax(0,1fr);}
+  .kn-mobile-link {min-height:58px;}
+}
