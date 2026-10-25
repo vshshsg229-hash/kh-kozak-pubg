@@ -1,0 +1,77 @@
+/* KOZAK NEXUS — phone layout aligned with tablet content layout.
+   Scope: phones only. Keep navigation markup, labels, order, icons and handlers untouched. */
+@media (max-width: 720px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip !important;
+    overscroll-behavior-x: none;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  .app-shell, .main, .content, .tab-panel, .panel-content {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .app-shell { width: 100% !important; overflow-x: clip !important; }
+  .main {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    padding-left: clamp(10px, 3.5vw, 16px) !important;
+    padding-right: clamp(10px, 3.5vw, 16px) !important;
+    padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+  }
+  .topbar, .section-heading, .welcome-row {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  .topbar { height: auto !important; min-height: 54px; padding-top: 8px; padding-bottom: 8px; }
+  .hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden;
+  }
+  .hero-copy { min-width: 0 !important; padding: 20px 16px !important; }
+  .hero h1 { font-size: clamp(30px, 9vw, 44px) !important; line-height: 1.04 !important; overflow-wrap: anywhere; }
+  .hero-copy > p { max-width: 100% !important; }
+  .hero-art { min-width: 0 !important; min-height: 150px !important; max-height: 220px !important; }
+  .stats-grid, .stat-grid, .feature-grid, .games-grid, .game-grid,
+  .rewards-grid, .events-grid, .arsenal-grid, .daily-shop-grid,
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .bottom-panels, .profile-layout, .media-layout, .bunker-lower-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-width: 0 !important;
+  }
+  .panel, .card, .stat-card, .feature-card, .game-tile, .reward-card,
+  .profile-card, .section, .tile, .mode-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .feature-card, .game-tile, .reward-card { overflow-wrap: anywhere; }
+  .tile-visual { height: clamp(110px, 34vw, 155px) !important; }
+  button, .button, .nav-item, input, select, textarea { max-width: 100%; }
+  img, video, canvas, svg { max-width: 100%; }
+  table { display: block; max-width: 100%; overflow-x: auto; }
+  pre, code { overflow-wrap: anywhere; }
+  .mobile-nav { max-width: 100vw; }
+}
+/* Very narrow phones: keep two compact columns only for tile-like grids;
+   text-heavy/admin layouts remain single-column for readability. */
+@media (max-width: 380px) {
+  .main { padding-left: 9px !important; padding-right: 9px !important; }
+  .stats-grid, .stat-grid { gap: 7px !important; }
+  .feature-grid, .games-grid, .game-grid, .rewards-grid, .events-grid, .arsenal-grid {
+    gap: 7px !important;
+  }
+  .hero-copy { padding: 17px 13px !important; }
+}
