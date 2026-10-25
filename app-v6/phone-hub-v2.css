@@ -1,4 +1,5 @@
 /* KOZAK NEXUS — dedicated phone navigation v2 */
+.kn-mobile-home-hub { display:none; }
 @media (max-width: 720px) {
   body { padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important; }
   .mobile-nav {
