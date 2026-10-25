@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="device-layouts.css?v=17.83.0">
 <link rel="stylesheet" href="kozak-device-assistant.css?v=1.2.0">
 <link rel="stylesheet" href="roblox-3d.css?v=1.1.0">
-<link rel="stylesheet" href="anime-hub.css?v=1.1.0">\n<style id="kozak-nexus-branding">:root{--nexus-gold:#d8b15a;--nexus-gold-bright:#f5d98b;--nexus-black:#080808} .brand-mark{background:linear-gradient(145deg,#2a2110,#080808)!important;border:1px solid #d8b15a!important;color:#f5d98b!important;box-shadow:0 0 0 1px #d8b15a33,0 6px 18px #0008!important} .brand b,.mobile-brand{color:#f5d98b!important} .brand small{color:#b9a36f!important}.brand small i{color:#f5d98b!important}.mobile-brand span{color:#f5d98b!important}.kh-replica-mini-brand b,.kh-replica-mini-brand>span,.kh-replica-signature{color:#e3bd65!important}.kh-replica-signature{letter-spacing:.12em;text-shadow:0 2px 12px #000}.eyebrow{--accent:#d8b15a} </style>
+\n<style id="kozak-nexus-branding">:root{--nexus-gold:#d8b15a;--nexus-gold-bright:#f5d98b;--nexus-black:#080808} .brand-mark{background:linear-gradient(145deg,#2a2110,#080808)!important;border:1px solid #d8b15a!important;color:#f5d98b!important;box-shadow:0 0 0 1px #d8b15a33,0 6px 18px #0008!important} .brand b,.mobile-brand{color:#f5d98b!important} .brand small{color:#b9a36f!important}.brand small i{color:#f5d98b!important}.mobile-brand span{color:#f5d98b!important}.kh-replica-mini-brand b,.kh-replica-mini-brand>span,.kh-replica-signature{color:#e3bd65!important}.kh-replica-signature{letter-spacing:.12em;text-shadow:0 2px 12px #000}.eyebrow{--accent:#d8b15a} </style>
 <link rel="stylesheet" href="interface-system-18.12.css?v=18.13.1">
 <link rel="stylesheet" href="command-deck-ui-18.14.css?v=18.14.0">
 <link rel="stylesheet" href="control-flow-18.16.css?v=18.25.0">
@@ -430,24 +430,6 @@
 <script src="nexus-ops.js?v=17.83.0" defer></script>
 
 <script src="kozak-device-assistant.js?v=1.3.0" defer></script>
-<script src="anime-hub.js?v=1.6.1" defer></script><script>
-window.addEventListener('DOMContentLoaded',function(){
-  if(document.getElementById('tab-anime')) return;
-  var nav=document.querySelector('.sidebar .nav'), main=document.querySelector('main');
-  if(!nav||!main) return;
-  var group=document.createElement('div');group.className='nav-group anime-hub-nav';
-  group.innerHTML='<div class="nav-group-title">✦ ANIME ZONE</div><button class="nav-item" type="button" data-tab="anime-fallback"><span>🌸</span><span class="nav-label">Anime Hub & Collection</span><em>NEW</em></button>';
-  nav.appendChild(group);
-  var view=document.createElement('section');view.className='view';view.id='tab-anime-fallback';
-  view.innerHTML='<div class="anime-hero"><div class="anime-eyebrow">KH么KOZAK · ANIME HUB</div><h1>ANIME <span>HUB</span></h1><p>Резервний режим галереї. Відкрий пошук зображень.</p><div class="anime-actions"><a class="anime-btn primary" href="https://www.google.com/search?tbm=isch&q=anime+girl+character+art" target="_blank" rel="noopener noreferrer">🌸 Аніме-дівчата · Google Images ↗</a><a class="anime-btn" href="https://www.google.com/search?tbm=isch&q=mecha+anime+girl+character+art" target="_blank" rel="noopener noreferrer">🤖 Mecha anime ↗</a></div><div class="anime-panel"><h2>Резервна галерея</h2><p>Основний скрипт галереї не завантажився. Цей екран залишає доступ до аніме-пошуку.</p></div></div>';
-  main.appendChild(view);
-  group.querySelector('button').addEventListener('click',function(){
-    document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id==='tab-anime-fallback')});
-    document.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('active',b===this)},this);
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
-});
-</script>\n<script src="control-flow-18.16.js?v=18.25.0"></script>
 <script src="sidebar-favorites-18.22.js?v=18.22.0"></script>
 <script src="sidebar-favorites-18.23.js?v=18.25.0"></script>
 <script src="black-zone-18.24.js?v=18.31.0" defer></script>
