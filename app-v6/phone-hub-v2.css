@@ -1,6 +1,9 @@
-/* KOZAK NEXUS — dedicated phone navigation v2 */
+/* KOZAK NEXUS — dedicated phone navigation v3 */
 .kn-mobile-home-hub { display:none; }
 @media (max-width: 720px) {
+  /* The legacy side drawer is replaced on phones by the searchable function catalog. Original nav controls remain hidden in DOM as working action sources. */
+  .sidebar, .mobile-menu-backdrop, #mobileMenuToggle, .mobile-menu-toggle, .mobile-menu-heading { display:none !important; visibility:hidden !important; pointer-events:none !important; }
+  .mobile-nav { z-index: 3000 !important; }
   body { padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important; }
   .mobile-nav {
     display: grid !important;
@@ -55,6 +58,7 @@
   .kn-mobile-categories::-webkit-scrollbar {display:none;}
   .kn-mobile-categories button {flex:0 0 auto;min-height:34px;padding:7px 12px;border:1px solid #344153;border-radius:999px;background:#121c29;color:#b7c2d0;font-size:11px;font-weight:800;}
   .kn-mobile-categories button.active {background:#f5c342;color:#17191c;border-color:#f5c342;}
+  .kn-mobile-sheet-count {padding:7px 16px 0;color:#7f90a5;font-size:10px;font-weight:800;}
   .kn-mobile-sheet-list {padding:12px 14px 22px;overflow-y:auto;overscroll-behavior:contain;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:9px;}
   .kn-mobile-group-title {grid-column:1/-1;margin:7px 2px 0;color:#f5c342;font-size:10px;letter-spacing:.12em;font-weight:900;}
   .kn-mobile-link {min-width:0;min-height:66px;display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #293747;border-radius:13px;background:linear-gradient(145deg,#141f2d,#0e151f);color:#f2f5f9;text-align:left;}
@@ -64,6 +68,7 @@
   .kn-mobile-link-copy b {display:block;font-size:11px;line-height:1.3;overflow-wrap:anywhere;}
   .kn-mobile-link-copy small {display:block;color:#8998aa;font-size:9px;line-height:1.35;margin-top:4px;}
   .kn-mobile-link-badge {color:#f5c342;font-size:9px;font-weight:900;}
+  .kn-mobile-link-arrow {margin-left:auto;color:#f5c342;font-size:20px;line-height:1;}
   .kn-mobile-empty {grid-column:1/-1;padding:25px 10px;text-align:center;color:#a7b2c1;font-size:13px;}
   .kn-mobile-quick-label {grid-column:1/-1;color:#8190a2;font-size:10px;letter-spacing:.1em;font-weight:900;margin:5px 2px 0;}
   /* The phone gets a compact content dashboard; the existing detailed home and all original views remain in the document. */
