@@ -1,0 +1,65 @@
+/* KH么Kozak 18.63 — phone-only sidebar polish.
+   Every rule is limited to narrow phone viewports; tablet and desktop styles remain untouched. */
+@media screen and (max-width: 600px) {
+  .mobile-menu-toggle {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-color: #6d5a2c;
+    background: linear-gradient(145deg, #242319, #111820);
+    box-shadow: inset 0 0 0 1px #f5c34212;
+    touch-action: manipulation;
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+
+  .mobile-brand {
+    flex: 1 1 auto;
+    text-align: left;
+  }
+
+  .sidebar {
+    width: min(84vw, 320px) !important;
+    padding: 18px 14px calc(24px + env(safe-area-inset-bottom)) !important;
+    background: #0b1119 !important;
+    border-right: 1px solid #66552d !important;
+    box-shadow: 20px 0 55px #000b;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar .brand {
+    padding: 4px 6px 22px !important;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #293443;
+  }
+
+  .sidebar .nav {
+    gap: 5px !important;
+  }
+
+  .sidebar .nav-item {
+    min-height: 46px !important;
+    padding: 12px 11px !important;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 12px !important;
+    touch-action: manipulation;
+  }
+
+  .sidebar .nav-item.active {
+    border-color: #f5c34238;
+    background: linear-gradient(90deg, #f5c3421c, #f5c34206) !important;
+    box-shadow: inset 3px 0 var(--yellow);
+  }
+
+  .mobile-menu-backdrop {
+    touch-action: manipulation;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+}
