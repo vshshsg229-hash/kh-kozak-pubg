@@ -56,13 +56,13 @@ function answer(index){
  const result=api.awardChallenge(XP_PREFIX+q.id,0,15);
  if(!result.ok&&result.reason!=='already-claimed'){if(feedback)feedback.textContent='Не вдалося зберегти XP. Спробуй ще раз — відповідь не втрачена.';return}
  state.solved.push(q.id);grantBadges();save();
- const host=$('#khAcademy');host?.querySelectorAll('[data-kha-answer]').forEach(b=>{b.disabled=true;b.classList.toggle('is-correct',Number(b.dataset.khaAnswer)===q.answer)});
+ const host=$('#khAcademy');host?.querySelectorAll('[data-kha-answer]').forEach(b=>{b.disabled=true;b.classList.remove('is-wrong');b.classList.toggle('is-correct',Number(b.dataset.khaAnswer)===q.answer)});host?.querySelector('[data-kha-next]')?.removeAttribute('disabled');
  if(feedback)feedback.textContent='Правильно! '+q.explanation+(result.ok?' +15 XP 🎉':' Завдання вже було зараховане, тому XP не нараховано повторно.');
  const stats=host?.querySelector('.kha-xp b');if(stats)stats.textContent=state.solved.length+' / '+questions.length;
  const progress=host?.querySelector('.kha-progress');if(progress){progress.setAttribute('aria-valuenow',String(state.solved.length));const fill=progress.querySelector('span');if(fill)fill.style.width=(state.solved.length/questions.length*100)+'%'}
  host?.querySelectorAll('.kha-badge').forEach((card,i)=>{const badge=badges[i];if(!badge)return;const earnedNow=state.badges.includes(badge.id);card.classList.toggle('is-earned',earnedNow);const label=card.querySelector('em');if(label)label.textContent=earnedNow?'ВІДКРИТО':badge.need+' правильних'});
  const bar=host?.querySelector('.kha-stats');if(bar)bar.innerHTML='<span>⚡ +15 XP за правильну відповідь</span><span>🏅 '+state.badges.length+' / '+badges.length+' значків</span>'}
-function next(){chooseNext();render()}
+function next(){if(state.current&&!state.solved.includes(state.current)){const feedback=$('#khaFeedback');if(feedback)feedback.textContent='Спершу дай правильну відповідь — тоді відкриється наступне завдання.';return}chooseNext();render()}
 document.addEventListener('click',e=>{
  const option=e.target.closest('[data-kha-answer]');if(option){answer(Number(option.dataset.khaAnswer));return}
  if(e.target.closest('[data-kha-next]')){next();return}
