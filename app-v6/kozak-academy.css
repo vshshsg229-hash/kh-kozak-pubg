@@ -188,3 +188,26 @@
 #khAcademy .kha-reward-strip span{border-color:#93c5fd!important;background:#eff6ff!important;color:#1e40af!important}
 #khAcademy .kha-focus-option{border-color:#60a5fa!important;background:linear-gradient(145deg,#fff,#dbeafe)!important;box-shadow:0 5px 0 #60a5fa!important}
 #khAcademy button:focus-visible{outline-color:#2563eb!important}
+
+/* KOZAK KIDS WORLD: weekly cooperative adventure, high-contrast blue/mint/gold */
+#khAcademy .kha-weekly-event{margin:18px 0 22px;padding:clamp(14px,2.6vw,22px);border:1px solid #93c5fd;border-radius:22px;background:linear-gradient(145deg,#f8fbff,#eff6ff 62%,#ecfdf5);color:#172554;box-shadow:0 8px 24px #1e40af0b}
+#khAcademy .kha-weekly-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px}
+#khAcademy .kha-weekly-emblem{display:grid;place-items:center;width:48px;height:48px;border:1px solid #93c5fd;border-radius:15px;background:#dbeafe;color:#1d4ed8;font-size:25px}
+#khAcademy .kha-weekly-label{color:#075985;font-size:10px;font-weight:900;letter-spacing:.06em}
+#khAcademy .kha-weekly-head h3{margin:5px 0;color:#1e3a8a;font-size:clamp(17px,2.4vw,23px)}
+#khAcademy .kha-weekly-head p{margin:0;color:#475569;font-size:12px;line-height:1.55}
+#khAcademy .kha-weekly-count{padding:8px 10px;border-radius:11px;background:#dbeafe;color:#1e40af;font-size:12px;font-weight:900;white-space:nowrap}
+#khAcademy .kha-weekly-progress{height:8px;margin:16px 0;overflow:hidden;border-radius:99px;background:#dbeafe}
+#khAcademy .kha-weekly-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2563eb,#34d399);transition:width .25s}
+#khAcademy .kha-weekly-tasks{display:grid;gap:10px}
+#khAcademy .kha-weekly-task{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:13px;border:1px solid #dbeafe;border-radius:16px;background:#fff}
+#khAcademy .kha-weekly-task.is-done{border-color:#6ee7b7;background:#f0fdf4}
+#khAcademy .kha-weekly-task-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#eff6ff;font-size:22px}
+#khAcademy .kha-weekly-task b{color:#1e3a8a;font-size:13px}
+#khAcademy .kha-weekly-task p{margin:5px 0 10px;color:#475569;font-size:11px;line-height:1.5}
+#khAcademy .kha-weekly-actions{display:flex;gap:8px;flex-wrap:wrap}
+#khAcademy .kha-weekly-open,#khAcademy .kha-weekly-claim,#khAcademy .kha-weekly-bonus{min-height:38px;padding:9px 12px;border:1px solid #93c5fd;border-radius:10px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}
+#khAcademy .kha-weekly-claim,#khAcademy .kha-weekly-bonus{border-color:#a7f3d0;background:#d1fae5;color:#065f46}
+#khAcademy .kha-weekly-claim:disabled,#khAcademy .kha-weekly-bonus:disabled{opacity:.7}
+#khAcademy .kha-weekly-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;color:#334155;font-size:12px;font-weight:800}
+@media(max-width:520px){#khAcademy .kha-weekly-head{grid-template-columns:auto minmax(0,1fr)}#khAcademy .kha-weekly-count{grid-column:1/-1;justify-self:start}#khAcademy .kha-weekly-actions>*{flex:1}#khAcademy .kha-weekly-footer{align-items:stretch}#khAcademy .kha-weekly-bonus{width:100%}}
