@@ -97,7 +97,8 @@ function loadKhTikTokCreatorFeeds(){
  document.body.appendChild(script);
 }
 function goTab(tab){document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id==='tab-'+tab)});$$('[data-tab]').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab)});if(tab==='tiktok')setTimeout(loadKhTikTokCreatorFeeds,300);window.scrollTo({top:0,behavior:'smooth'})}
-$('[data-tab]').forEach(b=>b.addEventListener('click',()=>goTab(b.dataset.tab)));$('[data-tab-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();goTab(b.dataset.tabLink)}));$('[data-go]').forEach(b=>b.addEventListener('click',()=>goTab(b.dataset.go)));\nconst requestedTab=new URLSearchParams(window.location.search).get('openTab');if(requestedTab&&document.getElementById('tab-'+requestedTab))goTab(requestedTab);
+$('[data-tab]').forEach(b=>b.addEventListener('click',()=>goTab(b.dataset.tab)));$('[data-tab-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();goTab(b.dataset.tabLink)}));$('[data-go]').forEach(b=>b.addEventListener('click',()=>goTab(b.dataset.go)));
+const requestedTab=new URLSearchParams(window.location.search).get('openTab');if(requestedTab&&document.getElementById('tab-'+requestedTab))goTab(requestedTab);
 $('#claimDaily').addEventListener('click',()=>{
  const today=localDateKey();if(state.dailyClaimDate===today)return;
  const yesterday=localDateKey(new Date(Date.now()-86400000));state.dailyStreak=state.lastDailyDate===yesterday?(state.dailyStreak||0)+1:1;state.lastDailyDate=today;state.dailyClaimDate=today;state.coins+=25;state.points+=20;addXP(25);let bonus='';if(state.dailyStreak===3){state.coins+=50;state.points+=40;addXP(40);bonus=' Серія 3 дні: ще +50 монет і +40 XP!'}else if(state.dailyStreak===7){state.coins+=150;state.points+=100;addXP(100);bonus=' Серія 7 днів: ще +150 монет і +100 XP!'}save();render();showToast('Щоденний дроп отримано: +25 монет!'+bonus)
