@@ -47,6 +47,7 @@ const codeTasks=[
 {id:'riddle-3',title:'Таємниця козачка',question:'Що потрібно зробити, якщо незнайомець просить твій пароль?',options:['Поділитися','Надіслати другу','Не надсилати й сказати дорослому'],answer:2,tip:'Пароль — секрет, навіть якщо просять дуже ввічливо.'}
 ];
 function shuffle(items){return items.slice().sort(()=>Math.random()-.5)}
+function localDay(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function hasSolvedCode(id){return state.codeSolved.includes(id)}
 function awardXP(id,xp){const api=window.khkozakProgression;if(!api||typeof api.awardChallenge!=='function')return false;const result=api.awardChallenge(id,0,xp);return !!result.ok||result.reason==='already-claimed'}
 function buildMemory(){memoryCards=shuffle(memoryPairs.flatMap(p=>[{id:p.id,side:'icon',face:p.icon,key:p.id+'-icon'},{id:p.id,side:'word',face:p.label,key:p.id+'-word'}]));memoryOpen=[];memoryBusy=false}
@@ -56,11 +57,11 @@ function render(){
  if(mode==='quest'&&!q&&done<all)state.current=chooseNext()?.id||null;
  const activeQ=mode==='quest'?(questions.find(x=>x.id===state.current&&!state.solved.includes(x.id))||null):null;
  const earned=badges.filter(b=>state.badges.includes(b.id));
- const today=new Date().toISOString().slice(0,10),dailyDone=state.dailyClaim===today;
+ const today=localDay(),dailyDone=state.dailyClaim===today;
  const modeButton=(id,icon,label,sub)=>'<button type="button" class="kha-mode '+(mode===id?'is-active':'')+'" data-kha-mode="'+id+'"><span>'+icon+'</span><b>'+label+'</b><small>'+sub+'</small></button>';
  let activity='';
  if(mode==='quest'){
- activity=activeQ?'<article class="kha-question"><div class="kha-category">'+esc(activeQ.category)+'</div><h3>'+esc(activeQ.question)+'</h3><div class="kha-options">'+activeQ.options.map((o,i)=>'<button type="button" class="kha-option" data-kha-answer="'+i+'">'+esc(o)+'</button>').join('')+'</div><p class="kha-feedback" id="khaFeedback" aria-live="polite">Обери відповідь і зароби 15 XP! ✨</p><div class="kha-actions"><button type="button" class="kha-next" data-kha-next disabled>Наступне завдання ↗</button></div></article>':'<article class="kha-complete"><span>🏆</span><h3>Місія пройдена!</h3><p>Ти виконав усі завдання цієї добірки. Можна тренуватися ще або перейти до іншої пригоди.</p><button type="button" class="kha-next" data-kha-replay>Повторити пригоду</button></article>';
+ activity=activeQ?'<article class="kha-question"><div class="kha-category">'+esc(activeQ.category)+'</div><h3>'+esc(activeQ.question)+'</h3><div class="kha-options">'+activeQ.options.map((o,i)=>'<button type="button" class="kha-option" data-kha-answer="'+i+'">'+esc(o)+'</button>').join('')+'</div><p class="kha-feedback" id="khaFeedback" aria-live="polite">Обери відповідь і зароби 15 XP! ✨</p><div class="kha-actions"><button type="button" class="kha-next" data-kha-next disabled>Наступне завдання ↗</button></div></article>':'<article class="kha-complete"><span>🏆</span><h3>Місія пройдена!</h3><p>Ти виконав усі завдання цієї добірки. Можна тренуватися ще або перейти до іншої пригоди.</p><button type="button" class="kha-next" data-kha-replay>Спробувати мінігру 🎮</button></article>';
  }else if(mode==='memory'){
  if(!memoryCards.length)buildMemory();
  activity='<article class="kha-game"><div class="kha-game-heading"><div><span class="kha-category">🧠 ТРЕНУВАННЯ ПАМ’ЯТІ</span><h3>Знайди пару!</h3><p>Поєднай картинку зі словом. За кожну нову пару — 5 XP.</p></div><b class="kha-game-score">'+state.memoryFound.length+' / '+memoryPairs.length+' пар</b></div><div class="kha-memory-grid">'+memoryCards.map(c=>{const open=memoryOpen.includes(c.key)||state.memoryFound.includes(c.id);return '<button type="button" class="kha-memory-card '+(open?'is-revealed':'')+' '+(state.memoryFound.includes(c.id)?'is-matched':'')+'" data-kha-memory="'+c.id+'" data-kha-card="'+c.key+'" '+(state.memoryFound.includes(c.id)||memoryBusy?'disabled':'')+' aria-label="'+(open?esc(c.face):'Закрита картка')+'"><span>'+(open?esc(c.face):'❔')+'</span></button>'}).join('')+'</div><p class="kha-feedback" id="khaMemoryFeedback" aria-live="polite">'+(state.memoryFound.length===memoryPairs.length?'Усі пари знайдено! Справжній майстер пам’яті! 🏆':'Знайди 6 пар, щоб завершити гру.')+'</p><div class="kha-actions"><button type="button" class="kha-next" data-kha-memory-reset>Перемішати картки ↻</button></div></article>';
@@ -100,12 +101,12 @@ document.addEventListener('click',e=>{
  const modeButton=e.target.closest('[data-kha-mode]');if(modeButton){mode=modeButton.dataset.khaMode;codeFeedback='';if(mode==='memory'&&!memoryCards.length)buildMemory();render();return}
  const option=e.target.closest('[data-kha-answer]');if(option){answer(Number(option.dataset.khaAnswer));return}
  if(e.target.closest('[data-kha-next]')){next();return}
- if(e.target.closest('[data-kha-replay]')){state.solved=[];state.current=null;state.badges=[];state.current=null;save();next();return}
+ if(e.target.closest('[data-kha-replay]')){mode='memory';buildMemory();render();return}
  const memory=e.target.closest('[data-kha-memory]');if(memory&&!memoryBusy){const key=memory.dataset.khaCard,id=memory.dataset.khaMemory;if(memoryOpen.includes(key)||state.memoryFound.includes(id))return;memoryOpen.push(key);render();if(memoryOpen.length===2){const cards=memoryOpen.map(k=>memoryCards.find(c=>c.key===k));if(cards[0].id===cards[1].id&&cards[0].side!==cards[1].side){const pairId=cards[0].id;state.memoryFound.push(pairId);awardXP('academy-memory-pair-'+pairId,5);memoryOpen=[];save();render()}else{memoryBusy=true;const feedback=$('#khaMemoryFeedback');if(feedback)feedback.textContent='Майже! Запам’ятай картки й спробуй ще раз.';window.setTimeout(()=>{memoryOpen=[];memoryBusy=false;render()},750)}}return}
  if(e.target.closest('[data-kha-memory-reset]')){buildMemory();render();return}
  const code=e.target.closest('[data-kha-code]');if(code){const task=codeTasks.find(t=>!hasSolvedCode(t.id));if(!task)return;const feedback=$('#khaCodeFeedback');if(Number(code.dataset.khaCode)!==task.answer){codeFeedback='Спробуй ще! Підказка: '+task.tip;if(feedback)feedback.textContent=codeFeedback;return}if(!awardXP('academy-code-'+task.id,10)){if(feedback)feedback.textContent='Зачекай секунду — профіль завантажується.';return}state.codeSolved.push(task.id);codeFeedback='Правильно! '+task.tip+' +10 XP 🎉';save();render();return}
  if(e.target.closest('[data-kha-code-replay]')){codeFeedback='';mode='code';render();return}
- if(e.target.closest('[data-kha-daily]')){const day=new Date().toISOString().slice(0,10);if(state.dailyClaim===day)return;if(!awardXP('academy-daily-'+day,10)){const feedback=$('#khAcademy .kha-treasure p');if(feedback)feedback.textContent='Зачекай секунду, профіль ще завантажується.';return}state.dailyClaim=day;save();render();return}
+ if(e.target.closest('[data-kha-daily]')){const day=localDay();if(state.dailyClaim===day)return;if(!awardXP('academy-daily-'+day,10)){const feedback=$('#khAcademy .kha-treasure p');if(feedback)feedback.textContent='Зачекай секунду, профіль ще завантажується.';return}state.dailyClaim=day;save();render();return}
 });
 window.addEventListener('khkozak-profile-updated',()=>{const el=$('#khAcademy .kha-stats');if(el)el.setAttribute('data-profile-updated','true')});
 function init(){render()}
