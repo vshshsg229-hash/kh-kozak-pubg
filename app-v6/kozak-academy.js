@@ -25,26 +25,59 @@ const badges=[
 {id:'academy',name:'Зірка Academy',icon:'👑',need:questions.length,desc:'Завершити всі завдання прототипу'}
 ];
 const $=s=>document.querySelector(s);
-function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');return {solved:Array.isArray(v.solved)?v.solved.filter(id=>questions.some(q=>q.id===id)):[],badges:Array.isArray(v.badges)?v.badges:[],current:typeof v.current==='string'?v.current:null,attempts:Number(v.attempts)||0}}catch{return {solved:[],badges:[],current:null,attempts:0}}}
+function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');return {solved:Array.isArray(v.solved)?v.solved.filter(id=>questions.some(q=>q.id===id)):[],badges:Array.isArray(v.badges)?v.badges:[],current:typeof v.current==='string'?v.current:null,attempts:Number(v.attempts)||0,memoryFound:Array.isArray(v.memoryFound)?v.memoryFound.filter(id=>memoryPairs.some(p=>p.id===id)):[],codeSolved:Array.isArray(v.codeSolved)?v.codeSolved:[],dailyClaim:typeof v.dailyClaim==='string'?v.dailyClaim:null}}catch{return {solved:[],badges:[],current:null,attempts:0,memoryFound:[],codeSolved:[],dailyClaim:null}}}
 let state=read();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}}
 function unlocked(){return badges.filter(b=>state.solved.length>=b.need)}
 function grantBadges(){for(const b of unlocked())if(!state.badges.includes(b.id))state.badges.push(b.id);save()}
 function chooseNext(){const available=questions.filter(q=>!state.solved.includes(q.id));if(!available.length){state.current=null;save();return null}const next=available[Math.floor(Math.random()*available.length)];state.current=next.id;save();return next}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let mode='quest',memoryCards=[],memoryOpen=[],memoryBusy=false,codeFeedback='';
+const memoryPairs=[
+{id:'word',icon:'📚',label:'КНИГА'},
+{id:'sun',icon:'☀️',label:'СОНЦЕ'},
+{id:'heart',icon:'❤️',label:'ДОБРО'},
+{id:'shield',icon:'🛡️',label:'БЕЗПЕКА'},
+{id:'star',icon:'⭐',label:'ЗІРКА'},
+{id:'brain',icon:'🧠',label:'РОЗУМ'}
+];
+const codeTasks=[
+{id:'riddle-1',title:'Загадка лісу',question:'Без рук, без ніг, а малювати вміє. Що це?',options:['Вітер','Мороз','Кіт'],answer:1,tip:'Узимку він малює візерунки на вікнах.'},
+{id:'riddle-2',title:'Код космічної станції',question:'Яке число пропущено: 3, 6, 9, __?',options:['10','12','15'],answer:1,tip:'Щоразу додаємо три.'},
+{id:'riddle-3',title:'Таємниця козачка',question:'Що потрібно зробити, якщо незнайомець просить твій пароль?',options:['Поділитися','Надіслати другу','Не надсилати й сказати дорослому'],answer:2,tip:'Пароль — секрет, навіть якщо просять дуже ввічливо.'}
+];
+function shuffle(items){return items.slice().sort(()=>Math.random()-.5)}
+function hasSolvedCode(id){return state.codeSolved.includes(id)}
+function awardXP(id,xp){const api=window.khkozakProgression;if(!api||typeof api.awardChallenge!=='function')return false;const result=api.awardChallenge(id,0,xp);return !!result.ok||result.reason==='already-claimed'}
+function buildMemory(){memoryCards=shuffle(memoryPairs.flatMap(p=>[{id:p.id,side:'icon',face:p.icon,key:p.id+'-icon'},{id:p.id,side:'word',face:p.label,key:p.id+'-word'}]));memoryOpen=[];memoryBusy=false}
 function render(){
  let host=$('#khAcademy');if(!host){const panel=$('#tab-academy')||$('#tab-progress');if(!panel)return;host=document.createElement('section');host.id='khAcademy';host.className='kha-panel';panel.appendChild(host)}
- const done=state.solved.length,all=questions.length;let q=questions.find(x=>x.id===state.current);
- if(q&&state.solved.includes(q.id))q=null;
- if(!q&&done<all)q=chooseNext();
- grantBadges();
+ const done=state.solved.length,all=questions.length,q=(mode==='quest'?questions.find(x=>x.id===state.current&&!state.solved.includes(x.id)):null);
+ if(mode==='quest'&&!q&&done<all)state.current=chooseNext()?.id||null;
+ const activeQ=mode==='quest'?(questions.find(x=>x.id===state.current&&!state.solved.includes(x.id))||null):null;
  const earned=badges.filter(b=>state.badges.includes(b.id));
- host.innerHTML='<div class="kha-head"><div><span class="kha-eyebrow">KH么KOZAK / LEARN & PLAY</span><h2>✦ KOZAK ACADEMY</h2><p>Логіка, мова, математика й цифрова безпека — навчайся у власному темпі.</p></div><div class="kha-xp"><b>'+done+' / '+all+'</b><span>завдань</span></div></div>'+
+ const today=new Date().toISOString().slice(0,10),dailyDone=state.dailyClaim===today;
+ const modeButton=(id,icon,label,sub)=>'<button type="button" class="kha-mode '+(mode===id?'is-active':'')+'" data-kha-mode="'+id+'"><span>'+icon+'</span><b>'+label+'</b><small>'+sub+'</small></button>';
+ let activity='';
+ if(mode==='quest'){
+ activity=activeQ?'<article class="kha-question"><div class="kha-category">'+esc(activeQ.category)+'</div><h3>'+esc(activeQ.question)+'</h3><div class="kha-options">'+activeQ.options.map((o,i)=>'<button type="button" class="kha-option" data-kha-answer="'+i+'">'+esc(o)+'</button>').join('')+'</div><p class="kha-feedback" id="khaFeedback" aria-live="polite">Обери відповідь і зароби 15 XP! ✨</p><div class="kha-actions"><button type="button" class="kha-next" data-kha-next disabled>Наступне завдання ↗</button></div></article>':'<article class="kha-complete"><span>🏆</span><h3>Місія пройдена!</h3><p>Ти виконав усі завдання цієї добірки. Можна тренуватися ще або перейти до іншої пригоди.</p><button type="button" class="kha-next" data-kha-replay>Повторити пригоду</button></article>';
+ }else if(mode==='memory'){
+ if(!memoryCards.length)buildMemory();
+ activity='<article class="kha-game"><div class="kha-game-heading"><div><span class="kha-category">🧠 ТРЕНУВАННЯ ПАМ’ЯТІ</span><h3>Знайди пару!</h3><p>Поєднай картинку зі словом. За кожну нову пару — 5 XP.</p></div><b class="kha-game-score">'+state.memoryFound.length+' / '+memoryPairs.length+' пар</b></div><div class="kha-memory-grid">'+memoryCards.map(c=>{const open=memoryOpen.includes(c.key)||state.memoryFound.includes(c.id);return '<button type="button" class="kha-memory-card '+(open?'is-revealed':'')+' '+(state.memoryFound.includes(c.id)?'is-matched':'')+'" data-kha-memory="'+c.id+'" data-kha-card="'+c.key+'" '+(state.memoryFound.includes(c.id)||memoryBusy?'disabled':'')+' aria-label="'+(open?esc(c.face):'Закрита картка')+'"><span>'+(open?esc(c.face):'❔')+'</span></button>'}).join('')+'</div><p class="kha-feedback" id="khaMemoryFeedback" aria-live="polite">'+(state.memoryFound.length===memoryPairs.length?'Усі пари знайдено! Справжній майстер пам’яті! 🏆':'Знайди 6 пар, щоб завершити гру.')+'</p><div class="kha-actions"><button type="button" class="kha-next" data-kha-memory-reset>Перемішати картки ↻</button></div></article>';
+ }else if(mode==='code'){
+ const task=codeTasks.find(t=>!hasSolvedCode(t.id));
+ activity=task?'<article class="kha-game"><span class="kha-category">🔐 СЕКРЕТНА МІСІЯ</span><h3>'+esc(task.title)+'</h3><p class="kha-code-question">'+esc(task.question)+'</p><div class="kha-options">'+task.options.map((o,i)=>'<button type="button" class="kha-option" data-kha-code="'+i+'">'+esc(o)+'</button>').join('')+'</div><p class="kha-feedback" id="khaCodeFeedback" aria-live="polite">'+esc(codeFeedback||'Розшифруй завдання, щоб отримати 10 XP!')+'</p><div class="kha-code-progress">'+codeTasks.filter(t=>hasSolvedCode(t.id)).length+' із '+codeTasks.length+' секретів розкрито</div></article>':'<article class="kha-complete"><span>🗝️</span><h3>Код розшифровано!</h3><p>Ти пройшов усі секретні випробування. Твій розум — справжній суперінструмент!</p><button type="button" class="kha-next" data-kha-code-replay>Зіграти ще раз</button></article>';
+ }else{
+ activity='<article class="kha-game kha-treasure"><span class="kha-treasure-icon">'+(dailyDone?'🎉':'🎁')+'</span><span class="kha-category">ЩОДЕННИЙ СЮРПРИЗ</span><h3>'+(dailyDone?'Нагороду вже отримано!':'Скриня дня чекає на тебе!')+'</h3><p>'+(dailyDone?'Завітай завтра — на тебе чекатиме новий подарунок.':'Забирай щоденний бонус і повертайся завтра за новим!')+'</p><button type="button" class="kha-next" data-kha-daily '+(dailyDone?'disabled':'')+'>'+(dailyDone?'✓ БОНУС ЗАБРАНО':'ВІДКРИТИ СКРИНЮ · +10 XP')+'</button><div class="kha-reward-strip"><span>⭐ XP</span><span>🏅 Значки</span><span>🧩 Нові місії</span></div></article>';
+ }
+ host.innerHTML='<div class="kha-head"><div><span class="kha-eyebrow">KH么KOZAK / ПРИГОДА + НАВЧАННЯ</span><h2>🧭 СВІТ KOZAK ACADEMY</h2><p>Пройди місії, розгадай таємниці й збери нагороди. Кожна пригода триває лише кілька хвилин!</p></div><div class="kha-xp"><b>'+done+' / '+all+'</b><span>місій пройдено</span></div></div>'+
+ '<div class="kha-companion"><span class="kha-mascot" aria-hidden="true">🧙‍♂️</span><div><b>Козачок-напарник</b><p>«Привіт, герою! Я підготував для тебе нові випробування. Спробуємо?»</p></div><span class="kha-companion-star">✨</span></div>'+
  '<div class="kha-progress" role="progressbar" aria-label="Прогрес Academy" aria-valuemin="0" aria-valuemax="'+all+'" aria-valuenow="'+done+'"><span style="width:'+(done/all*100)+'%"></span></div>'+
- '<div class="kha-stats"><span>⚡ XP нараховується за правильні відповіді</span><span>🏅 '+earned.length+' / '+badges.length+' значків</span></div>'+
- (q?'<article class="kha-question"><div class="kha-category">'+esc(q.category)+'</div><h3>'+esc(q.question)+'</h3><div class="kha-options">'+q.options.map((o,i)=>'<button type="button" class="kha-option" data-kha-answer="'+i+'" '+(state.solved.includes(q.id)?'disabled':'')+'>'+esc(o)+'</button>').join('')+'</div><p class="kha-feedback" id="khaFeedback" aria-live="polite">Обери відповідь — пояснення з’явиться одразу.</p><div class="kha-actions"><button type="button" class="kha-next" data-kha-next '+(state.solved.includes(q.id)?'':'disabled')+'>Наступне завдання ↗</button></div></article>':'<article class="kha-complete"><span>🏆</span><h3>Усі завдання виконано!</h3><p>Ти пройшов усю першу добірку. Значки та XP збережені локально.</p><button type="button" class="kha-next" data-kha-replay>Повторити для тренування</button></article>')+
- '<div class="kha-badges"><div class="kha-section-title"><h3>Колекція значків</h3><span>Локальний прогрес</span></div><div class="kha-badge-grid">'+badges.map(b=>'<article class="kha-badge '+(state.badges.includes(b.id)?'is-earned':'')+'"><span>'+b.icon+'</span><b>'+esc(b.name)+'</b><small>'+esc(b.desc)+'</small><em>'+(state.badges.includes(b.id)?'ВІДКРИТО':b.need+' правильних')+'</em></article>').join('')+'</div></div>'+
- '<p class="kha-note">Без реєстрації та сервера. Прогрес Academy зберігається в цьому браузері. XP профілю використовує наявну систему KH么Kozak.</p>';
+ '<div class="kha-stats"><span>⚡ '+(done*15+state.memoryFound.length*5+state.codeSolved.length*10+(state.dailyClaim?10:0))+' XP зароблено в академії*</span><span>🏅 '+earned.length+' / '+badges.length+' значків</span></div>'+
+ '<div class="kha-mode-grid">'+modeButton('quest','🗺️','Місії','Запитання та логіка')+modeButton('memory','🧠','Знайди пару','Гра на пам’ять')+modeButton('code','🔐','Секретний код','Загадки й кмітливість')+modeButton('treasure','🎁','Скриня дня','Щоденний бонус')+'</div>'+
+ activity+
+ '<div class="kha-badges"><div class="kha-section-title"><h3>🏆 Колекція досягнень</h3><span>Збирай усі!</span></div><div class="kha-badge-grid">'+badges.map(b=>'<article class="kha-badge '+(state.badges.includes(b.id)?'is-earned':'')+'"><span>'+b.icon+'</span><b>'+esc(b.name)+'</b><small>'+esc(b.desc)+'</small><em>'+(state.badges.includes(b.id)?'ВІДКРИТО':b.need+' правильних')+'</em></article>').join('')+'</div></div>'+
+ '<p class="kha-note">*Лічильник показує зароблені нагороди Academy. Прогрес зберігається лише на цьому пристрої; онлайн-акаунт не потрібен.</p>';
 }
 function answer(index){
  const q=questions.find(x=>x.id===state.current);if(!q||state.solved.includes(q.id))return;
@@ -64,9 +97,15 @@ function answer(index){
  const bar=host?.querySelector('.kha-stats');if(bar)bar.innerHTML='<span>⚡ +15 XP за правильну відповідь</span><span>🏅 '+state.badges.length+' / '+badges.length+' значків</span>'}
 function next(){if(state.current&&!state.solved.includes(state.current)){const feedback=$('#khaFeedback');if(feedback)feedback.textContent='Спершу дай правильну відповідь — тоді відкриється наступне завдання.';return}chooseNext();render()}
 document.addEventListener('click',e=>{
+ const modeButton=e.target.closest('[data-kha-mode]');if(modeButton){mode=modeButton.dataset.khaMode;codeFeedback='';if(mode==='memory'&&!memoryCards.length)buildMemory();render();return}
  const option=e.target.closest('[data-kha-answer]');if(option){answer(Number(option.dataset.khaAnswer));return}
  if(e.target.closest('[data-kha-next]')){next();return}
- if(e.target.closest('[data-kha-replay]')){state.current=null;next()}
+ if(e.target.closest('[data-kha-replay]')){state.solved=[];state.current=null;state.badges=[];state.current=null;save();next();return}
+ const memory=e.target.closest('[data-kha-memory]');if(memory&&!memoryBusy){const key=memory.dataset.khaCard,id=memory.dataset.khaMemory;if(memoryOpen.includes(key)||state.memoryFound.includes(id))return;memoryOpen.push(key);render();if(memoryOpen.length===2){const cards=memoryOpen.map(k=>memoryCards.find(c=>c.key===k));if(cards[0].id===cards[1].id&&cards[0].side!==cards[1].side){const pairId=cards[0].id;state.memoryFound.push(pairId);awardXP('academy-memory-pair-'+pairId,5);memoryOpen=[];save();render()}else{memoryBusy=true;const feedback=$('#khaMemoryFeedback');if(feedback)feedback.textContent='Майже! Запам’ятай картки й спробуй ще раз.';window.setTimeout(()=>{memoryOpen=[];memoryBusy=false;render()},750)}}return}
+ if(e.target.closest('[data-kha-memory-reset]')){buildMemory();render();return}
+ const code=e.target.closest('[data-kha-code]');if(code){const task=codeTasks.find(t=>!hasSolvedCode(t.id));if(!task)return;const feedback=$('#khaCodeFeedback');if(Number(code.dataset.khaCode)!==task.answer){codeFeedback='Спробуй ще! Підказка: '+task.tip;if(feedback)feedback.textContent=codeFeedback;return}if(!awardXP('academy-code-'+task.id,10)){if(feedback)feedback.textContent='Зачекай секунду — профіль завантажується.';return}state.codeSolved.push(task.id);codeFeedback='Правильно! '+task.tip+' +10 XP 🎉';save();render();return}
+ if(e.target.closest('[data-kha-code-replay]')){codeFeedback='';mode='code';render();return}
+ if(e.target.closest('[data-kha-daily]')){const day=new Date().toISOString().slice(0,10);if(state.dailyClaim===day)return;if(!awardXP('academy-daily-'+day,10)){const feedback=$('#khAcademy .kha-treasure p');if(feedback)feedback.textContent='Зачекай секунду, профіль ще завантажується.';return}state.dailyClaim=day;save();render();return}
 });
 window.addEventListener('khkozak-profile-updated',()=>{const el=$('#khAcademy .kha-stats');if(el)el.setAttribute('data-profile-updated','true')});
 function init(){render()}
