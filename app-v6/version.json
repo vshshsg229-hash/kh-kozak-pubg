@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.54.0",
+  "version": "18.55.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK NEXUS: виправлено дубльований ID балансу монет, синхронізацію монет у віджетах гравця та оновлено кеш PWA. KOZAK WORLD: щоденні виклики й надійніша серія днів. Виправлено застарілі посилання в кеші PWA та підключено нагороду XP за кроки KOZAK WORLD до профілю хабу."
+  "releaseNotes": "KOZAK WORLD став головним стартовим хабом; оновлено PWA start_url, кореневе перенаправлення та офлайн-кеш. Старий хаб збережений як повна бібліотека функцій. Щоденні кроки KOZAK WORLD нараховують XP у локальному профілі."
 }
