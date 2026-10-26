@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.42.0",
+  "version": "18.43.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK KIDS WORLD: щоденні місії кожні 24 години та ніжний пастельний інтерфейс із великими кнопками, спокійними кольорами й простими підказками."
+  "releaseNotes": "Виправлено контраст рожевого тексту на світлих картках Academy: темніший, чіткіший текст і спокійні рожеві акценти."
 }
