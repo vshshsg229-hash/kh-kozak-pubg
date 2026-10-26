@@ -105,4 +105,56 @@
 @media(max-width:620px){#khAcademy .kha-mode-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#khAcademy .kha-mode{min-height:112px}#khAcademy .kha-memory-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}#khAcademy .kha-memory-card{min-height:65px}#khAcademy .kha-focus-grid{gap:7px}#khAcademy .kha-focus-option{min-height:68px;border-radius:15px}#khAcademy .kha-options{grid-template-columns:1fr}#khAcademy .kha-sticker-grid{gap:7px}#khAcademy .kha-sticker{min-height:50px;font-size:25px}#khAcademy .kha-companion{align-items:flex-start}}
 @media(max-width:380px){#khAcademy .kha-stats span{font-size:11px}#khAcademy .kha-memory-card{min-height:58px}#khAcademy .kha-memory-card span{font-size:17px}#khAcademy .kha-memory-card:not(.is-revealed):not(.is-matched) span{font-size:26px}}
 @media(prefers-reduced-motion:reduce){#khAcademy .kha-progress span,#khAcademy .kha-mode,#khAcademy .kha-memory-card{transition:none}#khAcademy .kha-companion-star,#khAcademy .kha-treasure-icon{animation:none}}
-\n/* Clear daily missions: big readable controls, friendly feedback and an easy-to-understand timer */\n#khAcademy .kha-daily-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:16px 0;padding:16px;border:2px solid #86b6f5;border-radius:20px;background:linear-gradient(110deg,#dbeafe,#fef3c7 62%,#dcfce7);color:#24324a}\n#khAcademy .kha-daily-banner b{font-size:clamp(17px,3vw,21px)}#khAcademy .kha-daily-banner p{margin:5px 0 0;font-size:15px;line-height:1.5;color:#334155}#khAcademy .kha-daily-banner>span{padding:9px 12px;border-radius:14px;background:#fff;border:1px solid #a5b4fc;color:#4338ca;font-weight:900;font-size:14px}\n#khAcademy .kha-child-help{margin:10px 0 16px;color:#334155;font-size:16px;line-height:1.6}\n#khAcademy .kha-daily-progress{height:12px;margin:14px 0 8px;overflow:hidden;border-radius:20px;background:#dbeafe;border:1px solid #93c5fd}#khAcademy .kha-daily-progress span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#34d399,#60a5fa);transition:width .2s ease}\n#khAcademy .kha-option,#khAcademy .kha-mode,#khAcademy .kha-next{font-size:15px;line-height:1.45;min-height:54px}#khAcademy .kha-mode small{font-size:12px;line-height:1.4}#khAcademy .kha-question h3,#khAcademy .kha-game h3{line-height:1.5}#khAcademy button:focus-visible{outline:3px solid #7c3aed;outline-offset:3px}\n@media(max-width:560px){#khAcademy .kha-daily-banner{align-items:flex-start;flex-direction:column}#khAcademy .kha-daily-banner>span{width:100%;text-align:center}#khAcademy .kha-child-help{font-size:16px}#khAcademy .kha-option{min-height:56px;font-size:16px}}\n@media(prefers-reduced-motion:reduce){#khAcademy .kha-daily-progress span{transition:none}}\n
+
+/* Clear daily missions: big readable controls, friendly feedback and an easy-to-understand timer */
+#khAcademy .kha-daily-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:16px 0;padding:16px;border:2px solid #86b6f5;border-radius:20px;background:linear-gradient(110deg,#dbeafe,#fef3c7 62%,#dcfce7);color:#24324a}
+#khAcademy .kha-daily-banner b{font-size:clamp(17px,3vw,21px)}#khAcademy .kha-daily-banner p{margin:5px 0 0;font-size:15px;line-height:1.5;color:#334155}#khAcademy .kha-daily-banner>span{padding:9px 12px;border-radius:14px;background:#fff;border:1px solid #a5b4fc;color:#4338ca;font-weight:900;font-size:14px}
+#khAcademy .kha-child-help{margin:10px 0 16px;color:#334155;font-size:16px;line-height:1.6}
+#khAcademy .kha-daily-progress{height:12px;margin:14px 0 8px;overflow:hidden;border-radius:20px;background:#dbeafe;border:1px solid #93c5fd}#khAcademy .kha-daily-progress span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#34d399,#60a5fa);transition:width .2s ease}
+#khAcademy .kha-option,#khAcademy .kha-mode,#khAcademy .kha-next{font-size:15px;line-height:1.45;min-height:54px}#khAcademy .kha-mode small{font-size:12px;line-height:1.4}#khAcademy .kha-question h3,#khAcademy .kha-game h3{line-height:1.5}#khAcademy button:focus-visible{outline:3px solid #7c3aed;outline-offset:3px}
+@media(max-width:560px){#khAcademy .kha-daily-banner{align-items:flex-start;flex-direction:column}#khAcademy .kha-daily-banner>span{width:100%;text-align:center}#khAcademy .kha-child-help{font-size:16px}#khAcademy .kha-option{min-height:56px;font-size:16px}}
+@media(prefers-reduced-motion:reduce){#khAcademy .kha-daily-progress span{transition:none}}
+
+/* Gentle preschool palette: soft pastels, low visual noise, calm readable cards */
+#khAcademy.kha-panel{border:1px solid #d9dff3;background:linear-gradient(160deg,#fff9f1,#f5f5ff 52%,#f0fbf7);color:#35415b;box-shadow:0 8px 24px #8b9ac51c}
+#khAcademy .kha-eyebrow{color:#7b83bd;letter-spacing:.08em}
+#khAcademy h2{color:#5d68a5}
+#khAcademy .kha-head p,#khAcademy .kha-note{color:#69738b}
+#khAcademy .kha-xp{border:1px solid #f0d6a7;background:#fff6df}
+#khAcademy .kha-xp b{color:#b87926}#khAcademy .kha-xp span{color:#8b7b69}
+#khAcademy .kha-progress{background:#e4e9f8}#khAcademy .kha-progress span{background:linear-gradient(90deg,#a8e2d2,#f5cf94,#c9c8f6)}
+#khAcademy .kha-stats{color:#68779b}
+#khAcademy .kha-question,#khAcademy .kha-complete{border:1px solid #e4e6f4;background:#fff}
+#khAcademy .kha-category{border:1px solid #d7d8f6;background:#f1f0ff;color:#6566a7;letter-spacing:0}
+#khAcademy .kha-question h3,#khAcademy .kha-complete h3{color:#35415b}
+#khAcademy .kha-option,#khAcademy .kha-next{border:1px solid #dce2f2;border-radius:15px;background:#f8faff;color:#35415b;min-height:54px;font-size:15px}
+#khAcademy .kha-option:hover:not(:disabled),#khAcademy .kha-next:hover{border-color:#b5c9ed;background:#eef5ff}
+#khAcademy .kha-option:focus-visible,#khAcademy .kha-next:focus-visible{outline:3px solid #a5b4fc;outline-offset:3px}
+#khAcademy .kha-option.is-wrong{border-color:#f3b4b4;background:#fff1f1}
+#khAcademy .kha-option.is-correct{border-color:#9edac8;background:#edfbf5}
+#khAcademy .kha-feedback{color:#69738b;font-size:14px;line-height:1.65}
+#khAcademy .kha-next{border-color:#f0d4a3;background:#fff0cc;color:#79562c;font-weight:800}
+#khAcademy .kha-complete p{color:#69738b;font-size:14px}
+#khAcademy .kha-section-title h3{color:#5d68a5}#khAcademy .kha-section-title span{color:#8992a8}
+#khAcademy .kha-badge{border:1px solid #e4e7f2;background:#fff;opacity:.85}
+#khAcademy .kha-badge.is-earned{border-color:#e9cf9b;background:linear-gradient(145deg,#fff5dc,#fff)}
+#khAcademy .kha-badge b{color:#49536d}#khAcademy .kha-badge small{color:#7a849a}#khAcademy .kha-badge em{color:#b87926}
+#khAcademy .kha-companion{border:1px solid #dce4f3;background:linear-gradient(110deg,#eaf4ff,#fff0f3 58%,#effaf5);box-shadow:none}
+#khAcademy .kha-mascot{background:#fff;border:1px solid #dce4f3}
+#khAcademy .kha-companion b{color:#5d68a5}#khAcademy .kha-companion p{color:#66718a}
+#khAcademy .kha-companion-star{animation:none;color:#e3b965}
+#khAcademy .kha-mode{border:1px solid #e0e5f3;border-radius:18px;background:linear-gradient(145deg,#fff,#f6f8ff);color:#35415b;box-shadow:0 3px 9px #8b9ac512;transition:border-color .15s,background .15s}
+#khAcademy .kha-mode b{color:#5d68a5}#khAcademy .kha-mode small{color:#78839b}
+#khAcademy .kha-mode.is-active{border-color:#b9c7ef;background:linear-gradient(145deg,#eff1ff,#fff7e8);box-shadow:0 0 0 2px #c8d1f433}
+#khAcademy .kha-mode:hover{transform:none;border-color:#b9c7ef}
+#khAcademy .kha-game{border:1px solid #e1e5f3;border-radius:18px;background:#fff}
+#khAcademy .kha-daily-banner{border:1px solid #d9dff3;background:linear-gradient(110deg,#eef4ff,#fff5e8 60%,#edfaf4);color:#35415b}
+#khAcademy .kha-daily-banner p{color:#69738b}
+#khAcademy .kha-daily-banner>span{border:1px solid #d9dff3;background:#fff;color:#5d68a5}
+#khAcademy .kha-child-help{color:#69738b}
+#khAcademy .kha-daily-progress{border:1px solid #dce4f3;background:#edf1fb}
+#khAcademy .kha-daily-progress span{background:linear-gradient(90deg,#a8e2d2,#aebcf5)}
+#khAcademy .kha-locked{border:2px dashed #d8deed;background:#f7f8fc;color:#9aa3b8}
+#khAcademy button{touch-action:manipulation}
+@media(max-width:560px){#khAcademy .kha-option,#khAcademy .kha-next{font-size:16px;min-height:58px}#khAcademy .kha-mode{min-height:104px;padding:12px}#khAcademy .kha-head p{font-size:14px}}
+@media(prefers-reduced-motion:reduce){#khAcademy *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
