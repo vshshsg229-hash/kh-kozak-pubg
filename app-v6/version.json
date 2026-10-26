@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "18.59.0",
+  "version": "18.60.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Made the new KH么Kozak interface the default entry point, removed the separate legacy KOZAK WORLD landing page, fixed tab activation, hid the legacy sidebar by default while preserving access to all sections, and refreshed app/service-worker cache."
+  "releaseNotes": "Added searchable all-functions directory from the real sidebar entries; made rewards, profile and progress directly accessible in mobile navigation; improved top-bar quick search and refreshed cached assets."
 }
