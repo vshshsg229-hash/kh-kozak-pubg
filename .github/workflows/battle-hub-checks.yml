@@ -114,7 +114,7 @@ jobs:
           assert(progression.includes('if(!safeWrite(PROFILE_KEY,next))'), 'Pass reward claim handles profile-save failures');
           const mainApp = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
           assert(mainApp.includes('function restoreRewardState(snapshot)') && mainApp.includes('return true}catch(e){return false}'), 'Failed pass writes restore the previous state and report failure');
-          assert(mainApp.includes('ownedSources') && mainApp.includes("recordOwnedSource(awarded,'freePass')") && mainApp.includes("recordOwnedSource(r.item,'elitePass')"), 'Profile preserves reward provenance from both pass tracks');
+          assert(mainApp.includes('ownedSources') && mainApp.includes("recordOwnedSource(awarded,'freePass')") && mainApp.includes("recordOwnedSource(premiumAward,'elitePass')"), 'Profile preserves reward provenance from both pass tracks');
           assert(mainApp.includes("sources.includes('freePass')") && mainApp.includes("sources.includes('elitePass')"), 'Pass filters show items earned from either pass even if already owned');
           assert(mainApp.includes('sourceNames') && mainApp.includes('sourceList') && mainApp.includes("join(' + ')"), 'Profile labels all acquisition sources for each cosmetic');
           // The live UI uses Creator Studio; creator-editor is a retired, unmounted prototype.
@@ -123,8 +123,8 @@ jobs:
           for (const feature of ['khCreatorStudio', 'khCreatorNewIdea', 'khCreatorCopyIdea', 'khCreatorPosted', 'data-khc-open', 'PROFILES']) assert(creatorStudio.includes(feature), 'Creator Studio feature exists: ' + feature);
           assert(creatorStudioCss.includes('.kh-creator-studio') && creatorStudioCss.includes('.kh-creator-profiles') && creatorStudioCss.includes('.kh-creator-tool'), 'Creator Studio styles exist');
           assert(html.includes('creator-studio.js?v=1.1.0') && html.includes('creator-studio.css?v=1.1.0'), 'Active Creator Studio assets are referenced');
-          assert(manifest.name?.includes('KH') && manifest.start_url && manifest.scope,
-            'PWA manifest has app name, start URL and scope');
+          assert(manifest.name?.includes(versionData.app) && manifest.start_url && manifest.scope,
+            'PWA manifest has the current app name, start URL and scope');
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
             'PWA manifest declares at least one icon');
 
@@ -226,7 +226,7 @@ jobs:
           assert(battleHub3.includes('categoryRequests') && battleHub3.includes('Увімкнув категорію'), 'Kozak AI can switch game categories');
           assert(battleHub3.includes('function enhanceAssistant()') && battleHub3.includes('Відкриваю «Ігри та режими»'), 'Kozak AI can navigate to requested app sections');
           assert(battleHub3Css.includes('.kh-bh3-grid') && battleHub3Css.includes('@media(max-width:620px)'), 'Battle Hub 3.0 has responsive game cards and mobile styles');
-          assert(html.includes('battle-hub-3.js?v=17.15.0') && html.includes('battle-hub-3.css?v=16.78.0'), 'Battle Hub 3.0 assets are loaded with cache versions');
+          assert(html.includes('battle-hub-3.js?v=17.17.0') && html.includes('battle-hub-3.css?v=17.17.0'), 'Battle Hub 3.0 assets are loaded with their current cache versions');
           const manager = fs.readFileSync(path.join(root, 'app-management.js'), 'utf8');
           assert(manager.includes('data-khm-diagnostics') && manager.includes('data-khm-reset'), 'Local app management and diagnostics tools exist');
           assert(html.includes('bunker.js?v=17.63.0'), 'HTML loads Bunker mode');
@@ -234,7 +234,16 @@ jobs:
           const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
           for (const feature of ['data-bunker-upgrade', 'bunkerScavenge', 'bunkerClaim', 'bunkerTrophyGrid']) assert(bunker.includes(feature), 'Bunker feature exists: ' + feature);
 
-          console.log(`Passed ${checks.length} Battle Hub static checks.`);
+          const academy = fs.readFileSync(path.join(root, 'kozak-academy.js'), 'utf8');
+          const academyCss = fs.readFileSync(path.join(root, 'kozak-academy.css'), 'utf8');
+          assert(html.includes('kozak-academy.js?v=1.0.0') && html.includes('kozak-academy.css?v=1.0.0'), 'Kozak Academy JS and CSS are loaded with versioned URLs');
+          assert((academy.match(/\{id:'[^']+',category:/g) || []).length >= 12, 'Kozak Academy includes at least 12 learning questions');
+          assert(academy.includes("api.awardChallenge(XP_PREFIX+q.id,0,15)") && academy.includes("const XP_PREFIX='academy-v1-q-'"), 'Academy XP rewards use unique, idempotent challenge IDs');
+          assert(academy.includes("if(state.current&&!state.solved.includes(state.current))") && academy.includes("b.classList.remove('is-wrong')"), 'Academy prevents skipping unanswered questions and clears stale wrong-answer feedback');
+          assert(academy.includes("localStorage.setItem(KEY,JSON.stringify(state))") && !/\bfetch\s*\(/.test(academy), 'Academy progress is local-only and does not call a server');
+          assert(academyCss.includes('@media(max-width:560px)') && academyCss.includes(':focus-visible'), 'Academy includes mobile and keyboard-focus styling');
+
+                    console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
 
       - name: Check service worker syntax
