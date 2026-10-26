@@ -123,8 +123,8 @@ jobs:
           for (const feature of ['khCreatorStudio', 'khCreatorNewIdea', 'khCreatorCopyIdea', 'khCreatorPosted', 'data-khc-open', 'PROFILES']) assert(creatorStudio.includes(feature), 'Creator Studio feature exists: ' + feature);
           assert(creatorStudioCss.includes('.kh-creator-studio') && creatorStudioCss.includes('.kh-creator-profiles') && creatorStudioCss.includes('.kh-creator-tool'), 'Creator Studio styles exist');
           assert(html.includes('creator-studio.js?v=1.1.0') && html.includes('creator-studio.css?v=1.1.0'), 'Active Creator Studio assets are referenced');
-          assert(manifest.name?.includes('KH') && manifest.start_url && manifest.scope,
-            'PWA manifest has app name, start URL and scope');
+          assert(manifest.name?.includes(versionData.app) && manifest.start_url && manifest.scope,
+            'PWA manifest has the current app name, start URL and scope');
           assert(Array.isArray(manifest.icons) && manifest.icons.length > 0,
             'PWA manifest declares at least one icon');
 
