@@ -234,7 +234,16 @@ jobs:
           const bunker = fs.readFileSync(path.join(root, 'bunker.js'), 'utf8');
           for (const feature of ['data-bunker-upgrade', 'bunkerScavenge', 'bunkerClaim', 'bunkerTrophyGrid']) assert(bunker.includes(feature), 'Bunker feature exists: ' + feature);
 
-          console.log(`Passed ${checks.length} Battle Hub static checks.`);
+          const academy = fs.readFileSync(path.join(root, 'kozak-academy.js'), 'utf8');
+          const academyCss = fs.readFileSync(path.join(root, 'kozak-academy.css'), 'utf8');
+          assert(html.includes('kozak-academy.js?v=1.0.0') && html.includes('kozak-academy.css?v=1.0.0'), 'Kozak Academy JS and CSS are loaded with versioned URLs');
+          assert((academy.match(/\{id:'[^']+',category:/g) || []).length >= 12, 'Kozak Academy includes at least 12 learning questions');
+          assert(academy.includes("api.awardChallenge(XP_PREFIX+q.id,0,15)") && academy.includes("const XP_PREFIX='academy-v1-q-'"), 'Academy XP rewards use unique, idempotent challenge IDs');
+          assert(academy.includes("if(state.current&&!state.solved.includes(state.current))") && academy.includes("b.classList.remove('is-wrong')"), 'Academy prevents skipping unanswered questions and clears stale wrong-answer feedback');
+          assert(academy.includes("localStorage.setItem(KEY,JSON.stringify(state))") && !/\bfetch\s*\(/.test(academy), 'Academy progress is local-only and does not call a server');
+          assert(academyCss.includes('@media(max-width:560px)') && academyCss.includes(':focus-visible'), 'Academy includes mobile and keyboard-focus styling');
+
+                    console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
 
       - name: Check service worker syntax
