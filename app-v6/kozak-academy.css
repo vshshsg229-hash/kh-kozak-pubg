@@ -176,3 +176,15 @@
 #khAcademy .kha-section-title h3{color:#1d4ed8!important;text-shadow:none!important}
 #khAcademy .kha-eyebrow{color:#075985!important;background:#e0f2fe!important}
 #khAcademy .kha-companion{background:linear-gradient(110deg,#eaf4ff,#eff6ff 58%,#effaf5)!important}
+
+
+/* KOZAK KIDS WORLD mini-games: remove pink/purple accents and use clear blue, mint and gold */
+#khAcademy .kha-mode.is-active{border-color:#2563eb!important;background:linear-gradient(145deg,#dbeafe,#fff)!important;box-shadow:0 5px 0 #2563eb,0 0 0 3px #bfdbfe!important}
+#khAcademy .kha-category{border-color:#93c5fd!important;background:#dbeafe!important;color:#1e40af!important}
+#khAcademy .kha-memory-card{border-color:#60a5fa!important;background:linear-gradient(145deg,#60a5fa,#2563eb)!important;color:#fff!important;box-shadow:0 4px 0 #1d4ed8!important}
+#khAcademy .kha-memory-card.is-revealed{border-color:#34d399!important;background:linear-gradient(145deg,#d1fae5,#a7f3d0)!important;color:#065f46!important;box-shadow:0 4px 0 #34d399!important}
+#khAcademy .kha-memory-card.is-matched{border-color:#fbbf24!important;background:linear-gradient(145deg,#fef3c7,#fde68a)!important;color:#78350f!important;box-shadow:0 4px 0 #f59e0b!important}
+#khAcademy .kha-code-question{border-color:#60a5fa!important;background:#eff6ff!important;color:#1e3a8a!important}
+#khAcademy .kha-reward-strip span{border-color:#93c5fd!important;background:#eff6ff!important;color:#1e40af!important}
+#khAcademy .kha-focus-option{border-color:#60a5fa!important;background:linear-gradient(145deg,#fff,#dbeafe)!important;box-shadow:0 5px 0 #60a5fa!important}
+#khAcademy button:focus-visible{outline-color:#2563eb!important}
