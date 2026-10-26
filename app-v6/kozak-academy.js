@@ -25,7 +25,7 @@ const badges=[
 {id:'academy',name:'Зірка Academy',icon:'👑',need:questions.length,desc:'Завершити всі завдання прототипу'}
 ];
 const $=s=>document.querySelector(s);
-function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');return {solved:Array.isArray(v.solved)?v.solved.filter(id=>questions.some(q=>q.id===id)):[],badges:Array.isArray(v.badges)?v.badges:[],current:typeof v.current==='string'?v.current:null,attempts:Number(v.attempts)||0,memoryFound:Array.isArray(v.memoryFound)?v.memoryFound.filter(id=>memoryPairs.some(p=>p.id===id)):[],codeSolved:Array.isArray(v.codeSolved)?v.codeSolved:[],dailyClaim:typeof v.dailyClaim==='string'?v.dailyClaim:null}}catch{return {solved:[],badges:[],current:null,attempts:0,memoryFound:[],codeSolved:[],dailyClaim:null}}}
+function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');return {solved:Array.isArray(v.solved)?v.solved.filter(id=>questions.some(q=>q.id===id)):[],badges:Array.isArray(v.badges)?v.badges:[],current:typeof v.current==='string'?v.current:null,attempts:Number(v.attempts)||0,memoryFound:Array.isArray(v.memoryFound)?v.memoryFound:[],codeSolved:Array.isArray(v.codeSolved)?v.codeSolved:[],dailyClaim:typeof v.dailyClaim==='string'?v.dailyClaim:null}}catch{return {solved:[],badges:[],current:null,attempts:0,memoryFound:[],codeSolved:[],dailyClaim:null}}}
 let state=read();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}}
 function unlocked(){return badges.filter(b=>state.solved.length>=b.need)}
@@ -73,7 +73,7 @@ function render(){
  host.innerHTML='<div class="kha-head"><div><span class="kha-eyebrow">KH么KOZAK / ПРИГОДА + НАВЧАННЯ</span><h2>🧭 СВІТ KOZAK ACADEMY</h2><p>Пройди місії, розгадай таємниці й збери нагороди. Кожна пригода триває лише кілька хвилин!</p></div><div class="kha-xp"><b>'+done+' / '+all+'</b><span>місій пройдено</span></div></div>'+
  '<div class="kha-companion"><span class="kha-mascot" aria-hidden="true">🧙‍♂️</span><div><b>Козачок-напарник</b><p>«Привіт, герою! Я підготував для тебе нові випробування. Спробуємо?»</p></div><span class="kha-companion-star">✨</span></div>'+
  '<div class="kha-progress" role="progressbar" aria-label="Прогрес Academy" aria-valuemin="0" aria-valuemax="'+all+'" aria-valuenow="'+done+'"><span style="width:'+(done/all*100)+'%"></span></div>'+
- '<div class="kha-stats"><span>⚡ '+(done*15+state.memoryFound.length*5+state.codeSolved.length*10+(state.dailyClaim?10:0))+' XP зароблено в академії*</span><span>🏅 '+earned.length+' / '+badges.length+' значків</span></div>'+
+ '<div class="kha-stats"><span>⚡ '+(done*15+state.memoryFound.length*5+state.codeSolved.length*10+(state.dailyClaim===today?10:0))+' XP зароблено в академії*</span><span>🏅 '+earned.length+' / '+badges.length+' значків</span></div>'+
  '<div class="kha-mode-grid">'+modeButton('quest','🗺️','Місії','Запитання та логіка')+modeButton('memory','🧠','Знайди пару','Гра на пам’ять')+modeButton('code','🔐','Секретний код','Загадки й кмітливість')+modeButton('treasure','🎁','Скриня дня','Щоденний бонус')+'</div>'+
  activity+
  '<div class="kha-badges"><div class="kha-section-title"><h3>🏆 Колекція досягнень</h3><span>Збирай усі!</span></div><div class="kha-badge-grid">'+badges.map(b=>'<article class="kha-badge '+(state.badges.includes(b.id)?'is-earned':'')+'"><span>'+b.icon+'</span><b>'+esc(b.name)+'</b><small>'+esc(b.desc)+'</small><em>'+(state.badges.includes(b.id)?'ВІДКРИТО':b.need+' правильних')+'</em></article>').join('')+'</div></div>'+
