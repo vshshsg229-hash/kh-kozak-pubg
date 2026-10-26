@@ -119,8 +119,7 @@
     ensureHomeHub();
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet) closeSheet(); });
     document.addEventListener('click', e => {
-      const hamburger = e.target.closest('#mobileMenuToggle');
-      if (hamburger && mobile()) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); openSheet('Усі функції'); }
+      /* The phone hamburger now opens the original sidebar drawer, matching the tablet navigation. */
       const tab = e.target.closest('.sidebar [data-tab]');
       if (tab) setActive(tab.dataset.tab === 'home' ? 'home' : (['profile','progress','rewards','matchreport'].includes(tab.dataset.tab) ? 'progress' : ''));
     }, true);
