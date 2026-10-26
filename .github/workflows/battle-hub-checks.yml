@@ -236,7 +236,7 @@ jobs:
 
           const academy = fs.readFileSync(path.join(root, 'kozak-academy.js'), 'utf8');
           const academyCss = fs.readFileSync(path.join(root, 'kozak-academy.css'), 'utf8');
-          assert(html.includes('kozak-academy.js?v=1.4.0') && html.includes('kozak-academy.css?v=1.5.2'), 'Kozak Academy JS and CSS are loaded with current versioned URLs');
+          assert(html.includes('kozak-academy.js?v=1.4.0') && html.includes('kozak-academy.css?v=1.5.3'), 'Kozak Academy JS and CSS are loaded with current versioned URLs');
           assert(academy.includes("modeButton('daily'") && academy.includes("modeButton('memory'") && academy.includes("modeButton('code'") && academy.includes("modeButton('focus'"), 'Academy includes daily missions, memory, secret-code, and attention mini-game modes');
           assert(academy.includes('academy-code-') && academy.includes('СЕКРЕТНА МІСІЯ'), 'Academy includes secret-code challenges');
           assert(academy.includes('academy-daily-') && academy.includes('Скриня дня'), 'Academy includes a daily reward chest');
