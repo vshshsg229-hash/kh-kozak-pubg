@@ -114,7 +114,7 @@ jobs:
           assert(progression.includes('if(!safeWrite(PROFILE_KEY,next))'), 'Pass reward claim handles profile-save failures');
           const mainApp = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
           assert(mainApp.includes('function restoreRewardState(snapshot)') && mainApp.includes('return true}catch(e){return false}'), 'Failed pass writes restore the previous state and report failure');
-          assert(mainApp.includes('ownedSources') && mainApp.includes("recordOwnedSource(awarded,'freePass')") && mainApp.includes("recordOwnedSource(r.item,'elitePass')"), 'Profile preserves reward provenance from both pass tracks');
+          assert(mainApp.includes('ownedSources') && mainApp.includes("recordOwnedSource(awarded,'freePass')") && mainApp.includes("recordOwnedSource(premiumAward,'elitePass')"), 'Profile preserves reward provenance from both pass tracks');
           assert(mainApp.includes("sources.includes('freePass')") && mainApp.includes("sources.includes('elitePass')"), 'Pass filters show items earned from either pass even if already owned');
           assert(mainApp.includes('sourceNames') && mainApp.includes('sourceList') && mainApp.includes("join(' + ')"), 'Profile labels all acquisition sources for each cosmetic');
           // The live UI uses Creator Studio; creator-editor is a retired, unmounted prototype.
