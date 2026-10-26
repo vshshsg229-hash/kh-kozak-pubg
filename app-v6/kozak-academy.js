@@ -57,7 +57,7 @@ function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');return {
 let state=read();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}}
 function unlocked(){return badges.filter(b=>state.solved.length>=b.need)}
-function grantBadges(){const rewards={first:'🌟',curious:'🐸',thinker:'🐼',explorer:'🦄',rainbow:'🐙',inventor:'🐧',superhero:'🐲','academy-master':'🦋'};for(const b of unlocked())if(!state.badges.includes(b.id)){state.badges.push(b.id);const sticker=rewards[b.id];if(sticker&&!state.stickers.includes(sticker))state.stickers.push(sticker)}save()}
+function grantBadges(){const rewards={first:'🌟',curious:'🐸',thinker:'🐼',explorer:'🦄',rainbow:'🐙',inventor:'🐧',superhero:'🐲','academy-master':'🦋'};for(const b of unlocked()){if(!state.badges.includes(b.id))state.badges.push(b.id);const sticker=rewards[b.id];if(sticker&&!state.stickers.includes(sticker))state.stickers.push(sticker)}save()}
 function chooseNext(){const available=questions.filter(q=>!state.solved.includes(q.id));if(!available.length){state.current=null;save();return null}const next=available[Math.floor(Math.random()*available.length)];state.current=next.id;save();return next}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 let mode='quest',memoryCards=[],memoryOpen=[],memoryBusy=false,codeFeedback='',focusFeedback='';
@@ -167,7 +167,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-kha-daily]')){const day=localDay();if(state.dailyClaim===day)return;if(!awardXP('academy-daily-'+day,10)){const feedback=$('#khAcademy .kha-treasure p');if(feedback)feedback.textContent='Зачекай секунду, профіль ще завантажується.';return}state.dailyClaim=day;const available=['🦊','🐸','🐼','🦄','🐙','🐧','🐲','🐝','🐢','🦋'].filter(sticker=>!state.stickers.includes(sticker));if(available.length)state.stickers.push(available[Math.floor(Math.random()*available.length)]);save();render();return}
 });
 window.addEventListener('khkozak-profile-updated',()=>{const el=$('#khAcademy .kha-stats');if(el)el.setAttribute('data-profile-updated','true')});
-function init(){render()}
+function init(){grantBadges();render()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 const observer=new MutationObserver(()=>{if(($('#tab-academy')||$('#tab-progress'))&&!$('#khAcademy'))render()});observer.observe(document.documentElement,{childList:true,subtree:true});
 })();
