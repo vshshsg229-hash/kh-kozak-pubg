@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.50.0",
+  "version": "18.51.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK KIDS WORLD: нова щотижнева пригода з трьома кроками, бонусом XP та швидкими переходами до навчальних ігор."
+  "releaseNotes": "KOZAK WORLD: додано щоденні виклики та швидкий запуск; виправлено щоденну серію прогресу, оновлення PWA-кешу й розташування кнопки на мобільних екранах."
 }
