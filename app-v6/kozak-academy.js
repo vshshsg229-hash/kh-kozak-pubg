@@ -1,5 +1,6 @@
 /* Kozak Academy prototype: offline learning tasks, local badges, and idempotent XP rewards through the existing profile API. */
 /* Rewards use unique IDs so a refresh cannot grant XP twice for the same question. */
+/* The module is intentionally mounted in the existing progress panel to keep navigation stable. */
 (()=>{'use strict';
 const KEY='khkozak_academy_v1';
 const XP_PREFIX='academy-v1-q-';
