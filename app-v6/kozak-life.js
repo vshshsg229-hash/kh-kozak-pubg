@@ -1,4 +1,20 @@
 (()=>{'use strict';
+const RESET_KEY='khkozak_full_reset_v1',RESET_DAY=24*60*60*1000;
+function checkSharedReset(){
+  let resetAt=0;try{resetAt=Number(localStorage.getItem(RESET_KEY))||0}catch(_){}
+  if(!resetAt){resetAt=Date.now();try{localStorage.setItem(RESET_KEY,String(resetAt))}catch(_){}}
+  if(Date.now()-resetAt>=RESET_DAY){
+    let name='KH么Kozak';
+    try{const p=JSON.parse(localStorage.getItem('khkozak_hub_v6')||'{}');if(p&&typeof p.name==='string'&&p.name.trim())name=p.name}catch(_){}
+    const patterns=[/^khkozak_hub_v6$/,/^khkozak_academy_v1$/,/^khkozak_bh3_ops_v1$/,/^khkozak_bh3_v1$/,/^khkozak_arcade_records_v1$/,/^khkozak_pass50_claimed_v1$/,/^khkozak_game_played_/,/^kh_fighter_inventory_v1_/,
+      /^khkozak_.*(?:progress|xp|record|score|level|mission|achievement|reward|sticker|arcade|challenge|inventory|pass|daily|bunker|survival|ops|journey|match.?report|pubg.?challenge|battle.?pass|fighter.?kit|fighter.?look)/i,
+      /^kozak_life_v1$/,/^kozak-craft-world-v1$/];
+    try{const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k!==RESET_KEY&&patterns.some(p=>p.test(k)))keys.push(k)}keys.forEach(k=>localStorage.removeItem(k));localStorage.setItem('khkozak_hub_v6',JSON.stringify({name}));localStorage.setItem(RESET_KEY,String(Date.now()))}catch(_){}
+    return true;
+  }
+  return false;
+}
+if(checkSharedReset())window.location.reload();
 const KEY='kozak_life_v1',DAY=86400000;
 const defaults={xp:0,done:{},daily:{},habits:{},goal:'',notes:'',badges:[],completed:{}};
 let state=load(),mindIndex=0,digitalIndex=0,clubIndex=0,answered={mind:false,digital:false,club:false},roundScore={mind:0,digital:0,club:0};
@@ -7,6 +23,15 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){} r
 function dayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function dailyState(){if(state.day!==dayKey()){state.day=dayKey();state.daily={};state.habits={};state.done={};save()}return state.daily}
 function addXP(n,reason){state.xp=Math.max(0,(Number(state.xp)||0)+n);state.lastAction=reason||'';const badges=[{id:'first',at:15,name:'Перший крок'},{id:'thinker',at:60,name:'Мислитель'},{id:'curious',at:120,name:'Допитливість'},{id:'builder',at:220,name:'Будівничий'},{id:'elite',at:400,name:'Майстер KOZAK'}];badges.forEach(b=>{if(state.xp>=b.at&&!state.badges.includes(b.id))state.badges.push(b.id)});save()}
+function updateResetTimer(){
+ let at=0;try{at=Number(localStorage.getItem(RESET_KEY))||0}catch(_){}
+ if(!at){at=Date.now();try{localStorage.setItem(RESET_KEY,String(at))}catch(_){}}
+ const left=Math.max(0,RESET_DAY-(Date.now()-at)),total=Math.ceil(left/1000);
+ const h=String(Math.floor(total/3600)).padStart(2,'0'),m=String(Math.floor((total%3600)/60)).padStart(2,'0'),s=String(total%60).padStart(2,'0');
+ const el=document.getElementById('klResetTimer');if(el)el.textContent=h+':'+m+':'+s;
+ if(left<=0){checkSharedReset();window.location.reload()}
+}
+window.setInterval(updateResetTimer,1000);updateResetTimer();
 function level(){return Math.floor(Math.sqrt((state.xp||0)/100))+1}
 function renderStats(){const lv=level(),base=(lv-1)*(lv-1)*100,next=lv*lv*100,local=state.xp-base;setText('klLevel',lv);setText('klTotalXp',state.xp||0);setText('klXpText',local+' / '+(next-base)+' XP');const bar=document.getElementById('klXpBar');if(bar)bar.style.width=Math.min(100,local/(next-base)*100)+'%';setText('klDone',Object.values(state.daily||{}).filter(Boolean).length+'/3');setText('klBadges',(state.badges||[]).length)}
 function setText(id,s){const e=document.getElementById(id);if(e)e.textContent=s}
