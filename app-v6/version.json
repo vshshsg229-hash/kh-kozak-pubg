@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "18.57.0",
+  "version": "18.58.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Brand-new responsive main app dashboard with quick game launch, music, profile, pass, missions, daily drop, and direct mode shortcuts. Existing tabs and saved progress retained; app cache version 18.57.0."
+  "releaseNotes": "Fixed app-wide navigation: delegated click handling for all tab and game buttons, valid-tab guards, working KOZAK WORLD deep links, and cache refresh for app.js. Existing sections and progress retained."
 }
