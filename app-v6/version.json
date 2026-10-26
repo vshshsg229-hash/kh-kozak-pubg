@@ -1,8 +1,8 @@
 {
-  "app": "KOZAK NEXUS",
-  "version": "18.55.0",
+  "app": "KOZAK WORLD",
+  "version": "18.56.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK WORLD став головним стартовим хабом; оновлено PWA start_url, кореневе перенаправлення та офлайн-кеш. Старий хаб збережений як повна бібліотека функцій. Щоденні кроки KOZAK WORLD нараховують XP у локальному профілі."
+  "releaseNotes": "KOZAK WORLD tiles deep-link into the correct existing tabs: music player, games, profile, academy, and TikTok creative tools. PWA starts at KOZAK WORLD; full library features are preserved."
 }
