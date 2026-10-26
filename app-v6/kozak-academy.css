@@ -44,7 +44,7 @@
 #khAcademy .kha-xp{border:2px solid #fbbf24;border-radius:18px;background:linear-gradient(145deg,#fff7cc,#ffedd5);box-shadow:0 5px 0 #fbbf24;color:#7c2d12;padding:12px 16px}
 #khAcademy .kha-xp b{font-size:22px;color:#c2410c}#khAcademy .kha-xp span{font-size:11px;color:#9a3412}
 #khAcademy .kha-companion{position:relative;border:2px solid #c4b5fd;border-radius:22px;background:linear-gradient(110deg,#ede9fe,#fff 70%);box-shadow:0 5px 0 #c4b5fd;padding:14px}
-#khAcademy .kha-mascot{flex:0 0 60px;height:60px;border:2px solid #f9a8d4;border-radius:20px;background:linear-gradient(145deg,#fce7f3,#fef3c7);font-size:37px}
+#khAcademy .kha-mascot{flex:0 0 60px;height:60px;border:2px solid #93c5fd;border-radius:20px;background:linear-gradient(145deg,#dbeafe,#fef3c7);font-size:37px}
 #khAcademy .kha-companion b{color:#6d28d9;font-size:15px}#khAcademy .kha-companion p{color:#475569;font-size:13px}
 #khAcademy .kha-companion-star{color:#d97706}
 #khAcademy .kha-progress{height:13px;border:2px solid #c7d2fe;border-radius:99px;background:#fff;overflow:hidden}
@@ -53,7 +53,7 @@
 #khAcademy .kha-stats span{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border:1px solid #c7d2fe;border-radius:99px;background:#fff;color:#4338ca;font-size:12px;font-weight:800}
 #khAcademy .kha-mode-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:18px 0}
 #khAcademy .kha-mode{position:relative;min-height:126px;align-items:center;gap:7px;padding:14px 10px;border:2px solid #c7d2fe;border-radius:22px;background:linear-gradient(160deg,#fff,#eef2ff);color:#24324a;text-align:center;box-shadow:0 5px 0 #c7d2fe;transition:transform .16s,box-shadow .16s,border-color .16s}
-#khAcademy .kha-mode:nth-child(5n+1){border-color:#f9a8d4;box-shadow:0 5px 0 #f9a8d4;background:linear-gradient(160deg,#fff,#fce7f3)}
+#khAcademy .kha-mode:nth-child(5n+1){border-color:#93c5fd;box-shadow:0 5px 0 #93c5fd;background:linear-gradient(160deg,#fff,#dbeafe)}
 #khAcademy .kha-mode:nth-child(5n+2){border-color:#86efac;box-shadow:0 5px 0 #86efac;background:linear-gradient(160deg,#fff,#dcfce7)}
 #khAcademy .kha-mode:nth-child(5n+3){border-color:#93c5fd;box-shadow:0 5px 0 #93c5fd;background:linear-gradient(160deg,#fff,#dbeafe)}
 #khAcademy .kha-mode:nth-child(5n+4){border-color:#fcd34d;box-shadow:0 5px 0 #fcd34d;background:linear-gradient(160deg,#fff,#fef3c7)}
@@ -69,7 +69,7 @@
 #khAcademy .kha-option{min-height:54px;padding:13px;border:2px solid #c7d2fe;border-radius:16px;background:#fff;color:#24324a;font-size:15px;font-weight:800;box-shadow:0 3px 0 #c7d2fe;touch-action:manipulation}
 #khAcademy .kha-option:hover{border-color:#818cf8;background:#eef2ff}
 #khAcademy .kha-option.is-correct{border-color:#34d399;background:#d1fae5;color:#065f46;box-shadow:0 3px 0 #34d399}
-#khAcademy .kha-option.is-wrong{border-color:#fda4af;background:#ffe4e6;color:#9f1239;box-shadow:0 3px 0 #fda4af}
+#khAcademy .kha-option.is-wrong{border-color:#fbbf24;background:#fef3c7;color:#92400e;box-shadow:0 3px 0 #fbbf24}
 #khAcademy .kha-feedback{padding:11px 13px;border-radius:14px;background:#fef3c7;color:#92400e;font-size:13px;font-weight:800}
 #khAcademy .kha-next{min-height:50px;padding:13px 18px;border:0;border-radius:16px;background:linear-gradient(100deg,#7c3aed,#4f46e5);color:#fff;font-size:14px;font-weight:900;box-shadow:0 5px 0 #3730a3;touch-action:manipulation}
 #khAcademy .kha-next:active{transform:translateY(2px);box-shadow:0 2px 0 #3730a3}
@@ -158,3 +158,14 @@
 #khAcademy button{touch-action:manipulation}
 @media(max-width:560px){#khAcademy .kha-option,#khAcademy .kha-next{font-size:16px;min-height:58px}#khAcademy .kha-mode{min-height:104px;padding:12px}#khAcademy .kha-head p{font-size:14px}}
 @media(prefers-reduced-motion:reduce){#khAcademy *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+
+/* KOZAK KIDS WORLD: no pink anywhere in the Academy interface */
+#khAcademy .kha-mascot{border-color:#93c5fd!important;background:linear-gradient(145deg,#dbeafe,#fef3c7)!important;box-shadow:0 4px 0 #bfdbfe}
+#khAcademy .kha-mode:nth-child(5n+1){border-color:#93c5fd!important;box-shadow:0 5px 0 #93c5fd!important;background:linear-gradient(160deg,#fff,#dbeafe)!important}
+#khAcademy .kha-mode:nth-child(5n+1) b{color:#1e3a8a!important}
+#khAcademy .kha-mode:nth-child(5n+1) small{color:#334155!important}
+#khAcademy .kha-option.is-wrong{border-color:#fbbf24!important;background:#fef3c7!important;color:#92400e!important;box-shadow:0 3px 0 #fbbf24!important}
+#khAcademy .kha-mode.is-active{border-color:#2563eb;background:linear-gradient(145deg,#dbeafe,#fff);box-shadow:0 5px 0 #2563eb,0 0 0 3px #bfdbfe}
+#khAcademy .kha-mode:hover{box-shadow:0 8px 0 #93c5fd}
+#khAcademy .kha-mode,#khAcademy .kha-option,#khAcademy .kha-question,#khAcademy .kha-game,#khAcademy .kha-complete{color:#24324a}
