@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080a0e">
+<meta name="description" content="KOZAK LIFE — простір розвитку, розумних ігор, фінансової грамотності та цифрових навичок для дорослих.">
+<title>KOZAK LIFE — простір розвитку</title>
+<link rel="stylesheet" href="kozak-life.css?v=1.0.0">
+</head>
+<body>
+<header class="kl-top">
+  <a class="kl-brand" href="index.html?v=18.47.0" aria-label="Повернутися до KOZAK NEXUS"><span class="kl-mark">♛</span><span><b>KOZAK <i>LIFE</i></b><small>ЗНАННЯ · РОЗВИТОК · ВІДПОЧИНОК</small></span></a>
+  <div class="kl-top-actions"><span class="kl-local">● ПРАЦЮЄ ЛОКАЛЬНО</span><button class="kl-quiet" id="klResetDay" type="button">↻ День</button></div>
+</header>
+<div class="kl-layout">
+  <aside class="kl-side" aria-label="Розділи KOZAK LIFE">
+    <p class="kl-side-label">ТВІЙ ПРОСТІР</p>
+    <button class="kl-nav active" data-view="overview"><span>⌂</span> Огляд</button>
+    <button class="kl-nav" data-view="mind"><span>◈</span> Розум і логіка</button>
+    <button class="kl-nav" data-view="money"><span>₴</span> Фінансова майстерня</button>
+    <button class="kl-nav" data-view="digital"><span>⌘</span> Цифрова академія</button>
+    <button class="kl-nav" data-view="habits"><span>✓</span> Мої звички</button>
+    <button class="kl-nav" data-view="create"><span>✎</span> Творча студія</button>
+    <button class="kl-nav" data-view="club"><span>♜</span> Ігровий клуб</button>
+    <div class="kl-side-note"><b>Твій темп — твої правила.</b><p>Короткі заняття, реальні навички й ігри без поспіху.</p></div>
+    <a class="kl-back" href="index.html?v=18.47.0">← Повернутися в KOZAK NEXUS</a>
+  </aside>
+  <main class="kl-main">
+    <section class="kl-view active" id="view-overview">
+      <div class="kl-hero">
+        <div><span class="kl-eyebrow">KOZAK NEXUS · ADULT WORLD</span><h1>Твій наступний<br><em>рівень починається тут.</em></h1><p>Навчайся корисного, тренуй мислення, керуй цілями й відпочивай у власному темпі. Для дорослих будь-якого досвіду — від 20 до 60+.</p><button class="kl-primary" data-go="mind">Почати з розумової розминки <span>↗</span></button></div>
+        <div class="kl-orbit" aria-hidden="true"><div class="kl-orbit-ring"></div><div class="kl-orbit-core">KL<span>✦</span></div><i class="orb orb-a">◈</i><i class="orb orb-b">₴</i><i class="orb orb-c">⌘</i></div>
+      </div>
+      <div class="kl-stats">
+        <article><small>РІВЕНЬ</small><strong id="klLevel">1</strong><span id="klXpText">0 / 100 XP</span><div class="kl-meter"><i id="klXpBar"></i></div></article>
+        <article><small>ЗАРОБЛЕНО XP</small><strong id="klTotalXp">0</strong><span>за корисні дії</span></article>
+        <article><small>ВИКОНАНО СЬОГОДНІ</small><strong id="klDone">0/3</strong><span>щоденні мініцілі</span></article>
+        <article><small>ВІДКРИТО ВІДЗНАК</small><strong id="klBadges">0</strong><span>особисті досягнення</span></article>
+      </div>
+      <div class="kl-section-head"><div><span class="kl-eyebrow">ОБИРАЙ СВІЙ НАПРЯМ</span><h2>Шість просторів для життя</h2></div><span class="kl-muted">Навчайся · грай · створюй</span></div>
+      <div class="kl-module-grid">
+        <button class="kl-module" data-go="mind"><span class="kl-module-icon blue">◈</span><b>Розум і логіка</b><small>Загадки, пам’ять, закономірності</small><em>ВІДКРИТИ →</em></button>
+        <button class="kl-module" data-go="money"><span class="kl-module-icon gold">₴</span><b>Фінансова майстерня</b><small>Бюджет, цілі, покупки, відсотки</small><em>ВІДКРИТИ →</em></button>
+        <button class="kl-module" data-go="digital"><span class="kl-module-icon mint">⌘</span><b>Цифрова академія</b><small>Смартфон, ШІ, безпека в мережі</small><em>ВІДКРИТИ →</em></button>
+        <button class="kl-module" data-go="habits"><span class="kl-module-icon violet">✓</span><b>Мої звички</b><small>Малі кроки до великих цілей</small><em>ВІДКРИТИ →</em></button>
+        <button class="kl-module" data-go="create"><span class="kl-module-icon amber">✎</span><b>Творча студія</b><small>Ідеї, історії, фото та контент</small><em>ВІДКРИТИ →</em></button>
+        <button class="kl-module" data-go="club"><span class="kl-module-icon red">♜</span><b>Ігровий клуб</b><small>Вікторини й щоденні випробування</small><em>ВІДКРИТИ →</em></button>
+      </div>
+      <div class="kl-bottom-grid">
+        <article class="kl-panel"><div class="kl-panel-head"><div><span class="kl-eyebrow">НА СЬОГОДНІ</span><h3>Три розумні кроки</h3></div><span class="kl-pill">ЩОДНЯ</span></div><div id="klDailyList" class="kl-daily-list"></div></article>
+        <article class="kl-panel kl-quote"><span class="kl-eyebrow">ІДЕЯ ДНЯ</span><h3 id="klDailyQuote">Великі зміни починаються з маленьких дій.</h3><p>Обери одне корисне заняття. Навіть 5 хвилин — це вже рух уперед.</p><button class="kl-secondary" data-go="habits">Спланувати мій день →</button></article>
+      </div>
+      <p class="kl-footer-note">KOZAK LIFE — навчально-розважальний простір. Усі вправи доступні без реєстрації; прогрес зберігається на цьому пристрої й може скидатися разом із загальним 24-годинним циклом KOZAK NEXUS.</p>
+    </section>
+
+    <section class="kl-view" id="view-mind">
+      <div class="kl-page-head"><span class="kl-eyebrow">01 / МИСЛЕННЯ</span><h1>Розум і логіка</h1><p>Коротке тренування уваги, логіки та прийняття рішень. Складність — для кожного.</p></div>
+      <div class="kl-panel kl-quiz"><div class="kl-panel-head"><div><span class="kl-eyebrow">МІНІ-ВИКЛИК</span><h2 id="klMindTitle">Знайди закономірність</h2></div><span class="kl-pill" id="klMindCount">ПИТАННЯ 1</span></div><p class="kl-question" id="klMindQuestion"></p><div class="kl-answers" id="klMindAnswers"></div><div id="klMindFeedback" class="kl-feedback" aria-live="polite"></div><button class="kl-primary" id="klNextMind" type="button" hidden>Наступне завдання →</button></div>
+      <div class="kl-tip-grid"><article class="kl-panel"><span class="kl-module-icon blue">◈</span><h3>Уважність</h3><p>Зупинись на секунду, перечитай умову й не поспішай відповідати.</p></article><article class="kl-panel"><span class="kl-module-icon violet">✦</span><h3>Гнучкість</h3><p>Якщо відповідь не вийшла — спробуй інший спосіб мислення.</p></article><article class="kl-panel"><span class="kl-module-icon mint">↗</span><h3>Прогрес</h3><p>Кожне завершене завдання приносить XP. Помилки — частина навчання.</p></article></div>
+    </section>
+
+    <section class="kl-view" id="view-money">
+      <div class="kl-page-head"><span class="kl-eyebrow">02 / ПРАКТИЧНІ НАВИЧКИ</span><h1>Фінансова майстерня</h1><p>Плануй витрати й перевіряй сценарії на навчальних прикладах — без підключення до банку.</p></div>
+      <div class="kl-two-col"><article class="kl-panel"><span class="kl-eyebrow">КАЛЬКУЛЯТОР БЮДЖЕТУ</span><h2>Розклади свій місячний бюджет</h2><label class="kl-field">Дохід за місяць, ₴<input id="klIncome" type="number" min="0" step="100" value="30000" inputmode="decimal"></label><label class="kl-field">Обов’язкові витрати, ₴<input id="klNeeds" type="number" min="0" step="100" value="16000" inputmode="decimal"></label><label class="kl-field">Інші витрати, ₴<input id="klWants" type="number" min="0" step="100" value="7000" inputmode="decimal"></label><label class="kl-field">Заощадження, ₴<input id="klSave" type="number" min="0" step="100" value="3000" inputmode="decimal"></label><button class="kl-primary" id="klCalcBudget" type="button">Порахувати баланс</button><div class="kl-budget-result" id="klBudgetResult" aria-live="polite"><b>Баланс: 4 000 ₴</b><span>Це навчальний розрахунок, не фінансова рекомендація.</span></div></article><article class="kl-panel"><span class="kl-eyebrow">КОРИСНА ЗВИЧКА</span><h2>Перш ніж купувати</h2><ul class="kl-checklist"><li>Чи потрібна мені ця річ саме зараз?</li><li>Чи порівняв я повну вартість і альтернативи?</li><li>Чи не вплинула на мене штучна терміновість або реклама?</li><li>Чи залишаться гроші на обов’язкові витрати?</li></ul><div class="kl-warning">Не вводь у KOZAK LIFE номери карток, паролі, банківські коди чи інші конфіденційні дані.</div><button class="kl-secondary" id="klBudgetLesson" type="button">Пройти міні-урок про бюджет +20 XP</button></article></div>
+    </section>
+
+    <section class="kl-view" id="view-digital">
+      <div class="kl-page-head"><span class="kl-eyebrow">03 / ЦИФРОВИЙ СВІТ</span><h1>Цифрова академія</h1><p>Розпізнавай підозрілі повідомлення, захищай акаунти й користуйся новими інструментами впевненіше.</p></div>
+      <div class="kl-panel kl-quiz"><div class="kl-panel-head"><div><span class="kl-eyebrow">КІБЕРБЕЗПЕКА</span><h2 id="klDigitalTitle">Що робити з підозрілим повідомленням?</h2></div><span class="kl-pill" id="klDigitalCount">УРОК 1</span></div><p class="kl-question" id="klDigitalQuestion"></p><div class="kl-answers" id="klDigitalAnswers"></div><div id="klDigitalFeedback" class="kl-feedback" aria-live="polite"></div><button class="kl-primary" id="klNextDigital" type="button" hidden>Наступний урок →</button></div>
+      <div class="kl-tip-grid"><article class="kl-panel"><h3>Паролі та доступ</h3><p>Використовуй унікальні паролі та двофакторний захист, де він доступний.</p></article><article class="kl-panel"><h3>Штучний інтелект</h3><p>Перевіряй важливі твердження; не передавай інструментам приватні дані без потреби.</p></article><article class="kl-panel"><h3>Підозрілі посилання</h3><p>Не поспішай, перевіряй адресу сайту та звертайся до сервісу через офіційний застосунок.</p></article></div>
+    </section>
+
+    <section class="kl-view" id="view-habits">
+      <div class="kl-page-head"><span class="kl-eyebrow">04 / ОСОБИСТИЙ РИТМ</span><h1>Мої звички й цілі</h1><p>Склади реалістичний план на сьогодні. Без покарань за пропуски — просто почни знову.</p></div>
+      <div class="kl-two-col"><article class="kl-panel"><span class="kl-eyebrow">ПЛАН НА ДЕНЬ</span><h2>Мої три кроки</h2><div class="kl-habit-list" id="klHabits"><label><input type="checkbox" data-habit="water"> <span><b>Зробити паузу й подбати про себе</b><small>Вода, відпочинок або свіже повітря</small></span></label><label><input type="checkbox" data-habit="learn"> <span><b>Дізнатися щось нове</b><small>5–15 хвилин навчання</small></span></label><label><input type="checkbox" data-habit="goal"> <span><b>Зробити один крок до своєї цілі</b><small>Невелика, конкретна дія</small></span></label></div><button class="kl-primary" id="klSaveHabits" type="button">Зберегти план дня</button><p class="kl-feedback" id="klHabitFeedback" aria-live="polite"></p></article><article class="kl-panel"><span class="kl-eyebrow">МІЙ НАМІР</span><h2>Що для мене важливо?</h2><label class="kl-field">Моя ціль на найближчий тиждень<textarea id="klGoal" rows="4" maxlength="240" placeholder="Наприклад: щодня 10 хвилин вивчати нову навичку"></textarea></label><button class="kl-secondary" id="klSaveGoal" type="button">Зберегти намір</button><div class="kl-warning">Порада: формулюй ціль так, щоб можна було зрозуміти, який саме крок виконати.</div></article></div>
+    </section>
+
+    <section class="kl-view" id="view-create">
+      <div class="kl-page-head"><span class="kl-eyebrow">05 / ТВОРЧІСТЬ</span><h1>Творча студія</h1><p>Ідеї для історій, коротких відео, фотографій і власних проєктів.</p></div>
+      <div class="kl-panel"><div class="kl-panel-head"><div><span class="kl-eyebrow">ГЕНЕРАТОР ІДЕЙ</span><h2>Твій творчий виклик</h2></div><span class="kl-pill">БЕЗ ЛІМІТІВ</span></div><div class="kl-prompt-card"><span>✦ ІДЕЯ ДЛЯ ТЕБЕ</span><p id="klCreativePrompt">Створи історію про одну маленьку перемогу, яка змінила весь день.</p></div><div class="kl-action-row"><button class="kl-secondary" id="klNewPrompt" type="button">Інша ідея ↻</button><button class="kl-primary" id="klCreativeDone" type="button">Виконав виклик +15 XP</button></div><label class="kl-field">Мої нотатки<textarea id="klCreativeNotes" rows="5" maxlength="1000" placeholder="Запиши задум, перші рядки історії або сценарій..."></textarea></label><button class="kl-secondary" id="klSaveNotes" type="button">Зберегти нотатки на цьому пристрої</button><p id="klNotesFeedback" class="kl-feedback" aria-live="polite"></p></div>
+    </section>
+
+    <section class="kl-view" id="view-club">
+      <div class="kl-page-head"><span class="kl-eyebrow">06 / ГРАЙ РОЗУМНО</span><h1>Ігровий клуб</h1><p>Міні-вікторини, швидкі виклики й локальні результати. Без азартних ставок і реальних грошових призів.</p></div>
+      <div class="kl-panel kl-quiz"><div class="kl-panel-head"><div><span class="kl-eyebrow">ВІКТОРИНА КЛУБУ</span><h2 id="klClubTitle">Загальні знання</h2></div><span class="kl-pill" id="klClubCount">РАУНД 1</span></div><p class="kl-question" id="klClubQuestion"></p><div class="kl-answers" id="klClubAnswers"></div><div id="klClubFeedback" class="kl-feedback" aria-live="polite"></div><button class="kl-primary" id="klNextClub" type="button" hidden>Наступне питання →</button></div>
+      <div class="kl-tip-grid"><article class="kl-panel"><h3>Гра наодинці</h3><p>Проходь завдання у власному темпі та покращуй особистий результат.</p></article><article class="kl-panel"><h3>Гра з друзями</h3><p>Читайте питання по черзі й порівнюйте відповіді наживо — спільна таблиця поки не потрібна.</p></article><article class="kl-panel"><h3>Чесні нагороди</h3><p>XP і відзнаки — лише ігрова мотивація, не гроші та не гарантовані призи.</p></article></div>
+    </section>
+    <footer class="kl-footer"><span>KOZAK LIFE · ADULT WORLD</span><span>Зроблено для різного досвіду та різного віку.</span><a href="index.html?v=18.47.0">KOZAK NEXUS ↗</a></footer>
+  </main>
+</div>
+<script src="kozak-life.js?v=1.0.0" defer></script>
+</body>
+</html>
