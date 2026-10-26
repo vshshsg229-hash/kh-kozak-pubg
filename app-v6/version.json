@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.46.0",
+  "version": "18.47.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Додано видимий таймер зворотного відліку до повного скидання локального прогресу кожні 24 години."
+  "releaseNotes": "Додано KOZAK LIFE — дорослий простір із логікою, фінансовою майстернею, цифровою академією, звичками, творчістю та ігровим клубом. Оновлено кеш і цикл скидання прогресу."
 }
