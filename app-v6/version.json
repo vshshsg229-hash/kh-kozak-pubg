@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.37.0",
+  "version": "18.38.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Kozak Academy: локальні навчальні завдання, XP через наявну систему профілю та значки."
+  "releaseNotes": "Дитяча академія тепер доступна з головної сторінки та окремого пункту меню; оновлено кеш і навігацію."
 }

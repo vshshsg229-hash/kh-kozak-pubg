@@ -33,7 +33,7 @@ function grantBadges(){for(const b of unlocked())if(!state.badges.includes(b.id)
 function chooseNext(){const available=questions.filter(q=>!state.solved.includes(q.id));if(!available.length){state.current=null;save();return null}const next=available[Math.floor(Math.random()*available.length)];state.current=next.id;save();return next}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){
- let host=$('#khAcademy');if(!host){const panel=$('#tab-progress');if(!panel)return;host=document.createElement('section');host.id='khAcademy';host.className='kha-panel';panel.appendChild(host)}
+ let host=$('#khAcademy');if(!host){const panel=$('#tab-academy')||$('#tab-progress');if(!panel)return;host=document.createElement('section');host.id='khAcademy';host.className='kha-panel';panel.appendChild(host)}
  const done=state.solved.length,all=questions.length;let q=questions.find(x=>x.id===state.current);
  if(q&&state.solved.includes(q.id))q=null;
  if(!q&&done<all)q=chooseNext();
@@ -71,5 +71,5 @@ document.addEventListener('click',e=>{
 window.addEventListener('khkozak-profile-updated',()=>{const el=$('#khAcademy .kha-stats');if(el)el.setAttribute('data-profile-updated','true')});
 function init(){render()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-const observer=new MutationObserver(()=>{if($('#tab-progress')&&!$('#khAcademy'))render()});observer.observe(document.documentElement,{childList:true,subtree:true});
+const observer=new MutationObserver(()=>{if(($('#tab-academy')||$('#tab-progress'))&&!$('#khAcademy'))render()});observer.observe(document.documentElement,{childList:true,subtree:true});
 })();
