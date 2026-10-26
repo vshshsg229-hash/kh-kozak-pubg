@@ -1,8 +1,8 @@
 {
   "app": "KH么Kozak Battle Hub",
-  "version": "18.61.0",
+  "version": "18.62.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Restored the classic full sidebar navigation on tablets while preserving the updated compact phone layout and existing profile/progress data."
+  "releaseNotes": "Fixed phone sidebar open/close behavior; restored classic navigation on tablets and phones."
 }
