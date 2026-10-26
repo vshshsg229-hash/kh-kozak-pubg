@@ -1,10 +1,10 @@
 {
   "id": "./",
-  "name": "KOZAK NEXUS",
-  "short_name": "KOZAK NEXUS",
-  "description": "KOZAK NEXUS — premium gaming hub, ігри, місії та нагороди.",
+  "name": "KOZAK WORLD",
+  "short_name": "KOZAK WORLD",
+  "description": "KOZAK WORLD — головний хаб KH么Kozak: ігри, музика, профіль, виклики та навчання.",
   "lang": "uk",
-  "start_url": "./?source=pwa",
+  "start_url": "./kozak-world.html?source=pwa",
   "scope": "./",
   "display": "standalone",
   "display_override": [
