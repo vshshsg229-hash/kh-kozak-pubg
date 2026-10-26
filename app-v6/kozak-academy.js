@@ -1,3 +1,4 @@
+/* Kozak Academy prototype: offline learning tasks, local badges, and idempotent XP rewards through the existing profile API. */
 (()=>{'use strict';
 const KEY='khkozak_academy_v1';
 const XP_PREFIX='academy-v1-q-';
