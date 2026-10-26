@@ -18,30 +18,24 @@ const backdrop=document.getElementById('desktopCommandBackdrop');
 const input=document.getElementById('desktopCommandInput');
 const list=document.getElementById('desktopCommandList');
 if(!button||!backdrop||!input||!list)return;
-const commands=[
- ['home','Головна','Стартова панель, статистика та щоденний бонус','⌂'],
- ['games','Ігри та режими','Каталог мініігор та аркада','▣'],
- ['roblox','Roblox Worlds','Сім ігрових світів: Fruits, Night Shift, Tower, Bed Wars, 99 Nights, Brainrot і Token Rush','🎮'],
- ['3d','3D Арена','Окремі масштабні 3D-ігри','◈'],
- ['bunker','Бункер','База, покращення та трофеї','⌂'],
- ['missions','Місії та завдання','Щоденні завдання й бонуси','◈'],
- ['events','Події хабу','Події та календар','🏆'],
- ['arsenal','Арсенал і тактика','Loadout-и та тактичні нотатки','🎯'],
- ['tactical','Тактичний штаб','Генератор операцій, склад загону та журнал ігрових сесій','⚔'],
- ['fun','Приколи та рандом','Челенджі й генератори','🎲'],
- ['music','Музика','Музичний плеєр','♫'],
- ['tiktok','Мої відео TikTok','Відео та соціальні посилання','♪'],
- ['rewards','Магазин нагород','Предмети, рамки й титули','✦'],
- ['community','Спільнота','Гравці та спілкування','♧'],
- ['profile','Мій профіль','Статистика та налаштування профілю','◉'],
- ['pass','Royale Pass','Сезонний прогрес і нагороди','⬆'],
- ['telegram','Telegram і бот','Прив’язка та налаштування Telegram','➤'],
- ['admin','Адмін-панель','Керування хабом','⚙'],
- ['assistant','Напарник KH','Підказки та допомога','✧'],
-];
+let commands=[];
+function refreshCommands(){
+ commands=[...document.querySelectorAll('.sidebar .nav-item')].map((element)=>{
+  const tab=element.dataset.tab||'';
+  const game=element.dataset.game||'';
+  const href=element.getAttribute('href')||'';
+  const key=tab|| (game?'game:'+game:'') || (href?'link:'+href:'');
+  if(!key)return null;
+  const label=(element.querySelector('.nav-label')?.textContent||element.innerText||element.getAttribute('aria-label')||'Функція').replace(/\\s+/g,' ').trim();
+  const desc=element.getAttribute('title')|| (game?'Запустити гру: '+label:tab?'Відкрити розділ '+label:href?'Відкрити '+label:'Відкрити функцію');
+  const icon=(element.querySelector(':scope > span')?.textContent||'✦').trim().slice(0,4)||'✦';
+  return [key,label,desc,icon,element];
+ }).filter(Boolean);
+}
 let visible=[],active=0,lastFocus=null;
 const isDesktop=()=>window.matchMedia('(min-width: 1024px)').matches;
 function render(){
+ refreshCommands();
  const q=input.value.trim().toLocaleLowerCase('uk');
  visible=commands.filter(c=>(c[1]+' '+c[2]+' '+c[0]).toLocaleLowerCase('uk').includes(q))
   .filter(c=>c[0]!=='admin'||!document.querySelector('[data-tab="admin"]')?.hidden);
@@ -61,7 +55,7 @@ function render(){
 function syncActive(){[...list.querySelectorAll('[role="option"]')].forEach((el,i)=>el.setAttribute('aria-selected',String(i===active)));list.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'});}
 function open(){if(!isDesktop())return;lastFocus=document.activeElement;backdrop.hidden=false;input.value='';active=0;render();requestAnimationFrame(()=>input.focus());}
 function close(){backdrop.hidden=true;if(lastFocus&&typeof lastFocus.focus==='function')lastFocus.focus();}
-function go(tab){const target=document.querySelector('.sidebar [data-tab="'+tab+'"]:not([hidden])')||document.querySelector('[data-tab="'+tab+'"]:not([hidden])');if(target){target.click();close();}}
+function go(key){const command=commands.find(c=>c[0]===key);const target=command&&command[4];if(target){target.click();close();}}
 button.addEventListener('click',open);
 backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
 input.addEventListener('input',()=>{active=0;render()});
