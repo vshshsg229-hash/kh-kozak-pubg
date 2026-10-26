@@ -236,10 +236,10 @@ jobs:
 
           const academy = fs.readFileSync(path.join(root, 'kozak-academy.js'), 'utf8');
           const academyCss = fs.readFileSync(path.join(root, 'kozak-academy.css'), 'utf8');
-          assert(html.includes('kozak-academy.js?v=1.3.0') && html.includes('kozak-academy.css?v=1.3.0'), 'Kozak Academy JS and CSS are loaded with current versioned URLs');
-          assert(academy.includes("modeButton('memory'") && academy.includes("modeButton('code'") && academy.includes("modeButton('focus'"), 'Academy includes memory, secret-code, and attention mini-game modes');
+          assert(html.includes('kozak-academy.js?v=1.4.0') && html.includes('kozak-academy.css?v=1.4.0'), 'Kozak Academy JS and CSS are loaded with current versioned URLs');
+          assert(academy.includes("modeButton('daily'") && academy.includes("modeButton('memory'") && academy.includes("modeButton('code'") && academy.includes("modeButton('focus'"), 'Academy includes daily missions, memory, secret-code, and attention mini-game modes');
           assert(academy.includes('academy-code-') && academy.includes('СЕКРЕТНА МІСІЯ'), 'Academy includes secret-code challenges');
-          assert(academy.includes('academy-daily-') && academy.includes('Скриня дня'), 'Academy includes a daily reward chest');
+          assert(academy.includes('academy-daily-') && academy.includes('Скриня дня'), 'Academy includes a daily reward chest');\n          assert(academy.includes('DAY_MS=24*60*60*1000') && academy.includes('dailyCycleStart') && academy.includes('academy-daily-mission-') && academy.includes('Нові місії через'), 'Academy rotates five daily missions on a 24-hour timer');\n          assert(academy.includes('kha-daily-banner') && academy.includes('kha-child-help') && academy.includes('Помилятися — це нормально'), 'Daily missions use child-friendly instructions, feedback and readable controls');
           assert((academy.match(/\{id:'[^']+',category:/g) || []).length >= 36, 'Kozak Academy includes at least 36 learning questions');
           assert((academy.match(/\{id:'riddle-/g) || []).length >= 12, 'Kozak Academy includes at least 12 riddles');
           assert((academy.match(/\{id:'odd-/g) || []).length >= 10, 'Kozak Academy includes at least 10 attention mini-games');
