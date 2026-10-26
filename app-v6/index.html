@@ -67,6 +67,38 @@
 @media(max-width:700px){#tab-home{padding:10px!important}#kh-home-v2{gap:12px}.kv2-hero{padding:19px;border-radius:20px}.kv2-topline{margin-bottom:22px;font-size:8px}.kv2-hero-grid{grid-template-columns:1fr;gap:4px}.kv2-emblem{min-height:155px;margin-top:4px}.kv2-emblem-ring{width:145px}.kv2-float.a{left:4%;top:10%}.kv2-float.b{right:3%;top:43%}.kv2-float.c{left:13%;bottom:2%}.kv2-hero h1{font-size:clamp(34px,10vw,52px)}.kv2-hero p{font-size:12px}.kv2-actions .kv2-btn{flex:1;min-width:135px}.kv2-profile-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.kv2-profile{grid-column:1/-1;padding:13px}.kv2-stat{padding:12px 10px}.kv2-stat b{font-size:22px}.kv2-stat span{font-size:8px}.kv2-stat small{font-size:9px}.kv2-launch-grid{gap:8px}.kv2-launch{padding:13px;min-height:140px;border-radius:15px}.kv2-icon{width:35px;height:35px;margin-bottom:10px}.kv2-launch strong{font-size:12px}.kv2-launch small{font-size:9px}.kv2-lower-grid{grid-template-columns:1fr}.kv2-panel{padding:16px}.kv2-modes{gap:7px}.kv2-mode{padding:10px 8px;min-height:95px}.kv2-mode b{font-size:11px}.kv2-mode small{font-size:8px}.kv2-section-head{align-items:start;flex-direction:column}.kv2-footerline{font-size:8px}}
 @media(max-width:380px){.kv2-launch-grid{grid-template-columns:1fr 1fr}.kv2-profile-strip{grid-template-columns:repeat(3,minmax(0,1fr))}.kv2-stat{padding:10px 7px}.kv2-stat b{font-size:19px}.kv2-modes{grid-template-columns:1fr}.kv2-mode{min-height:75px}.kv2-actions .kv2-btn{min-width:100%}}
 </style>
+<style id="tablet-legacy-interface">
+/* Restore the classic full navigation layout on tablets only; keep the compact phone UI. */
+@media (min-width:721px) and (max-width:1100px){
+  body.sidebar-hidden{--sidebar:244px!important}
+  body.sidebar-hidden .sidebar{
+    display:flex!important;position:fixed!important;inset:0 auto 0 0!important;
+    width:244px!important;height:100vh!important;height:100dvh!important;max-height:100dvh!important;
+    padding:22px 13px 18px!important;overflow-x:hidden!important;overflow-y:auto!important;
+    transform:none!important;border-top:0!important;border-right:1px solid #29313b!important;
+    z-index:40!important;box-shadow:8px 0 24px #0003!important
+  }
+  body.sidebar-hidden .sidebar .brand{display:flex!important;padding:0 7px 22px!important}
+  body.sidebar-hidden .sidebar .side-label{display:block!important}
+  body.sidebar-hidden .sidebar .side-bottom{display:flex!important}
+  body.sidebar-hidden .sidebar .nav{
+    height:auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;
+    align-items:stretch!important;justify-content:flex-start!important;gap:4px!important;
+    overflow:visible!important;padding-bottom:12px!important
+  }
+  body.sidebar-hidden .sidebar .nav-item{
+    display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+    gap:9px!important;min-height:39px!important;padding:9px 10px!important;
+    font-size:11px!important;line-height:1.25!important;text-align:left!important;white-space:normal!important
+  }
+  body.sidebar-hidden .sidebar .nav-item>span{width:20px!important;flex:0 0 20px!important;font-size:17px!important}
+  body.sidebar-hidden .sidebar .nav-item em{display:inline-flex!important;margin-left:auto!important}
+  body.sidebar-hidden .main{margin-left:244px!important;padding:0 16px 28px!important}
+  body.sidebar-hidden .mobile-menu-toggle{display:none!important}
+  body.sidebar-hidden .desktop-sidebar-toggle{display:inline-flex!important}
+  body.sidebar-hidden .mobile-menu-backdrop{display:none!important}
+}
+</style>
 </head>
 <body class="sidebar-hidden">
 <script id="kozak-24h-progress-reset">
