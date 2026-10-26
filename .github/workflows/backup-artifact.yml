@@ -1,0 +1,62 @@
+name: Safe Artifact Backup KH么Kozak
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Щонеділі о 00:00 UTC; GitHub може затримувати заплановані запуски.
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+# Для checkout достатньо доступу лише на читання.
+permissions:
+  contents: read
+
+jobs:
+  create-backup-artifact:
+    name: Create Timestamped Project Backup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare backup directory
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BACKUP_DIR="/tmp/kh-kozak-backup-dir"
+          rm -rf "$BACKUP_DIR"
+          mkdir -p "$BACKUP_DIR"
+
+          # Виключення застосовуються також до відповідних назв у вкладених папках.
+          # Це фільтри поширених чутливих файлів, а не гарантія виявлення всіх секретів.
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.env*' \
+            --exclude='*.pem' \
+            --exclude='*.key' \
+            --exclude='*.p12' \
+            --exclude='*.pfx' \
+            --exclude='*.keystore' \
+            --exclude='credentials.json' \
+            --exclude='id_rsa' \
+            --exclude='id_ed25519' \
+            --exclude='id_ecdsa' \
+            --exclude='local.settings.json' \
+            --exclude='secrets.*' \
+            --exclude='node_modules/' \
+            . "$BACKUP_DIR/"
+
+          DATE_TAG="$(date -u +'%Y-%m-%d_%H-%M')"
+          echo "ARTIFACT_NAME=kh-kozak-backup-${DATE_TAG}-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: /tmp/kh-kozak-backup-dir/
+          include-hidden-files: true
+          retention-days: 90
