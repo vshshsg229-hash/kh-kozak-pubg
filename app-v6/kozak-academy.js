@@ -59,7 +59,6 @@ function answer(index){
  const progress=host?.querySelector('.kha-progress');if(progress){progress.setAttribute('aria-valuenow',String(state.solved.length));const fill=progress.querySelector('span');if(fill)fill.style.width=(state.solved.length/questions.length*100)+'%'}
  host?.querySelectorAll('.kha-badge').forEach((card,i)=>{const badge=badges[i];if(!badge)return;const earnedNow=state.badges.includes(badge.id);card.classList.toggle('is-earned',earnedNow);const label=card.querySelector('em');if(label)label.textContent=earnedNow?'ВІДКРИТО':badge.need+' правильних'});
  const bar=host?.querySelector('.kha-stats');if(bar)bar.innerHTML='<span>⚡ +15 XP за правильну відповідь</span><span>🏅 '+state.badges.length+' / '+badges.length+' значків</span>'}
-}
 function next(){chooseNext();render()}
 document.addEventListener('click',e=>{
  const option=e.target.closest('[data-kha-answer]');if(option){answer(Number(option.dataset.khaAnswer));return}
