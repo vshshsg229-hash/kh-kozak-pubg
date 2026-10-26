@@ -98,6 +98,40 @@
   body.sidebar-hidden .desktop-sidebar-toggle{display:inline-flex!important}
   body.sidebar-hidden .mobile-menu-backdrop{display:none!important}
 }
+/* Phones use the same classic full-height sidebar, opened from the left by the menu button. */
+@media (max-width:720px){
+  body.sidebar-hidden{--sidebar:0px!important}
+  body.sidebar-hidden .sidebar{
+    display:flex!important;position:fixed!important;inset:0 auto 0 0!important;
+    width:min(86vw,310px)!important;height:100vh!important;height:100dvh!important;max-height:100dvh!important;
+    padding:20px 14px calc(22px + env(safe-area-inset-bottom))!important;
+    overflow-x:hidden!important;overflow-y:auto!important;z-index:130!important;
+    transform:translateX(-105%)!important;transition:transform .24s ease!important;
+    border-top:0!important;border-right:1px solid #29313b!important;box-shadow:none!important;
+    flex-direction:column!important;overscroll-behavior:contain!important
+  }
+  body.mobile-menu-open .sidebar{transform:translateX(0)!important;box-shadow:18px 0 50px #0009!important}
+  body.sidebar-hidden .sidebar .brand{display:flex!important;padding:0 7px 22px!important}
+  body.sidebar-hidden .sidebar .side-label{display:block!important}
+  body.sidebar-hidden .sidebar .side-bottom{display:flex!important;margin-top:22px!important}
+  body.sidebar-hidden .sidebar .nav{
+    height:auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;
+    align-items:stretch!important;justify-content:flex-start!important;gap:4px!important;
+    overflow:visible!important;padding-bottom:12px!important
+  }
+  body.sidebar-hidden .sidebar .nav-item{
+    display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+    gap:9px!important;min-height:43px!important;padding:11px 10px!important;
+    font-size:12px!important;line-height:1.25!important;text-align:left!important;white-space:normal!important
+  }
+  body.sidebar-hidden .sidebar .nav-item>span{width:20px!important;flex:0 0 20px!important;font-size:18px!important}
+  body.sidebar-hidden .sidebar .nav-item em{display:inline-flex!important;margin-left:auto!important}
+  body.sidebar-hidden .main{margin-left:0!important;padding:0 15px 78px!important}
+  body.sidebar-hidden .mobile-menu-toggle{display:flex!important}
+  body.sidebar-hidden .desktop-sidebar-toggle{display:none!important}
+  body.sidebar-hidden .mobile-menu-backdrop{display:none!important}
+  body.mobile-menu-open .mobile-menu-backdrop{display:block!important;position:fixed!important;inset:0!important;z-index:120!important;background:#020509b8!important;backdrop-filter:blur(3px)!important;border:0!important;width:100%!important;height:100%!important;padding:0!important}
+}
 </style>
 </head>
 <body class="sidebar-hidden">
