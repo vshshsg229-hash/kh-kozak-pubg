@@ -635,4 +635,42 @@
 <style id="kozak-world-launch-style">.kozak-world-launch{position:fixed;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:9998;display:flex;align-items:center;gap:10px;max-width:min(320px,calc(100vw - 28px));padding:10px 14px;border:1px solid #d8b15a;border-radius:16px;background:linear-gradient(120deg,#211b0f,#0b1017 75%);color:#f7e7b4;text-decoration:none;box-shadow:0 8px 28px #0009,0 0 0 1px #d8b15a22;font:800 12px/1.25 system-ui,sans-serif;backdrop-filter:blur(12px)}.kozak-world-launch-mark{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:12px;background:#302512;border:1px solid #d8b15a;color:#f5d98b;font-size:21px}.kozak-world-launch small{display:block;margin-top:4px;color:#b9c4d2;font-size:9px;font-weight:600}.kozak-world-launch:hover{transform:translateY(-2px);border-color:#f5d98b}@media(max-width:520px){.kozak-world-launch{right:10px;bottom:calc(88px + env(safe-area-inset-bottom));max-width:calc(100vw - 20px);padding:9px 12px}.kozak-world-launch-mark{flex-basis:34px;height:34px}}</style>
 <a class="kozak-world-launch" href="index.html?openTab=home" aria-label="Повернутися на нову головну панель KH Kozak"><span class="kozak-world-launch-mark">♛</span><span>KH么KOZAK · ГОЛОВНА<small>Ігри · монети · профіль · нагороди ↗</small></span></a>
 <script id="kh-home-v2-sync">(()=>{'use strict';const $=id=>document.getElementById(id);const mirror=(source,target)=>{const a=$(source),b=$(target);if(!a||!b)return;const update=()=>b.textContent=a.textContent||'';update();new MutationObserver(update).observe(a,{childList:true,subtree:true,characterData:true,attributes:true)};};mirror('welcomeName','kv2Name');mirror('levelStat','kv2Level');mirror('coinStat','kv2Coins');mirror('pointsStat','kv2Points');mirror('playedStat','kv2Played');mirror('xpLine','kv2XpText');const srcBar=$('xpBar'),dstBar=$('kv2XpBar');if(srcBar&&dstBar){const syncBar=()=>dstBar.style.width=srcBar.style.width||'0%';syncBar();new MutationObserver(syncBar).observe(srcBar,{attributes:true,attributeFilter:['style']});}const oldName=$('welcomeName'),avatar=$('kv2Avatar');if(oldName&&avatar){const draw=()=>{const n=oldName.textContent.trim();avatar.textContent=(n.replace(/[^\p{L}\p{N}]/gu,'').slice(0,2)||'KH').toUpperCase()};draw();new MutationObserver(draw).observe(oldName,{childList:true,subtree:true,characterData:true});}const oldClaim=$('claimDaily'),newClaim=$('kv2Claim'),oldText=$('dailyDropText'),newText=$('kv2DailyText');function syncDaily(){if(oldClaim&&newClaim){newClaim.disabled=oldClaim.disabled;newClaim.textContent=oldClaim.disabled?'ДРОП УЖЕ ЗАБРАН ✓':'ЗАБРАТИ ДРОП ↗';newClaim.style.opacity=oldClaim.disabled?'.65':'1';}if(oldText&&newText)newText.textContent=oldText.textContent;}if(newClaim&&oldClaim)newClaim.addEventListener('click',()=>oldClaim.click());syncDaily();if(oldClaim)new MutationObserver(syncDaily).observe(oldClaim,{attributes:true,childList:true,subtree:true,characterData:true});if(oldText)new MutationObserver(syncDaily).observe(oldText,{childList:true,subtree:true,characterData:true});})();</script>
+
+<script id="kh-phone-sidebar-controller-18-62">
+(function(){
+  'use strict';
+  function init(){
+    var body=document.body;
+    var toggle=document.getElementById('mobileMenuToggle');
+    var close=document.getElementById('mobileSidebarClose');
+    var backdrop=document.getElementById('mobileMenuBackdrop');
+    var sidebar=document.querySelector('.app-shell > .sidebar');
+    if(!body||!toggle||!sidebar)return;
+    function isPhone(){return window.matchMedia('(max-width: 720px)').matches;}
+    function setOpen(open){
+      if(!isPhone())return;
+      body.classList.toggle('mobile-menu-open',!!open);
+      toggle.setAttribute('aria-expanded',open?'true':'false');
+      toggle.setAttribute('aria-label',open?'Закрити меню':'Відкрити всі розділи');
+      if(backdrop)backdrop.hidden=!open;
+    }
+    toggle.addEventListener('click',function(e){
+      if(!isPhone())return;
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(!body.classList.contains('mobile-menu-open'));
+    });
+    if(close)close.addEventListener('click',function(){setOpen(false);});
+    if(backdrop)backdrop.addEventListener('click',function(){setOpen(false);});
+    sidebar.addEventListener('click',function(e){
+      if(e.target.closest('.nav-item,[data-tab-link]'))setOpen(false);
+    });
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
+    window.addEventListener('resize',function(){if(!isPhone()){body.classList.remove('mobile-menu-open');if(backdrop)backdrop.hidden=true;toggle.setAttribute('aria-expanded','false');}});
+    if(isPhone())setOpen(false);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body></html>
