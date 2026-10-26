@@ -1,0 +1,38 @@
+/* KH么Kozak — phone menu button visibility fix 18.65.
+   Loaded last in the document. Phone-only: does not affect tablet or PC. */
+@media screen and (max-width: 699px) {
+  html body .app-shell > .main > header.topbar > button.mobile-menu-toggle#mobileMenuToggle {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    inset: auto !important;
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 4px 0 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    order: -2 !important;
+    transform: none !important;
+    clip-path: none !important;
+    overflow: visible !important;
+    border: 1px solid #c69b3d !important;
+    border-radius: 10px !important;
+    background: #17150f !important;
+    color: #ffd66d !important;
+    font-size: 23px !important;
+    line-height: 1 !important;
+    z-index: 10050 !important;
+  }
+  html body .app-shell > .main > header.topbar > button.mobile-brand {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
