@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#080a0e">
 <meta name="description" content="KOZAK LIFE — простір розвитку, розумних ігор, фінансової грамотності та цифрових навичок для дорослих.">
 <title>KOZAK LIFE — простір розвитку</title>
-<link rel="stylesheet" href="kozak-life.css?v=1.0.1">
+<link rel="stylesheet" href="kozak-life.css?v=1.1.0">
 </head>
 <body>
 <header class="kl-top">
-  <a class="kl-brand" href="index.html?v=18.47.0" aria-label="Повернутися до KOZAK NEXUS"><span class="kl-mark">♛</span><span><b>KOZAK <i>LIFE</i></b><small>ЗНАННЯ · РОЗВИТОК · ВІДПОЧИНОК</small></span></a>
+  <a class="kl-brand" href="index.html?v=18.49.0" aria-label="Повернутися до KOZAK NEXUS"><span class="kl-mark">♛</span><span><b>KOZAK <i>LIFE</i></b><small>ЗНАННЯ · РОЗВИТОК · ВІДПОЧИНОК</small></span></a>
   <div class="kl-top-actions"><span class="kl-local">● ПРАЦЮЄ ЛОКАЛЬНО</span><span class="kl-reset-chip">СКИДАННЯ <b id="klResetTimer">24:00:00</b></span><button class="kl-quiet" id="klResetDay" type="button">↻ День</button></div>
 </header>
 <div class="kl-layout">
@@ -23,8 +23,9 @@
     <button class="kl-nav" data-view="habits"><span>✓</span> Мої звички</button>
     <button class="kl-nav" data-view="create"><span>✎</span> Творча студія</button>
     <button class="kl-nav" data-view="club"><span>♜</span> Ігровий клуб</button>
+    <button class="kl-nav" data-view="event"><span>✦</span> Подія тижня <i class="kl-nav-new">LIVE</i></button>
     <div class="kl-side-note"><b>Твій темп — твої правила.</b><p>Короткі заняття, реальні навички й ігри без поспіху.</p></div>
-    <a class="kl-back" href="index.html?v=18.47.0">← Повернутися в KOZAK NEXUS</a>
+    <a class="kl-back" href="index.html?v=18.49.0">← Повернутися в KOZAK NEXUS</a>
   </aside>
   <main class="kl-main">
     <section class="kl-view active" id="view-overview">
@@ -47,11 +48,21 @@
         <button class="kl-module" data-go="create"><span class="kl-module-icon amber">✎</span><b>Творча студія</b><small>Ідеї, історії, фото та контент</small><em>ВІДКРИТИ →</em></button>
         <button class="kl-module" data-go="club"><span class="kl-module-icon red">♜</span><b>Ігровий клуб</b><small>Вікторини й щоденні випробування</small><em>ВІДКРИТИ →</em></button>
       </div>
+      <article class="kl-event-banner"><div class="kl-event-emblem">✦</div><div class="kl-event-copy"><span class="kl-eyebrow">СПІЛЬНА ПОДІЯ · КОЖЕН ТИЖДЕНЬ</span><h3 id="klHomeEventTitle">Тиждень розумних рішень</h3><p id="klHomeEventText">Три невеликі завдання, новий виклик і відзнака за участь.</p></div><button class="kl-secondary" data-go="event">Увійти в подію →</button></article>
+      <div class="kl-section-head"><div><span class="kl-eyebrow">ТВОЇ ДОСЯГНЕННЯ</span><h2>Колекція відзнак</h2></div><span class="kl-muted">Збирай досвід у своєму темпі</span></div><div class="kl-badge-gallery" id="klBadgeGallery"></div>
       <div class="kl-bottom-grid">
         <article class="kl-panel"><div class="kl-panel-head"><div><span class="kl-eyebrow">НА СЬОГОДНІ</span><h3>Три розумні кроки</h3></div><span class="kl-pill">ЩОДНЯ</span></div><div id="klDailyList" class="kl-daily-list"></div></article>
         <article class="kl-panel kl-quote"><span class="kl-eyebrow">ІДЕЯ ДНЯ</span><h3 id="klDailyQuote">Великі зміни починаються з маленьких дій.</h3><p>Обери одне корисне заняття. Навіть 5 хвилин — це вже рух уперед.</p><button class="kl-secondary" data-go="habits">Спланувати мій день →</button></article>
       </div>
       <p class="kl-footer-note">KOZAK LIFE — навчально-розважальний простір. Усі вправи доступні без реєстрації; прогрес зберігається на цьому пристрої й може скидатися разом із загальним 24-годинним циклом KOZAK NEXUS.</p>
+    </section>
+
+    <section class="kl-view" id="view-event">
+      <div class="kl-event-hero"><div><span class="kl-eyebrow">KOZAK LIFE · ТЕМАТИЧНА ПОДІЯ</span><h1 id="klEventTitle">Тиждень розумних рішень</h1><p id="klEventIntro">Короткі випробування для мислення, фінансів і цифрової грамотності. Не потрібна підготовка — лише цікавість.</p><div class="kl-event-meta"><span class="kl-pill" id="klEventTheme">ТИЖНЕВИЙ ВИКЛИК</span><span class="kl-pill">+15 XP ЗА КРОК</span><span class="kl-pill">+25 XP ЗА ВСЕ</span></div></div><div class="kl-event-symbol">✦</div></div>
+      <div class="kl-event-progress"><div><b>Прогрес події</b><span id="klEventProgressText">0 із 3 кроків</span></div><div class="kl-meter"><i id="klEventProgressBar"></i></div></div>
+      <div id="klEventTasks" class="kl-event-tasks"></div>
+      <article class="kl-panel kl-event-finish" id="klEventFinish"><span class="kl-eyebrow">ФІНАЛЬНА ВІДЗНАКА</span><h2 id="klEventFinishTitle">Дослідник KOZAK</h2><p id="klEventFinishText">Виконай три кроки, щоб отримати бонус події.</p><button class="kl-primary" id="klEventBonus" type="button">Завершити подію · +25 XP</button></article>
+      <p class="kl-footer-note">Події змінюються за календарним тижнем. Результати зберігаються локально на цьому пристрої та входять до спільного 24-годинного циклу скидання прогресу.</p>
     </section>
 
     <section class="kl-view" id="view-mind">
@@ -86,9 +97,9 @@
       <div class="kl-panel kl-quiz"><div class="kl-panel-head"><div><span class="kl-eyebrow">ВІКТОРИНА КЛУБУ</span><h2 id="klClubTitle">Загальні знання</h2></div><span class="kl-pill" id="klClubCount">РАУНД 1</span></div><p class="kl-question" id="klClubQuestion"></p><div class="kl-answers" id="klClubAnswers"></div><div id="klClubFeedback" class="kl-feedback" aria-live="polite"></div><button class="kl-primary" id="klNextClub" type="button" hidden>Наступне питання →</button></div>
       <div class="kl-tip-grid"><article class="kl-panel"><h3>Гра наодинці</h3><p>Проходь завдання у власному темпі та покращуй особистий результат.</p></article><article class="kl-panel"><h3>Гра з друзями</h3><p>Читайте питання по черзі й порівнюйте відповіді наживо — спільна таблиця поки не потрібна.</p></article><article class="kl-panel"><h3>Чесні нагороди</h3><p>XP і відзнаки — лише ігрова мотивація, не гроші та не гарантовані призи.</p></article></div>
     </section>
-    <footer class="kl-footer"><span>KOZAK LIFE · ADULT WORLD</span><span>Зроблено для різного досвіду та різного віку.</span><a href="index.html?v=18.47.0">KOZAK NEXUS ↗</a></footer>
+    <footer class="kl-footer"><span>KOZAK LIFE · ADULT WORLD</span><span>Зроблено для різного досвіду та різного віку.</span><a href="index.html?v=18.49.0">KOZAK NEXUS ↗</a></footer>
   </main>
 </div>
-<script src="kozak-life.js?v=1.0.1" defer></script>
+<script src="kozak-life.js?v=1.1.0" defer></script>
 </body>
 </html>
