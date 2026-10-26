@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.36.0",
+  "version": "18.37.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
-  "updatedAt": "2026-10-23",
+  "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Додано окремий ATLAS ZERO — незалежну офлайн-лабораторію ідей із власним сховищем."
+  "releaseNotes": "Kozak Academy: локальні навчальні завдання, XP через наявну систему профілю та значки."
 }
