@@ -11,11 +11,16 @@ self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
   if (request.mode === "navigate") {
+    const path = new URL(request.url).pathname;
+    const isWorld = path.endsWith("/kozak-world.html");
+    const cacheKey = isWorld ? "./kozak-world.html" : "./index.html";
     event.respondWith(fetch(request).then(response => {
-      const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put("./kozak-world.html", copy));
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(cacheKey, copy));
+      }
       return response;
-    }).catch(() => caches.match("./kozak-world.html").then(world => world || caches.match("./index.html")));
+    }).catch(() => caches.match(cacheKey).then(hit => hit || caches.match("./kozak-world.html"))));
     return;
   }
   if (new URL(request.url).pathname.endsWith("/nexus-ops.js")) { event.respondWith(fetch(request, {cache:"no-store"})); return; }
