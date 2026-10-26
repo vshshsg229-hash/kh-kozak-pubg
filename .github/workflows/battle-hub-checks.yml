@@ -243,7 +243,7 @@ jobs:
           assert((academy.match(/\{id:'[^']+',category:/g) || []).length >= 36, 'Kozak Academy includes at least 36 learning questions');
           assert((academy.match(/\{id:'riddle-/g) || []).length >= 12, 'Kozak Academy includes at least 12 riddles');
           assert((academy.match(/\{id:'odd-/g) || []).length >= 10, 'Kozak Academy includes at least 10 attention mini-games');
-          assert(academy.includes('const rewards={first:') && academy.includes('kha-sticker-collection') && academy.includes('10 / 10 знайдено') === false, 'Academy awards collectible stickers for achievements and daily chests');
+          assert(academy.includes('const rewards={first:') && academy.includes('kha-sticker-collection') && academy.includes('state.stickers.push'), 'Academy awards collectible stickers for achievements and daily chests');
           assert(academy.includes('KOZAK KIDS WORLD') && academy.includes('Лисеня Кузя'), 'Academy uses child-friendly adventure branding and companion');
           assert(academy.includes("api.awardChallenge(XP_PREFIX+q.id,0,15)") && academy.includes("const XP_PREFIX='academy-v1-q-'"), 'Academy XP rewards use unique, idempotent challenge IDs');
           assert(academy.includes("if(state.current&&!state.solved.includes(state.current))") && academy.includes("b.classList.remove('is-wrong')"), 'Academy prevents skipping unanswered questions and clears stale wrong-answer feedback');
