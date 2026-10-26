@@ -1,8 +1,7 @@
 /* KOZAK NEXUS — dedicated phone navigation v3 */
 .kn-mobile-home-hub { display:none; }
 @media (max-width: 720px) {
-  /* Hide only the phone sidebar. Keep the original navigation controls in the DOM as action sources, preserving every existing mode. */
-  .sidebar, .mobile-menu-backdrop, #mobileMenuToggle, .mobile-menu-toggle, .mobile-menu-heading { display:none !important; visibility:hidden !important; pointer-events:none !important; }
+  /* Keep the original sidebar and its ☰ toggle available on phones. The control-flow stylesheet opens/closes the drawer; do not hide its controls here. */
   .app-shell { display:block !important; width:100% !important; max-width:100% !important; min-width:0 !important; margin:0 !important; }
   .app-shell > main, .app-shell > .main-content, main { width:100% !important; max-width:100% !important; min-width:0 !important; margin-left:0 !important; }
   .mobile-nav { z-index: 3000 !important; }
