@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.48.0",
+  "version": "18.49.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK LIFE тепер показує спільний таймер 24-годинного циклу та виконує скидання й при відкритій сторінці; оновлено кеш."
+  "releaseNotes": "KOZAK LIFE: тижневі тематичні події з трьома завданнями, XP-бонусом, розширена колекція відзнак і додаткові питання у вікторинах."
 }
