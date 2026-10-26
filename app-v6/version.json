@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.51.0",
+  "version": "18.52.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "KOZAK WORLD: додано щоденні виклики та швидкий запуск; виправлено щоденну серію прогресу, оновлення PWA-кешу й розташування кнопки на мобільних екранах."
+  "releaseNotes": "KOZAK NEXUS: виправлено дубльований ID балансу монет, синхронізацію монет у віджетах гравця та оновлено кеш PWA. KOZAK WORLD: щоденні виклики й надійніша серія днів."
 }
