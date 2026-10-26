@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.38.0",
+  "version": "18.39.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-26",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Дитяча академія тепер доступна з головної сторінки та окремого пункту меню; оновлено кеш і навігацію."
+  "releaseNotes": "Дитяча академія перетворена на пригодницький режим: мінігра «Знайди пару», секретні загадки, щоденна скриня та персонаж-напарник."
 }
