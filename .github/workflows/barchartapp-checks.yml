@@ -1,0 +1,56 @@
+name: BarChartApp checks
+
+on:
+  push:
+    paths:
+      - "coursework-barchart/**"
+      - ".github/workflows/barchartapp-checks.yml"
+  pull_request:
+    paths:
+      - "coursework-barchart/**"
+      - ".github/workflows/barchartapp-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check manifest JSON
+        run: python -m json.tool coursework-barchart/manifest.webmanifest > /dev/null
+      - name: Check inline JavaScript syntax
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("coursework-barchart/index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r"<script(?:\\s[^>]*)?>(.*?)</script>", html, re.I | re.S)
+          if not scripts:
+              raise SystemExit("No inline JavaScript found")
+          for i, script in enumerate(scripts, 1):
+              Path(f"/tmp/barchartapp-{i}.js").write_text(script, encoding="utf-8")
+          print(f"Extracted {len(scripts)} inline script(s)")
+          PY
+          for file in /tmp/barchartapp-*.js; do node --check "$file"; done
+      - name: Check required app features are present
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path("coursework-barchart/index.html").read_text(encoding="utf-8")
+          required = ["csvin", "csvout", "png", "installApp", "SAVE_KEY", "updateSummary", "parseCSV"]
+          missing = [item for item in required if item not in html]
+          if missing:
+              raise SystemExit("Missing expected app features: " + ", ".join(missing))
+          for file in ["sw.js", "manifest.webmanifest", "icon.svg"]:
+              if not (Path("coursework-barchart") / file).is_file():
+                  raise SystemExit("Missing PWA file: " + file)
+          print("Required app features and PWA files found")
+          PY
