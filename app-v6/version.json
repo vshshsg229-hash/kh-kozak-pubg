@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.1.0",
+  "version": "19.2.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "19.1.0: added permanent local contracts, one-time N-XP rewards, daily visit streak and new operations panel. Permanent progress, unlocked skills and claimed contract rewards do not reset. No new online server."
+  "releaseNotes": "19.2.0: added NEXUS Living World with six explorable sectors, persistent story fragments and unique artifacts. Sector discoveries and rewards are saved locally and do not reset. No new online server."
 }
