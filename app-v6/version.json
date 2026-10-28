@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.4.0",
+  "version": "19.5.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "19.4.0: added standalone My Center utility hub with local tasks, persistent notes, quick navigation, and local export. No automatic reset and no new online server. Existing progress is preserved."
+  "releaseNotes": "19.5.0: added standalone CASEFILE offline investigation module with branching choices, evidence board, multiple outcomes, local XP/progress and report export. Existing modules preserved; no server or automatic reset."
 }
