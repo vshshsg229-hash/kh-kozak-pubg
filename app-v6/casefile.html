@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071018"><title>KOZAK NEXUS · CASEFILE</title>
+<link rel="stylesheet" href="casefile.css?v=1.0.0">
+</head>
+<body>
+<header class="top"><a class="back" href="index.html?source=pwa&v=19.5.0">← KOZAK NEXUS</a><span class="mark">NEXUS INTELLIGENCE DIVISION</span><span class="offline">● OFFLINE</span></header>
+<main class="shell">
+<section class="hero"><div class="eyebrow">НОВИЙ ОКРЕМИЙ МОДУЛЬ · 01</div><h1>CASE<span>FILE</span></h1><p>Архів загадкових операцій. Збирай докази, зіставляй сигнали, приймай рішення та відкривай різні фінали. Це інтерактивні вигадані справи — прогрес зберігається на твоєму пристрої.</p><div class="stats"><div><small>РІВЕНЬ АНАЛІТИКА</small><b id="level">01</b></div><div><small>XP ДОСЛІДЖЕННЯ</small><b id="xp">0</b></div><div><small>ЗАВЕРШЕНО СПРАВ</small><b id="completed">0</b></div><div><small>ЗНАЙДЕНО ДОКАЗІВ</small><b id="evidenceCount">0</b></div></div></section>
+<div class="layout">
+<aside class="panel cases"><div class="section-head"><div><small>АРХІВ</small><h2>Справи</h2></div><span class="pill">CASE INDEX</span></div><div id="caseList"></div><button id="reset" class="quiet">Скинути лише прогрес CASEFILE</button></aside>
+<section class="panel dossier"><div class="section-head"><div><small id="caseCode">CASE 001</small><h2 id="caseTitle">Сигнал із сектора 9</h2></div><span class="status" id="caseStatus">НЕ РОЗКРИТА</span></div><p id="brief" class="brief"></p><div class="objective"><b>ПОТОЧНА ЦІЛЬ</b><span id="objective"></span></div><div class="section-head evidence-head"><div><small>ЗБІР ІНФОРМАЦІЇ</small><h2>Дошка доказів</h2></div><span class="pill" id="evidenceProgress">0 / 3</span></div><div id="evidenceList" class="evidence-grid"></div><div class="decision"><div class="section-head"><div><small>КРИТИЧНИЙ ВИБІР</small><h2>Твій наступний крок</h2></div></div><div id="choices" class="choices"></div><div id="result" class="result" aria-live="polite">Обери дію після вивчення доказів. У кожної справи є кілька можливих наслідків.</div></div><div class="footer-actions"><button id="nextCase" class="primary">НАСТУПНА СПРАВА →</button><button id="export" class="quiet">ЕКСПОРТ ЗВІТУ</button></div></section>
+</div>
+<p class="footnote">CASEFILE 1.0 · Локальне збереження · Без облікового запису, сервера та таймера скидання.</p>
+</main><script src="casefile.js?v=1.0.0"></script></body></html>
