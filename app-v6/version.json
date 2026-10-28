@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.7.0",
+  "version": "19.8.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "19.7.0: added NEXUS SQUAD local co-op mode with 6-player roster, class roles, shared missions, boss encounter, team XP/resources, event log, and JSON session transfer. No server or live online synchronization; existing modes preserved."
+  "releaseNotes": "19.8.0: added Signal Hunt directly to the existing home screen: daily logic puzzle, hint, local discovery XP, streak, rank, and collectible artifact archive. Local-only; no new mode or server. Existing features preserved."
 }
