@@ -1,8 +1,8 @@
 {
-  "app": "KH么Kozak Battle Hub",
-  "version": "18.60.0",
+  "app": "KOZAK NEXUS",
+  "version": "18.61.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
-  "updatedAt": "2026-10-26",
+  "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Added searchable all-functions directory from the real sidebar entries; made rewards, profile and progress directly accessible in mobile navigation; improved top-bar quick search and refreshed cached assets."
+  "releaseNotes": "Added NEXUS Expedition: four local progression branches, daily contracts, a bonus event, rank XP, and a separate activity log. Existing modes and profile economy remain untouched."
 }
