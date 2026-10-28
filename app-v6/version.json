@@ -4,5 +4,5 @@
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Game Modes Command Deck: panel is now embedded directly in the games tab HTML for reliable visibility; refreshed mode cards; daily mode objective, favorite selector and local activity stats. Existing game handlers and offline progress unchanged."
-}\n
+  "releaseNotes": "Game Modes Command Deck: panel embedded directly in the games tab HTML; refreshed mode cards; daily mode objective, favorite selector and local activity stats. Existing game handlers and offline progress unchanged."
+}
