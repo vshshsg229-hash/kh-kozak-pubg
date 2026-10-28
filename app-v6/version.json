@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.2.0",
+  "version": "19.3.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "19.2.0: added NEXUS Living World with six explorable sectors, persistent story fragments and unique artifacts. Sector discoveries and rewards are saved locally and do not reset. No new online server."
+  "releaseNotes": "19.3.0: added a dedicated Живий світ navigation button in the sidebar. It opens the Living World panel directly and scrolls to the mode. Cache version bumped to refresh the interface. Existing local progress is preserved; no new online server."
 }
