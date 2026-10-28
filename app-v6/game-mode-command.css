@@ -1,4 +1,4 @@
-/* KOZAK NEXUS · Game Modes Command Deck 18.62.0 — presentation-only layer */
+/* KOZAK NEXUS · Game Modes Command Deck 18.63.0 — presentation-only layer */
 #tab-games .nexus-mode-deck{--md-gold:#f2cd73;--md-ink:#080d15;--md-muted:#9aaabd;position:relative;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,.8fr);gap:14px;margin:0 0 18px;padding:clamp(15px,2.4vw,24px);overflow:hidden;border:1px solid #4b4028;border-radius:20px;background:radial-gradient(ellipse at 8% 0,rgba(242,205,115,.15),transparent 43%),radial-gradient(ellipse at 100% 100%,rgba(65,173,199,.11),transparent 42%),linear-gradient(135deg,#151a22,#080d15 72%);color:#f5f7fa;box-shadow:0 16px 36px #0004,inset 0 1px #ffffff0b}
 #tab-games .nexus-mode-deck:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,transparent 0 26px,#ffffff03 27px 28px);mask-image:linear-gradient(90deg,#000,transparent 80%)}
 #tab-games .nexus-mode-deck>*{position:relative;min-width:0}
@@ -38,3 +38,13 @@
 @media(max-width:420px){#tab-games .nexus-mode-deck{padding:13px}#tab-games .nexus-mode-actions button{flex:1;min-height:44px;padding:9px 8px;font-size:9px}#tab-games .nexus-mode-stat{padding:9px 7px}#tab-games .nexus-mode-stat strong{font-size:15px}#tab-games .mode-shortcut{min-height:126px}}
 @media(hover:none){#tab-games .mode-shortcut:hover,#tab-games .game-tile:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){#tab-games .mode-shortcut,#tab-games .game-tile{transition:none}}
+
+/* 18.63.0: make existing mode cards visibly consistent with the new command deck */
+#tab-games .mode-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+#tab-games .mode-shortcut{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:8px;min-width:0;min-height:166px;padding:18px;text-align:left;background:radial-gradient(ellipse at 90% 0,#d8b45a20,transparent 50%),linear-gradient(145deg,#182332,#090e15)!important;border:1px solid #344354!important;border-radius:16px!important;color:#f5f7fa!important}
+#tab-games .mode-shortcut strong{font-size:13px;letter-spacing:.045em}
+#tab-games .mode-shortcut small{font-size:11px;line-height:1.5;color:#aebdcd}
+#tab-games .mode-shortcut em{font-style:normal;font-size:9px;font-weight:900;letter-spacing:.1em;color:#f2cd73}
+#tab-games .mode-shortcut>span{display:grid;place-items:center;width:40px;height:40px;border:1px solid #7b6737;border-radius:12px;background:#f2cd7310;font-size:23px}
+@media(max-width:760px){#tab-games .mode-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#tab-games .mode-shortcut{min-height:145px;padding:13px}}
+@media(max-width:380px){#tab-games .mode-shortcut{min-height:136px;padding:11px}#tab-games .mode-shortcut strong{font-size:11px}}
