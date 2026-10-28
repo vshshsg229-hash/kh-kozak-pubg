@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.0.2",
+  "version": "20.1.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.0.2: synchronized the web update checker with the published app version; fixed false update prompts."
+  "releaseNotes": "20.1.0: added NEXUS WAR ROOM local match journal, stats, insights and JSON export."
 }
