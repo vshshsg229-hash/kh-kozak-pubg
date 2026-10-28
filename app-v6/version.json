@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.63.0",
+  "version": "19.0.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Game Modes Command Deck: panel embedded directly in the games tab HTML; refreshed mode cards; daily mode objective, favorite selector and local activity stats. Existing game handlers and offline progress unchanged."
+  "releaseNotes": "NEON EVOLUTION: unified dark esports + neon cyan visual layer; local skill tree, daily local missions and N-XP, tactical mini-games, mega-randomizer, loadout shortcut, trophies, stats and JSON backup/restore. No new online server; existing app economy and modes preserved."
 }
