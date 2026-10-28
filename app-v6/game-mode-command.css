@@ -1,0 +1,40 @@
+/* KOZAK NEXUS · Game Modes Command Deck 18.62.0 — presentation-only layer */
+#tab-games .nexus-mode-deck{--md-gold:#f2cd73;--md-ink:#080d15;--md-muted:#9aaabd;position:relative;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,.8fr);gap:14px;margin:0 0 18px;padding:clamp(15px,2.4vw,24px);overflow:hidden;border:1px solid #4b4028;border-radius:20px;background:radial-gradient(ellipse at 8% 0,rgba(242,205,115,.15),transparent 43%),radial-gradient(ellipse at 100% 100%,rgba(65,173,199,.11),transparent 42%),linear-gradient(135deg,#151a22,#080d15 72%);color:#f5f7fa;box-shadow:0 16px 36px #0004,inset 0 1px #ffffff0b}
+#tab-games .nexus-mode-deck:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,transparent 0 26px,#ffffff03 27px 28px);mask-image:linear-gradient(90deg,#000,transparent 80%)}
+#tab-games .nexus-mode-deck>*{position:relative;min-width:0}
+#tab-games .nexus-mode-deck-copy{display:flex;flex-direction:column;justify-content:center;gap:8px}
+#tab-games .nexus-mode-kicker{font-size:9px;font-weight:950;letter-spacing:.2em;color:var(--md-gold)}
+#tab-games .nexus-mode-deck h2{margin:0;font-size:clamp(20px,3vw,30px);line-height:1.08;letter-spacing:.02em}
+#tab-games .nexus-mode-deck h2 span{color:var(--md-gold)}
+#tab-games .nexus-mode-deck p{margin:0;max-width:650px;color:#aab8c9;font-size:12px;line-height:1.65}
+#tab-games .nexus-mode-mission{display:flex;flex-direction:column;justify-content:space-between;gap:12px;padding:14px;border:1px solid #3d4857;border-radius:15px;background:linear-gradient(145deg,#111d2a,#0a111a)}
+#tab-games .nexus-mode-mission-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#94a9bd;font-size:9px;font-weight:900;letter-spacing:.12em}
+#tab-games .nexus-mode-chip{padding:5px 8px;border:1px solid #625333;border-radius:99px;color:#f3d88e;background:#f2cd7310;white-space:nowrap}
+#tab-games .nexus-mode-mission h3{margin:8px 0 4px;font-size:15px;color:#f4f6fa}
+#tab-games .nexus-mode-mission p{font-size:11px;line-height:1.5}
+#tab-games .nexus-mode-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+#tab-games .nexus-mode-actions button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:10px 13px;border:1px solid #6b5932;border-radius:10px;background:linear-gradient(120deg,#f2d789,#c79d47);color:#16130b;font-size:10px;font-weight:950;letter-spacing:.04em;cursor:pointer;touch-action:manipulation}
+#tab-games .nexus-mode-actions button.secondary{border-color:#394b60;background:#131e2b;color:#d9e5f3}
+#tab-games .nexus-mode-actions button:focus-visible{outline:2px solid #f2cd73;outline-offset:3px}
+#tab-games .nexus-mode-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}
+#tab-games .nexus-mode-stat{padding:10px 11px;border:1px solid #293746;border-radius:11px;background:#0b121b}
+#tab-games .nexus-mode-stat small{display:block;color:#8294a8;font-size:8px;font-weight:900;letter-spacing:.1em}
+#tab-games .nexus-mode-stat strong{display:block;margin-top:5px;color:#f4d789;font-size:17px;font-variant-numeric:tabular-nums}
+#tab-games .mode-shortcuts{gap:12px}
+#tab-games .mode-shortcut{position:relative;isolation:isolate;overflow:hidden;min-height:150px;border-radius:16px;border:1px solid #414957;box-shadow:0 10px 24px #0003;transition:border-color .18s,transform .18s,box-shadow .18s}
+#tab-games .mode-shortcut:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,#ffffff08,transparent 48%,#0004)}
+#tab-games .mode-shortcut:hover{transform:translateY(-2px);border-color:#d7b65f;box-shadow:0 14px 28px #0005,0 0 0 1px #f2cd7318}
+#tab-games .mode-shortcut>span{filter:drop-shadow(0 4px 8px #0008)}
+#tab-games .games-grid{gap:12px}
+#tab-games .game-tile{border-radius:15px;overflow:hidden;border-color:#2c3746;background:linear-gradient(150deg,#151d29,#0b1017);box-shadow:0 10px 25px #0003;transition:border-color .18s,transform .18s,box-shadow .18s}
+#tab-games .game-tile:hover{transform:translateY(-2px);border-color:#8e7845;box-shadow:0 15px 28px #0004}
+#tab-games .tile-visual{min-height:108px;position:relative;overflow:hidden}
+#tab-games .tile-content{padding:15px}
+#tab-games .tile-content h3{letter-spacing:.01em}
+#tab-games .tile-content .btn{min-height:43px;border-radius:10px}
+#tab-games .nexus-mode-status{margin:10px 0 0;color:#8ea3b9;font-size:10px;line-height:1.5}
+#tab-games .nexus-mode-status strong{color:#a8e7ca}
+@media(max-width:760px){#tab-games .nexus-mode-deck{grid-template-columns:1fr;gap:11px;border-radius:16px}#tab-games .nexus-mode-mission{gap:10px}#tab-games .nexus-mode-stats{margin-top:10px}#tab-games .mode-shortcuts{gap:8px}#tab-games .mode-shortcut{min-height:135px;padding:12px}#tab-games .games-grid{gap:9px}}
+@media(max-width:420px){#tab-games .nexus-mode-deck{padding:13px}#tab-games .nexus-mode-actions button{flex:1;min-height:44px;padding:9px 8px;font-size:9px}#tab-games .nexus-mode-stat{padding:9px 7px}#tab-games .nexus-mode-stat strong{font-size:15px}#tab-games .mode-shortcut{min-height:126px}}
+@media(hover:none){#tab-games .mode-shortcut:hover,#tab-games .game-tile:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){#tab-games .mode-shortcut,#tab-games .game-tile{transition:none}}
