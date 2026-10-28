@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.62.0",
+  "version": "18.63.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Game Modes Command Deck: refreshed responsive game-mode interface, daily rotating mode objective, quick launch, favorite-mode selector, and device-local activity stats. Existing game handlers and offline progress remain unchanged."
-}
+  "releaseNotes": "Game Modes Command Deck: panel is now embedded directly in the games tab HTML for reliable visibility; refreshed mode cards; daily mode objective, favorite selector and local activity stats. Existing game handlers and offline progress unchanged."
+}\n
