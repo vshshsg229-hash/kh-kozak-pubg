@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "18.61.0",
+  "version": "18.62.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "Added NEXUS Expedition: four local progression branches, daily contracts, a bonus event, rank XP, and a separate activity log. Existing modes and profile economy remain untouched."
+  "releaseNotes": "Game Modes Command Deck: refreshed responsive game-mode interface, daily rotating mode objective, quick launch, favorite-mode selector, and device-local activity stats. Existing game handlers and offline progress remain unchanged."
 }
