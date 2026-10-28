@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.2.0",
+  "version": "20.2.1",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.2.0: added NEXUS TRAINING LAB with reaction, target tracking, recoil-rhythm drills, tactical decisions, local XP and levels."
+  "releaseNotes": "20.2.1: moved NEXUS TRAINING LAB to the top of the home screen so it is easier to find."
 }
