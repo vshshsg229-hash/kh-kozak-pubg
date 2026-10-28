@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.0.0",
+  "version": "19.0.1",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "NEON EVOLUTION: unified dark esports + neon cyan visual layer; local skill tree, daily local missions and N-XP, tactical mini-games, mega-randomizer, loadout shortcut, trophies, stats and JSON backup/restore. No new online server; existing app economy and modes preserved."
+  "releaseNotes": "19.0.1: removed the global 24-hour progress reset timer and automatic deletion of saved progress. NEON EVOLUTION remains local-only; existing game modes and saved data are preserved by the app code. No new online server."
 }
