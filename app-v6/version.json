@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.6.0",
+  "version": "19.7.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "19.6.0: CASEFILE expanded to six connected cases with evidence-gated decisions, career progression, achievements, search and filters, per-case notes and improved offline navigation. Local-only; no server or automatic reset."
+  "releaseNotes": "19.7.0: added NEXUS SQUAD local co-op mode with 6-player roster, class roles, shared missions, boss encounter, team XP/resources, event log, and JSON session transfer. No server or live online synchronization; existing modes preserved."
 }
