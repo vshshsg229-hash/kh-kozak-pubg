@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "KOZAK WORLD",
-  "short_name": "KOZAK WORLD",
-  "description": "KOZAK WORLD — головний хаб KH么Kozak: ігри, музика, профіль, виклики та навчання.",
+  "name": "KOZAK NEXUS",
+  "short_name": "KOZAK NEXUS",
+  "description": "KOZAK NEXUS — ігри, музика, профіль, виклики, навчання та експедиції.",
   "lang": "uk",
   "start_url": "./kozak-world.html?source=pwa",
   "scope": "./",
