@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "19.8.0",
+  "version": "20.0.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-10-28",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "19.8.0: added Signal Hunt directly to the existing home screen: daily logic puzzle, hint, local discovery XP, streak, rank, and collectible artifact archive. Local-only; no new mode or server. Existing features preserved."
+  "releaseNotes": "20.0.0: added NEXUS Creator Deck to the existing home screen: custom local commands, pinned quick access, random section launch, keyword navigation, discovery map, badges, panel personalization, and settings export. Local-only; no new server or navigation tab."
 }
