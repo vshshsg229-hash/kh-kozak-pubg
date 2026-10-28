@@ -71,75 +71,7 @@
 <link rel="stylesheet" href="nexus-evolution.css?v=19.0.0">
 </head>
 <body class="sidebar-hidden">
-<script id="kozak-24h-progress-reset">
-(function(){
-  'use strict';
-  var RESET_KEY='khkozak_full_reset_v1';
-  var DAY=24*60*60*1000;
-  var progressKeys=[
-    /^khkozak_hub_v6$/,
-    /^khkozak_academy_v1$/,
-    /^khkozak_bh3_ops_v1$/,
-    /^khkozak_bh3_v1$/,
-    /^khkozak_arcade_records_v1$/,
-    /^khkozak_pass50_claimed_v1$/,
-    /^khkozak_game_played_/,
-    /^kh_fighter_inventory_v1_/,
-    /^khkozak_.*(?:progress|xp|record|score|level|mission|achievement|reward|sticker|arcade|challenge|inventory|pass|daily|bunker|survival|ops|journey|match.?report|pubg.?challenge|battle.?pass|fighter.?kit|fighter.?look)/i,
-    /^kozak_life_v1$/,
-    /^kozak-craft-world-v1$/
-  ];
-  var timer=null,resetAt=0;
-  function readResetAt(){try{return Number(localStorage.getItem(RESET_KEY))||0;}catch(_){return 0;}}
-  function resetProgress(){
-    var name='KH么Kozak';
-    try{var profile=JSON.parse(localStorage.getItem('khkozak_hub_v6')||'{}');if(profile&&typeof profile.name==='string'&&profile.name.trim())name=profile.name;}catch(_){}
-    try{
-      var keys=[];
-      for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key&&key!==RESET_KEY&&progressKeys.some(function(pattern){return pattern.test(key)}))keys.push(key);}
-      keys.forEach(function(key){localStorage.removeItem(key);});
-      localStorage.setItem('khkozak_hub_v6',JSON.stringify({name:name}));
-      localStorage.setItem(RESET_KEY,String(Date.now()));
-      window.__khkozakProgressWasReset=true;
-      window.__khkozakProgressResetAt=Date.now();
-    }catch(_){try{localStorage.setItem(RESET_KEY,String(Date.now()));}catch(__){}}
-    resetAt=readResetAt();
-  }
-  function ensureTimer(){
-    if(timer)return;
-    timer=document.createElement('div');
-    timer.id='kozak-reset-countdown';
-    timer.setAttribute('role','status');
-    timer.setAttribute('aria-live','off');
-    timer.style.cssText='position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:99999;display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid rgba(88,166,255,.72);border-radius:14px;background:rgba(10,20,36,.94);color:#f4f8ff;box-shadow:0 6px 22px rgba(0,0,0,.28);font:600 12px/1.25 system-ui,-apple-system,sans-serif;backdrop-filter:blur(8px);max-width:calc(100vw - 24px);';
-    var dot=document.createElement('span');dot.textContent='⏳';dot.style.fontSize='17px';
-    var copy=document.createElement('span');
-    var label=document.createElement('span');label.textContent='До скидання прогресу';label.style.cssText='display:block;font-size:10px;font-weight:500;color:#b7c9e4;margin-bottom:3px;';
-    var value=document.createElement('strong');value.id='kozak-reset-countdown-value';value.textContent='24:00:00';value.style.cssText='font-size:15px;letter-spacing:.07em;font-variant-numeric:tabular-nums;';
-    copy.appendChild(label);copy.appendChild(value);timer.appendChild(dot);timer.appendChild(copy);document.body.appendChild(timer);
-    if(window.matchMedia&&window.matchMedia('(max-width:480px)').matches){timer.style.right='8px';timer.style.bottom='calc(8px + env(safe-area-inset-bottom,0px))';timer.style.padding='7px 9px';}
-  }
-  function renderTimer(){
-    ensureTimer();
-    var left=Math.max(0,DAY-(Date.now()-resetAt));
-    var total=Math.ceil(left/1000);
-    var hours=String(Math.floor(total/3600)).padStart(2,'0');
-    var minutes=String(Math.floor((total%3600)/60)).padStart(2,'0');
-    var seconds=String(total%60).padStart(2,'0');
-    var value=document.getElementById('kozak-reset-countdown-value');
-    if(value)value.textContent=hours+':'+minutes+':'+seconds;
-    if(left<=0){resetProgress();window.location.reload();return;}
-  }
-  resetAt=readResetAt();
-  if(resetAt&&Date.now()-resetAt>=DAY){resetProgress();}
-  else if(!resetAt){try{localStorage.setItem(RESET_KEY,String(Date.now()));}catch(_){}resetAt=readResetAt()||Date.now();}
-  function start(){
-    renderTimer();
-    window.setInterval(renderTimer,1000);
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-})();
-</script>
+
 <div class="app-shell">
   <aside class="sidebar">
     <div class="mobile-menu-heading"><div><strong>УСІ РОЗДІЛИ</strong><small>Обери, куди перейти</small></div><button type="button" id="mobileSidebarClose" aria-label="Закрити меню" onclick="document.getElementById('mobileMenuToggle')?.click()">×</button></div>
@@ -187,7 +119,7 @@
       <button class="desktop-sidebar-toggle" id="desktopSidebarToggle" type="button" aria-label="Відкрити всі розділи" aria-expanded="false" title="Показати / приховати всі розділи">☰</button>
       <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="Відкрити всі розділи" aria-expanded="false">☰</button>
       <button class="mobile-brand" data-tab="home">KH么 <span>Kozak</span></button>
-      <div class="season">KOZAK NEXUS <b>19.0</b><span class="season-line"></span><small>УСІ ФУНКЦІЇ В ОДНОМУ МІСЦІ</small></div>
+      <div class="season">KOZAK NEXUS <b>19.0.1</b><span class="season-line"></span><small>УСІ ФУНКЦІЇ В ОДНОМУ МІСЦІ</small></div>
       <div class="top-actions"><div class="currency"><span class="coin">◈</span><b id="coinTop">0</b><small>МОНЕТИ</small></div><button class="avatar-mini" data-tab="profile" id="avatarMini">K</button></div>
     </header><button class="desktop-command-button" id="desktopCommandButton" type="button" aria-label="Швидкий пошук розділів" title="Швидкий пошук (Ctrl+K)">⌕ <span>Швидкий пошук</span></button><button class="desktop-sidebar-toggle" id="desktopSidebarToggle" type="button" aria-label="Зменшити бічну панель" aria-expanded="true" title="Зменшити / сховати / відкрити бічну панель">◧</button><button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="Відкрити всі розділи" aria-expanded="false">☰</button><button class="mobile-brand" data-tab="home">KOZAK <span>NEXUS</span></button><div class="season">SEASON <b>06</b> <span class="season-line"></span> <small>PLAY • EARN • REPEAT</small></div><div class="top-actions"><label class="language-control" for="languageSelect" aria-label="Мова інтерфейсу">🌐 <select id="languageSelect" aria-label="Мова інтерфейсу"><option value="uk">Українська</option><option value="en">English</option><option value="pl">Polski</option><option value="tr">Türkçe</option></select></label><div class="currency"><span class="coin">◈</span><b id="coinTop">0</b><small>COINS</small></div><button class="avatar-mini" data-tab="profile" id="avatarMini">K</button></div></header>
     <section class="view active" id="tab-home">
