@@ -1,126 +1,179 @@
-/* KH么Kozak Battle Hub 16.52.0 — media-session support for background playback where the browser permits it.
-   Note: a hosted PWA cannot keep audio alive after the browser/app process is fully terminated. */
+/* KOZAK NEXUS — persistent music controls and Android Media Session support.
+   Background playback depends on the browser/Android WebView and the music provider's rules. */
 (() => {
   'use strict';
+  if (window.__kozakMusicSessionV2) return;
+  window.__kozakMusicSessionV2 = true;
+
   const $ = (s, root = document) => root.querySelector(s);
   const mediaSession = navigator.mediaSession;
   const uaEmbed = $('#uaMusicEmbed');
   const ytWrap = $('#youtubeFrameWrap');
-  const message = $('#youtubeMessage');
   const ytInput = $('#youtubeUrl');
-  const fallbackArtwork = [
-    { src: './icon.svg', sizes: 'any', type: 'image/svg+xml' }
-  ];
-  let current = { title: 'KH么Kozak Music', artist: 'Battle Hub', album: 'Music player' };
+  const fallbackArtwork = [{ src: './icon.svg', sizes: 'any', type: 'image/svg+xml' }];
+  let current = { title: 'KOZAK NEXUS MUSIC', artist: 'KOZAK NEXUS', album: 'Music player' };
   let lastProvider = 'youtube';
+  let playbackRequested = false;
 
-  function setMetadata(title, artist, album = 'KH么Kozak Battle Hub') {
-    current = { title: title || 'KH么Kozak Music', artist: artist || 'KH么Kozak', album };
+  function setPlaybackState(state) {
+    if (!mediaSession) return;
+    try { mediaSession.playbackState = state; } catch (_) {}
+  }
+
+  function setMetadata(title, artist, album = 'KOZAK NEXUS') {
+    current = { title: title || 'KOZAK NEXUS MUSIC', artist: artist || 'KOZAK NEXUS', album };
     if (!mediaSession || typeof MediaMetadata === 'undefined') return;
     try {
       mediaSession.metadata = new MediaMetadata({
-        title: current.title,
-        artist: current.artist,
-        album: current.album,
+        title: current.title, artist: current.artist, album: current.album,
         artwork: fallbackArtwork
       });
-      mediaSession.playbackState = 'playing';
     } catch (_) {}
   }
 
-  function sendYouTubeCommand(func) {
+  function getYouTubeFrames() {
     const frames = [];
+    if (uaEmbed && /youtube(?:-nocookie)?\.com/i.test(uaEmbed.src)) frames.push(uaEmbed);
     if (ytWrap) frames.push(...ytWrap.querySelectorAll('iframe'));
-    if (uaEmbed && uaEmbed.dataset.provider === 'youtube') frames.push(uaEmbed);
-    frames.forEach(frame => {
+    return [...new Set(frames)];
+  }
+
+  function sendYouTubeCommand(func) {
+    getYouTubeFrames().forEach(frame => {
       try {
-        frame.contentWindow?.postMessage(JSON.stringify({
-          event: 'command',
-          func,
-          args: []
-        }), 'https://www.youtube-nocookie.com');
-        frame.contentWindow?.postMessage(JSON.stringify({
-          event: 'command',
-          func,
-          args: []
-        }), 'https://www.youtube.com');
+        const target = new URL(frame.src).origin;
+        if (!/youtube(?:-nocookie)?\.com$/i.test(new URL(frame.src).hostname)) return;
+        frame.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args: [] }), target);
       } catch (_) {}
     });
   }
 
-  if (mediaSession) {
-    try {
-      mediaSession.setActionHandler('play', () => {
-        if (lastProvider === 'youtube') sendYouTubeCommand('playVideo');
-      });
-      mediaSession.setActionHandler('pause', () => {
-        if (lastProvider === 'youtube') sendYouTubeCommand('pauseVideo');
-      });
-      mediaSession.setActionHandler('stop', () => {
-        if (lastProvider === 'youtube') sendYouTubeCommand('pauseVideo');
-        try { mediaSession.playbackState = 'paused'; } catch (_) {}
-      });
-    } catch (_) {}
+  function play() {
+    playbackRequested = true;
+    sendYouTubeCommand('playVideo');
+    setPlaybackState('playing');
+    if (dockButton) dockButton.textContent = 'Ⅱ';
+    if (dockStatus) dockStatus.textContent = 'КЕРУВАННЯ ПЛЕЄРОМ';
   }
 
-  // The app is a single-page interface: changing tabs should never rebuild or remove the music iframe.
-  document.addEventListener('visibilitychange', () => {
-    // Keep the current media metadata available to Android/desktop media controls.
-    if (document.hidden && mediaSession && current) {
-      try { mediaSession.metadata = new MediaMetadata({ ...current, artwork: fallbackArtwork }); } catch (_) {}
-    }
-  });
+  function pause() {
+    sendYouTubeCommand('pauseVideo');
+    setPlaybackState('paused');
+    if (dockButton) dockButton.textContent = '▶';
+    if (dockStatus) dockStatus.textContent = 'ПАУЗА';
+  }
 
+  let dock, dockButton, dockStatus;
+  function createDock() {
+    if ($('#kozakMusicDock')) return;
+    dock = document.createElement('aside');
+    dock.id = 'kozakMusicDock';
+    dock.setAttribute('aria-label', 'Мініплеєр KOZAK NEXUS');
+    dock.innerHTML = `
+      <style>
+        #kozakMusicDock{position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:none;align-items:center;gap:11px;padding:10px 12px;border:1px solid rgba(245,206,56,.45);border-radius:16px;background:rgba(7,11,18,.96);color:#f5f7fb;box-shadow:0 8px 30px rgba(0,0,0,.42);backdrop-filter:blur(14px);font:inherit}
+        #kozakMusicDock .kmd-note{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#f5ce38,#8e6a08);color:#080b10;font-size:21px}
+        #kozakMusicDock .kmd-info{min-width:0;flex:1}
+        #kozakMusicDock .kmd-title{font-weight:800;font-size:12px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        #kozakMusicDock .kmd-status{font-size:10px;opacity:.7;margin-top:3px}
+        #kozakMusicDock button{border:1px solid rgba(245,206,56,.35);border-radius:11px;background:#151b26;color:#f5ce38;min-width:40px;min-height:40px;font-size:17px;font-weight:800}
+        #kozakMusicDock .kmd-open{font-size:10px;min-width:60px;padding:0 8px}
+        @media(min-width:760px){#kozakMusicDock{left:auto;right:20px;bottom:20px;width:330px}}
+      </style>
+      <div class="kmd-note" aria-hidden="true">♫</div>
+      <div class="kmd-info"><div class="kmd-title">KOZAK NEXUS MUSIC</div><div class="kmd-status" id="kozakMusicDockStatus">ВІДКРИЙ МУЗИКУ, ЩОБ ПОЧАТИ</div></div>
+      <button id="kozakMusicDockToggle" type="button" aria-label="Відтворити або призупинити музику">▶</button>
+      <button class="kmd-open" id="kozakMusicDockOpen" type="button">МУЗИКА ↗</button>`;
+    document.body.appendChild(dock);
+    dockButton = $('#kozakMusicDockToggle', dock);
+    dockStatus = $('#kozakMusicDockStatus', dock);
+    dockButton.addEventListener('click', () => {
+      if (mediaSession?.playbackState === 'playing') pause();
+      else play();
+    });
+    $('#kozakMusicDockOpen', dock).addEventListener('click', () => {
+      const nav = $('[data-tab="music"]');
+      if (nav) nav.click();
+      else $('#tab-music')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  function activeTabIsMusic() {
+    const tab = $('#tab-music');
+    return !!tab && (tab.classList.contains('active') || tab.classList.contains('is-active') ||
+      getComputedStyle(tab).display !== 'none');
+  }
+
+  function updateDock() {
+    if (!dock) return;
+    dock.style.display = playbackRequested && !activeTabIsMusic() ? 'flex' : 'none';
+  }
+
+  createDock();
+  const observer = new MutationObserver(updateDock);
+  observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
   document.addEventListener('click', event => {
     const button = event.target.closest('#khUkrainianTracks .music-play-btn, #khPlaylistTracks .music-play-btn');
     if (button) {
       const row = button.closest('.kh-playlist-track');
       const title = row?.querySelector('.music-track-info b')?.textContent?.trim();
       const artist = row?.querySelector('.music-track-info small')?.textContent?.trim();
-      if (title) setMetadata(title, artist || 'YouTube', 'KH Music');
+      setMetadata(title || 'Українська музика', artist || 'YouTube', 'KOZAK NEXUS MUSIC');
       lastProvider = 'youtube';
-      return;
+      playbackRequested = true;
+      if (dockStatus) dockStatus.textContent = 'ТРЕК ОБРАНО';
+      updateDock();
     }
     if (event.target.closest('#shuffleKhPlaylist')) {
-      setMetadata('Випадковий трек', 'KH Gaming Mix', 'KH Music');
+      setMetadata('Випадковий трек', 'KOZAK NEXUS MIX', 'KOZAK NEXUS MUSIC');
       lastProvider = 'youtube';
+      playbackRequested = true;
+      updateDock();
     }
   });
 
   $('#youtubeForm')?.addEventListener('submit', () => {
-    const raw = ytInput?.value?.trim() || '';
-    if (!raw) return;
-    setMetadata('YouTube music', 'KH么Kozak Music', 'YouTube player');
+    if (!ytInput?.value?.trim()) return;
+    setMetadata('YouTube music', 'KOZAK NEXUS', 'YouTube player');
     lastProvider = 'youtube';
+    playbackRequested = true;
+    updateDock();
   });
 
   $('#uaMusicPlaylistSelect')?.addEventListener('change', event => {
     const select = event.target;
     const option = select?.selectedOptions?.[0];
-    const provider = select?.value === 'youtube' ? 'youtube' : 'spotify';
-    lastProvider = provider;
-    setMetadata(option?.textContent?.trim() || 'Українська музика', provider === 'youtube' ? 'YouTube' : 'Spotify', 'Український музичний архів');
+    lastProvider = select?.value === 'youtube' ? 'youtube' : 'spotify';
+    setMetadata(option?.textContent?.trim() || 'Українська музика',
+      lastProvider === 'youtube' ? 'YouTube' : 'Spotify', 'Український музичний архів');
+    playbackRequested = true;
+    if (dockStatus) dockStatus.textContent = 'ДОБІРКУ ОБРАНО';
+    updateDock();
   });
 
-  // Add the JS API parameters to supported YouTube embeds without recreating the playing iframe.
-  function enableYouTubeApi(frame) {
-    if (!frame || !/youtube(?:-nocookie)?\.com/.test(frame.src)) return;
+  if (mediaSession) {
     try {
-      const url = new URL(frame.src);
-      if (!url.searchParams.has('enablejsapi')) url.searchParams.set('enablejsapi', '1');
-      if (!url.searchParams.has('origin')) url.searchParams.set('origin', location.origin);
-      if (url.toString() !== frame.src) frame.src = url.toString();
+      mediaSession.setActionHandler('play', play);
+      mediaSession.setActionHandler('pause', pause);
+      mediaSession.setActionHandler('stop', pause);
+      mediaSession.setActionHandler('previoustrack', () => sendYouTubeCommand('previousVideo'));
+      mediaSession.setActionHandler('nexttrack', () => sendYouTubeCommand('nextVideo'));
     } catch (_) {}
   }
-  if (uaEmbed) enableYouTubeApi(uaEmbed);
-  if (ytWrap) {
-    const observer = new MutationObserver(() => ytWrap.querySelectorAll('iframe').forEach(enableYouTubeApi));
-    observer.observe(ytWrap, { childList: true, subtree: true });
-  }
 
-  // Expose a small, app-scoped hook for existing player controls; no global playback service is claimed.
+  // Preserve the iframe when navigating the app's single-page tabs; don't claim playback is guaranteed after force-close.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && mediaSession && typeof MediaMetadata !== 'undefined') {
+      try { mediaSession.metadata = new MediaMetadata({ ...current, artwork: fallbackArtwork }); } catch (_) {}
+    }
+  });
+  window.addEventListener('pageshow', updateDock);
   window.khMusicMediaSession = {
     setMetadata,
-    getCurrent: () => ({ ...current })
+    play,
+    pause,
+    getCurrent: () => ({ ...current }),
+    getPlaybackRequested: () => playbackRequested
   };
+  updateDock();
 })();
