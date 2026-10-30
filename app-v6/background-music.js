@@ -14,6 +14,8 @@
   let current = { title: 'KOZAK NEXUS MUSIC', artist: 'KOZAK NEXUS', album: 'Music player' };
   let lastProvider = 'youtube';
   let playbackRequested = false;
+  let activeFrame = null;
+  const frameOrigins = new WeakMap();
 
   function setPlaybackState(state) {
     if (!mediaSession) return;
@@ -74,6 +76,11 @@
         #kozakMusicDock{position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:none;align-items:center;gap:11px;padding:10px 12px;border:1px solid rgba(245,206,56,.45);border-radius:16px;background:rgba(7,11,18,.96);color:#f5f7fb;box-shadow:0 8px 30px rgba(0,0,0,.42);backdrop-filter:blur(14px);font:inherit}
         #kozakMusicDock .kmd-note{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#f5ce38,#8e6a08);color:#080b10;font-size:21px}
         #kozakMusicDock .kmd-info{min-width:0;flex:1}
+        #kozakMusicDock .kmd-player{display:none;flex:0 0 200px;width:200px;max-width:42vw;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#000}
+        #kozakMusicDock .kmd-player iframe{display:block;width:100%;height:100%;min-height:0;border:0}
+        #kozakMusicDock.has-player{flex-wrap:wrap}
+        #kozakMusicDock.has-player .kmd-player{display:block}
+        #kozakMusicDock.has-player .kmd-info{flex:1 1 100px}
         #kozakMusicDock .kmd-title{font-weight:800;font-size:12px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         #kozakMusicDock .kmd-status{font-size:10px;opacity:.7;margin-top:3px}
         #kozakMusicDock button{border:1px solid rgba(245,206,56,.35);border-radius:11px;background:#151b26;color:#f5ce38;min-width:40px;min-height:40px;font-size:17px;font-weight:800}
@@ -81,6 +88,7 @@
         @media(min-width:760px){#kozakMusicDock{left:auto;right:20px;bottom:20px;width:330px}}
       </style>
       <div class="kmd-note" aria-hidden="true">♫</div>
+      <div class="kmd-player" id="kozakMusicDockPlayer" aria-label="Мініплеєр"></div>
       <div class="kmd-info"><div class="kmd-title">KOZAK NEXUS MUSIC</div><div class="kmd-status" id="kozakMusicDockStatus">ВІДКРИЙ МУЗИКУ, ЩОБ ПОЧАТИ</div></div>
       <button id="kozakMusicDockToggle" type="button" aria-label="Відтворити або призупинити музику">▶</button>
       <button class="kmd-open" id="kozakMusicDockOpen" type="button">МУЗИКА ↗</button>`;
@@ -104,12 +112,36 @@
       getComputedStyle(tab).display !== 'none');
   }
 
+  function movePlayerForTab() {
+    if (!dock) return;
+    const slot = $('#kozakMusicDockPlayer', dock);
+    const musicTab = $('#tab-music');
+    const onMusic = activeTabIsMusic();
+    if (!activeFrame || !slot || !musicTab) return;
+    if (!frameOrigins.has(activeFrame)) {
+      frameOrigins.set(activeFrame, { parent: activeFrame.parentNode, next: activeFrame.nextSibling });
+    }
+    if (!onMusic && playbackRequested) {
+      if (activeFrame.parentNode !== slot) slot.appendChild(activeFrame);
+      dock.classList.add('has-player');
+    } else {
+      const origin = frameOrigins.get(activeFrame);
+      if (origin?.parent && activeFrame.parentNode !== origin.parent) {
+        if (origin.next?.parentNode === origin.parent) origin.parent.insertBefore(activeFrame, origin.next);
+        else origin.parent.appendChild(activeFrame);
+      }
+      dock.classList.remove('has-player');
+    }
+  }
+
   function updateDock() {
     if (!dock) return;
     dock.style.display = playbackRequested && !activeTabIsMusic() ? 'flex' : 'none';
+    movePlayerForTab();
   }
 
   createDock();
+  activeFrame = uaEmbed;
   const observer = new MutationObserver(updateDock);
   observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
   document.addEventListener('click', event => {
@@ -120,6 +152,7 @@
       const artist = row?.querySelector('.music-track-info small')?.textContent?.trim();
       setMetadata(title || 'Українська музика', artist || 'YouTube', 'KOZAK NEXUS MUSIC');
       lastProvider = 'youtube';
+      activeFrame = uaEmbed;
       playbackRequested = true;
       if (dockStatus) dockStatus.textContent = 'ТРЕК ОБРАНО';
       updateDock();
@@ -127,6 +160,7 @@
     if (event.target.closest('#shuffleKhPlaylist')) {
       setMetadata('Випадковий трек', 'KOZAK NEXUS MIX', 'KOZAK NEXUS MUSIC');
       lastProvider = 'youtube';
+      activeFrame = uaEmbed;
       playbackRequested = true;
       updateDock();
     }
@@ -137,6 +171,7 @@
     setMetadata('YouTube music', 'KOZAK NEXUS', 'YouTube player');
     lastProvider = 'youtube';
     playbackRequested = true;
+    setTimeout(() => { activeFrame = $('#khYouTubeMusicFrame') || (ytWrap && ytWrap.querySelector('iframe')); updateDock(); }, 150);
     updateDock();
   });
 
@@ -144,6 +179,7 @@
     const select = event.target;
     const option = select?.selectedOptions?.[0];
     lastProvider = select?.value === 'youtube' ? 'youtube' : 'spotify';
+    activeFrame = uaEmbed;
     setMetadata(option?.textContent?.trim() || 'Українська музика',
       lastProvider === 'youtube' ? 'YouTube' : 'Spotify', 'Український музичний архів');
     playbackRequested = true;
