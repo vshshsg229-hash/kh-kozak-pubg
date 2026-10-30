@@ -15,7 +15,8 @@
   let lastProvider = 'youtube';
   let playbackRequested = false;
   let activeFrame = null;
-  const frameOrigins = new WeakMap();
+  let activeContainer = null;
+  let activeContainerOrigin = null;
 
   function setPlaybackState(state) {
     if (!mediaSession) return;
@@ -76,8 +77,13 @@
         #kozakMusicDock{position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:none;align-items:center;gap:11px;padding:10px 12px;border:1px solid rgba(245,206,56,.45);border-radius:16px;background:rgba(7,11,18,.96);color:#f5f7fb;box-shadow:0 8px 30px rgba(0,0,0,.42);backdrop-filter:blur(14px);font:inherit}
         #kozakMusicDock .kmd-note{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#f5ce38,#8e6a08);color:#080b10;font-size:21px}
         #kozakMusicDock .kmd-info{min-width:0;flex:1}
-        #kozakMusicDock .kmd-player{display:none;flex:0 0 200px;width:200px;max-width:42vw;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#000}
+        #kozakMusicDock .kmd-player{display:none;flex:1 1 100%;width:100%;min-width:0;overflow:hidden;border-radius:10px;background:#000}
         #kozakMusicDock .kmd-player iframe{display:block;width:100%;height:100%;min-height:0;border:0}
+        #kozakMusicDock .kmd-player .media-frame-wrap,#kozakMusicDock .kmd-player .ua-music-embed-wrap{display:block!important;width:100%!important;height:110px!important;min-height:110px!important;margin:0!important;padding:0!important;border:0!important;border-radius:10px!important;overflow:hidden!important}
+        #kozakMusicDock .kmd-player .media-frame-wrap iframe,#kozakMusicDock .kmd-player .ua-music-embed-wrap iframe{width:100%!important;height:110px!important;min-height:110px!important}
+        #kozakMusicDock .kmd-controls{display:flex;gap:5px;align-items:center}
+        #kozakMusicDock .kmd-controls button{min-width:38px;padding:0 8px}
+        @media(max-width:430px){#kozakMusicDock{left:7px;right:7px;gap:6px;padding:8px}#kozakMusicDock .kmd-note{display:none}#kozakMusicDock .kmd-open{min-width:52px;font-size:9px}#kozakMusicDock .kmd-title{max-width:110px}}
         #kozakMusicDock.has-player{flex-wrap:wrap}
         #kozakMusicDock.has-player .kmd-player{display:block}
         #kozakMusicDock.has-player .kmd-info{flex:1 1 100px}
@@ -90,11 +96,13 @@
       <div class="kmd-note" aria-hidden="true">♫</div>
       <div class="kmd-player" id="kozakMusicDockPlayer" aria-label="Мініплеєр"></div>
       <div class="kmd-info"><div class="kmd-title">KOZAK NEXUS MUSIC</div><div class="kmd-status" id="kozakMusicDockStatus">ВІДКРИЙ МУЗИКУ, ЩОБ ПОЧАТИ</div></div>
-      <button id="kozakMusicDockToggle" type="button" aria-label="Відтворити або призупинити музику">▶</button>
+      <div class="kmd-controls"><button id="kozakMusicDockPrev" type="button" aria-label="Попередній трек">⏮</button><button id="kozakMusicDockToggle" type="button" aria-label="Відтворити або призупинити музику">▶</button><button id="kozakMusicDockNext" type="button" aria-label="Наступний трек">⏭</button></div>
       <button class="kmd-open" id="kozakMusicDockOpen" type="button">МУЗИКА ↗</button>`;
     document.body.appendChild(dock);
     dockButton = $('#kozakMusicDockToggle', dock);
     dockStatus = $('#kozakMusicDockStatus', dock);
+    $('#kozakMusicDockPrev', dock).addEventListener('click', previousTrack);
+    $('#kozakMusicDockNext', dock).addEventListener('click', nextTrack);
     dockButton.addEventListener('click', () => {
       if (mediaSession?.playbackState === 'playing') pause();
       else play();
@@ -112,26 +120,50 @@
       getComputedStyle(tab).display !== 'none');
   }
 
+  function resolveActiveContainer() {
+    if (activeFrame === uaEmbed) return uaEmbed?.closest('.ua-music-embed-wrap') || uaEmbed;
+    if (activeFrame) return activeFrame.closest('.media-frame-wrap') || activeFrame;
+    return null;
+  }
+
   function movePlayerForTab() {
     if (!dock) return;
     const slot = $('#kozakMusicDockPlayer', dock);
     const musicTab = $('#tab-music');
+    if (!slot || !musicTab) return;
     const onMusic = activeTabIsMusic();
-    if (!activeFrame || !slot || !musicTab) return;
-    if (!frameOrigins.has(activeFrame)) {
-      frameOrigins.set(activeFrame, { parent: activeFrame.parentNode, next: activeFrame.nextSibling });
+    const container = resolveActiveContainer();
+    if (container && container !== activeContainer) {
+      if (activeContainer && activeContainerOrigin && activeContainer.parentNode !== activeContainerOrigin.parent) {
+        if (activeContainerOrigin.next?.parentNode === activeContainerOrigin.parent) activeContainerOrigin.parent.insertBefore(activeContainer, activeContainerOrigin.next);
+        else activeContainerOrigin.parent.appendChild(activeContainer);
+      }
+      activeContainer = container;
+      activeContainerOrigin = { parent: container.parentNode, next: container.nextSibling };
     }
+    if (!activeContainer) return;
     if (!onMusic && playbackRequested) {
-      if (activeFrame.parentNode !== slot) slot.appendChild(activeFrame);
+      if (activeContainer.parentNode !== slot) slot.appendChild(activeContainer);
       dock.classList.add('has-player');
     } else {
-      const origin = frameOrigins.get(activeFrame);
-      if (origin?.parent && activeFrame.parentNode !== origin.parent) {
-        if (origin.next?.parentNode === origin.parent) origin.parent.insertBefore(activeFrame, origin.next);
-        else origin.parent.appendChild(activeFrame);
+      if (activeContainerOrigin?.parent && activeContainer.parentNode !== activeContainerOrigin.parent) {
+        if (activeContainerOrigin.next?.parentNode === activeContainerOrigin.parent) activeContainerOrigin.parent.insertBefore(activeContainer, activeContainerOrigin.next);
+        else activeContainerOrigin.parent.appendChild(activeContainer);
       }
       dock.classList.remove('has-player');
     }
+  }
+
+  function previousTrack() {
+    if (typeof window.khMusicPreviousTrack === 'function') window.khMusicPreviousTrack();
+    else sendYouTubeCommand('previousVideo');
+    if (dockStatus) dockStatus.textContent = 'ПОПЕРЕДНІЙ ТРЕК';
+  }
+
+  function nextTrack() {
+    if (typeof window.khMusicNextTrack === 'function') window.khMusicNextTrack();
+    else sendYouTubeCommand('nextVideo');
+    if (dockStatus) dockStatus.textContent = 'НАСТУПНИЙ ТРЕК';
   }
 
   function updateDock() {
@@ -152,7 +184,7 @@
       const artist = row?.querySelector('.music-track-info small')?.textContent?.trim();
       setMetadata(title || 'Українська музика', artist || 'YouTube', 'KOZAK NEXUS MUSIC');
       lastProvider = 'youtube';
-      activeFrame = uaEmbed;
+      activeFrame = $('#khYouTubeMusicFrame') || uaEmbed;
       playbackRequested = true;
       if (dockStatus) dockStatus.textContent = 'ТРЕК ОБРАНО';
       updateDock();
@@ -160,7 +192,7 @@
     if (event.target.closest('#shuffleKhPlaylist')) {
       setMetadata('Випадковий трек', 'KOZAK NEXUS MIX', 'KOZAK NEXUS MUSIC');
       lastProvider = 'youtube';
-      activeFrame = uaEmbed;
+      activeFrame = $('#khYouTubeMusicFrame') || uaEmbed;
       playbackRequested = true;
       updateDock();
     }
@@ -171,7 +203,7 @@
     setMetadata('YouTube music', 'KOZAK NEXUS', 'YouTube player');
     lastProvider = 'youtube';
     playbackRequested = true;
-    setTimeout(() => { activeFrame = $('#khYouTubeMusicFrame') || (ytWrap && ytWrap.querySelector('iframe')); updateDock(); }, 150);
+    setTimeout(() => { activeFrame = $('#khYouTubeMusicFrame') || (ytWrap && ytWrap.querySelector('iframe')); updateDock(); }, 250);
     updateDock();
   });
 
@@ -203,6 +235,7 @@
       try { mediaSession.metadata = new MediaMetadata({ ...current, artwork: fallbackArtwork }); } catch (_) {}
     }
   });
+  document.addEventListener('khkozak-music-playing', () => { activeFrame = $('#khYouTubeMusicFrame') || uaEmbed; playbackRequested = true; setPlaybackState('playing'); if (dockButton) dockButton.textContent = 'Ⅱ'; updateDock(); });
   window.addEventListener('pageshow', updateDock);
   window.khMusicMediaSession = {
     setMetadata,
