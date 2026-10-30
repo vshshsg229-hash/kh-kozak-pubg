@@ -126,32 +126,10 @@
     return null;
   }
 
+  // Keep the provider iframe in its original music tab. Moving live
+  // YouTube/Spotify iframes between DOM trees can break app navigation and games.
   function movePlayerForTab() {
-    if (!dock) return;
-    const slot = $('#kozakMusicDockPlayer', dock);
-    const musicTab = $('#tab-music');
-    if (!slot || !musicTab) return;
-    const onMusic = activeTabIsMusic();
-    const container = resolveActiveContainer();
-    if (container && container !== activeContainer) {
-      if (activeContainer && activeContainerOrigin && activeContainer.parentNode !== activeContainerOrigin.parent) {
-        if (activeContainerOrigin.next?.parentNode === activeContainerOrigin.parent) activeContainerOrigin.parent.insertBefore(activeContainer, activeContainerOrigin.next);
-        else activeContainerOrigin.parent.appendChild(activeContainer);
-      }
-      activeContainer = container;
-      activeContainerOrigin = { parent: container.parentNode, next: container.nextSibling };
-    }
-    if (!activeContainer) return;
-    if (!onMusic && playbackRequested) {
-      if (activeContainer.parentNode !== slot) slot.appendChild(activeContainer);
-      dock.classList.add('has-player');
-    } else {
-      if (activeContainerOrigin?.parent && activeContainer.parentNode !== activeContainerOrigin.parent) {
-        if (activeContainerOrigin.next?.parentNode === activeContainerOrigin.parent) activeContainerOrigin.parent.insertBefore(activeContainer, activeContainerOrigin.next);
-        else activeContainerOrigin.parent.appendChild(activeContainer);
-      }
-      dock.classList.remove('has-player');
-    }
+    if (dock) dock.classList.remove('has-player');
   }
 
   function previousTrack() {
@@ -168,17 +146,17 @@
 
   function updateDock() {
     if (!dock) return;
-    // Avoid a MutationObserver feedback loop: writing the same inline style
-    // still produces an attribute mutation in some WebViews.
     const nextDisplay = playbackRequested && !activeTabIsMusic() ? 'flex' : 'none';
     if (dock.style.display !== nextDisplay) dock.style.display = nextDisplay;
-    movePlayerForTab();
   }
 
   createDock();
   activeFrame = uaEmbed;
-  const observer = new MutationObserver(updateDock);
-  observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
+  // React only to navigation clicks instead of observing every style/class
+  // mutation across the entire app (which caused excessive work in WebViews).
+  document.addEventListener('click', event => {
+    if (event.target.closest('[data-tab]')) queueMicrotask(updateDock);
+  });
   document.addEventListener('click', event => {
     const button = event.target.closest('#khUkrainianTracks .music-play-btn, #khPlaylistTracks .music-play-btn');
     if (button) {
