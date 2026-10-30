@@ -38,6 +38,19 @@ function attachYouTubePlayer(videoId){
   }});
  }).catch(()=>{});
 }
+function moveKhMusicQueue(direction){
+ if(!khMusicQueue.length)return false;
+ khMusicQueueIndex=(khMusicQueueIndex+direction+khMusicQueue.length)%khMusicQueue.length;
+ const track=khMusicQueue[khMusicQueueIndex];
+ if(!track||!track[2])return false;
+ khMusicCurrentTrack=track;
+ try{if(khYouTubePlayer&&typeof khYouTubePlayer.loadVideoById==='function')khYouTubePlayer.loadVideoById(String(track[2]));else{const input=document.getElementById('youtubeUrl');if(input){input.value='https://www.youtube.com/watch?v='+track[2];playYouTube(input.value,khMusicQueue,khMusicQueueIndex);}}}catch{}
+ try{window.khMusicMediaSession?.setMetadata(track[0],track[1],'KH Gaming Mix')}catch{}
+ const message=document.getElementById('youtubeMessage');if(message)message.textContent=(direction>0?'⏭ Далі: ':'⏮ Попередній трек: ')+track[0]+' — '+track[1];
+ return true;
+}
+window.khMusicNextTrack=()=>moveKhMusicQueue(1);
+window.khMusicPreviousTrack=()=>moveKhMusicQueue(-1);
 function playYouTube(raw,queue=null,queueIndex=0){
  let u;try{u=new URL(raw.trim())}catch{u=null}
  if(!u||!['youtube.com','www.youtube.com','music.youtube.com','youtu.be','m.youtube.com','www.youtube-nocookie.com'].includes(u.hostname.toLowerCase())){if(youtubeMessage)youtubeMessage.textContent='Встав коректне посилання YouTube на відео або плейлист.';return false}
