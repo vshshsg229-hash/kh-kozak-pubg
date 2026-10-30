@@ -168,7 +168,10 @@
 
   function updateDock() {
     if (!dock) return;
-    dock.style.display = playbackRequested && !activeTabIsMusic() ? 'flex' : 'none';
+    // Avoid a MutationObserver feedback loop: writing the same inline style
+    // still produces an attribute mutation in some WebViews.
+    const nextDisplay = playbackRequested && !activeTabIsMusic() ? 'flex' : 'none';
+    if (dock.style.display !== nextDisplay) dock.style.display = nextDisplay;
     movePlayerForTab();
   }
 
