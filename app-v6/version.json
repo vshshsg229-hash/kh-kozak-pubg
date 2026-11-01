@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.6.0",
+  "version": "20.7.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-02",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.6.0: adds the local Artifact Forge to NEXUS WORLD. Collect existing relics, upgrade each from level I to V, and equip up to three at once for permanent bonuses to exploration, expeditions, supply or research. Existing artifacts and saves are preserved; all progression remains local with no new server."
+  "releaseNotes": "20.7.0: adds five tactical NEXUS World bosses with three combat phases each, changing weaknesses, turn-based attacks, guard and one field repair, permanent trophies, unique relics and local battle records. Boss relics can be upgraded and equipped in the Artifact Forge. Boss access is unlocked by exploration; all progress stays in the existing local save with no new server."
 }
