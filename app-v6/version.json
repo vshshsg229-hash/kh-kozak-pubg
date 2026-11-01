@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.4.0",
+  "version": "20.4.1",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-01",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.4.0: expanded NEXUS WORLD from six to nine explorable cosmic sectors, adding the Quantum Rift, Nebula Garden and Echo Citadel with new lore, artifacts, unlock costs and expeditions. Preserved existing six-sector saves, five levelled base buildings, eight research nodes, local economy, archive and backup system. Also repairs the expansion module's missing local data resource and refreshes offline caching."
+  "releaseNotes": "20.4.1: integrated NEXUS WORLD directly into the main KOZAK NEXUS navigation as an embedded in-app world, preserving its independent local save and offline operation. Added an embed presentation mode and refreshed offline page caching. Includes the nine-sector cosmic map from 20.4.0."
 }
