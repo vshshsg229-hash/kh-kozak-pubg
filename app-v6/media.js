@@ -24,6 +24,8 @@ function attachYouTubePlayer(videoId){
    onReady:event=>{try{event.target.playVideo()}catch{}},
    onStateChange:event=>{
     if(event.data===window.YT.PlayerState.PLAYING){document.dispatchEvent(new CustomEvent('khkozak-music-playing'));}
+    if(event.data===window.YT.PlayerState.PAUSED){document.dispatchEvent(new CustomEvent('khkozak-music-paused'));}
+    if(event.data===window.YT.PlayerState.ENDED){document.dispatchEvent(new CustomEvent('khkozak-music-paused'));}
     if(event.data===window.YT.PlayerState.ENDED&&khMusicQueue.length){
      khMusicQueueIndex=(khMusicQueueIndex+1)%khMusicQueue.length;
      const next=khMusicQueue[khMusicQueueIndex];
