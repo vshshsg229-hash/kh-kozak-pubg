@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.3.3",
+  "version": "20.3.4",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-01",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.3.3: fixed update button version mismatch; synchronized app, updater, management panel and service-worker cache versions."
+  "releaseNotes": "20.3.4: introduced NEXUS WORLD, an autonomous local world with sectors, base building, research, expeditions, resource exchange, artifacts and local backups. Preserved existing modes and server-free architecture."
 }
