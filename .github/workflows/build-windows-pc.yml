@@ -1,4 +1,4 @@
-name: Build Windows PC app # v3
+name: Build Windows PC app # v4
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: kh-kozak-windows-pc-release-v17-39-0
+  group: kozak-nexus-windows-release
   cancel-in-progress: true
 
 jobs:
@@ -21,6 +21,15 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Sync Windows version from app version.json
+        shell: pwsh
+        run: |
+          $version = (Get-Content app-v6/version.json -Raw | ConvertFrom-Json).windowsVersion
+          if ($version -notmatch '^\d+(\.\d+){2}$') { throw "Invalid windowsVersion in app-v6/version.json: $version" }
+          $env:WINDOWS_VERSION = $version
+          node -e "const fs=require('node:fs');const p=JSON.parse(fs.readFileSync('desktop/package.json','utf8'));p.version=process.env.WINDOWS_VERSION;fs.writeFileSync('desktop/package.json',JSON.stringify(p,null,2)+'\n')"
+          "WINDOWS_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Prepare desktop package
         shell: pwsh
@@ -70,7 +79,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: KH-Kozak-Battle-Hub-Windows-17.40.0
+          name: KOZAK-NEXUS-Windows-${{ env.WINDOWS_VERSION }}
           path: |
             desktop/dist/*.exe
             desktop/dist/*.blockmap
@@ -81,15 +90,11 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: pc-v17.40.0
-          name: KH么Kozak Battle Hub for Windows 17.40.0
+          tag_name: pc-v${{ env.WINDOWS_VERSION }}
+          name: KOZAK NEXUS for Windows ${{ env.WINDOWS_VERSION }}
           body: |
-            Windows PC release of KH么Kozak Battle Hub.
-            
-            - KH.Kozak.Battle.Hub.Setup.17.40.0.exe: installer with Start Menu and desktop shortcuts.
-            - KH.Kozak.Battle.Hub.17.40.0.exe: portable build, no installation required.
-            
-            Windows x64.
+            Windows x64 release of KOZAK NEXUS ${{ env.WINDOWS_VERSION }}.
+            Includes the installer and portable application.
           files: |
             desktop/dist/*.exe
           fail_on_unmatched_files: true
