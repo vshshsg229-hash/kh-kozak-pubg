@@ -32,6 +32,7 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check app-v6/app.js
+          node --check app-v6/nexus-world-expansion.js
           node --check app-v6/battle-hub-3.js
           node --check app-v6/fighter-inventory-v16.12.js
           node --check app-v6/i18n.js
@@ -50,6 +51,24 @@ jobs:
           node --check app-v6/creator-studio.js
           node --check app-v6/creator-editor.js
 
+
+      - name: Validate NEXUS World standalone scripts and offline data defaults
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const html = fs.readFileSync('app-v6/nexus-world.html', 'utf8');
+          const blocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(source => source.trim());
+          if (blocks.length !== 1) throw new Error('Expected exactly one inline NEXUS World engine script');
+          fs.writeFileSync('/tmp/nexus-world-inline.js', blocks[0]);
+          const expansion = fs.readFileSync('app-v6/nexus-world-expansion.js', 'utf8');
+          const defaults = expansion.match(/const fresh=\(\)=>\(\{[\s\S]*?\}\);/);
+          if (!defaults || !/\bdata:\s*\d+/.test(defaults[0])) throw new Error('NEXUS World Expansion must initialize its local data resource');
+          const scriptRef = html.match(/<script src="([^"]*nexus-world-expansion\.js\?v=[^"]+)" defer><\/script>/);
+          if (!scriptRef) throw new Error('Versioned NEXUS World Expansion script reference is missing');
+          const sw = fs.readFileSync('app-v6/sw.js', 'utf8');
+          if (!sw.includes('"./' + scriptRef[1] + '"')) throw new Error('NEXUS World Expansion script must be precached for offline use');
+          NODE
+          node --check /tmp/nexus-world-inline.js
 
       - name: Check syntax of every active JavaScript file
         shell: bash
