@@ -33,6 +33,7 @@ jobs:
         run: |
           node --check app-v6/app.js
           node --check app-v6/nexus-world-expansion.js
+          node --check app-v6/nexus-artifact-forge.js
           node --check app-v6/battle-hub-3.js
           node --check app-v6/fighter-inventory-v16.12.js
           node --check app-v6/i18n.js
@@ -59,7 +60,9 @@ jobs:
           const html = fs.readFileSync('app-v6/nexus-world.html', 'utf8');
           const appHtml = fs.readFileSync('app-v6/index.html', 'utf8');
           if (!appHtml.includes('data-tab="nexusworld"') || !appHtml.includes('id="tab-nexusworld"')) throw new Error('NEXUS World must be available as an integrated main-app tab');
-          if (!appHtml.includes('nexus-world.html?v=1.2.0&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
+          if (!appHtml.includes('nexus-world.html?v=1.3.0&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
+          if (!html.includes('data-view="forge"') || !html.includes('id="view-forge"')) throw new Error('Artifact Forge must be integrated as a NEXUS World view');
+          if (!html.includes('nexus-artifact-forge.js?v=1.0.0')) throw new Error('Artifact Forge controller must be loaded');
           const blocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(source => source.trim());
           if (!html.includes('id="galaxyMap"') || !blocks[0].includes("$('#galaxyMap').innerHTML")) throw new Error('Nine-sector cosmic atlas must render interactive map nodes');
           if (blocks.length !== 1) throw new Error('Expected exactly one inline NEXUS World engine script');
@@ -76,10 +79,14 @@ jobs:
           const commanderPerks = ['supply','trade','reserve','scanner','routes','relics','modular','research','omega'];
           for (const perk of commanderPerks) if (!blocks[0].includes("id:'" + perk + "'")) throw new Error('Commander progression perk is missing: ' + perk);
           if (!blocks[0].includes('function renderCommander()') || !blocks[0].includes('data-commander-skill')) throw new Error('Commander progression UI and unlock controls must be active');
+          if (!blocks[0].includes('nexus-artifact-state') || !blocks[0].includes('artifactBonus')) throw new Error('Artifact Forge bonuses must synchronize with the local world save');
+          const forge = fs.readFileSync('app-v6/nexus-artifact-forge.js', 'utf8');
+          for (const feature of ['artifactLevels','equippedArtifacts','data-relic-upgrade','data-relic-equip']) if (!forge.includes(feature)) throw new Error('Artifact Forge feature is missing: ' + feature);
           const scriptRef = html.match(/<script src="([^"]*nexus-world-expansion\.js\?v=[^"]+)" defer><\/script>/);
           if (!scriptRef) throw new Error('Versioned NEXUS World Expansion script reference is missing');
           const sw = fs.readFileSync('app-v6/sw.js', 'utf8');
           if (!sw.includes('"./' + scriptRef[1] + '"')) throw new Error('NEXUS World Expansion script must be precached for offline use');
+          if (!sw.includes('"./nexus-artifact-forge.js?v=1.0.0"')) throw new Error('Artifact Forge controller must be precached for offline use');
           NODE
           node --check /tmp/nexus-world-inline.js
 

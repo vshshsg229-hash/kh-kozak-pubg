@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.5.0",
+  "version": "20.6.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-02",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.5.0: added a permanent Commander progression tree with nine unlockable perks across Logistics, Recon and Engineering. Perks improve local supply, trade prices, sector rewards, expedition success and rewards, building costs and research costs. Existing NEXUS WORLD saves are migrated in place; all existing progress and local-only behavior are preserved."
+  "releaseNotes": "20.6.0: adds the local Artifact Forge to NEXUS WORLD. Collect existing relics, upgrade each from level I to V, and equip up to three at once for permanent bonuses to exploration, expeditions, supply or research. Existing artifacts and saves are preserved; all progression remains local with no new server."
 }
