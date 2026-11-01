@@ -2,7 +2,7 @@
 const KEY='kozak.nexus.world.v1';
 const $=s=>document.querySelector(s);
 const labels={credits:'КРЕДИТИ',energy:'ЕНЕРГІЯ',alloy:'СПЛАВ',data:'ДАНІ',crystal:'КРИСТАЛИ'};
-const relics=['Печатка Першого Командира','Кристал пам’яті','Термальне ядро','Полярний маяк','Креслення Омега','Серце Розлому','Насіння Туманності','Ключ Ехо-Цитаделі','Фрагмент Серця NEXUS','Ядро Протоколу Омега'];
+const relics=['Печатка Першого Командира','Кристал пам’яті','Термальне ядро','Полярний маяк','Креслення Омега','Стабілізатор Розлому','Серце Туманності','Ключ Ехо-Цитаделі','Фрагмент Серця NEXUS','Ядро Протоколу Омега'];
 function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}}
 function save(s){s.artifactLevels=s.artifactLevels&&typeof s.artifactLevels==='object'?s.artifactLevels:{};s.equippedArtifacts=Array.isArray(s.equippedArtifacts)?s.equippedArtifacts.filter(x=>s.artifacts?.includes(x)).slice(0,3):[];localStorage.setItem(KEY,JSON.stringify(s));window.dispatchEvent(new CustomEvent('nexus-artifact-state',{detail:{levels:s.artifactLevels,equipped:s.equippedArtifacts}}))}
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
