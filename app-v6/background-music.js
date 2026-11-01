@@ -54,9 +54,7 @@
   function play() {
     playbackRequested = true;
     sendYouTubeCommand('playVideo');
-    setPlaybackState('playing');
-    if (dockButton) dockButton.textContent = 'Ⅱ';
-    if (dockStatus) dockStatus.textContent = 'КЕРУВАННЯ ПЛЕЄРОМ';
+    if (dockStatus) dockStatus.textContent = 'НАДІСЛАНО КОМАНДУ ВІДТВОРЕННЯ';
   }
 
   function pause() {
@@ -155,8 +153,11 @@
   // React only to navigation clicks instead of observing every style/class
   // mutation across the entire app (which caused excessive work in WebViews).
   document.addEventListener('click', event => {
-    if (event.target.closest('[data-tab]')) queueMicrotask(updateDock);
+    const target = event.target instanceof Element ? event.target : null;
+    if (target?.closest('[data-tab], [data-tab-link], [data-go]')) queueMicrotask(updateDock);
   });
+  window.addEventListener('popstate', updateDock);
+  window.addEventListener('hashchange', updateDock);
   document.addEventListener('click', event => {
     const button = event.target.closest('#khUkrainianTracks .music-play-btn, #khPlaylistTracks .music-play-btn');
     if (button) {
@@ -216,7 +217,8 @@
       try { mediaSession.metadata = new MediaMetadata({ ...current, artwork: fallbackArtwork }); } catch (_) {}
     }
   });
-  document.addEventListener('khkozak-music-playing', () => { activeFrame = $('#khYouTubeMusicFrame') || uaEmbed; playbackRequested = true; setPlaybackState('playing'); if (dockButton) dockButton.textContent = 'Ⅱ'; updateDock(); });
+  document.addEventListener('khkozak-music-playing', () => { activeFrame = $('#khYouTubeMusicFrame') || uaEmbed; playbackRequested = true; setPlaybackState('playing'); if (dockButton) dockButton.textContent = 'Ⅱ'; if (dockStatus) dockStatus.textContent = 'МУЗИКА ГРАЄ · ПЕРЕХОДЬ МІЖ РЕЖИМАМИ'; updateDock(); });
+  document.addEventListener('khkozak-music-paused', () => { setPlaybackState('paused'); if (dockButton) dockButton.textContent = '▶'; if (dockStatus) dockStatus.textContent = 'ПАУЗА'; });
   window.addEventListener('pageshow', updateDock);
   window.khMusicMediaSession = {
     setMetadata,
