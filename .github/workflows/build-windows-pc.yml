@@ -46,6 +46,12 @@ jobs:
 
       - name: Check Nexus Protocol JavaScript syntax
         run: node --check app-v6/nexus-ops.js
+      - name: Check NEXUS WORLD inline JavaScript syntax
+        shell: pwsh
+        run: |
+          node -e "const fs=require('node:fs');const h=fs.readFileSync('app-v6/nexus-world.html','utf8');const m=h.match(/<script>\\s*([\\s\\S]*?)<\\/script>/i);if(!m)throw new Error('NEXUS WORLD inline script not found');fs.writeFileSync('app-v6/nexus-world-inline-check.tmp.js',m[1]);"
+          node --check app-v6/nexus-world-inline-check.tmp.js
+          Remove-Item app-v6/nexus-world-inline-check.tmp.js
 
       - name: Check app update notifier JavaScript syntax
         run: node --check app-v6/app-update.js
