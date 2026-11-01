@@ -131,7 +131,7 @@ function dayKey(){const d=new Date();return new Intl.DateTimeFormat('en-CA',{tim
 function read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(!x||x.v!==1) return fresh();const f=fresh();return {...f,...x,res:{...f.res,...x.res},buildings:{...f.buildings,...x.buildings},daily:{...f.daily,...x.daily,progress:{...f.daily.progress,...(x.daily?.progress||{})}},commanderSkills:Array.isArray(x.commanderSkills)?x.commanderSkills:[]}}catch{return fresh()}}
 let s=read();
 window.addEventListener("nexus-artifact-state",e=>{s.artifactLevels=e.detail.levels||{};s.equippedArtifacts=e.detail.equipped||[];save()});
-window.addEventListener("nexus-boss-state",e=>{s.bossState=e.detail.state||s.bossState||{};save()});
+window.addEventListener("nexus-boss-state",e=>{if(e.detail.state&&e.detail.state.v===1){s={...s,...e.detail.state,res:{...s.res,...e.detail.state.res},buildings:{...s.buildings,...e.detail.state.buildings}};save()}});
 const sectors=[
 {id:'origin',name:'Нульовий вузол',biome:'ЦЕНТРАЛЬНИЙ ШТАБ',symbol:'⌂',desc:'Зруйнований командний пункт, у якому прокинулося ядро NEXUS.',lore:'У старому журналі знайдено запис: «Ми не втратили світ. Ми втратили карту до нього».',cost:null,reward:{credits:35,data:12},artifact:'Печатка Першого Командира'},
 {id:'glass',name:'Скляний ліс',biome:'КРИСТАЛІЧНИЙ БІОМ',symbol:'◇',desc:'Кристалічні дерева накопичують енергію та передають сигнали крізь туман.',lore:'Кристали повторюють голоси людей, які ніколи тут не були.',cost:{credits:55,energy:20},reward:{crystal:3,data:18},artifact:'Кристал пам’яті'},
@@ -248,7 +248,8 @@ $('#resetWorld').addEventListener('click',()=>{if(!confirm('Скинути ті�
 bind();render();$$('[data-view]').forEach(b=>b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();switchView(b.dataset.view)}}));
 })();
 </script>
-<script src="nexus-artifact-forge.js?v=1.0.0" defer></script>
+<script src="nexus-artifact-forge.js?v=1.1.0" defer></script>
+<script src="nexus-world-bosses.js?v=1.0.0" defer></script>
 <script src="nexus-world-expansion.js?v=1.0.1" defer></script>
 </body>
 </html>
