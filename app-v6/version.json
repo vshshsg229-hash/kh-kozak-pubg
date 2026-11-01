@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.3.4",
+  "version": "20.3.5",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-01",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.3.4: introduced NEXUS WORLD, an autonomous local world with sectors, base building, research, expeditions, resource exchange, artifacts and local backups. Preserved existing modes and server-free architecture."
+  "releaseNotes": "20.3.5: repaired NEXUS WORLD EXPANSION local data-resource initialization so research, planet unlocks, companion training and other data-cost actions work on fresh and existing saves. Versioned and precached the expansion module; added syntax checks for the standalone world page and expansion module. Preserved all existing modes and server-free local saves."
 }
