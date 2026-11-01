@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const KEY='kozak.nexus.world.expansion.v1';
 const $=s=>document.querySelector(s);
-const fresh=()=>({v:1,xp:0,credits:420,energy:180,alloy:120,crystals:18,city:1,buildings:{habitat:1,industry:0,lab:0,port:0},dungeons:0,bossWins:0,planet:0,fleet:0,companion:1,companionXp:0,tech:[],genetics:0,artifacts:[],museum:[],season:1,seasonXp:0,crisisDay:'',crisisDone:false,story:0,storyChoices:[],simWins:0,legacy:0,logs:[],lastDaily:'',dailyDone:false});
+const fresh=()=>({v:1,xp:0,credits:420,energy:180,alloy:120,data:45,crystals:18,city:1,buildings:{habitat:1,industry:0,lab:0,port:0},dungeons:0,bossWins:0,planet:0,fleet:0,companion:1,companionXp:0,tech:[],genetics:0,artifacts:[],museum:[],season:1,seasonXp:0,crisisDay:'',crisisDone:false,story:0,storyChoices:[],simWins:0,legacy:0,logs:[],lastDaily:'',dailyDone:false});
 let s;try{const v=JSON.parse(localStorage.getItem(KEY)||'null');s=v&&v.v===1?{...fresh(),...v,buildings:{...fresh().buildings,...(v.buildings||{})},tech:Array.isArray(v.tech)?v.tech:[],artifacts:Array.isArray(v.artifacts)?v.artifacts:[],museum:Array.isArray(v.museum)?v.museum:[],storyChoices:Array.isArray(v.storyChoices)?v.storyChoices:[],logs:Array.isArray(v.logs)?v.logs:[]}:fresh()}catch{s=fresh()}
 const fmt=n=>Math.floor(n||0).toLocaleString('uk-UA');
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(s));const el=$('#nxw-save-status');if(el)el.textContent='● ЗБЕРЕЖЕНО ЛОКАЛЬНО';return true}catch{const el=$('#nxw-save-status');if(el)el.textContent='ПОМИЛКА ЗБЕРЕЖЕННЯ';return false}};

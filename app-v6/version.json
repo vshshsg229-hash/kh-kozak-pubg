@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.3.4",
+  "version": "20.4.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-01",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.3.4: introduced NEXUS WORLD, an autonomous local world with sectors, base building, research, expeditions, resource exchange, artifacts and local backups. Preserved existing modes and server-free architecture."
+  "releaseNotes": "20.4.0: expanded NEXUS WORLD from six to nine explorable cosmic sectors, adding the Quantum Rift, Nebula Garden and Echo Citadel with new lore, artifacts, unlock costs and expeditions. Preserved existing six-sector saves, five levelled base buildings, eight research nodes, local economy, archive and backup system. Also repairs the expansion module's missing local data resource and refreshes offline caching."
 }
