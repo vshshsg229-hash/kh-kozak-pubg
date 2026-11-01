@@ -4,5 +4,5 @@
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-01",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.4.1: integrated NEXUS WORLD directly into the main KOZAK NEXUS navigation as an embedded in-app world, preserving its independent local save and offline operation. Added an embed presentation mode and refreshed offline page caching. Includes the nine-sector cosmic map from 20.4.0."
+  "releaseNotes": "20.4.1: integrated NEXUS WORLD directly into the main KOZAK NEXUS navigation as an embedded in-app world, preserving its independent local save and offline operation. Added an interactive cosmic atlas with nine connected sector nodes, unlock states and direct exploration, plus an embedded presentation mode and refreshed offline page caching. Includes the nine-sector expansion from 20.4.0."
 }
