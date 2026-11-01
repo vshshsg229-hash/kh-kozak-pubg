@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.4.1",
+  "version": "20.5.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
-  "updatedAt": "2026-11-01",
+  "updatedAt": "2026-11-02",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.4.1: integrated NEXUS WORLD directly into the main KOZAK NEXUS navigation as an embedded in-app world, preserving its independent local save and offline operation. Added an interactive cosmic atlas with nine connected sector nodes, unlock states and direct exploration, plus an embedded presentation mode and refreshed offline page caching. Includes the nine-sector expansion from 20.4.0."
+  "releaseNotes": "20.5.0: added a permanent Commander progression tree with nine unlockable perks across Logistics, Recon and Engineering. Perks improve local supply, trade prices, sector rewards, expedition success and rewards, building costs and research costs. Existing NEXUS WORLD saves are migrated in place; all existing progress and local-only behavior are preserved."
 }

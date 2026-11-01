@@ -59,7 +59,7 @@ jobs:
           const html = fs.readFileSync('app-v6/nexus-world.html', 'utf8');
           const appHtml = fs.readFileSync('app-v6/index.html', 'utf8');
           if (!appHtml.includes('data-tab="nexusworld"') || !appHtml.includes('id="tab-nexusworld"')) throw new Error('NEXUS World must be available as an integrated main-app tab');
-          if (!appHtml.includes('nexus-world.html?v=1.1.2&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
+          if (!appHtml.includes('nexus-world.html?v=1.2.0&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
           const blocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(source => source.trim());
           if (!html.includes('id="galaxyMap"') || !blocks[0].includes("$('#galaxyMap').innerHTML")) throw new Error('Nine-sector cosmic atlas must render interactive map nodes');
           if (blocks.length !== 1) throw new Error('Expected exactly one inline NEXUS World engine script');
@@ -72,6 +72,10 @@ jobs:
           const sectorIds = [...sectorBlock[1].matchAll(/\{id:'([^']+)'/g)].map(match => match[1]);
           if (sectorIds.length !== 9 || new Set(sectorIds).size !== 9) throw new Error('NEXUS World must contain nine unique sectors');
           if (!blocks[0].includes('s.explored.length===sectors.length')) throw new Error('Final progression must use the live sector count');
+          if (!blocks[0].includes('commanderSkills:Array.isArray(x.commanderSkills)?x.commanderSkills:[]')) throw new Error('Existing world saves must migrate with a default Commander skill list');
+          const commanderPerks = ['supply','trade','reserve','scanner','routes','relics','modular','research','omega'];
+          for (const perk of commanderPerks) if (!blocks[0].includes("id:'" + perk + "'")) throw new Error('Commander progression perk is missing: ' + perk);
+          if (!blocks[0].includes('function renderCommander()') || !blocks[0].includes('data-commander-skill')) throw new Error('Commander progression UI and unlock controls must be active');
           const scriptRef = html.match(/<script src="([^"]*nexus-world-expansion\.js\?v=[^"]+)" defer><\/script>/);
           if (!scriptRef) throw new Error('Versioned NEXUS World Expansion script reference is missing');
           const sw = fs.readFileSync('app-v6/sw.js', 'utf8');
