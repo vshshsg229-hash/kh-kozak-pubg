@@ -2,12 +2,12 @@
 const KEY='kozak.nexus.world.v1';
 const $=s=>document.querySelector(s);
 const labels={credits:'КРЕДИТИ',energy:'ЕНЕРГІЯ',alloy:'СПЛАВ',data:'ДАНІ',crystal:'КРИСТАЛИ'};
-const relics=['Печатка Першого Командира','Кристал пам’яті','Термальне ядро','Полярний маяк','Креслення Омега','Стабілізатор Розлому','Серце Туманності','Ключ Ехо-Цитаделі','Фрагмент Серця NEXUS','Ядро Протоколу Омега'];
+const relics=['Печатка Першого Командира','Кристал пам’яті','Термальне ядро','Полярний маяк','Креслення Омега','Стабілізатор Розлому','Серце Туманності','Ключ Ехо-Цитаделі','Фрагмент Серця NEXUS','Ядро Протоколу Омега','Іскра Вартового','Серце Титана','Нитка Розлому','Корона Небули','Око Омега'];
 function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}}
 function save(s){s.artifactLevels=s.artifactLevels&&typeof s.artifactLevels==='object'?s.artifactLevels:{};s.equippedArtifacts=Array.isArray(s.equippedArtifacts)?s.equippedArtifacts.filter(x=>s.artifacts?.includes(x)).slice(0,3):[];localStorage.setItem(KEY,JSON.stringify(s));window.dispatchEvent(new CustomEvent('nexus-artifact-state',{detail:{levels:s.artifactLevels,equipped:s.equippedArtifacts}}))}
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function level(s,n){return Math.max(1,Math.min(5,Number(s.artifactLevels?.[n])||1))}
-function kind(n){if(n==='Ядро Протоколу Омега')return 'Універсальний бонус';const i=relics.indexOf(n);return ['Бонус до дослідження секторів','Бонус до експедицій','Додаткова енергія постачання','Знижка на дослідження технологій'][Math.max(0,i)%4]}
+function kind(n){const special={'Ядро Протоколу Омега':'Універсальний бонус','Іскра Вартового':'Бонус до дослідження секторів','Серце Титана':'Додаткова енергія постачання','Нитка Розлому':'Знижка на дослідження технологій','Корона Небули':'Бонус до експедицій','Око Омега':'Універсальний бонус'};if(special[n])return special[n];const i=relics.indexOf(n);return ['Бонус до дослідження секторів','Бонус до експедицій','Додаткова енергія постачання','Знижка на дослідження технологій'][Math.max(0,i)%4]}
 function cost(l){return {credits:35*l,alloy:15*l,data:10*l,...(l>=3?{crystal:l-2}:{})}}
 function canPay(s,c){return Object.entries(c).every(([k,v])=>(Number(s.res?.[k])||0)>=v)}
 function pay(s,c){if(!canPay(s,c))return false;Object.entries(c).forEach(([k,v])=>s.res[k]-=v);return true}
