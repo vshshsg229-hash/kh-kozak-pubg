@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.3.2",
+  "version": "20.3.3",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v17.68.0",
   "updatedAt": "2026-11-01",
   "windowsVersion": "17.68.0",
-  "releaseNotes": "20.3.2: keep CASEFILE, KOZAK LIFE and ATLAS ZERO inside the app shell so the music player is not destroyed during module navigation; improved playback-state synchronization."
+  "releaseNotes": "20.3.3: fixed update button version mismatch; synchronized app, updater, management panel and service-worker cache versions."
 }
