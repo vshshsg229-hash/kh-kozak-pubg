@@ -63,6 +63,11 @@ jobs:
           const expansion = fs.readFileSync('app-v6/nexus-world-expansion.js', 'utf8');
           const defaults = expansion.match(/const fresh=\(\)=>\(\{[\s\S]*?\}\);/);
           if (!defaults || !/\bdata:\s*\d+/.test(defaults[0])) throw new Error('NEXUS World Expansion must initialize its local data resource');
+          const sectorBlock = blocks[0].match(/const sectors=\[([\s\S]*?)\n\];/);
+          if (!sectorBlock) throw new Error('NEXUS World sector map is missing');
+          const sectorIds = [...sectorBlock[1].matchAll(/\{id:'([^']+)'/g)].map(match => match[1]);
+          if (sectorIds.length !== 9 || new Set(sectorIds).size !== 9) throw new Error('NEXUS World must contain nine unique sectors');
+          if (!blocks[0].includes('s.explored.length===sectors.length')) throw new Error('Final progression must use the live sector count');
           const scriptRef = html.match(/<script src="([^"]*nexus-world-expansion\.js\?v=[^"]+)" defer><\/script>/);
           if (!scriptRef) throw new Error('Versioned NEXUS World Expansion script reference is missing');
           const sw = fs.readFileSync('app-v6/sw.js', 'utf8');
