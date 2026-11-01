@@ -27,6 +27,7 @@
 .galaxy-map-legend{display:flex;gap:14px;flex-wrap:wrap;padding:10px 4px 1px;color:#90a8bb;font-size:8px;font-weight:900;letter-spacing:.1em}
 .galaxy-map-legend span:nth-child(1){color:#9de9ff}.galaxy-map-legend span:nth-child(2){color:var(--gold)}
 @media(max-width:600px){.galaxy-map-shell{padding:8px}.galaxy-map{min-height:330px}.map-node{width:74px;min-height:68px;padding:5px 2px}.map-node-orb{width:29px;height:29px;font-size:16px}.map-node small{font-size:7px}.galaxy-map-legend{gap:9px;font-size:7px}}
+.artifact-slot{padding:12px;border:1px dashed #53677a;border-radius:12px;background:#0b1622;color:var(--muted);font-size:10px;min-height:62px}.artifact-slot.filled{border-style:solid;border-color:#977a41;color:#ffe3a0;background:#211c13}
 </style>
 </head>
 <body>
@@ -243,6 +244,7 @@ $('#resetWorld').addEventListener('click',()=>{if(!confirm('Скинути ті�
 bind();render();$$('[data-view]').forEach(b=>b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();switchView(b.dataset.view)}}));
 })();
 </script>
+<script src="nexus-artifact-forge.js?v=1.0.0" defer></script>
 <script src="nexus-world-expansion.js?v=1.0.1" defer></script>
 </body>
 </html>
