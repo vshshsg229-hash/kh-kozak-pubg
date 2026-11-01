@@ -57,7 +57,11 @@ jobs:
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const html = fs.readFileSync('app-v6/nexus-world.html', 'utf8');
+          const appHtml = fs.readFileSync('app-v6/index.html', 'utf8');
+          if (!appHtml.includes('data-tab="nexusworld"') || !appHtml.includes('id="tab-nexusworld"')) throw new Error('NEXUS World must be available as an integrated main-app tab');
+          if (!appHtml.includes('nexus-world.html?v=1.1.2&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
           const blocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(source => source.trim());
+          if (!html.includes('id="galaxyMap"') || !blocks[0].includes("$('#galaxyMap').innerHTML")) throw new Error('Nine-sector cosmic atlas must render interactive map nodes');
           if (blocks.length !== 1) throw new Error('Expected exactly one inline NEXUS World engine script');
           fs.writeFileSync('/tmp/nexus-world-inline.js', blocks[0]);
           const expansion = fs.readFileSync('app-v6/nexus-world-expansion.js', 'utf8');
