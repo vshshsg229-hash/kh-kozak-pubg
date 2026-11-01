@@ -185,9 +185,9 @@
     const atlasButton = target.closest('.atlas-zero-nav');
     let url = '';
     let title = '';
-    if (link && /(?:^|\\/)casefile\\.html(?:[?#]|$)/i.test(link.getAttribute('href') || '')) {
+    if (link && /(?:^|\/)casefile\.html(?:[?#]|$)/i.test(link.getAttribute('href') || '')) {
       url = link.href; title = 'CASEFILE · АРХІВ СПРАВ';
-    } else if (link && /(?:^|\\/)kozak-life\\.html(?:[?#]|$)/i.test(link.getAttribute('href') || '')) {
+    } else if (link && /(?:^|\/)kozak-life\.html(?:[?#]|$)/i.test(link.getAttribute('href') || '')) {
       url = link.href; title = 'KOZAK LIFE';
     } else if (atlasButton) {
       url = new URL('atlas-zero.html?v=1.2.2', location.href).href; title = 'ATLAS ZERO';
