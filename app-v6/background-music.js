@@ -142,6 +142,62 @@
     if (dockStatus) dockStatus.textContent = 'НАСТУПНИЙ ТРЕК';
   }
 
+  function openPersistentModule(url, title) {
+    let shell = $('#kozakPersistentModuleShell');
+    if (!shell) {
+      shell = document.createElement('section');
+      shell.id = 'kozakPersistentModuleShell';
+      shell.innerHTML = `
+        <style>
+          #kozakPersistentModuleShell{position:fixed;inset:0;z-index:9997;display:none;background:#070b12;color:#f5f7fb}
+          #kozakPersistentModuleShell.is-open{display:flex;flex-direction:column}
+          #kozakPersistentModuleShell .kpm-head{display:flex;align-items:center;gap:12px;min-height:54px;padding:8px 12px;background:#0c1420;border-bottom:1px solid rgba(245,206,56,.35)}
+          #kozakPersistentModuleShell .kpm-title{flex:1;min-width:0;font-weight:900;font-size:13px;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+          #kozakPersistentModuleShell button{min-width:44px;min-height:40px;border:1px solid #8b7024;border-radius:10px;background:#171d28;color:#f5ce38;font-weight:900}
+          #kozakPersistentModuleShell iframe{display:block;flex:1;width:100%;height:100%;border:0;background:#070b12}
+        </style>
+        <header class="kpm-head"><strong class="kpm-title">KOZAK NEXUS MODULE</strong><button type="button" aria-label="Повернутися до KOZAK NEXUS">← НАЗАД</button></header>
+        <iframe title="Модуль KOZAK NEXUS" allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
+      document.body.appendChild(shell);
+      shell.querySelector('button').addEventListener('click', () => {
+        const frame = shell.querySelector('iframe');
+        frame.src = 'about:blank';
+        shell.classList.remove('is-open');
+        updateDock();
+      });
+    }
+    const frame = shell.querySelector('iframe');
+    const safeUrl = new URL(url, location.href);
+    if (safeUrl.origin !== location.origin) return;
+    shell.querySelector('.kpm-title').textContent = title || 'KOZAK NEXUS MODULE';
+    shell.classList.add('is-open');
+    frame.src = safeUrl.href;
+    updateDock();
+  }
+
+  // These modules used to navigate the top-level page, which destroys its
+  // music iframe. Keep them inside an app-owned frame so the parent player
+  // remains alive while the user explores the standalone module.
+  document.addEventListener('click', event => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+    const link = target.closest('a[href]');
+    const atlasButton = target.closest('.atlas-zero-nav');
+    let url = '';
+    let title = '';
+    if (link && /(?:^|\\/)casefile\\.html(?:[?#]|$)/i.test(link.getAttribute('href') || '')) {
+      url = link.href; title = 'CASEFILE · АРХІВ СПРАВ';
+    } else if (link && /(?:^|\\/)kozak-life\\.html(?:[?#]|$)/i.test(link.getAttribute('href') || '')) {
+      url = link.href; title = 'KOZAK LIFE';
+    } else if (atlasButton) {
+      url = new URL('atlas-zero.html?v=1.2.2', location.href).href; title = 'ATLAS ZERO';
+    }
+    if (!url) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openPersistentModule(url, title);
+  }, true);
+
   function updateDock() {
     if (!dock) return;
     const nextDisplay = playbackRequested && !activeTabIsMusic() ? 'flex' : 'none';
