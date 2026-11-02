@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.7.0",
+  "version": "20.9.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-02",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.7.0: adds five tactical NEXUS World bosses with three combat phases each, changing weaknesses, turn-based attacks, guard and one field repair, permanent trophies, unique relics and local battle records. Boss relics can be upgraded and equipped in the Artifact Forge. Boss access is unlocked by exploration; all progress stays in the existing local save with no new server."
+  "releaseNotes": "20.9.0: fixes daily drop claiming and routes rewards from Battle Hub, PUBG Challenges, Survival Ops, Bunker, KOZAK AI Daily Ops, NEXUS Protocol, NEXUS Squad, NEXUS Expedition, NEXUS Evolution and Signal Hunt into the single local KOZAK NEXUS profile. Adds duplicate-claim protection and shared coin spending for Bunker upgrades and repairs. Existing local saves are retained; no new online server."
 }
