@@ -1,15 +1,15 @@
 (()=>{'use strict';
 const KEY='kozak.nexus.world.expansion.v1';
 const $=s=>document.querySelector(s);
-const fresh=()=>({v:1,xp:0,credits:420,energy:180,alloy:120,data:45,crystals:18,city:1,buildings:{habitat:1,industry:0,lab:0,port:0},dungeons:0,bossWins:0,planet:0,fleet:0,companion:1,companionXp:0,tech:[],genetics:0,artifacts:[],museum:[],season:1,seasonXp:0,crisisDay:'',crisisDone:false,story:0,storyChoices:[],simWins:0,legacy:0,logs:[],lastDaily:'',dailyDone:false});
+const fresh=()=>({v:1,xp:0,credits:420,energy:180,alloy:120,data:45,crystals:18,city:1,buildings:{habitat:1,industry:0,lab:0,port:0},dungeons:0,bossWins:0,planet:0,fleet:0,companion:1,companionXp:0,tech:[],genetics:0,artifacts:[],museum:[],season:1,seasonXp:0,crisisDay:'',crisisDone:false,story:0,storyChoices:[],simWins:0,legacy:0,logs:[],lastDaily:'',dailyDone:false,rewardSeq:0});
 let s;try{const v=JSON.parse(localStorage.getItem(KEY)||'null');s=v&&v.v===1?{...fresh(),...v,buildings:{...fresh().buildings,...(v.buildings||{})},tech:Array.isArray(v.tech)?v.tech:[],artifacts:Array.isArray(v.artifacts)?v.artifacts:[],museum:Array.isArray(v.museum)?v.museum:[],storyChoices:Array.isArray(v.storyChoices)?v.storyChoices:[],logs:Array.isArray(v.logs)?v.logs:[]}:fresh()}catch{s=fresh()}
 const fmt=n=>Math.floor(n||0).toLocaleString('uk-UA');
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(s));const el=$('#nxw-save-status');if(el)el.textContent='● ЗБЕРЕЖЕНО ЛОКАЛЬНО';return true}catch{const el=$('#nxw-save-status');if(el)el.textContent='ПОМИЛКА ЗБЕРЕЖЕННЯ';return false}};
 const log=t=>{s.logs.unshift({t,at:Date.now()});s.logs=s.logs.slice(0,40)};
 const toast=t=>{let el=$('#nxw-toast');if(!el){el=document.createElement('div');el.id='nxw-toast';document.body.append(el)}el.textContent=t;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2200)};
 const pay=(c)=>{if(Object.entries(c).some(([k,v])=>(s[k]||0)<v)){toast('Не вистачає ресурсів');return false}Object.entries(c).forEach(([k,v])=>s[k]-=v);return true};
-const gain=(c)=>Object.entries(c).forEach(([k,v])=>s[k]=(s[k]||0)+v);
-const xp=n=>{s.xp+=n;s.seasonXp+=n;};
+function profileReward(coins,xp){const amountCoins=Math.max(0,Math.floor(Number(coins)||0)),amountXp=Math.max(0,Math.floor(Number(xp)||0));if(!amountCoins&&!amountXp)return true;s.rewardSeq=Math.max(0,Number(s.rewardSeq)||0)+1;const api=window.khkozakProgression,result=api?.awardModeReward?.('nexus-world-expansion','world-'+s.rewardSeq,amountCoins,amountXp,0,0);if(!result?.ok){s.rewardSeq--;toast('Не вдалося синхронізувати нагороду зі спільним профілем.');return false}return true}const gain=(c)=>{Object.entries(c).forEach(([k,v])=>s[k]=(s[k]||0)+v);if(Number(c.credits)>0)profileReward(c.credits,0)};
+const xp=n=>{const amount=Math.max(0,Math.floor(Number(n)||0));if(!amount)return;profileReward(0,amount);s.xp+=amount;s.seasonXp+=amount;};
 const day=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Kyiv',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const modules=[
 ['city','🏙️','МЕГАПОЛІС','Місто','Розбудовуй квартали, виробництво, лабораторію та космопорт.'],
