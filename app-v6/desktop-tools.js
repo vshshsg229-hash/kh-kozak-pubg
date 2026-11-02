@@ -13,11 +13,11 @@ if(sidebar&&nav&&!document.getElementById('sidebarQuickSearch')){
  nav.addEventListener('click',e=>{if(e.target.closest('.nav-item')&&input.value){input.value='';apply();}});
  new MutationObserver(()=>apply()).observe(nav,{childList:true,subtree:true});
 }
-const button=document.getElementById('desktopCommandButton');
+const buttons=[...document.querySelectorAll('#desktopCommandButton')];
 const backdrop=document.getElementById('desktopCommandBackdrop');
 const input=document.getElementById('desktopCommandInput');
 const list=document.getElementById('desktopCommandList');
-if(!button||!backdrop||!input||!list)return;
+if(!buttons.length||!backdrop||!input||!list)return;
 let commands=[];
 function refreshCommands(){
  commands=[...document.querySelectorAll('.sidebar .nav-item')].map((element)=>{
@@ -56,7 +56,7 @@ function syncActive(){[...list.querySelectorAll('[role="option"]')].forEach((el,
 function open(){if(!isDesktop())return;lastFocus=document.activeElement;backdrop.hidden=false;input.value='';active=0;render();requestAnimationFrame(()=>input.focus());}
 function close(){backdrop.hidden=true;if(lastFocus&&typeof lastFocus.focus==='function')lastFocus.focus();}
 function go(key){const command=commands.find(c=>c[0]===key);const target=command&&command[4];if(target){target.click();close();}}
-button.addEventListener('click',open);
+buttons.forEach(button=>button.addEventListener('click',open));
 backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
 input.addEventListener('input',()=>{active=0;render()});
 input.addEventListener('keydown',e=>{
