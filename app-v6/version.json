@@ -4,5 +4,5 @@
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-02",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.10.0: daily drop is now claimed through the single shared profile API from both home-screen buttons; daily bonus state and rewards update together. Battle World room/mission/defense rewards and spending, Player Journey XP, and Battle Pass mission rewards now route through the central local profile API with duplicate-claim protection. Existing local saves are retained; no new online server."
+  "releaseNotes": "20.10.0: daily drop is claimed through the single shared profile API from both home-screen buttons. Battle World, Battle Pass missions, Player Journey, Black Zone evacuations, NEXUS World Expansion, NEXUS World bosses and NEXUS Evolution now send earned coins/XP into the main local profile. Existing mode-specific progression is preserved; duplicate-claim protection remains; no new online server."
 }
