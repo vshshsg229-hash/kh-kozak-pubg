@@ -534,7 +534,7 @@ progressFile?.addEventListener('change',async()=>{
  finally{progressFile.value=''}
 });
 window.addEventListener('kh100-finished',e=>{const d=e.detail||{};const mode=['aim','reaction','arena','memory','loot'].includes(d.mode)?d.mode:'aim';finishGame(mode,Math.max(10,Number(d.coins)||10),Math.max(15,Number(d.points)||15),Math.max(20,Number(d.xp)||20));});
-window.addEventListener('kh-bh3-finished',e=>{const d=e.detail||{};const mode=['aim','reaction','arena','memory','recoil','loot','tactics'].includes(d.mode)?d.mode:'aim';awardLocalGame(mode,Math.max(10,Number(d.coins)||10),Math.max(15,Number(d.points)||15),Math.max(20,Number(d.xp)||20));});
+window.addEventListener('kh-bh3-finished',e=>{const d=e.detail||{};const mode=['aim','reaction','arena','memory','recoil','loot','tactics'].includes(d.mode)?d.mode:'aim';const api=window.khkozakProgression;const id=String(d.id||('bh3-'+Date.now()));if(api&&typeof api.awardModeReward==='function'){api.awardModeReward('battle-hub',id,Number(d.coins)||0,Number(d.xp)||0,Number(d.points)||0,Math.max(0,Math.floor((Number(d.xp)||0)/2)));}});
 window.addEventListener('kh3d-finished',e=>{const d=e.detail||{};finishGame(d.mode==='zombie'?'zombie':'arena',Math.max(20,Number(d.coins)||20),Math.max(30,Number(d.points)||30),Math.max(25,Number(d.xp)||25));const status=document.querySelector('#kh3dStatus');if(status)status.textContent='Запит на нарахування нагороди надіслано. Перевір баланс у профілі.';});
 window.addEventListener('khkozak-bunker-update',()=>{try{const fresh=JSON.parse(localStorage.getItem(KEY)||'{}');state={...defaultState,...fresh,games:{...defaultState.games,...(fresh.games||{})}};state.owned=Array.isArray(state.owned)?state.owned:[];state.completed=Array.isArray(state.completed)?state.completed:[];render();showToast('Прогрес бункера синхронізовано з профілем.')}catch(e){}});
 
@@ -575,20 +575,21 @@ window.khkozakProgression = {
   creditCoins: amount => { const value=Math.max(0,Math.floor(Number(amount)||0));if(!value)return false;state.coins=Math.max(0,Number(state.coins)||0)+value;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
   spendCoins: amount => { const cost=Math.max(0,Math.floor(Number(amount)||0));if(!cost||!Number.isFinite(cost)||Number(state.coins)<cost)return false;state.coins-=cost;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
   refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; },
+  spendCoins: (amount, source='mode') => {const cost=Math.max(0,Math.floor(Number(amount)||0));if(!cost||Number(state.coins)<cost)return false;const snapshot=JSON.stringify(state);state.coins-=cost;if(!save()){restoreRewardState(snapshot);return false}render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source}}));window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));return true;},
   awardXP: (amount, source='mode') => {
     const value=Math.max(0,Math.floor(Number(amount)||0));if(!value)return false;
     const snapshot=JSON.stringify(state);addXP(value);
     if(!save()){restoreRewardState(snapshot);return false}
     render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source}}));window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));return true;
   },
-  awardModeReward: (source, rewardId, coins=0, xp=0, points=0) => {
+  awardModeReward: (source, rewardId, coins=0, xp=0, points=0, passXp=0) => {
     const src=String(source||'mode').trim(),id=String(rewardId||'').trim();
     const cv=Math.max(0,Math.floor(Number(coins)||0)),xv=Math.max(0,Math.floor(Number(xp)||0)),pv=Math.max(0,Math.floor(Number(points)||0));
     if(!src||!id||(!cv&&!xv&&!pv))return {ok:false,reason:'invalid'};
     state.modeRewardClaims=Array.isArray(state.modeRewardClaims)?state.modeRewardClaims:[];
     const claim=src+':'+id;if(state.modeRewardClaims.includes(claim))return {ok:false,reason:'already-claimed'};
     const snapshot=JSON.stringify(state);state.coins=Math.max(0,Number(state.coins)||0)+cv;state.points=Math.max(0,Number(state.points)||0)+pv;
-    state.rankedPoints=(Number(state.rankedPoints)||0)+pv;addXP(xv);state.modeRewardClaims.push(claim);
+    state.rankedPoints=(Number(state.rankedPoints)||0)+pv;state.passXp=(Number(state.passXp)||0)+Math.max(0,Math.floor(Number(passXp)||0));addXP(xv);state.modeRewardClaims.push(claim);
     if(!save()){restoreRewardState(snapshot);return {ok:false,reason:'save-failed'}}
     render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source:src}}));window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));
     return {ok:true,coins:state.coins,xp:state.xp,level:level()};
