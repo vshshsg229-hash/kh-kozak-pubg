@@ -33,7 +33,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 function fmt(ms){let t=Math.max(0,Math.floor(ms/1000));return String(Math.floor(t/3600)).padStart(2,'0')+':'+String(Math.floor(t%3600/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')}
 function target(){return zones.find(z=>!state.found.includes(z[0])&&z[0]!==state.selected)||zones[0]}
-function award(xp,coins){state.xp+=xp;state.loot+=coins;while(state.xp>=state.level*150){state.xp-=state.level*150;state.level++;state.loot+=25;notice='Рівень підвищено! Бонус +25 ◈.'}}
+function award(xp,coins){state.rewardSequence=(Number(state.rewardSequence)||0)+1;const api=window.khkozakProgression;if(api&&typeof api.awardModeReward==='function')api.awardModeReward('nexus-protocol','sector-'+state.rewardSequence,coins,xp,0,Math.max(0,Math.floor(xp/2)));state.xp+=xp;state.loot+=coins;while(state.xp>=state.level*150){state.xp-=state.level*150;state.level++;state.loot+=25;notice='Рівень підвищено! Бонус +25 ◈.'}}
 function mapHtml(){return '<div class="nx-map" role="group" aria-label="Тактична карта">'+zones.map(z=>'<button type="button" class="nx-node '+(state.found.includes(z[0])?'is-found ':'')+(state.selected===z[0]?'is-selected ':'')+(target()[0]===z[0]?'is-target':'')+'" style="left:'+z[3]+'%;top:'+z[4]+'%" data-zone="'+z[0]+'" title="'+esc(z[1])+'"><span>'+z[2]+'</span><small>'+esc(z[1])+'</small></button>').join('')+'<div class="nx-map-scan"></div></div>'}
 function render(){
 const z=zones.find(x=>x[0]===state.selected)||zones[0],done=state.found.includes(z[0]),unlock=state.found.length>=18&&state.upgrades.length>=3;
