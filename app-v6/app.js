@@ -99,9 +99,23 @@ function loadKhTikTokCreatorFeeds(){
 function goTab(tab){const target=document.getElementById('tab-'+tab);if(!target)return false;document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v===target)});$$('[data-tab]').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab)});if(tab==='tiktok')setTimeout(loadKhTikTokCreatorFeeds,300);window.scrollTo({top:0,behavior:'smooth'});return true}
 document.addEventListener('click',function(event){const origin=event.target instanceof Element?event.target:null;const button=origin&&origin.closest('[data-tab],[data-tab-link],[data-go]');if(!button)return;const tab=button.dataset.tab||button.dataset.tabLink||button.dataset.go;if(!tab||!document.getElementById('tab-'+tab))return;if(button.hasAttribute('data-tab-link'))event.preventDefault();goTab(tab)});
 const requestedTab=new URLSearchParams(window.location.search).get('openTab');if(requestedTab)goTab(requestedTab);
-$('#claimDaily').addEventListener('click',()=>{
- const today=localDateKey();if(state.dailyClaimDate===today)return;
- const yesterday=localDateKey(new Date(Date.now()-86400000));state.dailyStreak=state.lastDailyDate===yesterday?(state.dailyStreak||0)+1:1;state.lastDailyDate=today;state.dailyClaimDate=today;state.coins+=25;state.points+=20;addXP(25);let bonus='';if(state.dailyStreak===3){state.coins+=50;state.points+=40;addXP(40);bonus=' Серія 3 дні: ще +50 монет і +40 XP!'}else if(state.dailyStreak===7){state.coins+=150;state.points+=100;addXP(100);bonus=' Серія 7 днів: ще +150 монет і +100 XP!'}save();render();showToast('Щоденний дроп отримано: +25 монет!'+bonus)
+$('#claimDaily')?.addEventListener('click',()=>{
+ const button=$('#claimDaily');if(!button||button.disabled)return;
+ const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Kyiv',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ if(state.dailyClaimDate===today){renderDaily();return}
+ const snapshot=JSON.stringify(state);
+ const yesterday=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Kyiv',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(Date.now()-86400000));
+ state.dailyStreak=state.lastDailyDate===yesterday?Math.max(0,Number(state.dailyStreak)||0)+1:1;
+ state.lastDailyDate=today;state.dailyClaimDate=today;
+ state.coins=Math.max(0,Number(state.coins)||0)+25;
+ state.points=Math.max(0,Number(state.points)||0)+20;
+ addXP(25);
+ let bonus='';
+ if(state.dailyStreak===3){state.coins+=50;state.points+=40;addXP(40);bonus=' Серія 3 дні: ще +50 монет і +40 XP!'}
+ if(state.dailyStreak>0&&state.dailyStreak%7===0){state.coins+=150;state.points+=100;addXP(100);bonus+=' Серія 7 днів: ще +150 монет і +100 XP!'}
+ if(!save()){try{state=JSON.parse(snapshot);lastSavedOwned=new Set(Array.isArray(state.owned)?state.owned:[])}catch(_){};render();showToast('Не вдалося зберегти дроп. Нагороду не зараховано — звільни місце у сховищі й повтори.');return}
+ render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source:'daily-drop'}}));window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));
+ showToast('Щоденний дроп отримано: +25 монет, +25 XP!'+bonus);
 });
 
 $('#resetProgress').addEventListener('click',()=>{if(confirm('Скинути монети, очки, місії та статистику?')){state={...defaultState,owned:[],completed:[],games:{...defaultState.games}};save();render();$('#saveMsg').textContent='Прогрес скинуто.';showToast('Прогрес скинуто')}});
@@ -561,6 +575,24 @@ window.khkozakProgression = {
   creditCoins: amount => { const value=Math.max(0,Math.floor(Number(amount)||0));if(!value)return false;state.coins=Math.max(0,Number(state.coins)||0)+value;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
   spendCoins: amount => { const cost=Math.max(0,Math.floor(Number(amount)||0));if(!cost||!Number.isFinite(cost)||Number(state.coins)<cost)return false;state.coins-=cost;if(!save())return false;render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp}}));return true; },
   refresh: () => { render(); return { coins: Number(state.coins) || 0, xp: Number(state.xp) || 0, level: level() }; },
+  awardXP: (amount, source='mode') => {
+    const value=Math.max(0,Math.floor(Number(amount)||0));if(!value)return false;
+    const snapshot=JSON.stringify(state);addXP(value);
+    if(!save()){restoreRewardState(snapshot);return false}
+    render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source}}));window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));return true;
+  },
+  awardModeReward: (source, rewardId, coins=0, xp=0, points=0) => {
+    const src=String(source||'mode').trim(),id=String(rewardId||'').trim();
+    const cv=Math.max(0,Math.floor(Number(coins)||0)),xv=Math.max(0,Math.floor(Number(xp)||0)),pv=Math.max(0,Math.floor(Number(points)||0));
+    if(!src||!id||(!cv&&!xv&&!pv))return {ok:false,reason:'invalid'};
+    state.modeRewardClaims=Array.isArray(state.modeRewardClaims)?state.modeRewardClaims:[];
+    const claim=src+':'+id;if(state.modeRewardClaims.includes(claim))return {ok:false,reason:'already-claimed'};
+    const snapshot=JSON.stringify(state);state.coins=Math.max(0,Number(state.coins)||0)+cv;state.points=Math.max(0,Number(state.points)||0)+pv;
+    state.rankedPoints=(Number(state.rankedPoints)||0)+pv;addXP(xv);state.modeRewardClaims.push(claim);
+    if(!save()){restoreRewardState(snapshot);return {ok:false,reason:'save-failed'}}
+    render();window.dispatchEvent(new CustomEvent('khkozak-profile-updated',{detail:{coins:state.coins,xp:state.xp,source:src}}));window.dispatchEvent(new CustomEvent('khkozak-progress-refresh'));
+    return {ok:true,coins:state.coins,xp:state.xp,level:level()};
+  },
   awardChallenge: (challengeId, coins, xp) => {
     const id=String(challengeId||'').trim(), coinValue=Math.max(0,Math.floor(Number(coins)||0)), xpValue=Math.max(0,Math.floor(Number(xp)||0));
     if(!id||(!coinValue&&!xpValue))return {ok:false,reason:'invalid'};
