@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.9.0",
+  "version": "20.10.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-02",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.9.0: fixes daily drop claiming and routes rewards from Battle Hub, PUBG Challenges, Survival Ops, Bunker, KOZAK AI Daily Ops, NEXUS Protocol, NEXUS Squad, NEXUS Expedition, NEXUS Evolution and Signal Hunt into the single local KOZAK NEXUS profile. Adds duplicate-claim protection and shared coin spending for Bunker upgrades and repairs. Existing local saves are retained; no new online server."
+  "releaseNotes": "20.10.0: daily drop is now claimed through the single shared profile API from both home-screen buttons; daily bonus state and rewards update together. Battle World room/mission/defense rewards and spending, Player Journey XP, and Battle Pass mission rewards now route through the central local profile API with duplicate-claim protection. Existing local saves are retained; no new online server."
 }
