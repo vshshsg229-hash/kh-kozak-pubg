@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.11.0",
+  "version": "20.12.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-02",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.11.0: fixes duplicate home-screen control IDs so every visible sidebar toggle and command-search button responds, and keeps every profile coin/avatar header synchronized. The daily drop buttons share one claim handler. Shared local-profile rewards now include Battle World, Battle Pass missions, Player Journey, Black Zone evacuations, NEXUS World Expansion, NEXUS World bosses and NEXUS Evolution. Existing local mode saves remain; no new online server."
+  "releaseNotes": "20.12.0 hotfix: fixes a fatal DOM selector error in the shared profile header renderer that could stop main app initialization. All duplicate coin/avatar headers now update safely. Daily drop buttons share one claim action; duplicate home navigation/search controls all respond. Shared local-profile rewards include the main game modes, Battle World, Battle Pass missions, Player Journey, Black Zone and NEXUS World systems. Local saves retained; no new online server."
 }
