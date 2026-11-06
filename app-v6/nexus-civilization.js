@@ -23,7 +23,7 @@ function simulate(minutes){const m=clamp(minutes,0,720),h=m/60;if(!h)return;cons
 s.water=clamp(s.water+(s.waterworks*.8-(s.pop*.025)-(summer?.12:0))*h,0,200);s.happiness=clamp(s.happiness+(s.food>0&&s.water>0?.05:-.6)*m,0,100);s.health=clamp(s.health+(s.hospital*.08+s.medics*.04-.02)*m,0,100);
 if(s.food<=0||s.water<=0){s.pop=Math.max(4,s.pop-Math.ceil(h*.35));s.happiness=clamp(s.happiness-1.2*h,0,100)}if(s.pop<capacity()&&s.food>30&&s.happiness>50&&Math.random()<h*.06)s.pop++;
 if(s.event&&Date.now()-s.event.at>90000){resolveEvent('ignore')}if(!s.event&&Date.now()-s.eventAt>420000&&Math.random()<h*.07){startEvent();s.eventAt=Date.now()}
-s.seasonTick+=m;if(s.seasonTick>=360){s.season=(s.season+1)%4;s.seasonTick=0;log('🌦️ Настала нова пора року: '+seasonNames[s.season]+'.')}
+s.seasonTick+=m;if(s.seasonTick>=360){s.season=(s.season+Math.floor(s.seasonTick/360))%4;s.seasonTick%=360;const weather=['Ясно','Хмарно','Дощ','Вітер','Туман'];s.weather=weather[Math.floor(Math.random()*weather.length)];log('🌦️ Настала нова пора року: '+seasonNames[s.season]+'. Погода: '+s.weather+'.')}
 }
 function setJob(key,delta){if(delta>0&&free()<1)return toast('Немає вільних мешканців.');if(delta<0&&s[key]<1)return;s[key]=clamp(s[key]+delta,0,s.pop);render()}
 function build(id){const b=buildings.find(x=>x[0]===id);if(!b)return;const lv=num(s[id]);if(lv>=8)return toast('Максимальний рівень — 8');const mult=1+lv*.48,cost=Object.fromEntries(Object.entries(b[3]).map(([k,v])=>[k,Math.ceil(v*mult)]));if(!pay(cost))return;s[id]=lv+1;s.missions.build++;reward(18);log('🏗️ Збудовано: '+b[2]+' · рівень '+s[id]);render();toast('Будівлю покращено!')}
