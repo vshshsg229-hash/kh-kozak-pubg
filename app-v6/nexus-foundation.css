@@ -59,3 +59,80 @@ body:before{
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* First migrated surface: HOME dashboard, same controls and data bindings. */
+.kh-home-replica{
+  --kh-gold:var(--nexus-gold);
+  --kh-blue:var(--nexus-blue);
+  background:
+    radial-gradient(ellipse at 52% 0%,rgba(30,119,153,.18),transparent 42%),
+    linear-gradient(145deg,#070d17,#050a12 58%,#0a101b);
+  border:1px solid rgba(87,217,244,.18);
+  border-radius:22px;
+  box-shadow:0 22px 65px rgba(0,0,0,.36),inset 0 1px rgba(255,255,255,.035);
+}
+.kh-replica-top{
+  border-bottom-color:var(--nexus-line);
+  background:linear-gradient(100deg,rgba(5,10,18,.98),rgba(11,26,42,.96) 58%,rgba(7,12,21,.98));
+  box-shadow:0 8px 28px rgba(0,0,0,.2);
+}
+.kh-replica-mini-brand span,.kh-replica-crown{color:var(--nexus-gold-bright);text-shadow:0 0 18px rgba(231,193,110,.38)}
+.kh-replica-layout{
+  background:
+    radial-gradient(ellipse at 45% 36%,rgba(26,102,137,.22),transparent 44%),
+    radial-gradient(ellipse at 90% 90%,rgba(171,125,45,.08),transparent 34%),
+    linear-gradient(160deg,#081321,#050a12 68%);
+}
+.kh-replica-hero{
+  border:1px solid rgba(87,217,244,.2);
+  border-radius:20px;
+  background:radial-gradient(ellipse at 54% 38%,#183b55 0%,#0c1b2d 42%,#070d17 78%);
+  box-shadow:inset 0 0 70px rgba(54,184,222,.08),0 18px 45px rgba(0,0,0,.25);
+}
+.kh-replica-hero:before{
+  background:
+    radial-gradient(ellipse at 55% 42%,rgba(87,217,244,.13),transparent 40%),
+    linear-gradient(115deg,transparent 20%,rgba(231,193,110,.10) 55%,transparent 72%),
+    repeating-linear-gradient(125deg,transparent 0 58px,rgba(126,190,220,.035) 60px 62px);
+}
+.kh-replica-avatar{
+  border-color:var(--nexus-gold);
+  border-radius:20px;
+  background:linear-gradient(145deg,#18354a,#08111d);
+  box-shadow:0 0 26px rgba(231,193,110,.2),0 0 34px rgba(87,217,244,.1);
+}
+.kh-replica-stats{
+  border-color:var(--nexus-line);
+  border-radius:16px;
+  background:rgba(5,13,23,.78);
+  box-shadow:0 12px 30px rgba(0,0,0,.24);
+}
+.kh-replica-stats span{color:var(--nexus-gold)}
+.kh-replica-actions button{
+  border-color:var(--nexus-line-gold);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(17,33,49,.96),rgba(7,13,22,.98));
+  box-shadow:inset 0 1px rgba(255,255,255,.045),0 10px 24px rgba(0,0,0,.2);
+}
+.kh-replica-actions button:nth-child(2),.kh-replica-actions button:nth-child(3),.kh-replica-actions button:nth-child(4){
+  border-color:var(--nexus-line);
+  background:linear-gradient(145deg,rgba(15,39,55,.96),rgba(7,13,22,.98));
+}
+.kh-replica-actions button>b,.kh-replica-actions button:nth-child(2)>b,.kh-replica-actions button:nth-child(3)>b,.kh-replica-actions button:nth-child(4)>b{color:var(--nexus-gold-bright)}
+.kh-replica-right article{
+  border-color:var(--nexus-line);
+  border-radius:17px;
+  background:linear-gradient(145deg,rgba(13,27,43,.96),rgba(5,10,18,.98));
+  box-shadow:0 12px 30px rgba(0,0,0,.22);
+}
+.kh-replica-right h3{color:#f2f7ff}
+.kh-replica-match b{color:var(--nexus-gold-bright)}
+.kh-replica-progress-row>span{color:var(--nexus-blue-soft);text-shadow:0 0 20px rgba(87,217,244,.25)}
+.kh-replica-xpbar em,.kh-replica-progress-row i em{background:linear-gradient(90deg,#178eae,var(--nexus-blue),var(--nexus-gold))}
+@media(max-width:760px){
+ .kh-home-replica{border-radius:15px}
+ .kh-replica-layout{padding:10px;gap:10px}
+ .kh-replica-hero{border-radius:16px}
+ .kh-replica-actions{gap:7px}
+ .kh-replica-actions button{border-radius:12px}
+}
