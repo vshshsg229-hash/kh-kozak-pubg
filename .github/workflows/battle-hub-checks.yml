@@ -320,10 +320,10 @@ jobs:
           if (version.version !== '20.14.0') throw new Error('Release metadata must match 20.14.0');
           if (!html.includes('progression-hub.js?v=20.14.0')) throw new Error('100-level Battle Pass controller is not loaded');
           const pass = fs.readFileSync('app-v6/progression-hub.js', 'utf8');
-          const freeBlock = pass.match(/const tiers=\\[([\\s\\S]*?)\\n\\];/);
-          const eliteBlock = pass.match(/const eliteRewards=\\[([\\s\\S]*?)\\];/);
-          if (!freeBlock || [...freeBlock[1].matchAll(/\\{n:(\\d+),name:/g)].length !== 100) throw new Error('Free Battle Pass must contain exactly 100 levels');
-          if (!eliteBlock || [...eliteBlock[1].matchAll(/\\{n:(\\d+),name:/g)].length !== 20) throw new Error('Elite Pass must contain 20 milestone rewards through level 100');
+          const freeBlock = pass.match(/const tiers=\[([\s\S]*?)\n\];/);
+          const eliteBlock = pass.match(/const eliteRewards=\[([\s\S]*?)\];/);
+          if (!freeBlock || [...freeBlock[1].matchAll(/\{n:(\d+),name:/g)].length !== 100) throw new Error('Free Battle Pass must contain exactly 100 levels');
+          if (!eliteBlock || [...eliteBlock[1].matchAll(/\{n:(\d+),name:/g)].length !== 20) throw new Error('Elite Pass must contain 20 milestone rewards through level 100');
           if (!pass.includes('reward=level===100?') || !pass.includes('РІВЕНЬ \' + Math.min(100,level) + \' / 100')) throw new Error('Level 100 final reward and progress display must be active');
           if (!sw.includes('"./progression-hub.js?v=20.14.0"')) throw new Error('100-level Battle Pass must be cached offline');
           const tabs = [...html.matchAll(/data-tab="([^"]+)"/g)].map(match => match[1]);
