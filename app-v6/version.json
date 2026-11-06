@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.12.1",
+  "version": "20.13.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
-  "updatedAt": "2026-11-02",
+  "updatedAt": "2026-11-06",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.12.1: rebuilt the living Civilization simulation inside NEXUS World. Adds local save migration, autonomous offline economy, seasonal cycles, professions, nine building types, six regions, eight technologies, disasters and emergency services, wildlife, hunting, fishing, expeditions and diplomacy. Existing KOZAK NEXUS modes and local saves remain."
+  "releaseNotes": "20.13.0: added a unified cosmic gold-and-neon-blue visual layer across KOZAK NEXUS while preserving existing navigation, game modes, local saves and offline asset caching. Civilization module remains integrated in NEXUS World."
 }
