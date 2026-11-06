@@ -1,0 +1,61 @@
+/* KOZAK NEXUS · unified visual foundation
+   Additive layer: preserves existing component structure and game logic. */
+:root{
+  color-scheme:dark;
+  --nexus-bg:#050a12;
+  --nexus-bg-soft:#091321;
+  --nexus-panel:rgba(12,22,36,.88);
+  --nexus-panel-strong:#0c1726;
+  --nexus-line:rgba(91,190,221,.22);
+  --nexus-line-gold:rgba(226,185,91,.42);
+  --nexus-gold:#e7c16e;
+  --nexus-gold-bright:#ffe3a0;
+  --nexus-blue:#57d9f4;
+  --nexus-blue-soft:#9beafa;
+  --nexus-text:#edf5ff;
+  --nexus-muted:#9aafc5;
+  --nexus-radius:18px;
+  --nexus-shadow:0 18px 48px rgba(0,0,0,.34);
+  --nexus-glow:0 0 26px rgba(65,202,238,.12);
+}
+html{background:var(--nexus-bg);scrollbar-color:#31536b #07101b}
+body{background-color:var(--nexus-bg);color:var(--nexus-text)}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 12% 4%,rgba(20,111,145,.16),transparent 38%),
+    radial-gradient(ellipse at 88% 16%,rgba(163,119,37,.10),transparent 34%),
+    linear-gradient(180deg,#050a12 0%,#08111d 55%,#050a12 100%);
+}
+::selection{background:rgba(87,217,244,.28);color:#fff}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{
+  outline:2px solid var(--nexus-blue);outline-offset:3px
+}
+:where(input,select,textarea){
+  accent-color:var(--nexus-blue)
+}
+:where(.app-shell,#app,.main-content,.content-area){isolation:isolate}
+:where(.panel,.card,.game-card,.mode-card,.feature-card,.section-card,.stat-card,.profile-card,.settings-card,.mission-card,.event-card,.arsenal-card,.nexus-card){
+  border-color:var(--nexus-line);
+  box-shadow:var(--nexus-shadow),var(--nexus-glow)
+}
+:where(.panel,.card,.game-card,.mode-card,.feature-card,.section-card,.stat-card,.profile-card,.settings-card,.mission-card,.event-card,.arsenal-card,.nexus-card){
+  backdrop-filter:blur(12px)
+}
+:where(h1,h2,h3,.section-title,.panel-title){text-wrap:balance}
+:where(.muted,.secondary,.subtitle,.description){color:var(--nexus-muted)}
+:where(button,.btn,.kv2-btn){
+  -webkit-tap-highlight-color:transparent;
+  transition:filter .18s ease,transform .18s ease,border-color .18s ease,box-shadow .18s ease
+}
+:where(button,.btn,.kv2-btn):active{filter:brightness(1.08)}
+@media(hover:hover){
+  :where(button,.btn,.kv2-btn):hover{filter:brightness(1.08)}
+}
+@media(max-width:720px){
+  :root{--nexus-radius:15px}
+  body{background-attachment:scroll}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
