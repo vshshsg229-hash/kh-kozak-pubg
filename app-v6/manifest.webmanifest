@@ -4,7 +4,7 @@
   "short_name": "KOZAK NEXUS",
   "description": "KOZAK NEXUS — ігри, музика, профіль, виклики, навчання та експедиції.",
   "lang": "uk",
-  "start_url": "./kozak-world.html?source=pwa",
+  "start_url": "./index.html?openTab=home&source=pwa",
   "scope": "./",
   "display": "standalone",
   "display_override": [
