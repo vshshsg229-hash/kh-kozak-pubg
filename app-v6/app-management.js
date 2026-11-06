@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const APP_VERSION='21.3.0';
+const APP_VERSION='22.0.0';
 const panel=$('.kh-control-panel');
 if(!panel||panel.querySelector('#kh-app-management'))return;
 const section=document.createElement('section');
