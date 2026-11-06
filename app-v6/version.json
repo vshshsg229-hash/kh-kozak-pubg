@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "21.3.0",
+  "version": "22.0.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-06",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "21.3.0: unified profile overview now displays the shared wallet across all modes: coins, points, player XP, Battle Pass XP, level, seasonal rating and collection; refreshed responsive metric layout. Existing local profile storage and reward handlers are preserved. Season reward claims now refresh the shared profile immediately without forcing a full page reload."
+  "releaseNotes": "22.0.0: повний новий візуальний шар KOZAK NEXUS — перероблені меню, навігація, картки, кнопки, головна панель і мобільна навігація; кінематографічний запуск збережено та оновлено. Старі розділи, ідентифікатори кнопок, обробники режимів і локальні збереження не видаляються."
 }
