@@ -41,6 +41,21 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
 @keyframes nexusStartSweep{0%,35%{left:-45%}75%,100%{left:120%}}
 @keyframes nexusStartPulse{50%{box-shadow:0 0 0 2px #f4d17a22,0 0 30px #e6bd5866,inset 0 1px #fff9}}
 @media(prefers-reduced-motion:reduce){.nexus-intro-fill,.nexus-intro-fill:after,#kh-home-v2 .kv2-actions .nexus-start-game,#kh-home-v2 .kv2-actions .nexus-start-game:before{animation:none!important}}
+/* Startup polish: layered depth, responsive emblem and accessible loading feedback */
+#nexusIntro{background:radial-gradient(ellipse at 50% 42%,#174563 0%,#0b2032 34%,#060d18 68%,#03070d 100%)}
+#nexusIntro:before{filter:drop-shadow(0 0 22px #55dfff20)}
+.nexus-intro-stars{background-image:radial-gradient(2px 2px at 12% 22%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 78% 18%,#8deaff 45%,transparent 60%),radial-gradient(2px 2px at 83% 74%,#f4d58b 45%,transparent 60%),radial-gradient(1px 1px at 25% 82%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 58% 12%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 42% 68%,#8deaff 45%,transparent 60%),radial-gradient(1px 1px at 8% 62%,#e8bd55 45%,transparent 60%),radial-gradient(1px 1px at 92% 42%,#fff 45%,transparent 60%);background-size:100% 100%;animation:nexusTwinkle 3s ease-in-out infinite alternate}
+.nexus-intro-content{animation:nexusIntroRise .85s cubic-bezier(.2,.75,.25,1) both}
+.nexus-intro-emblem{background:radial-gradient(circle,#173b50 0%,#0a1725 68%);box-shadow:0 0 25px #f0c86a55,0 0 65px #55dfff1c,inset 0 0 28px #55dfff25}
+.nexus-intro-title{letter-spacing:clamp(.08em,.2em, .2em)}
+.nexus-intro-track{height:7px;border-color:#56748b;background:#050d17}
+.nexus-intro-fill{min-width:4%;will-change:width}
+.nexus-intro-skip{min-height:42px;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.nexus-intro-skip:hover,.nexus-intro-skip:focus-visible{border-color:#e8bd55;background:#14283a}
+@keyframes nexusIntroRise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:520px){#nexusIntro{padding:18px}.nexus-intro-emblem{width:94px;height:94px;margin-bottom:18px;font-size:50px}.nexus-intro-sub{margin-bottom:25px;font-size:8px;letter-spacing:.3em}.nexus-intro-content{width:min(390px,100%)}.nexus-intro-skip{margin-top:22px}}
+@media(max-height:560px){#nexusIntro{padding:12px}.nexus-intro-emblem{width:68px;height:68px;margin-bottom:10px;font-size:38px}.nexus-intro-sub{margin-bottom:14px}.nexus-intro-skip{margin-top:12px}}
+@media(prefers-reduced-motion:reduce){.nexus-intro-content{animation:none!important}}
 </style>
 
 <link rel="stylesheet" href="pubg-links.css?v=1.0.6"><link rel="stylesheet" href="mission-lab.css?v=16.89.0"><link rel="stylesheet" href="command-deck.css?v=16.89.0">
@@ -130,41 +145,51 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
   const fill=document.getElementById('nexusIntroFill');
   const percent=document.getElementById('nexusIntroPercent');
   const status=document.getElementById('nexusIntroStatus');
+  const skip=document.getElementById('nexusIntroSkip');
   const started=Date.now();
   let progress=4,closed=false,ready=false;
+  const timers=[];
   function setProgress(value,label){
     if(closed||value<progress)return;
-    progress=Math.min(100,value);
-    fill.style.width=progress+'%';
-    percent.textContent=String(progress).padStart(2,'0')+'%';
-    if(label)status.textContent=label;
+    progress=Math.min(ready?100:92,value);
+    if(fill)fill.style.width=progress+'%';
+    if(percent)percent.textContent=String(progress).padStart(2,'0')+'%';
+    if(label&&status)status.textContent=label;
   }
   function closeIntro(){
     if(closed)return;
     closed=true;
+    timers.forEach(clearTimeout);
     root.classList.add('is-hidden');
     document.body.classList.remove('nexus-loading');
     window.setTimeout(()=>root.remove(),900);
   }
   const stages=[
-    [18,'ПІДКЛЮЧЕННЯ ЯДРА NEXUS'],
-    [34,'ЗАВАНТАЖЕННЯ ІНТЕРФЕЙСУ'],
-    [51,'СИНХРОНІЗАЦІЯ ЛОКАЛЬНОГО ПРОФІЛЮ'],
-    [69,'ПІДГОТОВКА ІГРОВИХ РЕЖИМІВ'],
-    [84,'ЗАПУСК СИСТЕМ СВІТУ'],
-    [94,'ФІНАЛЬНА ПЕРЕВІРКА']
+    [16,'ПРОБУДЖЕННЯ ЯДРА NEXUS'],
+    [29,'ПЕРЕВІРКА СИСТЕМИ ТА РЕСУРСІВ'],
+    [43,'ЗАВАНТАЖЕННЯ ІНТЕРФЕЙСУ'],
+    [58,'ВІДНОВЛЕННЯ ЛОКАЛЬНОГО ПРОФІЛЮ'],
+    [72,'ПІДГОТОВКА ІГРОВИХ РЕЖИМІВ'],
+    [84,'ІНІЦІАЛІЗАЦІЯ СВІТУ NEXUS'],
+    [92,'ОЧІКУВАННЯ ГОТОВНОСТІ ПРОГРАМИ']
   ];
-  stages.forEach(([value,label],i)=>window.setTimeout(()=>setProgress(value,label),450+i*420));
+  stages.forEach(([value,label],i)=>timers.push(window.setTimeout(()=>setProgress(value,label),350+i*430)));
   function markReady(){
-    if(ready)return;
+    if(ready||closed)return;
     ready=true;
     setProgress(100,'УСІ СИСТЕМИ ГОТОВІ · ЛАСКАВО ПРОСИМО');
-    window.setTimeout(closeIntro,Math.max(700,3600-(Date.now()-started)));
+    timers.push(window.setTimeout(closeIntro,Math.max(650,3200-(Date.now()-started))));
   }
   if(document.readyState==='complete')markReady();
   else window.addEventListener('load',markReady,{once:true});
-  document.getElementById('nexusIntroSkip').addEventListener('click',closeIntro);
-  window.setTimeout(()=>{if(!ready)markReady();},6500);
+  if(skip)skip.addEventListener('click',closeIntro,{once:true});
+  /* Last-resort escape only: normal startup waits for the real window load event. */
+  timers.push(window.setTimeout(()=>{
+    if(!ready&&!closed){
+      setProgress(96,'ЗАВЕРШЕННЯ ЗАПУСКУ · ПОВІЛЬНЕ З’ЄДНАННЯ');
+      markReady();
+    }
+  },12000));
 })();
 </script>
 
