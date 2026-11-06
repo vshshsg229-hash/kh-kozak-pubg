@@ -33,6 +33,7 @@ jobs:
         run: |
           node --check app-v6/app.js
           node --check app-v6/nexus-world-expansion.js
+          node --check app-v6/nexus-civilization.js
           node --check app-v6/nexus-artifact-forge.js
           node --check app-v6/nexus-world-bosses.js
           node --check app-v6/battle-hub-3.js
@@ -66,6 +67,7 @@ jobs:
           if (!html.includes('nexus-artifact-forge.js?v=1.1.0')) throw new Error('Artifact Forge controller must be loaded');
           if (!html.includes('data-view="bosses"') || !html.includes('id="view-bosses"')) throw new Error('World Boss arena must be integrated as a NEXUS World view');
           if (!html.includes('nexus-world-bosses.js?v=1.0.0')) throw new Error('World Boss controller must be loaded');
+          if (!html.includes('nexus-civilization.js?v=2.0.0')) throw new Error('Living Civilization engine must be integrated');
           const blocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(source => source.trim());
           if (!html.includes('id="galaxyMap"') || !blocks[0].includes("$('#galaxyMap').innerHTML")) throw new Error('Nine-sector cosmic atlas must render interactive map nodes');
           if (blocks.length !== 1) throw new Error('Expected exactly one inline NEXUS World engine script');
@@ -95,6 +97,7 @@ jobs:
           if (!sw.includes('"./' + scriptRef[1] + '"')) throw new Error('NEXUS World Expansion script must be precached for offline use');
           if (!sw.includes('"./nexus-artifact-forge.js?v=1.1.0"')) throw new Error('Artifact Forge controller must be precached for offline use');
           if (!sw.includes('"./nexus-world-bosses.js?v=1.0.0"')) throw new Error('World Boss controller must be precached for offline use');
+          if (!sw.includes('"./nexus-civilization.js?v=2.0.0"')) throw new Error('Living Civilization engine must be precached for offline use');
           NODE
           node --check /tmp/nexus-world-inline.js
 
