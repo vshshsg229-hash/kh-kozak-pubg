@@ -124,6 +124,28 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
 <style id="nexus-squad-nav-style">.squad-front-nav{border-color:#3a6274!important;background:linear-gradient(100deg,rgba(16,49,65,.94),rgba(12,20,32,.97))!important}.squad-front-nav em{font-size:9px;font-style:normal;color:#6cecff;margin-left:auto;letter-spacing:.08em}.squad-front-nav>span:first-child{color:#e4bb5c}</style>
 <link rel="stylesheet" href="nexus-signal-hunt.css?v=1.0.0">
 <link rel="stylesheet" href="nexus-foundation.css?v=1.0.0">
+<style id="nexus-portal-loading-v2">
+/* KOZAK NEXUS · animated portal loading v2 */
+#nexusIntro{background:radial-gradient(ellipse at 50% 45%,#174c69 0%,#0b2034 34%,#060d18 69%,#02050b 100%)}
+#nexusIntro .nexus-intro-content{animation:nexusPortalEnter 1s cubic-bezier(.16,.8,.25,1) both}
+#nexusIntro .nexus-intro-emblem{border:1px solid #f6d78a;background:radial-gradient(circle,#173d51 0 34%,#0b1724 66%);box-shadow:0 0 24px #55e6ff66,0 0 58px #e8bd5533,inset 0 0 24px #55e6ff33;animation:nexusCoreBeat 2.1s ease-in-out infinite}
+#nexusIntro .nexus-intro-emblem:before{inset:-13px;border:2px solid transparent;border-top-color:#55e6ff;border-bottom-color:#55e6ff;box-shadow:0 0 18px #55e6ff55;animation:nexusPortalSpin 4s linear infinite}
+#nexusIntro .nexus-intro-emblem:after{inset:-25px;border:1px dashed #f0c86a99;border-left-color:transparent;border-right-color:transparent;animation:nexusPortalSpin 9s linear infinite reverse}
+#nexusIntro .nexus-intro-title{letter-spacing:.19em;text-shadow:0 0 12px #f0c86a66,0 0 32px #55e6ff33}
+#nexusIntro .nexus-intro-track{height:7px;border-color:#52758a;background:#06101b;box-shadow:0 0 22px #55e6ff25,inset 0 1px 3px #000}
+#nexusIntro .nexus-intro-fill{position:relative;border-radius:9px;background:linear-gradient(90deg,#0e789b,#55e6ff 55%,#f0c86a);box-shadow:0 0 18px #55e6ff99;transition:width .22s ease}
+#nexusIntro .nexus-intro-fill:after{content:"";position:absolute;inset:-4px -2px;background:linear-gradient(90deg,transparent,#fff9,transparent);filter:blur(3px);animation:nexusEnergySweep 1.15s linear infinite}
+#nexusIntro .nexus-intro-skip{border-color:#55e6ff66;transition:background .2s,border-color .2s,transform .2s}
+#nexusIntro .nexus-intro-skip:hover{background:#12354a;border-color:#55e6ff;transform:translateY(-1px)}
+#nexusIntro .nexus-intro-stars{opacity:.75;animation:nexusStarDrift 16s linear infinite}
+@keyframes nexusPortalSpin{to{transform:rotate(360deg)}}
+@keyframes nexusCoreBeat{0%,100%{transform:scale(.97);filter:brightness(.94)}50%{transform:scale(1.045);filter:brightness(1.25)}}
+@keyframes nexusEnergySweep{from{transform:translateX(-120%)}to{transform:translateX(240%)}}
+@keyframes nexusPortalEnter{from{opacity:0;transform:translateY(22px) scale(.94);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes nexusStarDrift{to{background-position:100px 80px}}
+@media(max-width:520px){#nexusIntro .nexus-intro-title{letter-spacing:.12em}#nexusIntro .nexus-intro-emblem{width:100px;height:100px}}
+@media(prefers-reduced-motion:reduce){#nexusIntro .nexus-intro-content,#nexusIntro .nexus-intro-emblem,#nexusIntro .nexus-intro-emblem:before,#nexusIntro .nexus-intro-emblem:after,#nexusIntro .nexus-intro-fill:after,#nexusIntro .nexus-intro-stars{animation:none!important}}
+</style>
 </head>
 <body class="sidebar-hidden nexus-loading">
 <div id="nexusIntro" role="status" aria-live="polite" aria-label="Завантаження KOZAK NEXUS">
@@ -149,6 +171,10 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
   const started=Date.now();
   let progress=4,closed=false,ready=false;
   const timers=[];
+  let progressTicker=0;
+  const labels=[[18,'ЗАПУСК ЯДРА KOZAK NEXUS'],[34,'ПЕРЕВІРКА ЛОКАЛЬНИХ РЕСУРСІВ'],[50,'ЗБИРАЄМО ІНТЕРФЕЙС'],[66,'ВІДНОВЛЮЄМО ЛОКАЛЬНИЙ ПРОФІЛЬ'],[80,'ГОТУЄМО ІГРОВІ РЕЖИМИ'],[90,'ВІДКРИВАЄМО ПОРТАЛ NEXUS']];
+  function tick(){if(closed||ready)return;progress=Math.min(91,progress+0.22);if(fill)fill.style.width=progress+'%';if(percent)percent.textContent=String(Math.floor(progress)).padStart(2,'0')+'%';const stage=[...labels].reverse().find(x=>progress>=x[0]);if(stage&&status)status.textContent=stage[1];progressTicker=window.setTimeout(tick,90);}
+  tick();
   function setProgress(value,label){
     if(closed||value<progress)return;
     progress=Math.min(ready?100:92,value);
@@ -160,6 +186,7 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
     if(closed)return;
     closed=true;
     timers.forEach(clearTimeout);
+    clearTimeout(progressTicker);
     root.classList.add('is-hidden');
     document.body.classList.remove('nexus-loading');
     window.setTimeout(()=>root.remove(),900);
@@ -186,10 +213,10 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
   /* Last-resort escape only: normal startup waits for the real window load event. */
   timers.push(window.setTimeout(()=>{
     if(!ready&&!closed){
-      setProgress(96,'ЗАВЕРШЕННЯ ЗАПУСКУ · ПОВІЛЬНЕ З’ЄДНАННЯ');
+      setProgress(96,'ЗАВЕРШУЄМО ЗАПУСК · ДЯКУЄМО ЗА ОЧІКУВАННЯ');
       markReady();
     }
-  },12000));
+  },18000));
 })();
 </script>
 
