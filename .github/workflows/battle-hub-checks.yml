@@ -62,11 +62,13 @@ jobs:
           const html = fs.readFileSync('app-v6/nexus-world.html', 'utf8');
           const appHtml = fs.readFileSync('app-v6/index.html', 'utf8');
           if (!appHtml.includes('data-tab="nexusworld"') || !appHtml.includes('id="tab-nexusworld"')) throw new Error('NEXUS World must be available as an integrated main-app tab');
-          if (!appHtml.includes('nexus-world.html?v=1.4.0&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
+          if (!appHtml.includes('nexus-world.html?v=1.4.1&embed=1')) throw new Error('Integrated NEXUS World iframe must load the versioned embedded page');
           if (!html.includes('data-view="forge"') || !html.includes('id="view-forge"')) throw new Error('Artifact Forge must be integrated as a NEXUS World view');
           if (!html.includes('nexus-artifact-forge.js?v=1.1.0')) throw new Error('Artifact Forge controller must be loaded');
           if (!html.includes('data-view="bosses"') || !html.includes('id="view-bosses"')) throw new Error('World Boss arena must be integrated as a NEXUS World view');
-          if (!html.includes('nexus-world-bosses.js?v=1.0.0')) throw new Error('World Boss controller must be loaded');
+          if (!html.includes('nexus-world-bosses.js?v=20.10.0')) throw new Error('World Boss controller must be loaded');
+          if (!html.includes('nexus-civilization.js?v=2.0.0')) throw new Error('Living Civilization engine must be loaded');
+          if (!sw.includes('nexus-civilization.js?v=2.0.0')) throw new Error('Living Civilization engine must be precached for offline use');
           if (!html.includes('nexus-civilization.js?v=2.0.0')) throw new Error('Living Civilization engine must be integrated');
           const blocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(source => source.trim());
           const worldEngine = blocks.find(source => source.includes("$('#galaxyMap').innerHTML"));
@@ -97,7 +99,7 @@ jobs:
           const sw = fs.readFileSync('app-v6/sw.js', 'utf8');
           if (!sw.includes('"./' + scriptRef[1] + '"')) throw new Error('NEXUS World Expansion script must be precached for offline use');
           if (!sw.includes('"./nexus-artifact-forge.js?v=1.1.0"')) throw new Error('Artifact Forge controller must be precached for offline use');
-          if (!sw.includes('"./nexus-world-bosses.js?v=1.0.0"')) throw new Error('World Boss controller must be precached for offline use');
+          if (!sw.includes('"./nexus-world-bosses.js?v=20.10.0"')) throw new Error('World Boss controller must be precached for offline use');
           if (!sw.includes('"./nexus-civilization.js?v=2.0.0"')) throw new Error('Living Civilization engine must be precached for offline use');
           NODE
           node --check /tmp/nexus-world-inline.js
