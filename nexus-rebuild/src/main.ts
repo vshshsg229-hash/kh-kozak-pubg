@@ -13,7 +13,7 @@ let speed=1,acc=0,sceneRef:WorldScene;
 const $=(id:string)=>document.getElementById(id)!;
 function log(message:string){const box=$('events');const p=document.createElement('p');p.textContent='› '+message;box.prepend(p);while(box.children.length>6)box.lastElementChild?.remove();}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));log('Світ збережено на цьому пристрої.');}
-function stats(){ $('era').textContent=(state.year<5?'СЕРЕДНЬОВІЧЧЯ':state.year<12?'ЕПОХА ВІДРОДЖЕННЯ':state.year<24?'ІНДУСТРІАЛЬНА ЕПОХА':'ТЕХНО-ЕПОХА')+' · РІК '+state.year;$('population').textContent=String(state.population);$('food').textContent=String(state.food);$('wood').textContent=String(state.wood);$('prosperity').textContent=String(state.prosperity);}
+function stats(){ const season=['🌱 ВЕСНА','☀️ ЛІТО','🍂 ОСІНЬ','❄️ ЗИМА'][Math.floor((state.tick%48)/12)]; $('season').textContent=season; $('era').textContent=(state.year<5?'СЕРЕДНЬОВІЧЧЯ':state.year<12?'ЕПОХА ВІДРОДЖЕННЯ':state.year<24?'ІНДУСТРІАЛЬНА ЕПОХА':'ТЕХНО-ЕПОХА')+' · РІК '+state.year;$('population').textContent=String(state.population);$('food').textContent=String(state.food);$('wood').textContent=String(state.wood);$('prosperity').textContent=String(state.prosperity);}
 class WorldScene extends Phaser.Scene {
   graphics!:Phaser.GameObjects.Graphics; labels!:Phaser.GameObjects.Container;
   constructor(){super('world');}
@@ -32,8 +32,8 @@ class WorldScene extends Phaser.Scene {
 function free(x:number,y:number){return x>=0&&y>=0&&x<W&&y<H&&!state.buildings.some(b=>b.x===x&&b.y===y)&&!state.fires.some(f=>f.x===x&&f.y===y);}
 function simulate(){
  state.tick++;if(state.tick%12===0){state.year++;state.prosperity+=1;if(state.food>0)state.food=Math.max(0,state.food-2);if(state.food===0&&state.population>4){state.population--;log('Нестача їжі: населення скоротилося.');}}
- if(state.tick%4===0){const farms=state.buildings.filter(b=>b.type==='farm').length;state.food+=farms*3+1;state.wood+=Math.max(1,Math.floor(state.people.length/5));}
- for(const p of state.people){if(Math.random()<.18){p.x=Phaser.Math.Clamp(p.x+Phaser.Math.Between(-1,1),0,W-1);p.y=Phaser.Math.Clamp(p.y+Phaser.Math.Between(-1,1),0,H-1);}}
+ if(state.tick%4===0){const season=Math.floor((state.tick%48)/12);const farms=state.buildings.filter(b=>b.type==='farm').length;state.food+=Math.max(0,farms*(season===3?1:season===2?2:4))+1;state.wood+=Math.max(1,Math.floor(state.people.length/5));}
+ for(const a of state.animals){if(Math.random()<.28){a.x=Phaser.Math.Clamp(a.x+Phaser.Math.Between(-1,1),0,W-1);a.y=Phaser.Math.Clamp(a.y+Phaser.Math.Between(-1,1),0,H-1);}}\n for(const p of state.people){if(Math.random()<.18){p.x=Phaser.Math.Clamp(p.x+Phaser.Math.Between(-1,1),0,W-1);p.y=Phaser.Math.Clamp(p.y+Phaser.Math.Between(-1,1),0,H-1);}}
  for(const f of [...state.fires]){f.life--;const crew=state.buildings.some(b=>b.type==='firestation')&&state.people.some(p=>p.role==='firefighter'&&Math.abs(p.x-f.x)+Math.abs(p.y-f.y)<3);if(crew||f.life<=0){state.fires=state.fires.filter(x=>x!==f);log(crew?'Пожежники загасили вогонь.':'Пожежа згасла сама.');}else if(Math.random()<.22){const nx=f.x+Phaser.Math.Between(-1,1),ny=f.y+Phaser.Math.Between(-1,1);if(free(nx,ny)){state.fires.push({x:nx,y:ny,life:5});log('Вогонь поширюється лісом!');}}}
  if(state.tick%18===0&&Math.random()<.55){const x=Phaser.Math.Between(2,15),y=Phaser.Math.Between(1,10);if(free(x,y)){state.fires.push({x,y,life:7});log('У лісі спалахнула пожежа! Потрібна пожежна команда.');}}
  if(state.tick%30===0&&state.buildings.some(b=>b.type==='house')&&state.food>20){state.population++;log('До поселення приєдналася нова родина.');}
@@ -43,7 +43,7 @@ function build(type:Building){const costs:Record<Building,number>={house:12,farm
 new Phaser.Game({type:Phaser.AUTO,parent:'game',width:W*S,height:H*S,backgroundColor:'#0b1720',scene:[WorldScene],scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},render:{antialias:true}});
 document.querySelectorAll<HTMLButtonElement>('[data-speed]').forEach(b=>b.addEventListener('click',()=>{speed=Number(b.dataset.speed);document.querySelectorAll('[data-speed]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');}));
 document.querySelectorAll<HTMLButtonElement>('[data-build]').forEach(b=>b.addEventListener('click',()=>build(b.dataset.build as Building)));
-$('save').addEventListener('click',save);
+$('save').addEventListener('click',save);\n$('hunt').addEventListener('click',()=>{if(!state.animals.length){log('Поруч немає здобичі.');return;}const prey=state.animals.shift()!;state.food+=12;state.prosperity+=1;log('Мисливці вполювали '+prey.kind+' та принесли 12 одиниць їжі.');sceneRef.draw();stats();});\n$('plant').addEventListener('click',()=>{if(state.wood<2){log('Потрібно 2 деревини для саджанців.');return;}state.wood-=2;state.prosperity+=1;state.animals.push({x:Phaser.Math.Between(1,16),y:Phaser.Math.Between(1,10),kind:'🌳'});log('Мешканці висадили дерева та відновлюють ліс.');sceneRef.draw();stats();});
 $('reset').addEventListener('click',()=>{if(confirm('Створити новий світ? Поточне збереження буде замінено.')){state=structuredClone(initial);save();sceneRef.draw();stats();log('Нова цивілізація заснована.');}});
 window.addEventListener('beforeunload',()=>localStorage.setItem(KEY,JSON.stringify(state)));
 stats();
