@@ -305,6 +305,32 @@ jobs:
                     console.log(`Passed ${checks.length} Battle Hub static checks.`);
           NODE
 
+
+      - name: Validate cosmic theme and locked navigation
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const html = fs.readFileSync('app-v6/index.html', 'utf8');
+          const css = fs.readFileSync('app-v6/nexus-cosmic-refresh.css', 'utf8');
+          const sw = fs.readFileSync('app-v6/sw.js', 'utf8');
+          const version = JSON.parse(fs.readFileSync('app-v6/version.json', 'utf8'));
+          if (!html.includes('nexus-cosmic-refresh.css?v=20.13.0')) throw new Error('Cosmic theme stylesheet is not loaded');
+          if (!sw.includes('"./nexus-cosmic-refresh.css?v=20.13.0"')) throw new Error('Cosmic theme stylesheet is not cached offline');
+          if (!css.includes('.sidebar') || !css.includes('.nav-item.active') || !css.includes('#kh-home-v2 .kv2-hero')) throw new Error('Cosmic theme must cover the existing shell and home hero');
+          if (version.version !== '20.13.0') throw new Error('Release metadata must match 20.13.0');
+          const tabs = [...html.matchAll(/data-tab="([^"]+)"/g)].map(match => match[1]);
+          const panels = new Set([...html.matchAll(/id="tab-([^"]+)"/g)].map(match => match[1]));
+          for (const tab of new Set(tabs)) if (!panels.has(tab)) throw new Error('Navigation target is missing: ' + tab);
+          for (const tab of ['home','games','nexusworld','3d','pass','missions','bunker','profile','music','tiktok','telegram']) {
+            if (!panels.has(tab)) throw new Error('Required existing mode was removed: ' + tab);
+          }
+          if (!html.includes('id="nexusIntro"') || !html.includes('id="nexusIntroSkip"')) throw new Error('Animated startup screen must remain available');
+          let depth = 0;
+          for (const ch of css) { if (ch === '{') depth++; if (ch === '}') depth--; if (depth < 0) throw new Error('Cosmic theme CSS has an unmatched closing brace'); }
+          if (depth !== 0) throw new Error('Cosmic theme CSS has unclosed blocks');
+          console.log('Cosmic theme, offline cache, loading screen and locked navigation checks passed.');
+          NODE
+
       - name: Check service worker syntax
         run: node --check app-v6/sw.js
 
