@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#07101b" />
+  <meta name="description" content="KOZAK NEXUS — жива цивілізація, яку ти розвиваєш." />
+  <title>KOZAK NEXUS · Living World</title>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✦</span><div><b>KOZAK NEXUS</b><small>ЖИВИЙ СВІТ · НОВА ЕПОХА</small></div></div>
+      <div class="era" id="era">СЕРЕДНЬОВІЧЧЯ · РІК 1</div>
+      <div class="top-actions"><button id="save">ЗБЕРЕГТИ</button><button id="reset" class="danger">НОВИЙ СВІТ</button></div>
+    </header>
+    <main class="layout">
+      <section class="world-panel">
+        <div class="panel-heading"><div><small>ГОЛОВНИЙ СЕКТОР</small><h1>Долина світанку</h1></div><div class="live"><i></i> СИМУЛЯЦІЯ АКТИВНА</div></div>
+        <div id="game"></div>
+        <div class="map-legend"><span>🏠 поселення</span><span>🌾 ферми</span><span>🌲 ліс</span><span>🔥 пожежа</span><span>🚒 пожежники</span></div>
+      </section>
+      <aside class="sidebar">
+        <section class="card"><small>СТАН ЦИВІЛІЗАЦІЇ</small><div class="stats">
+          <div><b id="population">12</b><span>МЕШКАНЦІ</span></div><div><b id="food">48</b><span>ЇЖА</span></div><div><b id="wood">30</b><span>ДЕРЕВИНА</span></div><div><b id="prosperity">12</b><span>РОЗВИТОК</span></div>
+        </div></section>
+        <section class="card"><small>КЕРУВАННЯ СВІТОМ</small><div class="controls"><button data-speed="0">Ⅱ ПАУЗА</button><button data-speed="1" class="selected">▶ 1×</button><button data-speed="2">» 2×</button><button data-speed="4">»» 4×</button></div><p class="hint">Мешканці самі працюють, будують, збирають ресурси та реагують на події.</p></section>
+        <section class="card"><small>РОЗВИТОК ПОСЕЛЕННЯ</small><div class="build-list">
+          <button data-build="house"><span>🏠</span><span><b>Будинок</b><small>+4 місця · 12 дерева</small></span><em>БУДУВАТИ</em></button>
+          <button data-build="farm"><span>🌾</span><span><b>Ферма</b><small>+їжа · 10 дерева</small></span><em>БУДУВАТИ</em></button>
+          <button data-build="firestation"><span>🚒</span><span><b>Пожежна станція</b><small>Рятує поселення · 20 дерева</small></span><em>БУДУВАТИ</em></button>
+          <button data-build="research"><span>🔬</span><span><b>Дослідницький центр</b><small>Відкриває нові епохи · 25 дерева</small></span><em>БУДУВАТИ</em></button>
+        </div></section>
+        <section class="card event-card"><small>ХРОНІКА СВІТУ</small><div id="events" class="events"><p>Світ прокидається. Перші мешканці засновують поселення.</p></div></section>
+      </aside>
+    </main>
+    <footer>KOZAK NEXUS · LOCAL WORLD SAVE <span>TYPEScript + PHASER</span></footer>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
