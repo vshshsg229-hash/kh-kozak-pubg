@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.15.0",
+  "version": "21.0.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-06",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.15.0: local-first runtime foundation. Adds device-only IndexedDB recovery snapshots, non-destructive local save restore/import/export API, and offline cache integration. Existing menus, map, modes, loading animation, and legacy local save keys remain intact. Full module rebuild continues in stages."
+  "releaseNotes": "21.0.0: redesigned visual layer and app transitions. Adds refreshed navigation panels, responsive layout polish, cinematic interface animations, animated panel reveals, and offline precache. Existing game modules, tab IDs, map, local saves, and gameplay logic remain preserved."
 }
