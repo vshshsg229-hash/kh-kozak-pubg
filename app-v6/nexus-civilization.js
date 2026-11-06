@@ -2,7 +2,7 @@
 const KEY='kozak.nexus.civilization.v1',q=s=>document.querySelector(s),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const eras=[['Середньовіччя',0],['Відродження',100],['Індустріальна ера',260],['Електрична ера',520],['Космічна ера',900]];
 const fresh=()=>({v:1,era:0,pop:24,happiness:78,food:150,wood:120,stone:90,coins:80,knowledge:0,houses:2,farm:1,workshop:0,fireStation:0,animals:4,farmers:3,hunters:1,builders:2,firefighters:1,fire:0,fireAt:0,last:Date.now(),lastFire:Date.now(),seq:0,log:[]});
-let s;try{const x=JSON.parse(localStorage.getItem(KEY)||'null');s=x&&x.v===1?{...fresh(),...x}:fresh()}catch{s=fresh()}
+let s;try{const x=JSON.parse(localStorage.getItem(KEY)||'null');s=x&&typeof x==='object'?{...fresh(),...x}:fresh()}catch{s=fresh()}
 const jobs=[['farmers','🌾','Фермери'],['hunters','🏹','Мисливці'],['builders','🪓','Будівельники'],['firefighters','🚒','Пожежники']];
 const fmt=n=>Math.floor(n).toLocaleString('uk-UA'),free=()=>Math.max(0,s.pop-jobs.reduce((a,j)=>a+s[j[0]],0)),cap=()=>s.houses*16;
 function toast(t){let e=q('#civ-toast');if(!e){e=document.createElement('div');e.id='civ-toast';document.body.append(e)}e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2300)}
