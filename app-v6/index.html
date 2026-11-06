@@ -6,7 +6,30 @@
 <title>KOZAK NEXUS</title>
 <link rel="stylesheet" href="style.css?v=17.63.0"><link rel="stylesheet" href="phone-sidebar-18.63.css?v=18.63.0"><link rel="stylesheet" href="global-update-18.02.css?v=18.13.0"><link rel="stylesheet" href="tactical-hq.css?v=9.3.0"><link rel="stylesheet" href="event-center.css?v=1.0.0"><link rel="stylesheet" href="arsenal.css?v=1.0.0"><link rel="stylesheet" href="tactical-lab-v16.18.css?v=16.18.2"><link rel="stylesheet" href="game-library.css?v=1.1.0"><link rel="stylesheet" href="game-mode-command.css?v=18.63.0">
 <link rel="stylesheet" href="desktop-neon.css?v=17.51.0"><link rel="stylesheet" href="home-replica.css?v=1.0.3"><link rel="stylesheet" href="fighter-upgrade.css?v=1.0.0">
-<link rel="stylesheet" href="pc-companion.css?v=1.2.0"><link rel="stylesheet" href="global-refresh.css?v=9.0.1"><link rel="stylesheet" href="app-update.css?v=18.31.1"><link rel="stylesheet" href="interface-refresh.css?v=13.9.2"><link rel="stylesheet" href="battle-world.css?v=1.0.1"><link rel="stylesheet" href="creator-studio.css?v=1.1.0"><link rel="stylesheet" href="kozak-academy.css?v=1.5.5"><style id="kh-academy-launch-style">.kh-academy-launch{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;margin:18px 0;padding:clamp(16px,2.6vw,24px);border:2px solid #a5b4fc;border-radius:24px;background:radial-gradient(circle at 5% 10%,#fde68a,transparent 32%),linear-gradient(125deg,#e0f2fe,#f5f3ff 58%,#dcfce7);color:#24324a;box-shadow:0 8px 0 #c7d2fe}.kh-academy-launch-icon{display:grid;place-items:center;width:62px;height:62px;border-radius:20px;background:linear-gradient(145deg,#dbeafe,#fef3c7);border:2px solid #93c5fd;font-size:34px;box-shadow:0 4px 0 #93c5fd}.kh-academy-launch-copy>span{font-size:10px;font-weight:900;letter-spacing:.06em;color:#6d28d9}.kh-academy-launch-copy h2{margin:4px 0;color:#4338ca;font-size:clamp(20px,2.6vw,28px)}.kh-academy-launch-copy p{margin:4px 0;color:#475569;line-height:1.5;font-size:13px}.kh-academy-launch-copy small{display:block;margin-top:6px;color:#047857;font-size:11px;font-weight:900}.kh-academy-launch>button{min-height:50px;padding:12px 16px;border:0;border-radius:16px;background:linear-gradient(100deg,#7c3aed,#4f46e5);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 5px 0 #3730a3}.kh-academy-launch>button span{margin-left:8px}@media(max-width:620px){.kh-academy-launch{grid-template-columns:auto minmax(0,1fr);gap:12px;border-radius:22px}.kh-academy-launch-icon{width:50px;height:50px;font-size:27px}.kh-academy-launch>button{grid-column:1/-1;width:100%;min-height:54px;font-size:14px}}@media(prefers-reduced-motion:reduce){.kh-academy-launch *{scroll-behavior:auto}}</style>
+<link rel="stylesheet" href="pc-companion.css?v=1.2.0"><link rel="stylesheet" href="global-refresh.css?v=9.0.1"><link rel="stylesheet" href="app-update.css?v=18.31.1"><link rel="stylesheet" href="interface-refresh.css?v=13.9.2"><link rel="stylesheet" href="battle-world.css?v=1.0.1"><link rel="stylesheet" href="creator-studio.css?v=1.1.0"><link rel="stylesheet" href="kozak-academy.css?v=1.5.5"><style id="kh-academy-launch-style">.kh-academy-launch{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;margin:18px 0;padding:clamp(16px,2.6vw,24px);border:2px solid #a5b4fc;border-radius:24px;background:radial-gradient(circle at 5% 10%,#fde68a,transparent 32%),linear-gradient(125deg,#e0f2fe,#f5f3ff 58%,#dcfce7);color:#24324a;box-shadow:0 8px 0 #c7d2fe}.kh-academy-launch-icon{display:grid;place-items:center;width:62px;height:62px;border-radius:20px;background:linear-gradient(145deg,#dbeafe,#fef3c7);border:2px solid #93c5fd;font-size:34px;box-shadow:0 4px 0 #93c5fd}.kh-academy-launch-copy>span{font-size:10px;font-weight:900;letter-spacing:.06em;color:#6d28d9}.kh-academy-launch-copy h2{margin:4px 0;color:#4338ca;font-size:clamp(20px,2.6vw,28px)}.kh-academy-launch-copy p{margin:4px 0;color:#475569;line-height:1.5;font-size:13px}.kh-academy-launch-copy small{display:block;margin-top:6px;color:#047857;font-size:11px;font-weight:900}.kh-academy-launch>button{min-height:50px;padding:12px 16px;border:0;border-radius:16px;background:linear-gradient(100deg,#7c3aed,#4f46e5);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 5px 0 #3730a3}.kh-academy-launch>button span{margin-left:8px}@media(max-width:620px){.kh-academy-launch{grid-template-columns:auto minmax(0,1fr);gap:12px;border-radius:22px}.kh-academy-launch-icon{width:50px;height:50px;font-size:27px}.kh-academy-launch>button{grid-column:1/-1;width:100%;min-height:54px;font-size:14px}}@media(prefers-reduced-motion:reduce){.kh-academy-launch *{scroll-behavior:auto}}
+/* KOZAK NEXUS cinematic app startup */
+body.nexus-loading{overflow:hidden}
+#nexusIntro{position:fixed;inset:0;z-index:999999;display:grid;place-items:center;overflow:hidden;padding:24px;background:radial-gradient(ellipse at 50% 46%,#123b58 0%,#091827 38%,#04080f 78%);color:#f4f7ff;opacity:1;visibility:visible;transition:opacity .8s ease,visibility .8s ease}
+#nexusIntro.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+#nexusIntro:before,#nexusIntro:after{content:"";position:absolute;width:min(78vw,620px);aspect-ratio:1;border:1px solid #55dfff25;border-radius:50%;box-shadow:0 0 0 28px #55dfff08,0 0 0 72px #e8bd5507,0 0 80px #168bb322;animation:nexusOrbit 18s linear infinite}
+#nexusIntro:after{width:min(55vw,430px);border-color:#e8bd5540;box-shadow:0 0 0 18px #e8bd5508;animation-direction:reverse;animation-duration:13s}
+.nexus-intro-stars{position:absolute;inset:0;opacity:.55;background-image:radial-gradient(2px 2px at 12% 22%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 78% 18%,#8deaff 45%,transparent 60%),radial-gradient(2px 2px at 83% 74%,#f4d58b 45%,transparent 60%),radial-gradient(1px 1px at 25% 82%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 58% 12%,#fff 45%,transparent 60%),radial-gradient(1px 1px at 42% 68%,#8deaff 45%,transparent 60%);background-size:100% 100%;animation:nexusTwinkle 3s ease-in-out infinite alternate}
+.nexus-intro-content{position:relative;z-index:2;width:min(440px,100%);text-align:center}
+.nexus-intro-emblem{position:relative;width:116px;height:116px;margin:0 auto 22px;display:grid;place-items:center;border:1px solid #f0c86a;border-radius:50%;color:#ffe19a;font-size:62px;font-weight:950;text-shadow:0 0 22px #f0c86a;box-shadow:0 0 25px #f0c86a55,inset 0 0 28px #55dfff25;animation:nexusPulse 2.4s ease-in-out infinite}
+.nexus-intro-emblem:before,.nexus-intro-emblem:after{content:"";position:absolute;inset:-12px;border:1px solid #55e6ff66;border-radius:50%;border-left-color:transparent;border-right-color:transparent;animation:nexusOrbit 5s linear infinite}
+.nexus-intro-emblem:after{inset:-22px;border-color:#f0c86a55;border-top-color:transparent;border-bottom-color:transparent;animation-direction:reverse;animation-duration:7s}
+.nexus-intro-title{margin:0;color:#f5d17a;font-size:clamp(27px,7vw,43px);font-weight:1000;letter-spacing:.2em;text-shadow:0 0 25px #e5b94c55}
+.nexus-intro-sub{margin:6px 0 30px;color:#9edcf0;font-size:10px;font-weight:900;letter-spacing:.42em}
+.nexus-intro-status{margin:0 0 11px;color:#dcebf7;font-size:10px;font-weight:900;letter-spacing:.16em}
+.nexus-intro-track{height:5px;overflow:hidden;border:1px solid #38536a;border-radius:9px;background:#07111c;box-shadow:0 0 20px #55e6ff18}
+.nexus-intro-fill{width:4%;height:100%;border-radius:9px;background:linear-gradient(90deg,#147d9d,#55e6ff,#f0c86a);box-shadow:0 0 14px #55e6ff;transition:width .55s ease}
+.nexus-intro-meta{display:flex;justify-content:space-between;margin-top:9px;color:#91a8bd;font-size:9px;letter-spacing:.12em}
+.nexus-intro-skip{margin-top:27px;padding:9px 16px;border:1px solid #47647a;border-radius:99px;background:#0a1825aa;color:#c8dce9;font-size:10px;font-weight:850;letter-spacing:.12em}
+.nexus-intro-skip:active{transform:scale(.97)}
+@keyframes nexusOrbit{to{transform:rotate(360deg)}}@keyframes nexusPulse{50%{transform:scale(1.06);box-shadow:0 0 42px #f0c86a88,inset 0 0 36px #55dfff44}}@keyframes nexusTwinkle{to{opacity:.9}}
+@media(prefers-reduced-motion:reduce){#nexusIntro:before,#nexusIntro:after,.nexus-intro-emblem,.nexus-intro-emblem:before,.nexus-intro-emblem:after,.nexus-intro-stars{animation:none!important}#nexusIntro,.nexus-intro-fill{transition:none!important}}
+
+</style>
 
 <link rel="stylesheet" href="pubg-links.css?v=1.0.6"><link rel="stylesheet" href="mission-lab.css?v=16.89.0"><link rel="stylesheet" href="command-deck.css?v=16.89.0">
 <link rel="stylesheet" href="mobile-comfort.css?v=9.8.3"><link rel="stylesheet" href="tablet-portrait.css?v=1.0.0"><link rel="stylesheet" href="tablet-landscape.css?v=1.0.0"><link rel="stylesheet" href="phone-tablet-layout.css?v=1.0.0"><link rel="stylesheet" href="global-13.8.css?v=13.8.1"><link rel="stylesheet" href="interface-v16.css?v=16.9.0"><link rel="stylesheet" href="media-tiktok-buttons.css?v=16.1.0"><link rel="stylesheet" href="tiktok-hub.css?v=17.40.0"><link rel="stylesheet" href="interface-recovery-v16.2.css?v=16.4.0">
@@ -74,7 +97,59 @@
 <style id="nexus-squad-nav-style">.squad-front-nav{border-color:#3a6274!important;background:linear-gradient(100deg,rgba(16,49,65,.94),rgba(12,20,32,.97))!important}.squad-front-nav em{font-size:9px;font-style:normal;color:#6cecff;margin-left:auto;letter-spacing:.08em}.squad-front-nav>span:first-child{color:#e4bb5c}</style>
 <link rel="stylesheet" href="nexus-signal-hunt.css?v=1.0.0">
 </head>
-<body class="sidebar-hidden">
+<body class="sidebar-hidden" class="nexus-loading">
+<div id="nexusIntro" role="status" aria-live="polite" aria-label="Завантаження KOZAK NEXUS">
+  <div class="nexus-intro-stars" aria-hidden="true"></div>
+  <div class="nexus-intro-content">
+    <div class="nexus-intro-emblem" aria-hidden="true">N</div>
+    <h1 class="nexus-intro-title">KOZAK NEXUS</h1>
+    <div class="nexus-intro-sub">NEW WORLD · NEW HORIZONS</div>
+    <p class="nexus-intro-status" id="nexusIntroStatus">ПРОБУДЖЕННЯ ЯДРА NEXUS</p>
+    <div class="nexus-intro-track"><div class="nexus-intro-fill" id="nexusIntroFill"></div></div>
+    <div class="nexus-intro-meta"><span>WORLD ENGINE</span><strong id="nexusIntroPercent">04%</strong></div>
+    <button class="nexus-intro-skip" id="nexusIntroSkip" type="button">ПРОПУСТИТИ АНІМАЦІЮ</button>
+  </div>
+</div>
+<script>
+(function(){
+  const root=document.getElementById('nexusIntro');
+  if(!root)return;
+  const fill=document.getElementById('nexusIntroFill');
+  const percent=document.getElementById('nexusIntroPercent');
+  const status=document.getElementById('nexusIntroStatus');
+  const started=Date.now();
+  let progress=4,closed=false;
+  function setProgress(value,label){
+    if(value<progress)return;
+    progress=Math.min(100,value);
+    fill.style.width=progress+'%';
+    percent.textContent=String(progress).padStart(2,'0')+'%';
+    if(label)status.textContent=label;
+  }
+  function closeIntro(){
+    if(closed)return;
+    closed=true;
+    root.classList.add('is-hidden');
+    document.body.classList.remove('nexus-loading');
+    window.setTimeout(()=>root.remove(),900);
+  }
+  window.addEventListener('DOMContentLoaded',()=>{
+    setProgress(36,'ІНТЕРФЕЙС ІНІЦІАЛІЗОВАНО');
+    try{
+      const probe='__nexus_startup_check__';
+      localStorage.setItem(probe,'1');
+      localStorage.removeItem(probe);
+      setProgress(62,'ЛОКАЛЬНИЙ ПРОФІЛЬ ДОСТУПНИЙ');
+    }catch(_){setProgress(62,'ПІДГОТОВКА ЛОКАЛЬНОЇ СЕСІЇ');}
+    setProgress(82,'ЗАПУСК МОДУЛІВ NEXUS');
+  },{once:true});
+  window.addEventListener('load',()=>{
+    setProgress(100,'УСІ СИСТЕМИ ГОТОВІ · ЛАСКАВО ПРОСИМО');
+    window.setTimeout(closeIntro,Math.max(500,3000-(Date.now()-started)));
+  },{once:true});
+  document.getElementById('nexusIntroSkip').addEventListener('click',closeIntro);
+})();
+</script>
 
 <div class="app-shell">
   <aside class="sidebar">
