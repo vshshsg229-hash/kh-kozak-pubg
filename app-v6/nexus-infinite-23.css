@@ -1,0 +1,56 @@
+/* KOZAK NEXUS INFINITE 23 — unified cosmic interface layer
+   Visual-only overrides: preserve existing tabs, IDs, handlers and local saves. */
+:root{
+  --n23-bg:#050913;--n23-panel:rgba(12,21,36,.88);--n23-panel-hi:rgba(18,32,51,.94);
+  --n23-line:rgba(111,164,193,.22);--n23-gold:#f3cc78;--n23-blue:#62e4ff;
+  --n23-text:#eef6ff;--n23-muted:#91a8bf;--n23-shadow:0 18px 55px rgba(0,0,0,.34);
+}
+html{background:var(--n23-bg)}
+body{background:radial-gradient(ellipse at 78% -12%,rgba(27,111,147,.22),transparent 38%),radial-gradient(ellipse at 0 55%,rgba(174,126,43,.10),transparent 34%),var(--n23-bg)}
+.app-shell{isolation:isolate}
+.sidebar{background:linear-gradient(180deg,rgba(10,20,34,.98),rgba(5,11,21,.98));border-right:1px solid var(--n23-line);box-shadow:14px 0 40px rgba(0,0,0,.18)}
+.brand{border-bottom:1px solid var(--n23-line)}
+.brand-mark{border:1px solid rgba(243,204,120,.65);box-shadow:0 0 24px rgba(98,228,255,.12),inset 0 0 18px rgba(243,204,120,.1)}
+.nav-group-title{color:#7893aa;letter-spacing:.16em}
+.nav-item{border:1px solid transparent;transition:background .2s,border-color .2s,transform .2s,color .2s}
+.nav-item:hover{transform:translateX(2px);background:rgba(69,157,190,.10);border-color:var(--n23-line)}
+.nav-item.active{background:linear-gradient(100deg,rgba(31,106,132,.28),rgba(194,150,65,.09));border-color:rgba(98,228,255,.28);box-shadow:inset 3px 0 var(--n23-blue)}
+.main{min-width:0}
+.topbar{background:rgba(6,13,24,.78);border:1px solid var(--n23-line);border-radius:18px;backdrop-filter:blur(18px);box-shadow:var(--n23-shadow)}
+.season{letter-spacing:.12em}
+.season b{color:var(--n23-gold)}
+.currency,.avatar-mini{border:1px solid var(--n23-line);background:rgba(16,29,46,.78)}
+#kh-home-v2 .kv2-hero{position:relative;overflow:hidden;border:1px solid rgba(243,204,120,.36);border-radius:26px;background:radial-gradient(circle at 82% 18%,rgba(55,185,215,.18),transparent 34%),radial-gradient(circle at 12% 100%,rgba(207,157,67,.13),transparent 38%),linear-gradient(130deg,#111e30 0%,#080f1b 70%,#101c2a);box-shadow:var(--n23-shadow)}
+#kh-home-v2 .kv2-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.025) 50%,transparent 62%);background-size:220% 100%;animation:n23Sheen 12s linear infinite}
+#kh-home-v2 .kv2-hero h1{letter-spacing:-.045em}
+#kh-home-v2 .kv2-hero h1 span{color:var(--n23-gold)}
+#kh-home-v2 .kv2-live{border-color:rgba(98,228,255,.35);background:rgba(13,54,69,.38);color:#aaf2ff}
+#kh-home-v2 .kv2-profile-strip{gap:12px}
+#kh-home-v2 .kv2-profile,#kh-home-v2 .kv2-stat{border:1px solid var(--n23-line);border-radius:17px;background:linear-gradient(145deg,rgba(19,34,53,.94),rgba(8,15,26,.94));box-shadow:0 10px 28px rgba(0,0,0,.16)}
+#kh-home-v2 .kv2-xp i{background:linear-gradient(90deg,#238eae,var(--n23-blue),var(--n23-gold))}
+#kh-home-v2 .kv2-btn{transition:transform .18s,border-color .18s,filter .18s}
+#kh-home-v2 .kv2-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.card,.panel,.game-card,.mode-card,.mission-card,.reward-card,.profile-card{border-color:var(--n23-line)}
+button{ -webkit-tap-highlight-color:transparent }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--n23-blue);outline-offset:3px}
+.mobile-nav{border-top:1px solid var(--n23-line);background:rgba(5,12,23,.94);backdrop-filter:blur(18px);box-shadow:0 -12px 38px rgba(0,0,0,.28)}
+.mobile-nav button.active{color:var(--n23-gold)}
+#nexusIntro{background:radial-gradient(ellipse at 50% 42%,#174b67 0%,#0a2034 34%,#050c18 70%,#02050b 100%)}
+#nexusIntro:before{border-color:rgba(98,228,255,.24);filter:drop-shadow(0 0 24px rgba(98,228,255,.18))}
+#nexusIntro:after{border-color:rgba(243,204,120,.36)}
+.nexus-intro-emblem{border:1px solid rgba(243,204,120,.8);color:#ffe7ae;text-shadow:0 0 24px rgba(243,204,120,.6);box-shadow:0 0 32px rgba(243,204,120,.24),0 0 70px rgba(98,228,255,.18),inset 0 0 28px rgba(98,228,255,.16)}
+.nexus-intro-title{background:linear-gradient(100deg,#fff3ce,#f3cc78 42%,#bcefff 78%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.nexus-intro-status{color:#b9efff}
+.nexus-intro-track{border-color:rgba(98,228,255,.42);background:#06101d;box-shadow:0 0 20px rgba(98,228,255,.1)}
+.nexus-intro-fill{background:linear-gradient(90deg,#187c9c,#62e4ff 52%,#f3cc78)}
+.nexus-intro-skip{border:1px solid rgba(243,204,120,.42);border-radius:999px;background:rgba(9,22,37,.78);color:#eaf6ff}
+@keyframes n23Sheen{to{background-position:-220% 0}}
+@media(max-width:760px){
+ .topbar{border-radius:14px}
+ #kh-home-v2 .kv2-hero{border-radius:20px}
+ .sidebar{box-shadow:0 20px 60px rgba(0,0,0,.5)}
+}
+@media(prefers-reduced-motion:reduce){
+ #kh-home-v2 .kv2-hero:after{animation:none}
+ .nav-item,.kv2-btn{transition:none}
+}
