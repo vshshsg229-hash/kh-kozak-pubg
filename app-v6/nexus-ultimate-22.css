@@ -1,0 +1,53 @@
+/* KOZAK NEXUS 22.0 · complete visual layer; existing IDs and handlers are intentionally untouched */
+:root{--nx22-bg:#050914;--nx22-panel:#0b1728;--nx22-panel-hi:#12253a;--nx22-gold:#f4cf79;--nx22-blue:#5ce7ff;--nx22-text:#edf6ff;--nx22-muted:#91a9bf;--nx22-line:#294960}
+html{background:var(--nx22-bg)!important}
+body.nexus-ultimate{background:radial-gradient(ellipse at 70% -15%,#17617a44,transparent 40%),radial-gradient(ellipse at 0 90%,#b9893020,transparent 36%),linear-gradient(145deg,#030711,#091629 52%,#050a13)!important;color:var(--nx22-text)}
+body.nexus-ultimate .app-shell{min-height:100dvh;gap:0}
+body.nexus-ultimate .sidebar{background:linear-gradient(180deg,#0b1b2df7,#060d18fa)!important;border-right:1px solid #35566b!important;box-shadow:14px 0 50px #0007;backdrop-filter:blur(22px)}
+body.nexus-ultimate .brand{padding:18px 16px;border-bottom:1px solid #29475d}
+body.nexus-ultimate .brand-mark{border-radius:16px;background:linear-gradient(145deg,#fff0b5,#d5a442 60%,#80541b)!important;color:#101827!important;box-shadow:0 0 30px #eac56a38}
+body.nexus-ultimate .brand b{color:#f7d991!important;letter-spacing:2px}
+body.nexus-ultimate .nav{gap:9px;padding:12px 10px 26px}
+body.nexus-ultimate .nav-group{padding:8px;border:1px solid #29475c;border-radius:16px;background:linear-gradient(145deg,#10243aab,#091522d9);box-shadow:inset 0 1px #fff1}
+body.nexus-ultimate .nav-group-title{color:#79e4f2!important;letter-spacing:1.6px;font-size:9px}
+body.nexus-ultimate .nav-item{min-height:44px;margin:2px 0;border:1px solid transparent!important;border-radius:12px!important;color:#b5c9d9!important;transition:background .2s,border-color .2s,transform .2s,box-shadow .2s}
+body.nexus-ultimate .nav-item>span:first-child{color:#70dff1}
+body.nexus-ultimate .nav-item:hover{transform:translateX(3px);background:#16364d!important;border-color:#4d879d!important;color:#fff!important}
+body.nexus-ultimate .nav-item.active{background:linear-gradient(100deg,#1c4558,#152a40)!important;border-color:#d9b45f!important;color:#ffe9b4!important;box-shadow:inset 3px 0 var(--nx22-gold),0 7px 20px #0006!important}
+body.nexus-ultimate .nav-item.active>span:first-child{color:var(--nx22-gold)}
+body.nexus-ultimate .main{min-width:0;background:transparent!important}
+body.nexus-ultimate .topbar{position:sticky;top:0;z-index:90;min-height:72px;padding:10px clamp(14px,2.4vw,34px);border-bottom:1px solid #29495f!important;background:#071522e8!important;backdrop-filter:blur(20px);box-shadow:0 12px 34px #0004}
+body.nexus-ultimate .currency{padding:8px 12px;border:1px solid #806436;border-radius:13px;background:linear-gradient(120deg,#2a2414,#111d2a);box-shadow:inset 0 1px #fff2}
+body.nexus-ultimate .currency .coin{color:var(--nx22-gold)!important}
+body.nexus-ultimate .avatar-mini{border:1px solid var(--nx22-gold)!important;border-radius:14px;background:linear-gradient(145deg,#21475d,#101b2c)!important;color:#ffe7ae!important}
+body.nexus-ultimate .view{padding:clamp(14px,2.4vw,32px);animation:nx22View .42s cubic-bezier(.2,.8,.2,1) both}
+body.nexus-ultimate .view h1,body.nexus-ultimate .view h2{letter-spacing:-.025em}
+body.nexus-ultimate .view .panel,body.nexus-ultimate .view .feature-card,body.nexus-ultimate .view .stat-card,body.nexus-ultimate .view .mission-card,body.nexus-ultimate .view .reward-card,body.nexus-ultimate .view .game-card,body.nexus-ultimate .view .section-card,body.nexus-ultimate .view .mode-card,body.nexus-ultimate .view .card{background:linear-gradient(145deg,#142940f5,#091523f7)!important;border:1px solid #31536b!important;border-radius:19px!important;box-shadow:0 16px 40px #0005,inset 0 1px #ffffff0b;transition:transform .22s,border-color .22s,box-shadow .22s}
+body.nexus-ultimate .view .panel:hover,body.nexus-ultimate .view .feature-card:hover,body.nexus-ultimate .view .game-card:hover,body.nexus-ultimate .view .mode-card:hover{transform:translateY(-3px);border-color:#62a9bd!important;box-shadow:0 22px 44px #0007,0 0 24px #55dfff16}
+body.nexus-ultimate button,body.nexus-ultimate .button,body.nexus-ultimate a.button{border-radius:12px;transition:transform .18s,filter .18s,box-shadow .18s,border-color .18s}
+body.nexus-ultimate button:not(:disabled):hover,body.nexus-ultimate .button:hover{filter:brightness(1.12);box-shadow:0 7px 20px #0005}
+body.nexus-ultimate button:not(:disabled):active,body.nexus-ultimate .button:active{transform:translateY(1px) scale(.98)}
+body.nexus-ultimate button:focus-visible,body.nexus-ultimate a:focus-visible,body.nexus-ultimate input:focus-visible,body.nexus-ultimate select:focus-visible{outline:2px solid var(--nx22-blue)!important;outline-offset:3px}
+body.nexus-ultimate #kh-home-v2 .kv2-hero{position:relative;overflow:hidden;min-height:300px;padding:clamp(22px,4vw,48px);border:1px solid #a17c40!important;border-radius:28px!important;background:radial-gradient(circle at 78% 25%,#1889a455,transparent 32%),radial-gradient(circle at 12% 100%,#c18c3b30,transparent 36%),linear-gradient(120deg,#1a3047,#091625 65%,#10283a)!important;box-shadow:0 28px 75px #0009,inset 0 1px #ffffff18!important}
+body.nexus-ultimate #kh-home-v2 .kv2-hero:after{content:"";position:absolute;inset:-60% -25%;pointer-events:none;background:linear-gradient(110deg,transparent 43%,#b9f5ff12 50%,transparent 57%);transform:translateX(-40%);animation:nx22Sweep 8s ease-in-out infinite}
+body.nexus-ultimate #kh-home-v2 .kv2-hero h1{font-size:clamp(32px,5vw,64px);line-height:1.02;color:#f6e9cb}
+body.nexus-ultimate #kh-home-v2 .kv2-hero h1 span{color:var(--nx22-gold);text-shadow:0 0 30px #f2ca7544}
+body.nexus-ultimate #kh-home-v2 .kv2-profile-strip{border-radius:18px!important;background:linear-gradient(110deg,#142e44,#0a1727)!important;border:1px solid #34586f!important}
+body.nexus-ultimate #kh-home-v2 .kv2-launch-grid{gap:14px}
+body.nexus-ultimate #kh-home-v2 .kv2-launch-grid>button,body.nexus-ultimate #kh-home-v2 .kv2-launch-grid>.kv2-launch-card{min-height:112px;border:1px solid #355c72!important;border-radius:18px!important;background:linear-gradient(145deg,#152c42,#0a1726)!important;box-shadow:0 14px 30px #0005}
+body.nexus-ultimate #kh-home-v2 .kv2-launch-grid>button:hover{border-color:var(--nx22-gold)!important;transform:translateY(-3px)}
+body.nexus-ultimate #nexusIntro{background:radial-gradient(ellipse at 50% 43%,#164c68 0%,#0a1d30 37%,#02050b 80%)!important}
+body.nexus-ultimate .nexus-intro-emblem{background:radial-gradient(circle,#1c4a60,#081624 70%);box-shadow:0 0 34px #f0c86a66,0 0 78px #55dfff26,inset 0 0 30px #55dfff32}
+body.nexus-ultimate .nexus-intro-title{letter-spacing:.16em;text-shadow:0 0 34px #56dffb66}
+body.nexus-ultimate .nexus-intro-track{height:8px;border-radius:20px;background:#ffffff18}
+body.nexus-ultimate .nexus-intro-fill{border-radius:20px;background:linear-gradient(90deg,#27c7e7,#70edff,#f2ca75)!important;box-shadow:0 0 20px #55dfffaa}
+body.nexus-ultimate .nexus-intro-skip{min-height:42px;border:1px solid #5d91a5;border-radius:13px;background:#0a1b2dcc;color:#d7f1fb}
+body.nexus-ultimate .mobile-nav{border-top:1px solid #35556b!important;background:#071522f2!important;backdrop-filter:blur(20px)}
+body.nexus-ultimate .mobile-nav button{border-radius:12px!important;color:#a9c2d5!important}
+body.nexus-ultimate .mobile-nav button.active{color:#ffe5a5!important;background:linear-gradient(180deg,#1b4054,#12283a)!important;box-shadow:inset 0 0 0 1px #d9b45f66}
+body.nexus-ultimate .footer{border-top:1px solid #29495f;color:#7894aa}
+@keyframes nx22View{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes nx22Sweep{0%,35%{transform:translateX(-45%)}75%,100%{transform:translateX(45%)}}
+@media(max-width:900px){body.nexus-ultimate .sidebar{width:min(84vw,320px)!important}body.nexus-ultimate .view{padding:14px}body.nexus-ultimate #kh-home-v2 .kv2-hero{min-height:260px}}
+@media(max-width:600px){body.nexus-ultimate .topbar{min-height:60px;padding:8px 12px}body.nexus-ultimate .view{padding:12px 10px 96px}body.nexus-ultimate .view .panel,body.nexus-ultimate .view .feature-card,body.nexus-ultimate .view .game-card{border-radius:15px!important}body.nexus-ultimate #kh-home-v2 .kv2-hero{min-height:240px;padding:22px 17px}body.nexus-ultimate #kh-home-v2 .kv2-launch-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}}
+@media(prefers-reduced-motion:reduce){body.nexus-ultimate *,body.nexus-ultimate *:before,body.nexus-ultimate *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
