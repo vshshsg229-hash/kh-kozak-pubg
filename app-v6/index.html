@@ -131,10 +131,10 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
   <div class="nexus-intro-content">
     <div class="nexus-intro-emblem" aria-hidden="true">N</div>
     <h1 class="nexus-intro-title">KOZAK NEXUS</h1>
-    <div class="nexus-intro-sub">NEW WORLD · NEW HORIZONS</div>
-    <p class="nexus-intro-status" id="nexusIntroStatus">ПРОБУДЖЕННЯ ЯДРА NEXUS</p>
+    <div class="nexus-intro-sub">ЗАПУСК ДОДАТКУ · ПІДГОТОВКА СВІТУ</div>
+    <p class="nexus-intro-status" id="nexusIntroStatus">ЗАПУСК KOZAK NEXUS</p>
     <div class="nexus-intro-track"><div class="nexus-intro-fill" id="nexusIntroFill"></div></div>
-    <div class="nexus-intro-meta"><span>WORLD ENGINE</span><strong id="nexusIntroPercent">04%</strong></div>
+    <div class="nexus-intro-meta"><span>ЗАВАНТАЖЕННЯ СИСТЕМИ</span><strong id="nexusIntroPercent">04%</strong></div>
     <button class="nexus-intro-skip" id="nexusIntroSkip" type="button">ПРОПУСТИТИ АНІМАЦІЮ</button>
   </div>
 </div>
@@ -165,20 +165,20 @@ body.nexus-loading{overflow:hidden}body.nexus-loading .app-shell{visibility:hidd
     window.setTimeout(()=>root.remove(),900);
   }
   const stages=[
-    [16,'ПРОБУДЖЕННЯ ЯДРА NEXUS'],
-    [29,'ПЕРЕВІРКА СИСТЕМИ ТА РЕСУРСІВ'],
+    [16,'ЗАПУСК ЯДРА KOZAK NEXUS'],
+    [29,'ПЕРЕВІРКА РЕСУРСІВ ДОДАТКУ'],
     [43,'ЗАВАНТАЖЕННЯ ІНТЕРФЕЙСУ'],
-    [58,'ВІДНОВЛЕННЯ ЛОКАЛЬНОГО ПРОФІЛЮ'],
+    [58,'ВІДНОВЛЕННЯ ЛОКАЛЬНИХ ЗБЕРЕЖЕНЬ'],
     [72,'ПІДГОТОВКА ІГРОВИХ РЕЖИМІВ'],
-    [84,'ІНІЦІАЛІЗАЦІЯ СВІТУ NEXUS'],
-    [92,'ОЧІКУВАННЯ ГОТОВНОСТІ ПРОГРАМИ']
+    [84,'ПІДГОТОВКА СВІТУ NEXUS'],
+    [92,'ОЧІКУВАННЯ ПОВНОЇ ГОТОВНОСТІ']
   ];
   stages.forEach(([value,label],i)=>timers.push(window.setTimeout(()=>setProgress(value,label),350+i*430)));
   function markReady(){
     if(ready||closed)return;
     ready=true;
     setProgress(100,'УСІ СИСТЕМИ ГОТОВІ · ЛАСКАВО ПРОСИМО');
-    timers.push(window.setTimeout(closeIntro,Math.max(650,3200-(Date.now()-started))));
+    timers.push(window.setTimeout(closeIntro,Math.max(900,3600-(Date.now()-started))));
   }
   if(document.readyState==='complete')markReady();
   else window.addEventListener('load',markReady,{once:true});
