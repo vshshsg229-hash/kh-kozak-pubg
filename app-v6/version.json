@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "21.1.0",
+  "version": "21.2.0",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-06",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "21.1.0: reorganized navigation into NEXUS World, game modes, survival, challenges, tactical HQ, AI, media, and profile sections; rebuilt home quick-launch deck with 12 direct routes; added mobile bottom navigation. Existing game tabs, original mode handlers, and local saves preserved."
+  "releaseNotes": "21.2.0: new NEXUS navigation architecture and categorized sections; 12-card home command deck; mobile five-button quick dock; cinematic portal-style startup animation; animated transitions and panel reveals. Existing gameplay handlers, map, modes, and local save system remain preserved."
 }
