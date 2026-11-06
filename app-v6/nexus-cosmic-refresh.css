@@ -1,0 +1,118 @@
+/* KOZAK NEXUS · Cosmic interface pass 20.13.0
+   Visual-only layer: preserves every existing tab, control, order and layout. */
+:root{
+  --nexus-gold:#efc86f;
+  --nexus-gold-soft:#b88b3e;
+  --nexus-blue:#55dff4;
+  --nexus-blue-deep:#123448;
+  --nexus-panel:#0d1724;
+  --nexus-panel-2:#122235;
+  --nexus-line:#29435a;
+  --nexus-text:#edf6ff;
+}
+html{background:#050a12}
+body{background:
+  radial-gradient(ellipse at 82% 0%,#12445a38,transparent 34%),
+  radial-gradient(ellipse at 5% 62%,#9a70201a,transparent 36%),
+  linear-gradient(145deg,#050a12,#08111d 58%,#070d17)!important;
+  color:var(--nexus-text)}
+.app-shell{background:transparent}
+.sidebar{
+  background:linear-gradient(180deg,#0b1421f7,#080f19f8 70%,#090e17f8)!important;
+  border-right:1px solid #31516a!important;
+  box-shadow:12px 0 42px #0005,inset -1px 0 #eac56a0b;
+  backdrop-filter:blur(18px)
+}
+.brand{padding-bottom:26px}
+.brand-mark{
+  background:linear-gradient(145deg,#f4d88f,#b48737 58%,#73501d)!important;
+  color:#101722!important;
+  clip-path:none!important;
+  border:1px solid #ffe8a6;
+  border-radius:14px;
+  box-shadow:0 0 0 3px #eac56a12,0 0 25px #eac56a25
+}
+.brand b{color:#f4d88f!important;letter-spacing:1.7px}
+.brand small{color:#8ba8bd!important}
+.nav-group{border-color:#29445a}
+.nav-group-title{color:#77d9eb!important;letter-spacing:1.4px}
+.nav-item{
+  border:1px solid transparent!important;
+  border-radius:11px!important;
+  color:#a9bdce!important;
+  transition:background .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease!important
+}
+.nav-item>span:first-child{color:#74d8e9}
+.nav-item:hover,.nav-item.active{
+  background:linear-gradient(100deg,#143047,#172638)!important;
+  border-color:#4e8498!important;
+  color:#ffe3a0!important;
+  box-shadow:inset 3px 0 #eac56a,0 5px 18px #0003!important
+}
+.nav-item.active>span:first-child,.nav-item:hover>span:first-child{color:#f1cd78}
+.side-bottom{border-color:#29445a!important;color:#9ab0c3}
+.side-bottom small{color:#e4c276!important}
+.main{background:transparent}
+.topbar{
+  border-bottom:1px solid #29445a!important;
+  background:linear-gradient(90deg,#08121cdd,#0b1724a8,#08121cdd);
+  box-shadow:0 8px 28px #0002;
+  backdrop-filter:blur(14px)
+}
+.season{color:#9bb2c4!important}
+.season b{color:#f0cc79!important;text-shadow:0 0 16px #eac56a30}
+.season-line{background:linear-gradient(90deg,#55dff4,#efc86f)!important}
+.currency .coin{color:#f0cc79!important;text-shadow:0 0 12px #eac56a66}
+.avatar-mini{
+  background:linear-gradient(145deg,#1b3449,#101a28)!important;
+  border:1px solid #b58d48!important;
+  color:#f4d88f!important;
+  box-shadow:inset 0 0 16px #55dff411,0 0 14px #eac56a13
+}
+.view{animation:fadein .22s ease}
+.view h1,.view h2,.view h3{ text-wrap:balance }
+.view .panel,.view .feature-card,.view .stat-card,.view .mission-card,
+.view .reward-card,.view .game-card,.view .section-card,.view .mode-card{
+  background:linear-gradient(145deg,#122235f2,#0b1420f5)!important;
+  border-color:#29465d!important;
+  box-shadow:0 12px 30px #0003,inset 0 1px #ffffff08
+}
+.view .panel-head h3,.view .section-title{color:#f0d18b}
+.view .panel-head>span,.view .muted{color:#93aabe}
+#kh-home-v2 .kv2-hero{
+  border:1px solid #8d713b!important;
+  background:
+    radial-gradient(ellipse at 82% 18%,#1b81934a,transparent 38%),
+    radial-gradient(ellipse at 10% 100%,#bd8c3828,transparent 42%),
+    linear-gradient(125deg,#172434,#0a1420 65%,#102431)!important;
+  box-shadow:0 22px 55px #0006,inset 0 1px #ffffff0c!important
+}
+#kh-home-v2 .kv2-topline{color:#9cdce8}
+#kh-home-v2 .kv2-hero h1{color:#f3e5c5}
+#kh-home-v2 .kv2-hero h1 span{color:#f0c86a}
+#kh-home-v2 .kv2-hero p{color:#b7c9d8}
+#kh-home-v2 .kv2-live{color:#7ce6b2}
+#kh-home-v2 .kv2-profile-strip{
+  background:linear-gradient(120deg,#101e2d,#0a1420)!important;
+  border-color:#2a4a61!important
+}
+#kh-home-v2 .kv2-emblem-ring{border-color:#eac56a!important;box-shadow:0 0 35px #eac56a2b,0 0 70px #55dff418}
+#kh-home-v2 .kv2-emblem-core{background:radial-gradient(circle,#1a4357,#091522)!important;color:#f3d58c}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid #65e4f4!important;
+  outline-offset:3px!important;
+  box-shadow:0 0 0 5px #55dff422!important
+}
+button:disabled{cursor:not-allowed;filter:saturate(.45);opacity:.65}
+::selection{background:#eac56a55;color:#fff}
+*{scrollbar-color:#31566e #08111b;scrollbar-width:thin}
+@media(max-width:720px){
+  .topbar{background:linear-gradient(90deg,#091522f2,#0c1a29e8)!important;border-radius:0 0 14px 14px}
+  .mobile-brand{color:#f2d38b!important}
+  .main{padding-bottom:max(78px,env(safe-area-inset-bottom))!important}
+  .sidebar{box-shadow:18px 0 50px #0009!important}
+  .nav-item{min-height:43px}
+}
+@media(prefers-reduced-motion:reduce){
+  .view,.nav-item{animation:none!important;transition:none!important}
+}
