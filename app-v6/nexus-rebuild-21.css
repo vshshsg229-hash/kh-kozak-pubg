@@ -60,3 +60,30 @@ body.nexus-redesign .nx-reveal.nx-visible{opacity:1;transform:none}
 @media(max-width:900px){body.nexus-redesign .sidebar{width:min(330px,86vw)!important}body.nexus-redesign .topbar{min-height:64px;padding:9px 12px}body.nexus-redesign .view{padding:14px}}
 @media(max-width:600px){body.nexus-redesign .view{padding:10px 10px 24px}body.nexus-redesign #kh-home-v2 .kv2-hero{min-height:0;padding:20px;border-radius:20px!important}body.nexus-redesign #kh-home-v2 .kv2-hero h1{font-size:clamp(29px,9vw,42px)}body.nexus-redesign .currency{padding:7px 9px}body.nexus-redesign .avatar-mini{width:40px;height:40px}}
 @media(prefers-reduced-motion:reduce){body.nexus-redesign *,body.nexus-redesign *:before,body.nexus-redesign *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.nx-reveal{opacity:1;transform:none}}
+
+/* 21.1.0 · information architecture refresh */
+body.nexus-redesign .sidebar .nav{gap:9px;padding:14px 11px 28px}
+body.nexus-redesign .sidebar .nav-group{order:initial}
+body.nexus-redesign .sidebar .nx-world-nav{border-color:#8e7544;background:linear-gradient(145deg,#1c2d3c,#111b29);box-shadow:inset 0 1px #fff2,0 8px 26px #0003}
+body.nexus-redesign .sidebar .nx-world-nav .nav-group-title{color:#f2cf83!important}
+body.nexus-redesign .sidebar .nx-world-nav .nav-item{background:#152c3d!important}
+body.nexus-redesign .sidebar .nav-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+body.nexus-redesign .sidebar .nav-group-title small{font-size:8px;letter-spacing:1px;opacity:.65}
+body.nexus-redesign .nx-command-deck{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+body.nexus-redesign .nx-command-deck .nx-launch-tile{position:relative;min-height:154px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px;padding:17px;text-align:left;overflow:hidden;border:1px solid #294a61;border-radius:17px;background:linear-gradient(145deg,#132b40,#0a1726);color:#eaf4fb;box-shadow:0 12px 28px #0004;cursor:pointer}
+body.nexus-redesign .nx-command-deck .nx-launch-tile:before{content:"";position:absolute;inset:auto -25% -60% 30%;height:120px;background:radial-gradient(ellipse,#52dff02b,transparent 70%);pointer-events:none}
+body.nexus-redesign .nx-command-deck .nx-launch-tile:hover{transform:translateY(-4px);border-color:#d6b76c;box-shadow:0 18px 34px #0006,0 0 24px #52dff01c}
+body.nexus-redesign .nx-command-deck .kv2-icon{display:grid;place-items:center;width:43px;height:43px;border:1px solid #47738a;border-radius:13px;background:#16334a;font-size:22px}
+body.nexus-redesign .nx-command-deck .nx-launch-tile strong{font-size:13px;letter-spacing:.06em;color:#f6e7c4}
+body.nexus-redesign .nx-command-deck .nx-launch-tile small{font-size:11px;line-height:1.45;color:#9eb6c9}
+body.nexus-redesign .nx-command-deck .nx-launch-tile em{margin-top:auto;font-style:normal;font-size:9px;font-weight:900;letter-spacing:.14em;color:#66dff1}
+body.nexus-redesign .nx-mobile-dock{display:none}
+body.nexus-redesign .nx-dock-btn{border:0;background:transparent;color:#8fa8bb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;padding:5px 2px}
+body.nexus-redesign .nx-dock-btn span{font-size:19px;line-height:1.1}
+body.nexus-redesign .nx-dock-btn small{font-size:8px;font-weight:900;letter-spacing:.05em}
+body.nexus-redesign .nx-dock-btn.active{color:#f2cf83;text-shadow:0 0 14px #f2cf8366}
+body.nexus-redesign .nx-dock-btn.active span{transform:translateY(-2px)}
+@media(max-width:1050px){body.nexus-redesign .nx-command-deck{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){body.nexus-redesign .nx-mobile-dock{position:fixed;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:9996;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:7px 5px;border:1px solid #45647a;border-radius:18px;background:#081523ed;box-shadow:0 12px 38px #000a,0 0 22px #55dfff14;backdrop-filter:blur(18px)}body.nexus-redesign .main{padding-bottom:calc(80px + env(safe-area-inset-bottom))}body.nexus-redesign .nx-command-deck{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}body.nexus-redesign .nx-command-deck .nx-launch-tile{min-height:137px;padding:13px}body.nexus-redesign .nx-command-deck .kv2-icon{width:37px;height:37px;font-size:19px}}
+@media(max-width:370px){body.nexus-redesign .nx-command-deck{grid-template-columns:1fr 1fr}body.nexus-redesign .nx-command-deck .nx-launch-tile{min-height:128px;padding:10px}}
+@media(prefers-reduced-motion:reduce){body.nexus-redesign .nx-command-deck .nx-launch-tile,body.nexus-redesign .nx-dock-btn span{transition:none!important;transform:none!important}}
