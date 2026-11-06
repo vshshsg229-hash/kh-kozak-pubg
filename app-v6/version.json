@@ -1,8 +1,8 @@
 {
   "app": "KOZAK NEXUS",
-  "version": "20.13.0",
+  "version": "20.13.1",
   "windowsRelease": "https://github.com/vshshsg229-hash/kh-kozak-pubg/releases/tag/pc-v20.7.0",
   "updatedAt": "2026-11-06",
   "windowsVersion": "20.7.0",
-  "releaseNotes": "20.13.0: rebuilds the living civilization simulation with save migration, autonomous offline economy, seasonal cycles, professions, expandable buildings, six regions, eight technologies, disasters and emergency services, wildlife, hunting, expeditions and diplomacy. Existing KOZAK NEXUS modes and local saves are retained."
+  "releaseNotes": "20.13.1: civilization module rebuild: rebuilds the living civilization simulation with save migration, autonomous offline economy, seasonal cycles, professions, expandable buildings, six regions, eight technologies, disasters and emergency services, wildlife, hunting, expeditions and diplomacy. Existing KOZAK NEXUS modes and local saves are retained."
 }
