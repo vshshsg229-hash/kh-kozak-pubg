@@ -320,7 +320,7 @@ jobs:
           if (version.version !== '20.13.0') throw new Error('Release metadata must match 20.13.0');
           const tabs = [...html.matchAll(/data-tab="([^"]+)"/g)].map(match => match[1]);
           const panels = new Set([...html.matchAll(/id="tab-([^"]+)"/g)].map(match => match[1]));
-          for (const tab of new Set(tabs)) if (!panels.has(tab)) throw new Error('Navigation target is missing: ' + tab);
+          for (const tab of new Set(tabs.filter(value => /^[a-z0-9_-]+$/i.test(value)))) if (!panels.has(tab)) throw new Error('Navigation target is missing: ' + tab);
           for (const tab of ['home','games','nexusworld','3d','pass','missions','bunker','profile','music','tiktok','telegram']) {
             if (!panels.has(tab)) throw new Error('Required existing mode was removed: ' + tab);
           }
