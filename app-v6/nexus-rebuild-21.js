@@ -2,7 +2,7 @@
 /* KOZAK NEXUS 21.0 · visual runtime only; no gameplay/save mutations */
 const start=()=>{const body=document.body;if(!body)return;body.classList.add('nexus-redesign');
 const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-const observeViews=()=>{document.querySelectorAll('.view.active').forEach(v=>{v.classList.remove('nx-entering');void v.offsetWidth;v.classList.add('nx-entering')})};
+const observeViews=()=>{document.querySelectorAll('.view.active').forEach(v=>{if(!v.classList.contains('nx-entering'))v.classList.add('nx-entering')})};
 const activeRoot=document.querySelector('.app-shell')||document;
 const reveal=()=>{if(reduced)return;const nodes=activeRoot.querySelectorAll('.view.active .panel,.view.active .feature-card,.view.active .stat-card,.view.active .mission-card,.view.active .reward-card,.view.active .game-card,.view.active .section-card,.view.active .mode-card');nodes.forEach((node,i)=>{if(node.dataset.nxReveal)return;node.dataset.nxReveal='1';node.classList.add('nx-reveal');node.style.transitionDelay=Math.min(i%7,6)*45+'ms';if(!('IntersectionObserver'in window)){node.classList.add('nx-visible');return}io.observe(node)})};
 const io='IntersectionObserver'in window?new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('nx-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -24px 0px'}):null;
